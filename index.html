@@ -706,83 +706,11 @@
 
       <!-- Aktif Oturum & Yetki Özeti -->
       <div id="activePermissionBanner" class="bg-emerald-50/80 border border-emerald-200 rounded-2xl p-3 text-xs space-y-1">
-        <div class="font-extrabold text-slate-900">Aktif Oturum: <span id="activeSessionSummary" class="text-[#146C53]">Giriş yapılmadı</span></div>
-        <div id="activePermissionDetail" class="text-[11px] text-slate-600">İş emri ekleme ve silme yetkisi sadece <strong>Yönetim</strong> etiketli Gmail hesaplarına aittir.</div>
+        <div class="font-extrabold text-slate-900">Aktif Oturum: <span id="activeSessionSummary" class="text-[#146C53]">Seçilmedi</span></div>
+        <div id="activePermissionDetail" class="text-[11px] text-slate-600">Her satırın karşısına virgülle (<code>,</code>) ayırarak 2-3 Gmail adresi ekleyebilirsiniz.</div>
       </div>
 
-      <div class="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 space-y-3">
-        <div class="text-xs font-extrabold text-slate-800">Gmail Adresi ile Giriş Yap</div>
-        <div class="space-y-2.5">
-          <div>
-            <label for="gmailInput" class="block text-xs font-bold text-slate-700 mb-1">Gmail Adresiniz (@gmail.com)</label>
-            <input id="gmailInput" type="email" placeholder="ornek.operator@gmail.com" class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-900" />
-          </div>
-          <div class="grid grid-cols-2 gap-2.5">
-            <div>
-              <label for="memberNameInput" class="block text-xs font-bold text-slate-700 mb-1">Ad Soyad</label>
-              <input id="memberNameInput" type="text" placeholder="Örn: İsa Yılmaz" class="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-900" />
-            </div>
-            <div>
-              <label for="memberOperatorSelect" class="block text-xs font-bold text-slate-700 mb-1">Eşleşen Operatör</label>
-              <select id="memberOperatorSelect" class="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-extrabold text-slate-800">
-                <option value="İSA">İSA</option>
-                <option value="MUHİDDİN">MUHİDDİN</option>
-                <option value="KADDUR">KADDUR</option>
-                <option value="MUHAMMED">MUHAMMED</option>
-                <option value="GENEL">Operatör Yok (Yönetici)</option>
-              </select>
-            </div>
-          </div>
-          <div class="grid grid-cols-2 gap-2.5">
-            <div>
-              <label for="memberRoleSelect" class="block text-xs font-bold text-slate-700 mb-1">Yetki Etiketi</label>
-              <select id="memberRoleSelect" onchange="toggleAdminPinField()" class="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-extrabold text-slate-800">
-                <option value="Operatör">Operatör (Sınırlı Yetki)</option>
-                <option value="Yönetim">Yönetim (Tam Yetki - Ekle/Sil)</option>
-              </select>
-            </div>
-            <div id="adminPinWrapper" class="hidden">
-              <label for="adminPinInput" class="block text-xs font-bold text-amber-800 mb-1">Yönetim PIN Kodu</label>
-              <input id="adminPinInput" type="password" inputmode="numeric" placeholder="1453" class="w-full px-3 py-2.5 bg-amber-50 border border-amber-300 rounded-xl text-xs font-extrabold text-slate-900" />
-            </div>
-          </div>
-          <button type="button" onclick="confirmGmailLogin()" class="w-full bg-[#146C53] hover:bg-[#0F5C45] text-white font-bold text-xs py-3 rounded-xl shadow-xs active:scale-95 transition">
-            Gmail Eşleştir ve Giriş Yap
-          </button>
-        </div>
-      </div>
-
-      <!-- Operatör = Gmail Eşleştirme Tablosu -->
-      <div class="space-y-2">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-extrabold text-slate-800">Operatör = Gmail Eşleştirmeleri</span>
-          <span class="text-[10px] font-bold text-slate-500">Hangi operatör hangi Gmail'de</span>
-        </div>
-        <div id="operatorGmailMapList" class="grid grid-cols-2 gap-1.5"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL 5B: SIMPLE GMAIL ASSIGNMENTS & ROLE ACCESS -->
-  <div id="roleAssignmentsModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center">
-    <div class="bg-white w-full max-w-xl rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl bottom-sheet-enter max-h-[92vh] overflow-y-auto space-y-4">
-      <div class="flex items-center justify-between">
-        <div>
-          <h3 class="text-base font-extrabold text-slate-900">Gmail Giriş & Yetkiler</h3>
-          <p class="text-[11px] text-slate-500">Yönetim sınırsız · Operatörler başlat/bitir & KG · İzleyici sadece izler</p>
-        </div>
-        <button id="closeRoleAssignmentsModalBtn" type="button" onclick="closeModal('roleAssignmentsModal')" class="p-2 rounded-full bg-slate-100 text-slate-500">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-      </div>
-
-      <!-- Aktif Oturum Özeti -->
-      <div class="bg-emerald-50/80 border border-emerald-200 rounded-2xl px-3.5 py-2.5 text-xs flex items-center justify-between gap-2">
-        <div class="font-extrabold text-slate-900 truncate">Aktif: <span id="activeSessionSummary" class="text-[#146C53]">Seçilmedi</span></div>
-        <span id="activeRoleChip" class="shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-white border border-emerald-200 text-slate-700">-</span>
-      </div>
-
-      <!-- 6 Sabit Satır: Yönetim, İsa, Muhiddin, Kaddur, Muhammed, İzleyici = Gmail -->
+      <!-- 6 Sabit Satır: Yönetim, İsa, Muhiddin, Kaddur, Muhammed, İzleyici = Çoklu Gmail Kutucuğu -->
       <div id="roleAssignmentsList" class="space-y-2"></div>
 
       <!-- Yönetim PIN Alanı (Yönetim Gmail kaydedilirken veya girişte kontrol edilir) -->
@@ -805,6 +733,7 @@
 
     const MAX_TEAM_MEMBERS = 15;
     const MANAGEMENT_PIN = '1453';
+    const DEFAULT_OWNER_GMAIL = 'oozkaankrt@gmail.com';
     const CUSTOM_FB_STORAGE_KEY = 'extruder_custom_firebase_config_v1';
     const ROLE_MAP_STORAGE_KEY = 'extruder_role_gmail_map_v1';
     const ACTIVE_ACCOUNT_STORAGE_KEY = 'extruder_active_role_account_v1';
@@ -833,24 +762,24 @@
     let auth = null;
     let db = null;
     let currentAuthUser = null;
+    let isFirebaseConnected = false;
+    let isApplyingRemoteUpdate = false;
+    let teamMembers = [];
+    let accessLogs = [];
+    let unsubOrders = null;
+    let unsubNotes = null;
+    let unsubMembers = null;
+    let unsubLogs = null;
     let roleGmailMap = {
-      YONETIM: '',
+      YONETIM: DEFAULT_OWNER_GMAIL,
       ISA: '',
       MUHIDDIN: '',
       KADDUR: '',
       MUHAMMED: '',
       IZLEYICI: ''
     };
-    let activeRoleSession = null; // { slotKey, label, kind, operatorCode, email }
+    let activeRoleSession = null; // { slotKey, label, kind, operatorCode, email, emails }
     let currentGmailProfile = null;
-    let teamMembers = [];
-    let accessLogs = [];
-    let isApplyingRemoteUpdate = false;
-    let isFirebaseConnected = false;
-    let unsubOrders = null;
-    let unsubNotes = null;
-    let unsubMembers = null;
-    let unsubLogs = null;
 
     function getOrdersColRef() {
       return collection(db, 'artifacts', appId, 'public', 'data', 'extruder_orders');
@@ -868,14 +797,37 @@
       return collection(db, 'artifacts', appId, 'public', 'data', 'extruder_access_logs');
     }
 
-    function buildSessionFromSlot(slotKey, email) {
+    function parseEmailsList(rawInput) {
+      if (Array.isArray(rawInput)) {
+        return rawInput
+          .map(e => String(e || '').trim().toLowerCase())
+          .filter(Boolean);
+      }
+      return String(rawInput || '')
+        .split(/[\n,;]+/)
+        .map(e => e.trim().toLowerCase())
+        .filter(Boolean);
+    }
+
+    function normalizeEmailsField(rawVal) {
+      return parseEmailsList(rawVal).join(', ');
+    }
+
+    function getPrimaryEmail(rawVal) {
+      const list = parseEmailsList(rawVal);
+      return list[0] || '';
+    }
+
+    function buildSessionFromSlot(slotKey, rawEmails) {
       const slot = ROLE_SLOTS.find(s => s.key === slotKey) || ROLE_SLOTS[5];
+      const emails = parseEmailsList(rawEmails);
       return {
         slotKey: slot.key,
         label: slot.label,
         kind: slot.kind,
         operatorCode: slot.operatorCode || null,
-        email: (email || '').trim().toLowerCase()
+        email: emails[0] || '',
+        emails
       };
     }
 
@@ -885,14 +837,16 @@
     // - İzleyici: sadece izler (hiçbir değiştirme/silme/ekleme/KG/vardiya işlemi yapamaz)
     window.getCurrentUserPermissions = function() {
       const sess = activeRoleSession;
-      const isLoggedIn = !!(sess && sess.email);
+      const emails = sess ? parseEmailsList(sess.emails || sess.email) : [];
+      const isLoggedIn = !!(sess && emails.length > 0);
       const isManagement = isLoggedIn && sess.kind === 'MANAGEMENT';
       const isOperator = isLoggedIn && sess.kind === 'OPERATOR';
       const isViewer = !isLoggedIn || sess.kind === 'VIEWER';
 
       return {
         isLoggedIn,
-        email: isLoggedIn ? sess.email : '',
+        email: emails[0] || '',
+        emails,
         name: isLoggedIn ? sess.label : 'İzleyici',
         role: isLoggedIn ? sess.label : 'İzleyici',
         kind: isLoggedIn ? sess.kind : 'VIEWER',
@@ -979,7 +933,10 @@
       const roleChipEl = document.getElementById('activeRoleChip');
       if (sessionSummaryEl && roleChipEl) {
         if (perms.isLoggedIn) {
-          sessionSummaryEl.textContent = `${perms.label} = ${perms.email}`;
+          const emailDisplay = perms.emails.length > 1
+            ? `${perms.emails[0]} (+${perms.emails.length - 1})`
+            : perms.email;
+          sessionSummaryEl.textContent = `${perms.label} = ${emailDisplay}`;
           roleChipEl.textContent = perms.isManagement
             ? 'Sınırsız Yetki'
             : (perms.isOperator ? 'Başlat/Bitir · KG' : 'Sadece İzleme');
@@ -1034,22 +991,22 @@
       const container = document.getElementById('roleAssignmentsList');
       if (!container) return;
 
-      const selectedKey = activeRoleSession?.slotKey || 'ISA';
+      const selectedKey = activeRoleSession?.slotKey || 'YONETIM';
 
       container.innerHTML = ROLE_SLOTS.map(slot => {
-        const currentEmail = roleGmailMap[slot.key] || '';
+        const currentEmails = normalizeEmailsField(roleGmailMap[slot.key] || '');
         const isSelected = selectedKey === slot.key;
-        const safeEmail = window.escapeHtml ? window.escapeHtml(currentEmail) : currentEmail;
+        const safeEmails = window.escapeHtml ? window.escapeHtml(currentEmails) : currentEmails;
 
         return `
-          <div onclick="selectRoleSlot('${slot.key}')" class="flex items-center gap-2.5 p-2.5 rounded-2xl border cursor-pointer transition ${isSelected ? 'bg-emerald-50/90 border-[#146C53] ring-2 ring-[#146C53]/15' : 'bg-slate-50/70 border-slate-200/80 hover:bg-slate-50'}">
+          <div onclick="selectRoleSlot('${slot.key}')" class="flex items-center gap-2 p-2.5 rounded-2xl border cursor-pointer transition ${isSelected ? 'bg-emerald-50/90 border-[#146C53] ring-2 ring-[#146C53]/15' : 'bg-slate-50/70 border-slate-200/80 hover:bg-slate-50'}">
             <input type="radio" name="activeRoleRadio" ${isSelected ? 'checked' : ''} onchange="selectRoleSlot('${slot.key}')" onclick="event.stopPropagation()" class="w-4 h-4 accent-[#146C53] shrink-0" />
-            <div class="w-24 shrink-0">
+            <div class="w-20 shrink-0">
               <div class="text-xs font-extrabold text-slate-900 leading-tight">${slot.label}</div>
-              <div class="text-[10px] font-semibold text-slate-500 leading-tight">${slot.badge}</div>
+              <div class="text-[9px] font-semibold text-slate-500 leading-tight truncate">${slot.badge}</div>
             </div>
             <span class="text-xs font-extrabold text-slate-400 shrink-0">=</span>
-            <input id="roleEmail_${slot.key}" type="email" value="${safeEmail}" placeholder="ornek@gmail.com"
+            <input id="roleEmail_${slot.key}" type="text" inputmode="email" value="${safeEmails}" placeholder="mail1@gmail.com, mail2@gmail.com"
               onclick="event.stopPropagation(); selectRoleSlot('${slot.key}')"
               oninput="onRoleEmailChange('${slot.key}', this.value)"
               class="flex-1 min-w-0 px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-900" />
@@ -1061,9 +1018,9 @@
 
     window.selectRoleSlot = function(slotKey) {
       const inputEl = document.getElementById(`roleEmail_${slotKey}`);
-      const emailVal = (inputEl ? inputEl.value : (roleGmailMap[slotKey] || '')).trim().toLowerCase();
-      roleGmailMap[slotKey] = emailVal;
-      activeRoleSession = buildSessionFromSlot(slotKey, emailVal);
+      const rawVal = inputEl ? inputEl.value : (roleGmailMap[slotKey] || '');
+      roleGmailMap[slotKey] = rawVal;
+      activeRoleSession = buildSessionFromSlot(slotKey, rawVal);
 
       document.querySelectorAll('input[name="activeRoleRadio"]').forEach(r => {
         const parentRow = r.closest('[onclick*="selectRoleSlot"]');
@@ -1071,8 +1028,8 @@
         r.checked = Boolean(isMatch);
         if (parentRow) {
           parentRow.className = isMatch
-            ? 'flex items-center gap-2.5 p-2.5 rounded-2xl border cursor-pointer transition bg-emerald-50/90 border-[#146C53] ring-2 ring-[#146C53]/15'
-            : 'flex items-center gap-2.5 p-2.5 rounded-2xl border cursor-pointer transition bg-slate-50/70 border-slate-200/80 hover:bg-slate-50';
+            ? 'flex items-center gap-2 p-2.5 rounded-2xl border cursor-pointer transition bg-emerald-50/90 border-[#146C53] ring-2 ring-[#146C53]/15'
+            : 'flex items-center gap-2 p-2.5 rounded-2xl border cursor-pointer transition bg-slate-50/70 border-slate-200/80 hover:bg-slate-50';
         }
       });
 
@@ -1081,9 +1038,11 @@
     };
 
     window.onRoleEmailChange = function(slotKey, val) {
-      roleGmailMap[slotKey] = String(val || '').trim().toLowerCase();
+      roleGmailMap[slotKey] = String(val || '');
       if (activeRoleSession && activeRoleSession.slotKey === slotKey) {
-        activeRoleSession.email = roleGmailMap[slotKey];
+        const updatedSession = buildSessionFromSlot(slotKey, roleGmailMap[slotKey]);
+        activeRoleSession.email = updatedSession.email;
+        activeRoleSession.emails = updatedSession.emails;
         applyRolePermissionsToUI();
       }
       toggleAdminPinField();
@@ -1093,8 +1052,9 @@
       const pinWrap = document.getElementById('adminPinWrapper');
       if (!pinWrap) return;
       const isMgmtSelected = activeRoleSession?.slotKey === 'YONETIM';
-      const hasMgmtEmail = Boolean((roleGmailMap.YONETIM || '').trim());
-      pinWrap.classList.toggle('hidden', !(isMgmtSelected || hasMgmtEmail));
+      const mgmtEmails = parseEmailsList(roleGmailMap.YONETIM || '');
+      const hasOnlyDefaultOwner = mgmtEmails.length === 1 && mgmtEmails[0] === DEFAULT_OWNER_GMAIL;
+      pinWrap.classList.toggle('hidden', !(isMgmtSelected && mgmtEmails.length > 0 && !hasOnlyDefaultOwner));
     };
 
     async function persistRoleMapToFirebase() {
@@ -1123,8 +1083,11 @@
     }
 
     window.openAccountModal = function() {
+      if (!roleGmailMap.YONETIM) {
+        roleGmailMap.YONETIM = DEFAULT_OWNER_GMAIL;
+      }
       if (!activeRoleSession) {
-        activeRoleSession = buildSessionFromSlot('ISA', roleGmailMap.ISA || '');
+        activeRoleSession = buildSessionFromSlot('YONETIM', roleGmailMap.YONETIM || DEFAULT_OWNER_GMAIL);
       }
       renderRoleAssignmentsList();
       applyRolePermissionsToUI();
@@ -1132,36 +1095,49 @@
     };
 
     window.saveRoleAssignmentsAndLogin = async function() {
-      const selectedKey = activeRoleSession?.slotKey || 'ISA';
+      const selectedKey = activeRoleSession?.slotKey || 'YONETIM';
       const updatedMap = {};
 
       for (const slot of ROLE_SLOTS) {
         const el = document.getElementById(`roleEmail_${slot.key}`);
-        const val = (el ? el.value : (roleGmailMap[slot.key] || '')).trim().toLowerCase();
-        if (val && !/^[a-z0-9._%+-]+@gmail\.com$/i.test(val)) {
-          if (window.showToast) window.showToast(`${slot.label} için geçerli bir @gmail.com adresi girin`);
-          return;
+        const rawVal = el ? el.value : (roleGmailMap[slot.key] || '');
+        const emailList = parseEmailsList(rawVal);
+
+        for (const singleMail of emailList) {
+          if (!/^[a-z0-9._%+-]+@gmail\.com$/i.test(singleMail)) {
+            if (window.showToast) window.showToast(`${slot.label} için geçerli bir @gmail.com adresi girin (${singleMail})`);
+            return;
+          }
         }
-        updatedMap[slot.key] = val;
+        updatedMap[slot.key] = emailList.join(', ');
       }
 
-      const activeEmail = updatedMap[selectedKey] || '';
-      if (!activeEmail) {
-        if (window.showToast) window.showToast(`Lütfen seçili "${ROLE_SLOTS.find(s => s.key === selectedKey)?.label}" için Gmail adresi girin`);
+      if (!updatedMap.YONETIM) {
+        updatedMap.YONETIM = DEFAULT_OWNER_GMAIL;
+      }
+
+      const activeEmails = parseEmailsList(updatedMap[selectedKey] || '');
+      if (activeEmails.length === 0) {
+        if (window.showToast) window.showToast(`Lütfen seçili "${ROLE_SLOTS.find(s => s.key === selectedKey)?.label}" için en az bir Gmail adresi girin`);
         return;
       }
 
       const pin = (document.getElementById('adminPinInput')?.value || '').trim();
-      const managementChanged = updatedMap.YONETIM && updatedMap.YONETIM !== roleGmailMap.YONETIM;
-      if ((selectedKey === 'YONETIM' || managementChanged) && pin !== MANAGEMENT_PIN && !roleGmailMap.YONETIM) {
+      const prevMgmtEmails = parseEmailsList(roleGmailMap.YONETIM || '');
+      const nextMgmtEmails = parseEmailsList(updatedMap.YONETIM || '');
+      const addedNonOwnerMgmt = nextMgmtEmails.some(m => m !== DEFAULT_OWNER_GMAIL && !prevMgmtEmails.includes(m));
+      const selectingNonOwnerMgmt = selectedKey === 'YONETIM' && !activeEmails.includes(DEFAULT_OWNER_GMAIL);
+
+      if ((addedNonOwnerMgmt || selectingNonOwnerMgmt) && pin !== MANAGEMENT_PIN) {
         if (window.showToast) window.showToast('Yönetim Gmail kaydı için PIN kodu: 1453');
         return;
       }
 
       roleGmailMap = updatedMap;
-      activeRoleSession = buildSessionFromSlot(selectedKey, activeEmail);
+      activeRoleSession = buildSessionFromSlot(selectedKey, activeEmails);
       currentGmailProfile = {
         email: activeRoleSession.email,
+        emails: activeRoleSession.emails,
         name: activeRoleSession.label,
         mappedOperator: activeRoleSession.operatorCode || 'GENEL',
         role: activeRoleSession.kind === 'MANAGEMENT' ? 'Yönetim' : (activeRoleSession.kind === 'VIEWER' ? 'İzleyici' : 'Operatör')
@@ -1169,7 +1145,7 @@
 
       await persistRoleMapToFirebase();
       updateFirebaseConnectionIndicators();
-      await window.logGmailActivity('GIRIS', `${activeRoleSession.label} = ${activeRoleSession.email} giriş yaptı`);
+      await window.logGmailActivity('GIRIS', `${activeRoleSession.label} = ${activeRoleSession.emails.join(', ')} giriş yaptı`);
 
       if (typeof window.refreshAllViewsForPermissions === 'function') {
         window.refreshAllViewsForPermissions();
@@ -1181,25 +1157,6 @@
 
     // Eski/doğrudan çağrılan Gmail onay butonlarıyla uyumluluk için köprü fonksiyon
     window.confirmGmailLogin = async function() {
-      const emailInput = document.getElementById('gmailInput');
-      const nameInput = document.getElementById('memberNameInput');
-      const operatorSelect = document.getElementById('memberOperatorSelect');
-
-      if (emailInput && emailInput.value.trim()) {
-        const typedEmail = emailInput.value.trim().toLowerCase();
-        const opVal = operatorSelect ? operatorSelect.value : 'İSA';
-        const slotKey = opVal === 'MUHİDDİN'
-          ? 'MUHIDDIN'
-          : (OPERATORS.includes(opVal) ? opVal : 'YONETIM');
-
-        roleGmailMap[slotKey] = typedEmail;
-        activeRoleSession = buildSessionFromSlot(slotKey, typedEmail);
-        if (nameInput && nameInput.value.trim()) {
-          activeRoleSession.label = nameInput.value.trim();
-        }
-        renderRoleAssignmentsList();
-      }
-
       if (typeof window.saveRoleAssignmentsAndLogin === 'function') {
         await window.saveRoleAssignmentsAndLogin();
       }
@@ -1219,8 +1176,17 @@
         if (savedLogs) accessLogs = JSON.parse(savedLogs);
       } catch (e) {}
 
+      if (!roleGmailMap.YONETIM) {
+        roleGmailMap.YONETIM = DEFAULT_OWNER_GMAIL;
+      }
+
       if (activeRoleSession && activeRoleSession.slotKey) {
-        activeRoleSession = buildSessionFromSlot(activeRoleSession.slotKey, roleGmailMap[activeRoleSession.slotKey] || activeRoleSession.email || '');
+        activeRoleSession = buildSessionFromSlot(
+          activeRoleSession.slotKey,
+          roleGmailMap[activeRoleSession.slotKey] || activeRoleSession.emails || activeRoleSession.email || ''
+        );
+      } else {
+        activeRoleSession = buildSessionFromSlot('YONETIM', roleGmailMap.YONETIM);
       }
 
       updateFirebaseConnectionIndicators();
@@ -2548,16 +2514,32 @@
 
     function normalizeOrderNumbers(movedId = null, desiredNo = null) {
       const active = orders.filter(o => !o.closed).sort((a, b) => (a.orderNo || 999) - (b.orderNo || 999) || a.id - b.id);
+      const runningOrder = active.find(o => getWorkStatus(o) === 'RUNNING');
+
       if (movedId !== null && desiredNo !== null) {
         const idx = active.findIndex(o => o.id === movedId);
         if (idx !== -1) {
           const [moved] = active.splice(idx, 1);
-          const targetIdx = Math.max(0, Math.min(active.length, Math.floor(Number(desiredNo) || 1) - 1));
-          active.splice(targetIdx, 0, moved);
+          const pool = runningOrder ? active.filter(o => o.id !== runningOrder.id) : active;
+          const targetIdx = Math.max(0, Math.min(pool.length, Math.floor(Number(desiredNo) || 1) - 1));
+          pool.splice(targetIdx, 0, moved);
+          if (runningOrder) {
+            pool.unshift(runningOrder);
+          }
+          active.splice(0, active.length, ...pool);
         }
+      } else if (runningOrder) {
+        const restPool = active.filter(o => o.id !== runningOrder.id);
+        active.splice(0, active.length, runningOrder, ...restPool);
       }
-      active.forEach((o, i) => {
-        o.orderNo = i + 1;
+
+      let seq = 1;
+      active.forEach((o) => {
+        if (getWorkStatus(o) === 'RUNNING') {
+          o.orderNo = 0;
+        } else {
+          o.orderNo = seq++;
+        }
       });
     }
 
@@ -2566,15 +2548,23 @@
         refreshActiveMenus();
         return;
       }
+      const targetOrder = orders.find(x => x.id === id);
+      if (targetOrder && getWorkStatus(targetOrder) === 'RUNNING') {
+        targetOrder.orderNo = 0;
+        saveState(targetOrder);
+        refreshActiveMenus();
+        showToast('Çalışan iş emri sırası her zaman #0 olarak kalır');
+        return;
+      }
       const num = parseInt(newVal, 10);
-      if (!num || num < 1) {
+      if (!Number.isFinite(num) || num < 0) {
         refreshActiveMenus();
         return;
       }
-      normalizeOrderNumbers(id, num);
+      normalizeOrderNumbers(id, num === 0 ? 1 : num);
       saveState();
       refreshActiveMenus();
-      showToast(`İş emri #${num} sırasına alındı`);
+      showToast(`İş emri #${targetOrder ? targetOrder.orderNo : num} sırasına alındı`);
     }
 
     function setQuickChip(chip) {
