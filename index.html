@@ -105,20 +105,6 @@
       border-bottom-color: #D97706;
       box-shadow: 0 7px 16px -5px rgba(245, 158, 11, 0.22), 0 2px 5px -1px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
     }
-    .order-card-3d-running {
-      background: linear-gradient(180deg, #F0FDF7 0%, #E2F7EC 100%);
-      border: 1.5px solid #10B981;
-      border-bottom-width: 2.5px;
-      border-bottom-color: #059669;
-      box-shadow: 0 6px 14px -4px rgba(16, 185, 129, 0.22), 0 2px 5px -1px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95);
-    }
-    .order-card-3d-paused {
-      background: linear-gradient(180deg, #FFFDF5 0%, #FEF8E6 100%);
-      border: 1.5px solid #F59E0B;
-      border-bottom-width: 2.5px;
-      border-bottom-color: #D97706;
-      box-shadow: 0 5px 12px -4px rgba(245, 158, 11, 0.2), 0 2px 4px -1px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95);
-    }
     .seq-square-3d {
       width: 34px;
       height: 16px;
@@ -216,12 +202,6 @@
           </svg>
           <span data-i18n="new_order_btn">Yeni emir</span>
         </button>
-        <button type="button" onclick="clearOrderFilters()" class="inline-flex items-center gap-1.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 font-semibold text-xs px-3.5 py-2.5 rounded-xl shadow-2xs transition">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-          </svg>
-          <span data-i18n="reset_filters">Filtreleri Sıfırla</span>
-        </button>
       </div>
 
       <!-- Filter & Search Card -->
@@ -230,32 +210,9 @@
           <svg class="w-4 h-4 text-slate-400 ltr:left-3 rtl:right-3 absolute top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103.5 10.5a7.5 7.5 0 0013.15 6.15z"/>
           </svg>
-          <input id="searchInput" type="text" oninput="renderOrders()" data-i18n-placeholder="search_order_ph" placeholder="ARTIVE veya ARTICLE THERMOFM"
+          <input id="searchInput" type="search" enterkeyhint="search" oninput="renderOrders()" onkeydown="if(event.key==='Enter'){this.blur();renderOrders();}" data-i18n-placeholder="search_order_ph" placeholder="ARTIVE veya ARTICLE THERMOFM"
             class="w-full ltr:pl-9 ltr:pr-3 rtl:pr-9 rtl:pl-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#146C53] focus:ring-2 focus:ring-[#146C53]/15 transition" />
         </div>
-
-        <div class="grid grid-cols-2 gap-2">
-          <select id="filterColorStatus" onchange="renderOrders()" aria-label="Renge ve Duruma Göre" class="w-full px-2.5 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-[#146C53]">
-            <option value="ALL" data-i18n="filter_all_colors">Durum / Renk: Tümü</option>
-            <option value="RUNNING" data-i18n="filter_green_running">🟢 Çalışıyor (Yeşil)</option>
-            <option value="PAUSED" data-i18n="filter_yellow_paused">🟡 Durdu (Sarı)</option>
-            <option value="IDLE" data-i18n="filter_white_idle">⚪ Bekleyen (Beyaz)</option>
-            <option value="REMAINING" data-i18n="has_remaining">Kalan var</option>
-            <option value="EXCEEDED" data-i18n="target_exceeded">Hedef aşıldı</option>
-          </select>
-
-          <select id="sortBy" onchange="renderOrders()" aria-label="Sırala" class="w-full px-2.5 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-[#146C53]">
-            <option value="ORDER_NO" data-i18n="sort_order_no">Sırala: Sıra No (#)</option>
-            <option value="COLOR_STATUS" data-i18n="sort_color_status">Sırala: Renge / Duruma Göre</option>
-            <option value="REST_DESC" data-i18n="sort_rest_desc">Sırala: Kalan (Çoktan aza)</option>
-            <option value="TON_DESC" data-i18n="sort_ton_desc">Sırala: Tonaj (Çoktan aza)</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="flex items-center justify-between px-1">
-        <span id="orderCountLabel" class="text-xs font-semibold text-slate-500">17 emir listeleniyor</span>
-        <span data-i18n="tap_card_hint" class="text-[11px] text-slate-400">Giriş yapmak için karta dokunun</span>
       </div>
 
       <div id="ordersList" class="space-y-2"></div>
@@ -434,11 +391,13 @@
       </div>
 
       <div class="pro-card p-4 rounded-2xl space-y-3">
-        <div class="flex items-center justify-between gap-2 text-[11px] text-slate-600 bg-slate-50/90 border border-slate-200/80 rounded-xl px-3 py-2">
-          <span class="font-semibold">Not Sahibi (Gmail):</span>
-          <span id="noteAssignedOwnerBadge" class="font-extrabold text-[#146C53] truncate">Yönetim</span>
-        </div>
         <div class="flex gap-2">
+          <select id="noteAuthor" class="px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800">
+            <option value="İSA">İSA</option>
+            <option value="MUHİDDİN">MUHİDDİN</option>
+            <option value="KADDUR">KADDUR</option>
+            <option value="MUHAMMED">MUHAMMED</option>
+          </select>
           <input id="noteInput" type="text" data-i18n-placeholder="note_ph" placeholder="Vardiya notu yazın..."
             onkeydown="if(event.key==='Enter'){addNote();}"
             class="flex-1 px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900" />
@@ -711,6 +670,9 @@
         target_exceeded: 'Hedef aşıldı',
         sort_order_no: 'Sırala: Sıra No (#)',
         sort_color_status: 'Sırala: Renge / Duruma Göre',
+        sort_label: 'Sırala',
+        sort_by_status: 'duruma göre',
+        sort_by_color: 'renge göre',
         sort_rest_desc: 'Sırala: Kalan (Çoktan aza)',
         sort_ton_desc: 'Sırala: Tonaj (Çoktan aza)',
         tap_card_hint: 'Giriş yapmak için karta dokunun',
@@ -822,6 +784,9 @@
         target_exceeded: 'تم تجاوز الهدف',
         sort_order_no: 'ترتيب: التسلسل (#)',
         sort_color_status: 'ترتيب: حسب اللون / الحالة',
+        sort_label: 'ترتيب',
+        sort_by_status: 'حسب الحالة',
+        sort_by_color: 'حسب اللون',
         sort_rest_desc: 'ترتيب: المتبقي (الأكثر)',
         sort_ton_desc: 'ترتيب: الوزن (الأكثر)',
         tap_card_hint: 'اضغط على البطاقة لإدخال الإنتاج',
@@ -1010,8 +975,8 @@
     ];
 
     const INITIAL_NOTES = [
-      { id: 1, author: 'İSA', time: '18.11.2026 08:15', text: '36 nolu hatta PACK FAMILY 45 BIG NOIR OPAQUE bobin değişimi yapıldı, üretim devam ediyor.' },
-      { id: 2, author: 'MUHİDDİN', time: '21.11.2026 19:40', text: 'G1 hattı ALVEOLE 15 COMPARTIMENTS kalıp ısısı kontrol edildi.' }
+      { id: 1, author: 'İSA', time: 'Bugün 08:15', text: '36 nolu hatta PACK FAMILY 45 BIG NOIR OPAQUE bobin değişimi yapıldı, üretim devam ediyor.' },
+      { id: 2, author: 'MUHİDDİN', time: 'Dün 19:40', text: 'G1 hattı ALVEOLE 15 COMPARTIMENTS kalıp ısısı kontrol edildi.' }
     ];
 
     let currentLang = 'tr';
@@ -1026,7 +991,7 @@
     let openCompletedMenuId = null;
     let openCompletedFolders = {};
     let toastTimer = null;
-
+    let currentOrderSortMode = 'DEFAULT';
     const t = (key, ...args) => {
       const val = (I18N[currentLang] && I18N[currentLang][key]) || I18N.tr[key] || key;
       return typeof val === 'function' ? val(...args) : val;
@@ -1081,17 +1046,16 @@
     }
 
     function formatCompletedDateTimeLabel(order) {
-      const raw = String((order && (order.completedDate || order.lastActionDateTime || order.createdDate)) || '').trim();
-      if (!raw) return formatDateTimeNow();
-      if (/^\d{2}\.\d{2}\.\d{4}\s+\d{2}:\d{2}/.test(raw)) {
-        return raw;
+      const rawCompleted = String((order && order.completedDate) || '').trim();
+      const hasTimeInCompleted = /\d{1,2}:\d{2}/.test(rawCompleted);
+      if (hasTimeInCompleted) {
+        return rawCompleted;
       }
-      if (/^\d{2}\.\d{2}\.\d{4}$/.test(raw)) {
-        const lastAction = String((order && order.lastActionDateTime) || '').trim();
-        const timeMatch = lastAction.match(/\b(\d{2}:\d{2})\b/);
-        return `${raw} ${timeMatch ? timeMatch[1] : '00:00'}`;
-      }
-      return raw;
+      const datePart = rawCompleted || String((order && order.createdDate) || '').trim() || formatTodayDate();
+      const rawLastAction = String((order && order.lastActionDateTime) || '').trim();
+      const timeMatch = rawLastAction.match(/(\d{1,2}:\d{2})/);
+      const timePart = timeMatch ? timeMatch[1] : '17:30';
+      return `${datePart} ${timePart}`;
     }
 
     function getActiveRoleProfile() {
@@ -1099,41 +1063,16 @@
     }
 
     function canManageGmailAssignments() {
-      return String(currentAccountEmail || '').trim().toLowerCase() === GMAIL_ADMIN_EMAIL.toLowerCase();
-    }
-
-    function getGmailMatchedProfile(emailStr = currentAccountEmail) {
-      const normalized = String(emailStr || '').trim().toLowerCase();
-      if (!normalized) return null;
-      return ROLE_PROFILES.find(r => Array.isArray(r.emails) && r.emails.some(em => String(em || '').trim().toLowerCase() === normalized)) || null;
+      const normalizedCurrent = String(currentAccountEmail || '').trim().toLowerCase();
+      return normalizedCurrent === GMAIL_ADMIN_EMAIL.toLowerCase();
     }
 
     function getGmailMatchedOperator(emailStr = currentAccountEmail) {
-      const matched = getGmailMatchedProfile(emailStr);
-      if (matched && matched.kind === 'OPERATOR' && matched.operatorCode) {
-        return matched.operatorCode;
-      }
-      return null;
-    }
-
-    function getAssignedNoteAuthorName() {
-      const matchedProfile = getGmailMatchedProfile();
-      if (matchedProfile) {
-        if (matchedProfile.kind === 'OPERATOR' && matchedProfile.operatorCode) {
-          return matchedProfile.operatorCode;
-        }
-        return matchedProfile.label;
-      }
-      const prof = getActiveRoleProfile();
-      if (prof.kind === 'OPERATOR' && prof.operatorCode) {
-        return prof.operatorCode;
-      }
-      return prof.label;
-    }
-
-    function canDeleteNotesByRole() {
-      const prof = getActiveRoleProfile();
-      return prof.kind === 'MANAGEMENT' || prof.kind === 'TECHNICIAN';
+      const normalized = String(emailStr || '').trim().toLowerCase();
+      if (!normalized) return null;
+      const opProfiles = ROLE_PROFILES.filter(r => r.kind === 'OPERATOR' && r.operatorCode);
+      const matched = opProfiles.find(r => Array.isArray(r.emails) && r.emails.some(em => String(em || '').trim().toLowerCase() === normalized));
+      return matched ? matched.operatorCode : null;
     }
 
     function canStartShiftForOperator(opName) {
@@ -1169,8 +1108,8 @@
         mappedOperator: effectiveOp,
         canStartStopOrder: isManagement || isTechnician || Boolean(effectiveOp),
         canEditKg: isManagement || isTechnician || Boolean(effectiveOp),
-        canAddNote: true,
-        canDeleteNote: isManagement || isTechnician,
+        canAddNote: isManagement || isTechnician || Boolean(effectiveOp),
+        canDeleteNote: isManagement,
         canCreateOrder: isManagement,
         canDeleteOrder: isManagement,
         canReorderOrders: isManagement
@@ -1611,14 +1550,20 @@
       if (searchEl) searchEl.value = '';
       if (colorStatusEl) colorStatusEl.value = 'ALL';
       if (sortEl) sortEl.value = 'ORDER_NO';
+      currentOrderSortMode = 'DEFAULT';
       renderOrders();
       showToast(currentLang === 'ar' ? 'تمت إعادة ضبط الفلاتر' : 'Filtreler sıfırlandı');
+    }
+
+    function setOrderSortMode(mode) {
+      currentOrderSortMode = mode || 'DEFAULT';
+      renderOrders();
     }
 
     function renderOrders() {
       const q = (document.getElementById('searchInput')?.value || '').trim().toLowerCase();
       const colorStatus = document.getElementById('filterColorStatus')?.value || 'ALL';
-      const sort = document.getElementById('sortBy')?.value || 'ORDER_NO';
+      const sort = document.getElementById('sortBy')?.value || currentOrderSortMode || 'ORDER_NO';
 
       let filtered = orders.filter(o => {
         if (o.closed) return false;
@@ -1641,14 +1586,24 @@
         return true;
       });
 
-      if (sort === 'COLOR_STATUS') {
+      if (sort === 'BY_STATUS' || sort === 'COLOR_STATUS') {
         const rank = (item) => {
           const st = getWorkStatus(item);
           if (st === 'RUNNING') return 0;
           if (st === 'PAUSED') return 1;
-          return 2;
+          if (st === 'IDLE') return 2;
+          return 3;
         };
         filtered.sort((a, b) => rank(a) - rank(b) || (a.orderNo || 999) - (b.orderNo || 999));
+      } else if (sort === 'BY_COLOR') {
+        const colorRank = (item) => {
+          const st = getWorkStatus(item);
+          if (st === 'RUNNING') return 0;
+          if (st === 'PAUSED') return 1;
+          if (st === 'IDLE') return 2;
+          return 3;
+        };
+        filtered.sort((a, b) => colorRank(a) - colorRank(b) || (a.orderNo || 999) - (b.orderNo || 999));
       } else if (sort === 'REST_DESC') {
         filtered.sort((a, b) => getRest(b) - getRest(a));
       } else if (sort === 'TON_DESC') {
@@ -1661,21 +1616,34 @@
       const otherList = filtered.filter(o => getWorkStatus(o) !== 'RUNNING');
       filtered = [...runningList, ...otherList];
 
-      const countLabelEl = document.getElementById('orderCountLabel');
-      if (countLabelEl) countLabelEl.textContent = t('orders_listed', filtered.length);
-
       const container = document.getElementById('ordersList');
       if (!container) return;
+
+      const metaBarHtml = `
+        <div class="flex items-center justify-between gap-2 px-1 py-0.5">
+          <span id="orderCountLabel" class="text-xs font-semibold text-slate-500">${t('orders_listed', filtered.length)}</span>
+          <div class="relative inline-flex items-center gap-1 shrink-0 text-slate-700 hover:text-[#146C53] transition">
+            <svg class="w-3.5 h-3.5 text-slate-600 shrink-0 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+            </svg>
+            <select aria-label="${t('sort_label')}" onchange="setOrderSortMode(this.value)"
+              class="appearance-none bg-transparent border-0 p-0 pr-0.5 text-[11px] font-bold text-slate-700 cursor-pointer focus:outline-none focus:ring-0" style="background-image: none;">
+              <option value="DEFAULT" ${currentOrderSortMode === 'DEFAULT' ? 'selected' : ''}>${t('sort_label')}</option>
+              <option value="BY_STATUS" ${currentOrderSortMode === 'BY_STATUS' ? 'selected' : ''}>${t('sort_by_status')}</option>
+              <option value="BY_COLOR" ${currentOrderSortMode === 'BY_COLOR' ? 'selected' : ''}>${t('sort_by_color')}</option>
+            </select>
+          </div>
+        </div>`;
 
       if (filtered.length === 0) {
         container.innerHTML = `
           <div class="pro-card rounded-3xl p-8 text-center">
             <div class="text-slate-400 text-sm font-medium">${t('no_orders_found')}</div>
-          </div>`;
+          </div>` + metaBarHtml;
         return;
       }
 
-      container.innerHTML = filtered.map(o => {
+      const renderOrderCard = (o) => {
         const prod = getProd(o);
         const rest = getRest(o);
         const isExceeded = rest < 0;
@@ -1730,7 +1698,12 @@
 
           ${renderRunningOperatorBar(o)}
         </div>`;
-      }).join('');
+      };
+
+      const runningCardsHtml = filtered.filter(o => getWorkStatus(o) === 'RUNNING').map(renderOrderCard).join('');
+      const remainingCardsHtml = filtered.filter(o => getWorkStatus(o) !== 'RUNNING').map(renderOrderCard).join('');
+
+      container.innerHTML = runningCardsHtml + metaBarHtml + remainingCardsHtml;
     }
 
     function parseKgInput(rawVal) {
@@ -3194,15 +3167,7 @@
     function renderNotes() {
       const container = document.getElementById('notesList');
       const badgeEl = document.getElementById('notesCountBadge');
-      const ownerBadgeEl = document.getElementById('noteAssignedOwnerBadge');
-      const assignedAuthor = getAssignedNoteAuthorName();
-      const canDelete = canDeleteNotesByRole();
-
       if (badgeEl) badgeEl.textContent = t('notes_unit', notes.length);
-      if (ownerBadgeEl) {
-        const emailSuffix = currentAccountEmail ? ` (${currentAccountEmail})` : '';
-        ownerBadgeEl.textContent = `${assignedAuthor}${emailSuffix}`;
-      }
       if (!container) return;
 
       if (notes.length === 0) {
@@ -3216,15 +3181,13 @@
       container.innerHTML = notes.map(n => `
         <div class="pro-card p-4 rounded-2xl space-y-1.5">
           <div class="flex items-center justify-between gap-2">
-            <div class="flex items-center flex-wrap gap-2">
+            <div class="flex items-center gap-2">
               <span class="text-xs font-extrabold text-[#146C53]">${escapeHtml(n.author)}</span>
-              <span class="text-[11px] font-semibold text-slate-500 bg-slate-100 border border-slate-200/80 px-2 py-0.5 rounded-md tabular-nums">${escapeHtml(n.time)}</span>
+              <span class="text-[11px] text-slate-400">${escapeHtml(n.time)}</span>
             </div>
-            ${canDelete ? `
-              <button type="button" onclick="deleteNote(${n.id})" class="text-[11px] font-bold text-rose-600 hover:text-rose-700 px-2 py-0.5 rounded-lg hover:bg-rose-50 transition">
-                ${t('delete_note_btn')}
-              </button>
-            ` : ''}
+            <button type="button" onclick="deleteNote(${n.id})" class="text-[11px] font-bold text-rose-600 hover:text-rose-700 px-2 py-0.5 rounded-lg hover:bg-rose-50 transition">
+              ${t('delete_note_btn')}
+            </button>
           </div>
           <p class="text-xs text-slate-700 leading-relaxed">${escapeHtml(n.text)}</p>
         </div>
@@ -3234,13 +3197,13 @@
     function addNote() {
       if (!guardAction('ADD_NOTE')) return;
       const input = document.getElementById('noteInput');
+      const authorEl = document.getElementById('noteAuthor');
       const text = (input?.value || '').trim();
       if (!text) return;
-      const assignedAuthor = getAssignedNoteAuthorName();
       notes.unshift({
         id: Date.now(),
-        author: assignedAuthor,
-        time: formatDateTimeNow(),
+        author: authorEl?.value || 'İSA',
+        time: currentLang === 'ar' ? 'الآن' : 'Az önce',
         text
       });
       if (input) input.value = '';
@@ -3249,10 +3212,7 @@
     }
 
     function deleteNote(noteId) {
-      if (!canDeleteNotesByRole()) {
-        showToast('Not silme yetkisi yalnızca Teknisyen ve Yönetim rollerine aittir');
-        return;
-      }
+      if (!guardAction('DELETE_NOTE')) return;
       notes = notes.filter(n => n.id !== noteId);
       renderNotes();
       showToast(currentLang === 'ar' ? 'تم حذف الملاحظة' : 'Vardiya notu silindi');
