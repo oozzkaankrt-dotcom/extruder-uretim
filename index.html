@@ -129,22 +129,6 @@
       border: 1px solid #CFD8D4;
       box-shadow: 0 4px 10px -3px rgba(15, 23, 42, 0.1), 0 1px 3px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
     }
-    .metric-box-order {
-      background-color: #F4F6F8;
-      border: 1px solid #E2E8F0;
-    }
-    .metric-box-prod {
-      background-color: #EAF7F0;
-      border: 1px solid #C8EBD9;
-    }
-    .metric-box-rem {
-      background-color: #FFF7E6;
-      border: 1px solid #F7E1B5;
-    }
-    .metric-box-rem-alert {
-      background-color: #FEF2F2;
-      border: 1px solid #FECACA;
-    }
     .pro-pill-active {
       background: #146C53;
       color: #ffffff;
@@ -347,31 +331,80 @@
     <section id="tab-raporlar" class="hidden space-y-4">
       <div>
         <h2 data-i18n="reports_title" class="text-2xl font-extrabold text-slate-900 app-section-title">Üretim Raporları</h2>
-        <p data-i18n="reports_subtitle" class="text-sm text-slate-500 mt-0.5">Aylık üretim performansı ve operatör sıralaması.</p>
+        <p data-i18n="reports_subtitle" class="text-sm text-slate-500 mt-0.5">Tamamlanan iş emirlerinden aylık üretim, operatör dağılımı ve grafikler.</p>
       </div>
 
-      <div class="grid grid-cols-2 gap-3">
-        <div class="pro-card p-4 rounded-2xl">
-          <div data-i18n="yearly_total" class="text-xs font-medium text-slate-500">Yıllık Toplam</div>
-          <div id="repYearly" class="text-lg font-extrabold text-slate-900 mt-1">0 KG</div>
+      <!-- KPI Summary Cards (Toplam Yıllık Üretim / Aylık Ortalama / En Yüksek Ay) -->
+      <div class="grid grid-cols-3 gap-1.5">
+        <div class="rounded-2xl overflow-hidden border border-slate-200/90 bg-white shadow-xs">
+          <div data-i18n="yearly_total" class="bg-[#D5E6DC] text-slate-800 text-[9px] sm:text-[11px] font-extrabold text-center py-2 px-1 border-b border-slate-200/90 leading-tight">Toplam Yıllık Üretim</div>
+          <div id="repYearly" class="text-sm sm:text-base font-extrabold text-rose-600 text-center py-2.5 px-1 tabular-nums">0</div>
         </div>
-        <div class="pro-card p-4 rounded-2xl">
-          <div data-i18n="monthly_avg" class="text-xs font-medium text-slate-500">Aylık Ort.</div>
-          <div id="repAvg" class="text-lg font-extrabold text-[#146C53] mt-1">0 KG</div>
+        <div class="rounded-2xl overflow-hidden border border-slate-200/90 bg-white shadow-xs">
+          <div data-i18n="monthly_avg" class="bg-[#BDD1EC] text-slate-800 text-[9px] sm:text-[11px] font-extrabold text-center py-2 px-1 border-b border-slate-200/90 leading-tight">Aylık Ortalama</div>
+          <div id="repAvg" class="text-sm sm:text-base font-extrabold text-[#2F5597] text-center py-2.5 px-1 tabular-nums">0</div>
+        </div>
+        <div class="rounded-2xl overflow-hidden border border-slate-200/90 bg-white shadow-xs">
+          <div id="repPeakMonthHeader" class="bg-[#C5BBE2] text-slate-800 text-[9px] sm:text-[11px] font-extrabold text-center py-2 px-1 border-b border-slate-200/90 leading-tight">En Yüksek Ay</div>
+          <div id="repPeakMonthVal" class="text-sm sm:text-base font-extrabold text-[#5B428A] text-center py-2.5 px-1 tabular-nums">0</div>
         </div>
       </div>
 
-      <div class="pro-card p-4 rounded-3xl space-y-3">
-        <h3 data-i18n="monthly_comp" class="text-sm font-bold text-slate-800">Aylık Üretim Karşılaştırması (KG)</h3>
-        <div id="monthlyChartContainer" class="space-y-3"></div>
+      <!-- 12-Month Completed Orders Table with Operators -->
+      <div class="rounded-2xl p-2 bg-gradient-to-b from-white to-slate-50/90 border border-slate-200/90 shadow-md overflow-hidden">
+        <div class="flex items-center justify-between px-2 pb-2">
+          <div class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-[#146C53]"></span>
+            <span class="text-[11px] font-extrabold text-slate-800 tracking-tight">Aylık Üretim & Operatör Matrisi (KG)</span>
+          </div>
+          <span class="text-[10px] font-bold text-slate-500 bg-slate-100 border border-slate-200/80 px-2 py-0.5 rounded-full">Biten Emirler</span>
+        </div>
+        <div class="overflow-x-auto rounded-xl border border-slate-300/80 bg-white shadow-2xs">
+          <table class="w-full table-fixed border-collapse text-center">
+            <thead>
+              <tr>
+                <th data-i18n="col_month" class="w-[12%] bg-gradient-to-b from-[#1E3A5F] to-[#162C47] text-white text-[9px] sm:text-[11px] font-extrabold py-2.5 px-0.5 border-b border-r border-slate-300/40 tracking-wide">Ay</th>
+                <th data-i18n="col_prod_kg" class="w-[20%] bg-gradient-to-b from-[#2B5B84] to-[#214768] text-white text-[9px] sm:text-[11px] font-extrabold py-2.5 px-0.5 border-b border-r border-slate-300/40 leading-tight">Üretim KG</th>
+                <th class="w-[17%] bg-gradient-to-b from-[#C85A42] to-[#A84631] text-white text-[9px] sm:text-[11px] font-extrabold py-2.5 px-0.5 border-b border-r border-white/20 tracking-tight">İSA</th>
+                <th class="w-[17%] bg-gradient-to-b from-[#4A89C8] to-[#366FA8] text-white text-[9px] sm:text-[11px] font-extrabold py-2.5 px-0.5 border-b border-r border-white/20 tracking-tight">MUHİDDİN</th>
+                <th class="w-[17%] bg-gradient-to-b from-[#5E9A38] to-[#4A7C2A] text-white text-[9px] sm:text-[11px] font-extrabold py-2.5 px-0.5 border-b border-r border-white/20 tracking-tight">KADDUR</th>
+                <th class="w-[17%] bg-gradient-to-b from-[#7B58AD] to-[#62438E] text-white text-[9px] sm:text-[11px] font-extrabold py-2.5 px-0.5 border-b border-white/20 tracking-tight">MUHAMMED</th>
+              </tr>
+            </thead>
+            <tbody id="completedMonthlyTableBody" class="text-[10px] sm:text-xs font-bold text-slate-800 tabular-nums divide-y divide-slate-200/90"></tbody>
+            <tfoot id="completedMonthlyTableFoot" class="border-t-2 border-slate-400/80 bg-slate-100/90 text-[10px] sm:text-xs font-extrabold text-slate-900 tabular-nums"></tfoot>
+          </table>
+        </div>
       </div>
 
-      <div class="pro-card p-4 rounded-3xl space-y-3">
-        <div class="flex items-center justify-between">
-          <h3 data-i18n="operator_leaderboard" class="text-sm font-bold text-slate-800">Operatör Performans Liderliği</h3>
-          <span id="repTotalOpKg" class="text-xs font-extrabold text-[#146C53]">0 KG</span>
+      <!-- Pro Panel 1: Monthly Total Production (Aylık Üretim Miktarı KG) -->
+      <div class="rounded-2xl p-3.5 bg-gradient-to-b from-white to-slate-50/90 border border-slate-200/90 shadow-md space-y-3">
+        <div class="flex items-center justify-between gap-2 pb-2 border-b border-slate-200/70">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-xs bg-[#4F81BD] shadow-2xs inline-block"></span>
+            <span data-i18n="col_prod_kg" class="text-xs font-extrabold text-slate-800 tracking-tight">Üretim Miktarı KG</span>
+          </div>
+          <span class="text-[10px] font-bold text-[#2F5597] bg-sky-50 border border-sky-200/80 px-2 py-0.5 rounded-full">Aylık Dağılım</span>
         </div>
-        <div id="operatorLeaderboard" class="space-y-2"></div>
+        <div id="monthlyProdBarChart" class="w-full"></div>
+      </div>
+
+      <!-- Pro Panel 2: Monthly Operator Production (Operatör Aylık Üretim) -->
+      <div class="rounded-2xl p-3.5 bg-gradient-to-b from-white to-slate-50/90 border border-slate-200/90 shadow-md space-y-3">
+        <div class="flex items-center justify-between gap-2 pb-1">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-xs bg-[#146C53] inline-block"></span>
+            <span class="text-xs font-extrabold text-slate-800 tracking-tight">Operatör Bazlı Aylık Üretim (KG)</span>
+          </div>
+          <span class="text-[10px] font-bold text-[#146C53] bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-full">Biten Emirler</span>
+        </div>
+        <div class="grid grid-cols-4 gap-1.5 text-[9px] sm:text-[10px] font-extrabold text-center">
+          <span class="inline-flex items-center justify-center gap-1 px-1.5 py-1.5 rounded-xl bg-gradient-to-b from-rose-50 to-rose-100/70 border border-rose-200/90 text-rose-950 shadow-2xs whitespace-nowrap"><span class="w-2 h-2 rounded-xs bg-[#D96B52] shrink-0"></span><span>İSA</span></span>
+          <span class="inline-flex items-center justify-center gap-1 px-1.5 py-1.5 rounded-xl bg-gradient-to-b from-sky-50 to-sky-100/70 border border-sky-200/90 text-sky-950 shadow-2xs whitespace-nowrap"><span class="w-2 h-2 rounded-xs bg-[#5B9BD5] shrink-0"></span><span>MUHİDDİN</span></span>
+          <span class="inline-flex items-center justify-center gap-1 px-1.5 py-1.5 rounded-xl bg-gradient-to-b from-lime-50 to-lime-100/70 border border-lime-200/90 text-lime-950 shadow-2xs whitespace-nowrap"><span class="w-2 h-2 rounded-xs bg-[#70AD47] shrink-0"></span><span>KADDUR</span></span>
+          <span class="inline-flex items-center justify-center gap-1 px-1.5 py-1.5 rounded-xl bg-gradient-to-b from-purple-50 to-purple-100/70 border border-purple-200/90 text-purple-950 shadow-2xs whitespace-nowrap"><span class="w-2 h-2 rounded-xs bg-[#8E6BBF] shrink-0"></span><span>MUHAMMED</span></span>
+        </div>
+        <div id="monthlyOperatorBarChart" class="w-full"></div>
       </div>
     </section>
 
@@ -406,9 +439,9 @@
 
   <!-- BOTTOM NAVIGATION BAR -->
   <nav id="bottomNavBar" class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur border-t border-slate-200/90 px-1 py-1.5 shadow-lg">
-    <div class="max-w-3xl mx-auto grid grid-cols-6 gap-0.5">
-      <button type="button" data-nav="emirler" onclick="switchTab('emirler')" class="nav-btn flex flex-col items-center justify-center py-1 text-[#146C53]">
-        <span class="nav-icon-wrap p-1.5 rounded-xl bg-[#ECFDF5]">
+    <div class="max-w-3xl mx-auto grid grid-cols-4 gap-1">
+      <button type="button" data-nav="emirler" onclick="switchTab('emirler')" class="nav-btn flex flex-col items-center justify-center py-1 text-red-600">
+        <span class="nav-icon-wrap p-1.5 rounded-xl bg-red-500/15">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
         </span>
         <span data-i18n="nav_orders" class="text-[10px] font-bold mt-0.5">Emirler</span>
@@ -418,18 +451,6 @@
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
         </span>
         <span data-i18n="nav_done" class="text-[10px] font-bold mt-0.5">Bitenler</span>
-      </button>
-      <button type="button" data-nav="ozet" onclick="switchTab('ozet')" class="nav-btn flex flex-col items-center justify-center py-1 text-slate-500">
-        <span class="nav-icon-wrap p-1.5 rounded-xl">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
-        </span>
-        <span data-i18n="nav_summary" class="text-[10px] font-bold mt-0.5">Özet</span>
-      </button>
-      <button type="button" data-nav="operasyon" onclick="switchTab('operasyon')" class="nav-btn flex flex-col items-center justify-center py-1 text-slate-500">
-        <span class="nav-icon-wrap p-1.5 rounded-xl">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-        </span>
-        <span data-i18n="nav_operation" class="text-[10px] font-bold mt-0.5">Operasyon</span>
       </button>
       <button type="button" data-nav="raporlar" onclick="switchTab('raporlar')" class="nav-btn flex flex-col items-center justify-center py-1 text-slate-500">
         <span class="nav-icon-wrap p-1.5 rounded-xl">
@@ -542,6 +563,10 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <div id="modalShiftStatusText" class="text-[11px] font-semibold text-slate-600 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-2">
+        Vardiya başlatmak için bir operatör kutucuğu seçin
       </div>
 
       <div class="grid grid-cols-2 gap-2.5">
@@ -717,9 +742,12 @@
         op_running_badge: '● #1 Çalışıyor',
         no_active_orders: 'Aktif iş emri bulunamadı.',
         reports_title: 'Üretim Raporları',
-        reports_subtitle: 'Aylık üretim performansı ve operatör sıralaması.',
-        yearly_total: 'Yıllık Toplam',
-        monthly_avg: 'Aylık Ort.',
+        reports_subtitle: 'Tamamlanan iş emirlerinden aylık üretim, operatör dağılımı ve grafikler.',
+        yearly_total: 'Toplam Yıllık Üretim',
+        monthly_avg: 'Aylık Ortalama',
+        peak_month_label: (m) => m ? `En Yüksek Ay (${m})` : 'En Yüksek Ay',
+        col_month: 'Ay',
+        col_prod_kg: 'Üretim Miktarı KG',
         monthly_comp: 'Aylık Üretim Karşılaştırması (KG)',
         operator_leaderboard: 'Operatör Performans Liderliği',
         extruder_operator: 'Extruder Operatörü',
@@ -825,9 +853,12 @@
         op_running_badge: '● #1 قيد التشغيل',
         no_active_orders: 'لا توجد أوامر عمل نشطة.',
         reports_title: 'تقارير الإنتاج',
-        reports_subtitle: 'أداء الإنتاج الشهري وترتيب المشغلين.',
-        yearly_total: 'الإجمالي السنوي',
+        reports_subtitle: 'الإنتاج الشهري وتوزيع المشغلين والرسوم البيانية من الأوامر المكتملة.',
+        yearly_total: 'إجمالي الإنتاج السنوي',
         monthly_avg: 'المتوسط الشهري',
+        peak_month_label: (m) => m ? `أعلى شهر (${m})` : 'أعلى شهر',
+        col_month: 'الشهر',
+        col_prod_kg: 'كمية الإنتاج كغ',
         monthly_comp: 'مقارنة الإنتاج الشهري (كغ)',
         operator_leaderboard: 'ترتيب أداء المشغلين',
         extruder_operator: 'مشغل إكسترودر',
@@ -877,13 +908,66 @@
 
     const OPERATORS = ['İSA', 'MUHİDDİN', 'KADDUR', 'MUHAMMED'];
 
+    const GMAIL_ADMIN_EMAIL = 'oozzkaankrt@gmail.com';
+    let currentAccountEmail = 'oozzkaankrt@gmail.com';
+
     const ROLE_PROFILES = [
-      { key: 'YONETIM', label: 'Yönetim', kind: 'MANAGEMENT', operatorCode: null, desc: 'Sınırsız yetki · Emir ekle/sil/sırala · KG & Vardiya' },
-      { key: 'ISA', label: 'İsa', kind: 'OPERATOR', operatorCode: 'İSA', desc: 'Başlat/Bitir · İsa KG girişi · Vardiya notu' },
-      { key: 'MUHIDDIN', label: 'Muhiddin', kind: 'OPERATOR', operatorCode: 'MUHİDDİN', desc: 'Başlat/Bitir · Muhiddin KG girişi · Vardiya notu' },
-      { key: 'KADDUR', label: 'Kaddur', kind: 'OPERATOR', operatorCode: 'KADDUR', desc: 'Başlat/Bitir · Kaddur KG girişi · Vardiya notu' },
-      { key: 'MUHAMMED', label: 'Muhammed', kind: 'OPERATOR', operatorCode: 'MUHAMMED', desc: 'Başlat/Bitir · Muhammed KG girişi · Vardiya notu' },
-      { key: 'IZLEYICI', label: 'İzleyici', kind: 'VIEWER', operatorCode: null, desc: 'Sadece görüntüleme yetkisi' }
+      {
+        key: 'YONETIM',
+        label: 'Yönetim',
+        kind: 'MANAGEMENT',
+        operatorCode: null,
+        desc: 'Sınırsız yetki · Emir ekle/sil/sırala · KG & Vardiya',
+        emails: ['oozzkaankrt@gmail.com']
+      },
+      {
+        key: 'TEKNISYEN',
+        label: 'Teknisyen',
+        kind: 'TECHNICIAN',
+        operatorCode: null,
+        desc: 'Emir başlat/bitir · Tüm KG girişleri · Vardiya notu',
+        emails: []
+      },
+      {
+        key: 'ISA',
+        label: 'İsa',
+        kind: 'OPERATOR',
+        operatorCode: 'İSA',
+        desc: 'Başlat/Bitir · İsa KG girişi · Vardiya notu',
+        emails: []
+      },
+      {
+        key: 'MUHIDDIN',
+        label: 'Muhiddin',
+        kind: 'OPERATOR',
+        operatorCode: 'MUHİDDİN',
+        desc: 'Başlat/Bitir · Muhiddin KG girişi · Vardiya notu',
+        emails: []
+      },
+      {
+        key: 'KADDUR',
+        label: 'Kaddur',
+        kind: 'OPERATOR',
+        operatorCode: 'KADDUR',
+        desc: 'Başlat/Bitir · Kaddur KG girişi · Vardiya notu',
+        emails: []
+      },
+      {
+        key: 'MUHAMMED',
+        label: 'Muhammed',
+        kind: 'OPERATOR',
+        operatorCode: 'MUHAMMED',
+        desc: 'Başlat/Bitir · Muhammed KG girişi · Vardiya notu',
+        emails: []
+      },
+      {
+        key: 'IZLEYICI',
+        label: 'İzleyici',
+        kind: 'VIEWER',
+        operatorCode: null,
+        desc: 'Sadece görüntüleme yetkisi',
+        emails: []
+      }
     ];
 
     const INITIAL_ORDERS = [
@@ -987,6 +1071,11 @@
       return ROLE_PROFILES.find(r => r.key === currentRoleKey) || ROLE_PROFILES[0];
     }
 
+    function canManageGmailAssignments() {
+      const normalizedCurrent = String(currentAccountEmail || '').trim().toLowerCase();
+      return normalizedCurrent === GMAIL_ADMIN_EMAIL.toLowerCase();
+    }
+
     function getUserPermissions() {
       const prof = getActiveRoleProfile();
       const isManagement = prof.kind === 'MANAGEMENT';
@@ -1040,23 +1129,112 @@
 
     function openAccountModal() {
       draftRoleKey = currentRoleKey;
+      const canAssignGmail = canManageGmailAssignments();
       const listEl = document.getElementById('roleAssignmentsList');
       if (listEl) {
-        listEl.innerHTML = ROLE_PROFILES.map(r => {
-          const active = r.key === draftRoleKey;
-          return `
-            <button type="button" onclick="selectDraftRole('${r.key}')" class="w-full flex items-center justify-between gap-3 p-3 rounded-2xl border text-left transition ${active ? 'bg-emerald-50 border-[#146C53] ring-2 ring-[#146C53]/15' : 'bg-slate-50 border-slate-200 hover:bg-slate-100/70'}">
+        const gmailHeaderBanner = `
+          <div class="p-3 rounded-2xl border ${canAssignGmail ? 'bg-emerald-50/70 border-emerald-200' : 'bg-amber-50/80 border-amber-200'} space-y-2">
+            <div class="flex items-center justify-between gap-2">
               <div class="min-w-0">
-                <div class="text-xs font-extrabold text-slate-900">${r.label}</div>
-                <div class="text-[11px] text-slate-500 mt-0.5">${r.desc}</div>
+                <div class="text-[11px] font-extrabold text-slate-900">Gmail Atama Yetkisi</div>
+                <div class="text-[10px] text-slate-600">${canAssignGmail ? `Yetkili hesap: ${escapeHtml(GMAIL_ADMIN_EMAIL)} (Tüm atamalar açık)` : `Gmail atamaları yalnızca ${escapeHtml(GMAIL_ADMIN_EMAIL)} hesabına açıktır`}</div>
               </div>
-              <span class="w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${active ? 'border-[#146C53]' : 'border-slate-300'}">
-                ${active ? '<span class="w-2 h-2 rounded-full bg-[#146C53]"></span>' : ''}
-              </span>
-            </button>`;
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold shrink-0 ${canAssignGmail ? 'bg-emerald-600 text-white' : 'bg-amber-200 text-amber-900'}">${canAssignGmail ? 'YETKİLİ' : 'KİLİTLİ'}</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <label for="activeGmailSessionInput" class="text-[10px] font-bold text-slate-700 shrink-0">Aktif Gmail:</label>
+              <input id="activeGmailSessionInput" type="email" value="${escapeHtml(currentAccountEmail)}"
+                onchange="updateCurrentAccountEmail(this.value)"
+                onkeydown="if(event.key==='Enter'){event.preventDefault();updateCurrentAccountEmail(this.value);}"
+                class="flex-1 px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-[11px] font-semibold text-slate-800" />
+            </div>
+          </div>`;
+
+        listEl.innerHTML = gmailHeaderBanner + ROLE_PROFILES.map(r => {
+          const active = r.key === draftRoleKey;
+          const emailList = Array.isArray(r.emails) ? r.emails : [];
+          return `
+            <div onclick="selectDraftRole('${r.key}')" class="w-full p-3 rounded-2xl border text-left transition cursor-pointer space-y-2 ${active ? 'bg-emerald-50 border-[#146C53] ring-2 ring-[#146C53]/15' : 'bg-slate-50 border-slate-200 hover:bg-slate-100/70'}">
+              <div class="flex items-center justify-between gap-3">
+                <div class="min-w-0">
+                  <div class="text-xs font-extrabold text-slate-900">${r.label}</div>
+                  <div class="text-[11px] text-slate-500 mt-0.5">${r.desc}</div>
+                </div>
+                <span class="w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${active ? 'border-[#146C53]' : 'border-slate-300'}">
+                  ${active ? '<span class="w-2 h-2 rounded-full bg-[#146C53]"></span>' : ''}
+                </span>
+              </div>
+              <div onclick="event.stopPropagation()" class="pt-1.5 border-t border-slate-200/80 space-y-1.5">
+                <div class="flex items-center justify-between gap-1">
+                  <span class="text-[10px] font-bold text-slate-600">Eşleşen Gmail Adresleri (${emailList.length})</span>
+                  ${canAssignGmail ? `<button type="button" onclick="addRoleEmail('${r.key}')" class="text-[10px] font-extrabold text-[#146C53] bg-emerald-100/80 hover:bg-emerald-100 px-2 py-0.5 rounded-md">+ Gmail</button>` : `<span class="text-[10px] font-bold text-amber-700">Sadece ${escapeHtml(GMAIL_ADMIN_EMAIL)}</span>`}
+                </div>
+                <div class="flex flex-wrap gap-1">
+                  ${emailList.map((em, idx) => `
+                    <span class="inline-flex items-center gap-1 bg-white border border-slate-200 text-slate-700 text-[10px] font-semibold px-2 py-0.5 rounded-lg">
+                      <span class="truncate max-w-[190px]">${escapeHtml(em)}</span>
+                      ${canAssignGmail ? `<button type="button" onclick="removeRoleEmail('${r.key}', ${idx})" class="text-rose-500 hover:text-rose-700 font-extrabold leading-none" title="Kaldır">×</button>` : ''}
+                    </span>
+                  `).join('')}
+                </div>
+                ${canAssignGmail ? `
+                  <div class="flex gap-1.5">
+                    <input id="gmailInput-${r.key}" type="email" placeholder="ornek@gmail.com" onkeydown="if(event.key==='Enter'){event.preventDefault();addRoleEmail('${r.key}');}"
+                      class="flex-1 px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-[11px] font-medium text-slate-800" />
+                  </div>
+                ` : ''}
+              </div>
+            </div>`;
         }).join('');
       }
       document.getElementById('accountModal')?.classList.remove('hidden');
+    }
+
+    function updateCurrentAccountEmail(nextEmail) {
+      const cleaned = String(nextEmail || '').trim().toLowerCase();
+      currentAccountEmail = cleaned;
+      openAccountModal();
+      if (canManageGmailAssignments()) {
+        showToast(`Gmail atama yetkisi aktif: ${GMAIL_ADMIN_EMAIL}`);
+      } else {
+        showToast(`Gmail atamaları yalnızca ${GMAIL_ADMIN_EMAIL} içindir`);
+      }
+    }
+
+    function addRoleEmail(roleKey) {
+      if (!canManageGmailAssignments()) {
+        showToast(`Gmail atamalarını yalnızca ${GMAIL_ADMIN_EMAIL} yapabilir`);
+        return;
+      }
+      const profile = ROLE_PROFILES.find(r => r.key === roleKey);
+      const inputEl = document.getElementById(`gmailInput-${roleKey}`);
+      if (!profile || !inputEl) return;
+      const val = String(inputEl.value || '').trim().toLowerCase();
+      if (!val || !val.includes('@')) {
+        showToast('Geçerli bir Gmail adresi girin');
+        return;
+      }
+      if (!Array.isArray(profile.emails)) profile.emails = [];
+      if (profile.emails.includes(val)) {
+        showToast('Bu Gmail zaten listede kayıtlı');
+        return;
+      }
+      profile.emails.push(val);
+      inputEl.value = '';
+      openAccountModal();
+      showToast(`${profile.label} satırına Gmail eklendi`);
+    }
+
+    function removeRoleEmail(roleKey, index) {
+      if (!canManageGmailAssignments()) {
+        showToast(`Gmail atamalarını yalnızca ${GMAIL_ADMIN_EMAIL} yapabilir`);
+        return;
+      }
+      const profile = ROLE_PROFILES.find(r => r.key === roleKey);
+      if (!profile || !Array.isArray(profile.emails)) return;
+      profile.emails.splice(index, 1);
+      openAccountModal();
+      showToast('Gmail adresi kaldırıldı');
     }
 
     function selectDraftRole(key) {
@@ -1451,15 +1629,15 @@
           <div class="grid grid-cols-3 bg-slate-50/90 border border-slate-200/90 rounded-2xl py-2.5 px-2 text-center">
             <div>
               <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_order')}</div>
-              <div class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight mt-1">${fmt(o.ton)} KG</div>
+              <div class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight mt-1">${fmt(o.ton)}</div>
             </div>
             <div class="border-x border-slate-200/90">
               <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_prod')}</div>
-              <div class="text-xs sm:text-sm font-extrabold text-[#146C53] leading-tight mt-1">${fmt(prod)} KG</div>
+              <div class="text-xs sm:text-sm font-extrabold text-[#146C53] leading-tight mt-1">${fmt(prod)}</div>
             </div>
             <div>
               <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_rem')}</div>
-              <div class="text-xs sm:text-sm font-extrabold ${isExceeded || isNearComplete ? 'text-rose-600' : 'text-amber-600'} leading-tight mt-1">${fmt(rest)} KG</div>
+              <div class="text-xs sm:text-sm font-extrabold ${isExceeded || isNearComplete ? 'text-rose-600' : 'text-amber-600'} leading-tight mt-1">${fmt(rest)}</div>
             </div>
           </div>
 
@@ -2097,9 +2275,7 @@
       editingOrderId = id;
       ensureOrderDates(o);
 
-      const perms = typeof window.getCurrentUserPermissions === 'function'
-        ? window.getCurrentUserPermissions()
-        : (typeof getUserPermissions === 'function' ? getUserPermissions() : { isManagement: true, isOperator: true, isViewer: false });
+      const perms = getUserPermissions();
 
       isEditingMetricsMode = false;
       const editMetricsBtn = document.getElementById('editOrderMetricsBtn');
@@ -2127,11 +2303,6 @@
         orderNoInput.value = o.orderNo || 1;
         orderNoInput.disabled = !perms.canReorderOrders;
         orderNoInput.classList.toggle('opacity-60', !perms.canReorderOrders);
-      }
-
-      const deleteOrderBtn = document.getElementById('deleteOrderBtn');
-      if (deleteOrderBtn) {
-        deleteOrderBtn.classList.toggle('hidden', !perms.canDeleteOrder);
       }
 
       const lastActionStr = o.lastActionDateTime || `${o.createdDate || formatTodayDate()} 08:00`;
@@ -2201,14 +2372,11 @@
       recalcEditModal();
       document.getElementById('editModal')?.classList.remove('hidden');
     }
-    window.openEditModal = openEditModal;
 
     function toggleOrderMetricsEditor() {
-      const perms = typeof window.getCurrentUserPermissions === 'function'
-        ? window.getCurrentUserPermissions()
-        : (typeof getUserPermissions === 'function' ? getUserPermissions() : { isManagement: true });
+      const perms = getUserPermissions();
       if (!perms.isManagement) {
-        showToast('Sipariş, üretim ve kalan düzenleme yetkisi sadece Yönetim Gmail hesabına aittir');
+        showToast('Sipariş, üretim ve kalan düzenleme yetkisi sadece Yönetim rolüne aittir');
         return;
       }
       const o = orders.find(x => x.id === editingOrderId);
@@ -2239,12 +2407,9 @@
         }
       }
     }
-    window.toggleOrderMetricsEditor = toggleOrderMetricsEditor;
 
     function onManualMetricInput(sourceField) {
-      const perms = typeof window.getCurrentUserPermissions === 'function'
-        ? window.getCurrentUserPermissions()
-        : (typeof getUserPermissions === 'function' ? getUserPermissions() : { isManagement: true });
+      const perms = getUserPermissions();
       if (!perms.isManagement) return;
 
       const manTonEl = document.getElementById('manualTonInput');
@@ -2256,11 +2421,7 @@
       let prodVal = parseFloat(manProdEl.value);
       let restVal = parseFloat(manRestEl.value);
 
-      if (sourceField === 'TON') {
-        if (Number.isFinite(tonVal) && Number.isFinite(prodVal)) {
-          manRestEl.value = Math.round((tonVal - prodVal) * 1000) / 1000;
-        }
-      } else if (sourceField === 'PROD') {
+      if (sourceField === 'TON' || sourceField === 'PROD') {
         if (Number.isFinite(tonVal) && Number.isFinite(prodVal)) {
           manRestEl.value = Math.round((tonVal - prodVal) * 1000) / 1000;
         }
@@ -2294,7 +2455,6 @@
         restEl.className = `text-sm font-extrabold mt-0.5 ${restVal <= 150 ? 'text-rose-600' : 'text-amber-600'}`;
       }
     }
-    window.onManualMetricInput = onManualMetricInput;
 
     function recalcEditModal() {
       const o = orders.find(x => x.id === editingOrderId);
@@ -2345,9 +2505,7 @@
     }
 
     function saveOrderEdits() {
-      const perms = typeof window.getCurrentUserPermissions === 'function'
-        ? window.getCurrentUserPermissions()
-        : (typeof getUserPermissions === 'function' ? getUserPermissions() : { isManagement: true, isOperator: true, isViewer: false });
+      const perms = getUserPermissions();
       if (perms.isViewer) {
         showToast('İzleyici rolü değişiklik kaydedemez');
         return;
@@ -2448,16 +2606,12 @@
         }
       }
 
-      if (typeof saveState === 'function') {
-        saveState(orders[idx]);
-      }
       pendingModalShift = null;
       closeModal('editModal');
       renderOrders();
       renderCompletedOrders();
       showToast(currentLang === 'ar' ? 'تم حفظ التعديلات' : 'Değişiklikler kaydedildi');
     }
-    window.saveOrderEdits = saveOrderEdits;
 
     function renderSummary(periodFilter = 'ALL') {
       document.querySelectorAll('.sum-period-btn').forEach(btn => {
@@ -2517,163 +2671,318 @@
         }).join('');
       }
     }
-    window.renderSummary = renderSummary;
 
     function renderOperationTab() {
-      const top10Container = document.getElementById('opTop10List');
-      if (!top10Container) return;
+      const container = document.getElementById('opTop10List');
+      if (!container) return;
 
-      const openOrders = orders
+      const activeList = orders
         .filter(o => !o.closed)
-        .sort((a, b) => (a.orderNo || 999) - (b.orderNo || 999))
+        .sort((a, b) => (a.orderNo || 999) - (b.orderNo || 999) || a.id - b.id)
         .slice(0, 10);
 
-      if (openOrders.length === 0) {
-        top10Container.innerHTML = `
+      if (activeList.length === 0) {
+        container.innerHTML = `
           <div class="pro-card rounded-3xl p-8 text-center">
             <div class="text-slate-400 text-sm font-medium">${t('no_active_orders')}</div>
           </div>`;
         return;
       }
 
-      top10Container.innerHTML = openOrders.map(o => {
+      container.innerHTML = activeList.map((o, idx) => {
         const prod = getProd(o);
         const rest = getRest(o);
-        const pct = o.ton > 0 ? Math.min(100, Math.round((prod / o.ton) * 100)) : 0;
-        const isExceeded = rest < 0;
-        const isNearComplete = !isExceeded && rest <= 150 && prod > 0;
         const wStatus = getWorkStatus(o);
         const isRunning = wStatus === 'RUNNING';
         const isPaused = wStatus === 'PAUSED';
-        const topDateStr = escapeHtml(o.createdDate || formatTodayDate());
+        const isExceeded = rest < 0;
+        const isNearComplete = !isExceeded && rest <= 150 && prod > 0;
+        const pct = o.ton > 0 ? Math.max(0, Math.min(100, Math.round((prod / o.ton) * 100))) : 0;
 
-        const opCardStyle = isRunning
+        const cardClass = isRunning
           ? 'order-card-3d-running'
           : (isPaused ? 'order-card-3d-paused' : 'order-card-3d');
+        const seqBoxClass = isRunning
+          ? 'seq-square-3d seq-square-3d-running'
+          : (isPaused ? 'seq-square-3d seq-square-3d-paused' : 'seq-square-3d');
+        const rankBadge = idx === 0
+          ? `<span class="px-2 py-0.5 rounded-full bg-[#146C53] text-white text-[10px] font-extrabold">#${o.orderNo}</span>`
+          : `<span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 text-[10px] font-extrabold">#${o.orderNo}</span>`;
 
         return `
-        <div onclick="openEditModal(${o.id})" class="${opCardStyle} rounded-2xl p-3 active:scale-[0.99] transition cursor-pointer space-y-2">
-          <div class="flex items-center justify-between gap-2">
-            <div class="flex items-center flex-wrap gap-2">
-              <div onclick="event.stopPropagation()" class="inline-flex items-center seq-square-3d" title="Sıra numarasını değiştirin">
-                <input type="number" inputmode="numeric" min="1" value="${o.orderNo}"
-                  onchange="updateOrderNumberInline(${o.id}, this.value)"
-                  onkeydown="if(event.key==='Enter'){this.blur();}"
-                  class="w-full bg-transparent text-slate-900 text-[10px] font-extrabold text-center leading-none rounded outline-none" />
+          <div onclick="openEditModal(${o.id})" class="rounded-2xl p-3 ${cardClass} active:scale-[0.99] transition cursor-pointer space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-1.5">
+                <div onclick="event.stopPropagation()" class="inline-flex items-center justify-center ${seqBoxClass}" title="Sıra numarasını değiştirin">
+                  <input type="number" inputmode="numeric" min="1" value="${o.orderNo}"
+                    onchange="updateOrderNumberInline(${o.id}, this.value)"
+                    onkeydown="if(event.key==='Enter'){this.blur();}"
+                    class="w-full bg-transparent text-slate-900 text-[10px] font-extrabold text-center leading-none rounded outline-none" />
+                </div>
+                ${rankBadge}
               </div>
-              <span class="text-[11px] font-semibold text-slate-700 bg-white/90 border border-slate-200/80 px-2.5 py-0.5 rounded-md">${topDateStr}</span>
+              <span class="text-[11px] font-semibold text-slate-700 bg-white/90 border border-slate-200/80 px-2.5 py-0.5 rounded-md shadow-2xs text-center">${escapeHtml(o.createdDate || formatTodayDate())}</span>
               ${renderWorkStatusButton(o)}
             </div>
-          </div>
 
-          <div>
-            <p class="text-xs font-semibold text-slate-700 flex flex-wrap items-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full bg-[#146C53]"></span>
-              <span>${formatArtiveHighlight(o.artive)}</span>
-            </p>
-            <h3 class="text-[9px] leading-tight font-medium text-slate-500 mt-0.5">${escapeHtml(o.article)}</h3>
-          </div>
-
-          <div>
-            <div class="flex justify-between text-[11px] font-semibold mb-1">
-              <span class="text-slate-600">${t('progress_label')}: %${pct}</span>
-              <span class="${isExceeded || isNearComplete ? 'text-rose-600 font-bold' : 'text-slate-700'}">
-                ${isExceeded ? `${t('excess_label')}: +${fmt(Math.abs(rest))} KG` : `${t('remaining_label')}: ${fmt(rest)} KG`}
-              </span>
-            </div>
-            <div class="w-full h-2 bg-slate-200/80 rounded-full overflow-hidden">
-              <div class="h-full rounded-full transition-all duration-300 ${isExceeded ? 'bg-rose-500' : 'bg-[#146C53]'}" style="width: ${pct}%"></div>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-3 bg-slate-50/90 border border-slate-200/90 rounded-2xl py-2.5 px-2 text-center">
             <div>
-              <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_order')}</div>
-              <div class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight mt-1">${fmt(o.ton)} KG</div>
+              <p class="text-xs font-semibold text-slate-600 flex flex-wrap items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#146C53]"></span>
+                <span>${formatArtiveHighlight(o.artive)}</span>
+              </p>
+              <h3 class="text-[9px] leading-tight font-medium text-slate-500 mt-0.5">${escapeHtml(o.article)}</h3>
             </div>
-            <div class="border-x border-slate-200/90">
-              <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_prod')}</div>
-              <div class="text-xs sm:text-sm font-extrabold text-[#146C53] leading-tight mt-1">${fmt(prod)} KG</div>
-            </div>
-            <div>
-              <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_rem')}</div>
-              <div class="text-xs sm:text-sm font-extrabold ${isExceeded || isNearComplete ? 'text-rose-600' : 'text-amber-600'} leading-tight mt-1">${fmt(rest)} KG</div>
-            </div>
-          </div>
 
-          ${renderRunningOperatorBar(o)}
-        </div>`;
+            <div class="space-y-1">
+              <div class="flex items-center justify-between text-[10px] font-bold text-slate-600">
+                <span>${t('progress_label')}: %${pct}</span>
+                <span>${isExceeded ? `${t('excess_label')}: ${fmt(Math.abs(rest))} KG` : `${t('remaining_label')}: ${fmt(rest)} KG`}</span>
+              </div>
+              <div class="w-full h-2 bg-slate-200/80 rounded-full overflow-hidden">
+                <div class="h-full ${isExceeded ? 'bg-rose-500' : 'bg-[#146C53]'} rounded-full transition-all duration-300" style="width: ${pct}%"></div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 bg-slate-50/90 border border-slate-200/90 rounded-2xl py-2.5 px-2 text-center">
+              <div>
+                <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_order')}</div>
+                <div class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight mt-1">${fmt(o.ton)} KG</div>
+              </div>
+              <div class="border-x border-slate-200/90">
+                <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_prod')}</div>
+                <div class="text-xs sm:text-sm font-extrabold text-[#146C53] leading-tight mt-1">${fmt(prod)} KG</div>
+              </div>
+              <div>
+                <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_rem')}</div>
+                <div class="text-xs sm:text-sm font-extrabold ${isExceeded || isNearComplete ? 'text-rose-600' : 'text-amber-600'} leading-tight mt-1">${fmt(rest)} KG</div>
+              </div>
+            </div>
+
+            ${renderRunningOperatorBar(o)}
+          </div>`;
       }).join('');
     }
-    window.renderOperationTab = renderOperationTab;
+
+    function getCompletedOrderMonthIndex(order) {
+      const candidates = [order?.completedDate, order?.createdDate, order?.period];
+      for (const raw of candidates) {
+        const str = String(raw || '').trim();
+        if (!str) continue;
+        const dmy = str.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+        if (dmy) {
+          const m = parseInt(dmy[2], 10);
+          if (m >= 1 && m <= 12) return m - 1;
+        }
+        const lower = str.toLowerCase();
+        if (lower.includes('oca')) return 0;
+        if (lower.includes('şub') || lower.includes('sub')) return 1;
+        if (lower.includes('mar')) return 2;
+        if (lower.includes('nis')) return 3;
+        if (lower.includes('may')) return 4;
+        if (lower.includes('haz')) return 5;
+        if (lower.includes('tem')) return 6;
+        if (lower.includes('ağu') || lower.includes('agu')) return 7;
+        if (lower.includes('eyl')) return 8;
+        if (lower.includes('eki')) return 9;
+        if (lower.includes('kas')) return 10;
+        if (lower.includes('ara')) return 11;
+      }
+      return null;
+    }
 
     function renderReports() {
-      const liveNov = orders.filter(o => o.period === '01.11.2026').reduce((s, o) => s + getProd(o), 0);
-      const liveOct = orders.filter(o => o.period === '01.10.2026').reduce((s, o) => s + getProd(o), 0);
+      const monthNames = currentLang === 'ar'
+        ? ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
+        : ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
 
-      const novVal = Math.max(250494, liveNov + 219600);
-      const octVal = Math.max(208470, liveOct + 157000);
-      const totalYearly = novVal + octVal;
-      const avgMonthly = Math.round(totalYearly / 2);
+      const monthlyStats = Array.from({ length: 12 }, (_, idx) => ({
+        monthIndex: idx,
+        label: monthNames[idx],
+        total: 0,
+        isa: 0,
+        muhiddin: 0,
+        kaddur: 0,
+        muhammed: 0
+      }));
+
+      const completedOrders = orders.filter(o => !!(o && o.closed));
+      completedOrders.forEach(o => {
+        const mIdx = getCompletedOrderMonthIndex(o);
+        if (mIdx === null || !monthlyStats[mIdx]) return;
+        const isaVal = Number(o.isa) || 0;
+        const muhVal = Number(o.muhiddin) || 0;
+        const kadVal = Number(o.kaddur) || 0;
+        const mamVal = Number(o.muhammed) || 0;
+        const sumVal = isaVal + muhVal + kadVal + mamVal;
+        if (sumVal <= 0) return;
+
+        monthlyStats[mIdx].isa += isaVal;
+        monthlyStats[mIdx].muhiddin += muhVal;
+        monthlyStats[mIdx].kaddur += kadVal;
+        monthlyStats[mIdx].muhammed += mamVal;
+        monthlyStats[mIdx].total += sumVal;
+      });
+
+      const yearlyTotal = monthlyStats.reduce((acc, m) => acc + m.total, 0);
+      const activeMonthsCount = monthlyStats.filter(m => m.total > 0).length;
+      const monthlyAvg = activeMonthsCount > 0 ? Math.round(yearlyTotal / activeMonthsCount) : 0;
+
+      let peakStat = null;
+      monthlyStats.forEach(m => {
+        if (!peakStat || m.total > peakStat.total) {
+          peakStat = m;
+        }
+      });
+      const peakMonthVal = peakStat ? peakStat.total : 0;
+      const peakMonthLabel = (peakStat && peakStat.total > 0) ? peakStat.label : '';
 
       const yearlyEl = document.getElementById('repYearly');
       const avgEl = document.getElementById('repAvg');
-      const totalOpEl = document.getElementById('repTotalOpKg');
-      const chartContainer = document.getElementById('monthlyChartContainer');
-      const leaderboardEl = document.getElementById('operatorLeaderboard');
+      const peakHdrEl = document.getElementById('repPeakMonthHeader');
+      const peakValEl = document.getElementById('repPeakMonthVal');
+      const tbodyEl = document.getElementById('completedMonthlyTableBody');
+      const tfootEl = document.getElementById('completedMonthlyTableFoot');
+      const prodChartEl = document.getElementById('monthlyProdBarChart');
+      const opChartEl = document.getElementById('monthlyOperatorBarChart');
 
-      if (yearlyEl) yearlyEl.textContent = `${fmt(totalYearly)} KG`;
-      if (avgEl) avgEl.textContent = `${fmt(avgMonthly)} KG`;
+      if (yearlyEl) yearlyEl.textContent = fmt(yearlyTotal);
+      if (avgEl) avgEl.textContent = fmt(monthlyAvg);
+      if (peakHdrEl) peakHdrEl.textContent = t('peak_month_label', peakMonthLabel);
+      if (peakValEl) peakValEl.textContent = fmt(peakMonthVal);
 
-      const months = [
-        { label: 'Kasım 2026 (01.11)', val: novVal, max: Math.max(280000, novVal) },
-        { label: 'Ekim 2026 (01.10)', val: octVal, max: Math.max(280000, octVal) }
-      ];
+      if (tbodyEl) {
+        tbodyEl.innerHTML = monthlyStats.map(m => {
+          const hasProd = m.total > 0;
+          const isPeak = peakStat && peakStat.total > 0 && peakStat.monthIndex === m.monthIndex;
+          const rowTone = isPeak
+            ? 'bg-emerald-50/75'
+            : (hasProd ? 'bg-[#F8FBFF]' : 'bg-white');
+          const monthCellTone = isPeak
+            ? 'bg-emerald-100/90 text-emerald-950 font-extrabold'
+            : (hasProd ? 'bg-[#E6EFF8] text-slate-900 font-extrabold' : 'bg-slate-50/80 text-slate-500 font-semibold');
+          const totalCellTone = isPeak
+            ? 'bg-emerald-100/60 text-[#146C53] font-extrabold'
+            : (hasProd ? 'bg-[#F1F6FC] text-slate-900 font-extrabold' : 'text-slate-300');
 
-      if (chartContainer) {
-        chartContainer.innerHTML = months.map(m => {
-          const w = Math.min(100, Math.round((m.val / m.max) * 100));
           return `
-            <div>
-              <div class="flex justify-between text-xs font-bold mb-1">
-                <span class="text-slate-700">${m.label}</span>
-                <span class="text-[#146C53]">${fmt(m.val)} KG</span>
-              </div>
-              <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
-                <div class="bg-[#146C53] h-full rounded-full" style="width:${w}%"></div>
-              </div>
-            </div>`;
+            <tr class="${rowTone} hover:bg-emerald-50/60 transition-colors">
+              <td class="${monthCellTone} italic py-2 px-0.5 border-r border-slate-200/90 text-[10px] sm:text-[11px]">${escapeHtml(m.label)}</td>
+              <td class="${totalCellTone} py-2 px-0.5 border-r border-slate-200/90 text-[10px] sm:text-[11px]">${hasProd ? fmt(m.total) : ''}</td>
+              <td class="py-2 px-0.5 border-r border-slate-200/90 text-[10px] sm:text-[11px] ${m.isa > 0 ? 'text-slate-900 font-bold bg-rose-50/30' : 'text-slate-300'}">${m.isa > 0 ? fmt(m.isa) : ''}</td>
+              <td class="py-2 px-0.5 border-r border-slate-200/90 text-[10px] sm:text-[11px] ${m.muhiddin > 0 ? 'text-slate-900 font-bold bg-sky-50/30' : 'text-slate-300'}">${m.muhiddin > 0 ? fmt(m.muhiddin) : ''}</td>
+              <td class="py-2 px-0.5 border-r border-slate-200/90 text-[10px] sm:text-[11px] ${m.kaddur > 0 ? 'text-slate-900 font-bold bg-lime-50/30' : 'text-slate-300'}">${m.kaddur > 0 ? fmt(m.kaddur) : ''}</td>
+              <td class="py-2 px-0.5 text-[10px] sm:text-[11px] ${m.muhammed > 0 ? 'text-slate-900 font-bold bg-purple-50/30' : 'text-slate-300'}">${m.muhammed > 0 ? fmt(m.muhammed) : ''}</td>
+            </tr>`;
         }).join('');
       }
 
-      const ops = [
-        { name: 'İSA', val: orders.reduce((s, o) => s + (Number(o.isa) || 0), 0) },
-        { name: 'KADDUR', val: orders.reduce((s, o) => s + (Number(o.kaddur) || 0), 0) },
-        { name: 'MUHAMMED', val: orders.reduce((s, o) => s + (Number(o.muhammed) || 0), 0) },
-        { name: 'MUHİDDİN', val: orders.reduce((s, o) => s + (Number(o.muhiddin) || 0), 0) }
-      ].sort((a, b) => b.val - a.val);
+      if (tfootEl) {
+        const sumIsa = monthlyStats.reduce((s, m) => s + m.isa, 0);
+        const sumMuh = monthlyStats.reduce((s, m) => s + m.muhiddin, 0);
+        const sumKad = monthlyStats.reduce((s, m) => s + m.kaddur, 0);
+        const sumMam = monthlyStats.reduce((s, m) => s + m.muhammed, 0);
+        const totalLabel = currentLang === 'ar' ? 'المجموع' : 'TOPLAM';
 
-      const totalOpKg = ops.reduce((s, x) => s + x.val, 0);
-      if (totalOpEl) totalOpEl.textContent = `${fmt(totalOpKg)} KG`;
+        tfootEl.innerHTML = `
+          <tr class="bg-gradient-to-b from-slate-100 to-slate-200/80">
+            <td class="py-2 px-0.5 border-r border-slate-300/80 text-[9px] sm:text-[10px] font-extrabold text-slate-800 tracking-tight">${totalLabel}</td>
+            <td class="py-2 px-0.5 border-r border-slate-300/80 text-[10px] sm:text-[11px] font-extrabold text-[#146C53] bg-emerald-50/70">${yearlyTotal > 0 ? fmt(yearlyTotal) : '0'}</td>
+            <td class="py-2 px-0.5 border-r border-slate-300/80 text-[10px] sm:text-[11px] font-extrabold text-slate-900">${sumIsa > 0 ? fmt(sumIsa) : '0'}</td>
+            <td class="py-2 px-0.5 border-r border-slate-300/80 text-[10px] sm:text-[11px] font-extrabold text-slate-900">${sumMuh > 0 ? fmt(sumMuh) : '0'}</td>
+            <td class="py-2 px-0.5 border-r border-slate-300/80 text-[10px] sm:text-[11px] font-extrabold text-slate-900">${sumKad > 0 ? fmt(sumKad) : '0'}</td>
+            <td class="py-2 px-0.5 text-[10px] sm:text-[11px] font-extrabold text-slate-900">${sumMam > 0 ? fmt(sumMam) : '0'}</td>
+          </tr>`;
+      }
 
-      if (leaderboardEl) {
-        leaderboardEl.innerHTML = ops.map((op, i) => `
-          <div class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 border border-slate-200/60">
-            <div class="flex items-center gap-3">
-              <span class="w-7 h-7 rounded-full ${i === 0 ? 'bg-amber-400 text-slate-900' : 'bg-slate-200 text-slate-700'} font-extrabold text-xs flex items-center justify-center">
-                ${i + 1}
-              </span>
-              <div>
-                <div class="text-xs font-extrabold text-slate-900">${op.name}</div>
-                <div class="text-[10px] text-slate-500">${t('extruder_operator')}</div>
+      if (prodChartEl) {
+        const rawMax = Math.max(100000, ...monthlyStats.map(m => m.total));
+        const step = rawMax > 250000 ? 100000 : (rawMax > 100000 ? 50000 : 25000);
+        const yMax = Math.ceil(rawMax / step) * step;
+        const ticks = [yMax, Math.round(yMax * 0.66), Math.round(yMax * 0.33), 0];
+
+        prodChartEl.innerHTML = `
+          <div class="rounded-xl border border-slate-200/90 bg-white p-2.5 shadow-2xs">
+            <div class="flex items-stretch gap-1.5">
+              <div class="flex flex-col justify-between text-[9px] sm:text-[10px] font-bold text-slate-500 text-right pr-1 h-40 tabular-nums shrink-0 w-11">
+                ${ticks.map(v => `<span>${fmt(v)}</span>`).join('')}
+              </div>
+              <div class="relative flex-1 h-40 border-l border-b border-slate-300 flex items-end justify-between gap-1 px-1 pt-2 bg-gradient-to-b from-slate-50/60 to-white rounded-tr-lg overflow-hidden">
+                <div class="pointer-events-none absolute inset-0 flex flex-col justify-between py-2">
+                  ${ticks.slice(0, -1).map(() => `<div class="w-full border-t border-dashed border-slate-200/80"></div>`).join('')}
+                </div>
+                ${monthlyStats.map(m => {
+                  const pct = yMax > 0 ? Math.max(0, Math.min(100, (m.total / yMax) * 100)) : 0;
+                  const isPeak = peakStat && peakStat.total > 0 && peakStat.monthIndex === m.monthIndex;
+                  return `
+                    <div class="relative z-10 flex-1 h-full flex flex-col justify-end items-center group" title="${escapeHtml(m.label)}: ${fmt(m.total)} KG">
+                      ${m.total > 0 ? `<span class="text-[8px] font-extrabold text-slate-800 mb-0.5 tabular-nums hidden sm:inline">${fmt(m.total)}</span>` : ''}
+                      <div class="w-full max-w-[20px] ${isPeak ? 'bg-gradient-to-t from-[#2F5597] to-[#5B9BD5] ring-1 ring-[#2F5597]/40' : 'bg-gradient-to-t from-[#3B6CA8] to-[#5B8EC9]'} rounded-t-[3px] shadow-2xs transition-all duration-300" style="height: ${pct}%"></div>
+                    </div>`;
+                }).join('')}
               </div>
             </div>
-            <div class="text-sm font-extrabold text-[#146C53]">${fmt(op.val)} KG</div>
-          </div>
-        `).join('');
+            <div class="flex gap-1.5 pl-12 pt-1.5">
+              <div class="flex-1 flex items-center justify-between gap-0.5 px-1">
+                ${monthlyStats.map(m => {
+                  const activeMonth = m.total > 0;
+                  return `<span class="flex-1 text-center text-[8px] sm:text-[9px] tracking-tighter ${activeMonth ? 'font-extrabold text-slate-900' : 'font-semibold text-slate-500'}">${escapeHtml(m.label)}</span>`;
+                }).join('')}
+              </div>
+            </div>
+          </div>`;
+      }
+
+      if (opChartEl) {
+        const maxOpBar = Math.max(
+          20000,
+          ...monthlyStats.flatMap(m => [m.isa, m.muhiddin, m.kaddur, m.muhammed])
+        );
+        const stepOp = maxOpBar > 80000 ? 40000 : 20000;
+        const yMaxOp = Math.ceil(maxOpBar / stepOp) * stepOp;
+        const ticksOp = [yMaxOp, Math.round(yMaxOp * 0.75), Math.round(yMaxOp * 0.5), Math.round(yMaxOp * 0.25), 0];
+
+        opChartEl.innerHTML = `
+          <div class="rounded-2xl border border-slate-200/90 bg-gradient-to-b from-slate-50/50 to-white p-2.5 shadow-2xs space-y-2">
+            <div class="flex items-stretch gap-1.5">
+              <div class="flex flex-col justify-between text-[9px] sm:text-[10px] font-bold text-slate-500 text-right pr-1 h-44 tabular-nums shrink-0 w-11">
+                ${ticksOp.map(v => `<span>${fmt(v)}</span>`).join('')}
+              </div>
+              <div class="relative flex-1 h-44 border-l border-b border-slate-300 grid grid-cols-12 gap-0.5 px-1 pt-3 bg-white rounded-tr-xl overflow-hidden">
+                <div class="pointer-events-none absolute inset-0 flex flex-col justify-between py-3">
+                  ${ticksOp.slice(0, -1).map(() => `<div class="w-full border-t border-dashed border-slate-200/80"></div>`).join('')}
+                </div>
+                ${monthlyStats.map(m => {
+                  const hasAnyOp = (m.isa + m.muhiddin + m.kaddur + m.muhammed) > 0;
+                  const bars = [
+                    { val: m.isa, color: 'bg-gradient-to-t from-[#B84E37] to-[#D96B52]', name: 'İSA' },
+                    { val: m.muhiddin, color: 'bg-gradient-to-t from-[#3B76B0] to-[#5B9BD5]', name: 'MUHİDDİN' },
+                    { val: m.kaddur, color: 'bg-gradient-to-t from-[#50842E] to-[#70AD47]', name: 'KADDUR' },
+                    { val: m.muhammed, color: 'bg-gradient-to-t from-[#6B4B99] to-[#8E6BBF]', name: 'MUHAMMED' }
+                  ];
+                  return `
+                    <div class="relative z-10 h-full flex items-end justify-center gap-[1px] px-[1px] ${hasAnyOp ? 'bg-slate-50/70 rounded-t-md' : ''}" title="${escapeHtml(m.label)}">
+                      ${bars.map(b => {
+                        const hPct = (yMaxOp > 0 && b.val > 0) ? Math.max(2, Math.min(100, (b.val / yMaxOp) * 100)) : 0;
+                        return `
+                          <div class="w-[3.5px] sm:w-[5px] h-full flex items-end justify-center">
+                            <div class="w-full ${b.color} rounded-t-[2px] shadow-2xs transition-all duration-300" style="height: ${hPct}%" title="${escapeHtml(m.label)} · ${b.name}: ${fmt(b.val)} KG"></div>
+                          </div>`;
+                      }).join('')}
+                    </div>`;
+                }).join('')}
+              </div>
+            </div>
+            <div class="flex gap-1.5 pl-12 pt-0.5">
+              <div class="flex-1 grid grid-cols-12 gap-0.5 px-1">
+                ${monthlyStats.map(m => {
+                  const hasOpVal = (m.isa + m.muhiddin + m.kaddur + m.muhammed) > 0;
+                  return `<span class="text-center text-[8px] sm:text-[9px] tracking-tighter ${hasOpVal ? 'font-extrabold text-slate-900 bg-emerald-50/90 border border-emerald-200/70 rounded py-0.5' : 'font-semibold text-slate-500 py-0.5'}">${escapeHtml(m.label)}</span>`;
+                }).join('')}
+              </div>
+            </div>
+          </div>`;
       }
     }
-    window.renderReports = renderReports;
 
     function renderNotes() {
       const container = document.getElementById('notesList');
@@ -2758,12 +3067,12 @@
       document.querySelectorAll('.nav-btn').forEach(btn => {
         const active = btn.dataset.nav === targetTab;
         btn.className = active
-          ? 'nav-btn flex flex-col items-center justify-center py-1 text-[#146C53]'
+          ? 'nav-btn flex flex-col items-center justify-center py-1 text-red-600'
           : 'nav-btn flex flex-col items-center justify-center py-1 text-slate-500';
         const iconWrap = btn.querySelector('.nav-icon-wrap');
         if (iconWrap) {
           iconWrap.className = active
-            ? 'nav-icon-wrap p-1.5 rounded-xl bg-[#ECFDF5]'
+            ? 'nav-icon-wrap p-1.5 rounded-xl bg-red-500/15'
             : 'nav-icon-wrap p-1.5 rounded-xl';
         }
       });
@@ -2771,12 +3080,11 @@
       window.scrollTo({ top: 0, behavior: 'instant' });
       renderOrders();
       renderCompletedOrders();
-      if (targetTab === 'ozet' && typeof renderSummary === 'function') renderSummary('ALL');
-      if (targetTab === 'operasyon' && typeof renderOperationTab === 'function') renderOperationTab();
-      if (targetTab === 'raporlar' && typeof renderReports === 'function') renderReports();
-      if (targetTab === 'notlar' && typeof renderNotes === 'function') renderNotes();
+      if (targetTab === 'ozet') renderSummary('ALL');
+      if (targetTab === 'operasyon') renderOperationTab();
+      if (targetTab === 'raporlar') renderReports();
+      if (targetTab === 'notlar') renderNotes();
     }
-    window.switchTab = switchTab;
 
     function applyLanguage(lang) {
       currentLang = lang === 'ar' ? 'ar' : 'tr';
