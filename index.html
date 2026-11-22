@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>EXTRUDER - Firebase Üretim Emirleri</title>
+  <title>EXTRUDER - Üretim Emirleri</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -105,10 +105,10 @@
       box-shadow: 0 5px 12px -4px rgba(245, 158, 11, 0.2), 0 2px 4px -1px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95);
     }
     .seq-square-3d {
-      width: 44px;
-      height: 22px;
-      padding: 0 3px;
-      border-radius: 6px;
+      width: 34px;
+      height: 16px;
+      padding: 0 2px;
+      border-radius: 5px;
       background: #F1F5F9;
       border: 1px solid #CBD5E1;
       box-shadow: none;
@@ -122,18 +122,6 @@
       background: #FEF3C7;
       border-color: #FCD34D;
       box-shadow: none;
-    }
-    .seq-logo-badge {
-      width: 13px;
-      height: 13px;
-      border-radius: 3px;
-      background: #FFFFFF;
-      border: 1px solid rgba(148, 163, 184, 0.45);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      overflow: hidden;
     }
     .completed-card { border-left: 4px solid #16a34a; }
     .pro-card {
@@ -181,27 +169,22 @@
       </div>
       <div class="min-w-0">
         <span class="font-extrabold text-xs sm:text-sm tracking-tight text-slate-900 block leading-none">EXTRUDER</span>
-        <span id="headerUserBadge" onclick="openAccountModal()" class="text-[10px] font-semibold text-emerald-700 truncate block mt-0.5 cursor-pointer hover:underline">Gmail Giriş</span>
+        <span id="headerUserBadge" onclick="openAccountModal()" class="text-[10px] font-semibold text-emerald-700 truncate block mt-0.5 cursor-pointer hover:underline">Yönetim</span>
       </div>
     </div>
 
     <div class="flex items-center gap-1 shrink-0">
-      <!-- Gmail Kullanıcı / Ekip Butonu -->
-      <button id="accountBtn" type="button" onclick="openAccountModal()" title="Gmail Hesabı & 15 Kişilik Ekip" class="inline-flex items-center gap-1 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-2 py-1.5 rounded-lg text-[11px] font-bold text-[#146C53] active:scale-95 transition">
+      <!-- Rol / Kullanıcı Seçimi -->
+      <button id="accountBtn" type="button" onclick="openAccountModal()" title="Rol & Yetki Seçimi" class="inline-flex items-center gap-1 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-2 py-1.5 rounded-lg text-[11px] font-bold text-[#146C53] active:scale-95 transition">
         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-        <span id="accountBtnLabel" class="max-w-[58px] truncate">Gmail</span>
+        <span id="accountBtnLabel" class="max-w-[64px] truncate">Yönetim</span>
       </button>
       <!-- Dil Seçici (TR / AR) -->
       <button id="langToggleBtn" type="button" onclick="toggleLanguage()" title="Dil Değiştir / تغيير اللغة" class="inline-flex items-center justify-center bg-slate-100 hover:bg-slate-200 border border-slate-200 px-2 py-1.5 rounded-lg text-[11px] font-extrabold text-slate-800 active:scale-95 transition">
         <span id="langToggleLabel">AR</span>
       </button>
-      <!-- Firebase Canlı Veritabanı Durumu -->
-      <button type="button" onclick="openSyncModal()" title="Firebase Durumu" class="inline-flex items-center gap-1 bg-white hover:bg-slate-50 border border-slate-200 px-2 py-1.5 rounded-lg text-[11px] font-bold text-slate-700 active:scale-95 transition">
-        <span id="liveSyncDot" class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
-        <span id="liveSyncBadgeText">Canlı</span>
-      </button>
-      <!-- APK / Export / Firebase Ayarları -->
-      <button type="button" onclick="openApkGuideModal()" title="APK & Dışa Aktar" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 active:scale-95 transition">
+      <!-- CSV / Dışa Aktar -->
+      <button type="button" onclick="openExportModal()" title="Dışa Aktar" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 active:scale-95 transition">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
         </svg>
@@ -252,7 +235,6 @@
             class="w-full ltr:pl-9 ltr:pr-3 rtl:pr-9 rtl:pl-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#146C53] focus:ring-2 focus:ring-[#146C53]/15 transition" />
         </div>
 
-        <!-- Single-Row Color / Status & Sort Bar -->
         <div class="grid grid-cols-2 gap-2">
           <select id="filterColorStatus" onchange="renderOrders()" aria-label="Renge ve Duruma Göre" class="w-full px-2.5 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-[#146C53]">
             <option value="ALL" data-i18n="filter_all_colors">Durum / Renk: Tümü</option>
@@ -475,8 +457,8 @@
           <input id="editOrderNoInput" type="number" min="1" class="w-12 bg-white border border-slate-200 rounded-lg text-xs font-extrabold text-center py-0.5 text-slate-900" />
         </div>
         <div class="flex items-center gap-1.5">
-          <button id="deleteOrderBtn" type="button" onclick="deleteEditingOrder()" class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-extrabold text-xs active:scale-95 transition">
-            Emri Sil
+          <button id="editOrderMetricsBtn" type="button" onclick="toggleOrderMetricsEditor()" class="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-xs active:scale-95 transition">
+            Düzenle
           </button>
           <button type="button" onclick="closeModal('editModal')" class="p-2 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -491,83 +473,84 @@
 
       <div class="grid grid-cols-3 gap-2 bg-slate-50 border border-slate-200/80 rounded-2xl p-3 text-center">
         <div>
-          <div class="text-[10px] font-bold text-slate-400">TON (HEDEF)</div>
+          <div class="text-[10px] font-bold text-slate-400">SİPARİŞ</div>
           <div id="editCalcTon" class="text-sm font-extrabold text-slate-900 mt-0.5">0 KG</div>
+          <input id="manualTonInput" type="number" step="any" oninput="onManualMetricInput('TON')" placeholder="Sipariş KG"
+            class="hidden mt-1.5 w-full px-2 py-1 bg-white border border-amber-300 rounded-lg text-xs font-extrabold text-slate-900 text-center" />
         </div>
         <div class="border-x border-slate-200">
-          <div class="text-[10px] font-bold text-slate-400">QTT PROD</div>
+          <div class="text-[10px] font-bold text-slate-400">ÜRETİM</div>
           <div id="editCalcProd" class="text-sm font-extrabold text-[#146C53] mt-0.5">0 KG</div>
+          <input id="manualProdInput" type="number" step="any" oninput="onManualMetricInput('PROD')" placeholder="Üretim KG"
+            class="hidden mt-1.5 w-full px-2 py-1 bg-white border border-emerald-300 rounded-lg text-xs font-extrabold text-[#146C53] text-center" />
         </div>
         <div>
-          <div class="text-[10px] font-bold text-slate-400">REST (KALAN)</div>
+          <div class="text-[10px] font-bold text-slate-400">KALAN</div>
           <div id="editCalcRest" class="text-sm font-extrabold text-amber-600 mt-0.5">0 KG</div>
+          <input id="manualRestInput" type="number" step="any" oninput="onManualMetricInput('REST')" placeholder="Kalan KG"
+            class="hidden mt-1.5 w-full px-2 py-1 bg-white border border-rose-300 rounded-lg text-xs font-extrabold text-amber-700 text-center" />
         </div>
-      </div>
-
-      <div class="space-y-1.5">
-        <div data-i18n="shift_actions_label" class="text-xs font-extrabold text-slate-800">Vardiya İşlemi</div>
-        <div class="grid grid-cols-2 gap-2.5">
-          <button id="startShiftBtn" type="button" onclick="startOperatorShift()" data-i18n="start_shift_btn" class="py-2.5 px-3 rounded-xl bg-[#146C53] hover:bg-[#0F5C45] text-white font-extrabold text-xs shadow-2xs active:scale-95 transition">
-            Vardiya Başlat
-          </button>
-          <button id="endShiftBtn" type="button" onclick="endOperatorShift()" data-i18n="end_shift_btn" class="py-2.5 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs shadow-2xs active:scale-95 transition">
-            Vardiya Bitir
-          </button>
-        </div>
-        <div id="modalShiftStatusText" class="text-[11px] font-semibold text-slate-500">Vardiya başlatmak için bir operatör kutucuğu seçin</div>
       </div>
 
       <div class="space-y-2">
         <div class="flex items-center justify-between">
           <span data-i18n="op_inputs_title" class="text-xs font-extrabold text-slate-800">Operatör Üretim Girdileri (KG)</span>
-          <span class="text-[11px] font-medium text-slate-400">Örn: 500+1000+300</span>
         </div>
 
-        <div class="grid grid-cols-2 gap-2.5">
-          <div class="bg-blue-50/60 border border-blue-200/80 rounded-2xl p-3 space-y-2">
-            <label class="flex items-center gap-2 cursor-pointer">
+        <div class="flex flex-col gap-2">
+          <div class="flex items-center justify-between gap-2.5 bg-blue-50/60 border border-blue-200/80 rounded-2xl px-3 py-2">
+            <label class="flex items-center gap-2 cursor-pointer min-w-[105px] shrink-0">
               <input id="checkOpIsa" type="checkbox" onchange="onOperatorCheckboxToggle('İSA', this.checked)" class="w-4 h-4 rounded text-blue-600 accent-blue-600" />
               <span class="text-xs font-extrabold text-blue-800">İSA</span>
             </label>
-            <div class="flex items-center gap-1.5">
+            <div class="flex items-center gap-1.5 flex-1">
               <input id="inputIsa" type="text" inputmode="numeric" placeholder="" onfocus="onOperatorInputFocus(this)" onblur="onOperatorInputBlur(this)" oninput="normalizeOperatorInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmOperatorInput('inputIsa','İSA');}" class="w-full px-3 py-2 bg-white border border-blue-200 rounded-xl text-sm font-extrabold text-slate-900" />
               <button id="plusBtnIsa" type="button" title="Satıra + Ekle" onclick="appendPlusToOperatorRow('inputIsa', 'İSA')" class="w-9 h-9 shrink-0 rounded-xl bg-blue-100 hover:bg-blue-200 text-blue-800 font-extrabold text-base flex items-center justify-center active:scale-95 transition">+</button>
             </div>
           </div>
 
-          <div class="bg-emerald-50/60 border border-emerald-200/80 rounded-2xl p-3 space-y-2">
-            <label class="flex items-center gap-2 cursor-pointer">
+          <div class="flex items-center justify-between gap-2.5 bg-emerald-50/60 border border-emerald-200/80 rounded-2xl px-3 py-2">
+            <label class="flex items-center gap-2 cursor-pointer min-w-[105px] shrink-0">
               <input id="checkOpMuhiddin" type="checkbox" onchange="onOperatorCheckboxToggle('MUHİDDİN', this.checked)" class="w-4 h-4 rounded text-[#146C53] accent-[#146C53]" />
               <span class="text-xs font-extrabold text-emerald-800">MUHİDDİN</span>
             </label>
-            <div class="flex items-center gap-1.5">
+            <div class="flex items-center gap-1.5 flex-1">
               <input id="inputMuhiddin" type="text" inputmode="numeric" placeholder="" onfocus="onOperatorInputFocus(this)" onblur="onOperatorInputBlur(this)" oninput="normalizeOperatorInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmOperatorInput('inputMuhiddin','MUHİDDİN');}" class="w-full px-3 py-2 bg-white border border-emerald-200 rounded-xl text-sm font-extrabold text-slate-900" />
               <button id="plusBtnMuhiddin" type="button" title="Satıra + Ekle" onclick="appendPlusToOperatorRow('inputMuhiddin', 'MUHİDDİN')" class="w-9 h-9 shrink-0 rounded-xl bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-extrabold text-base flex items-center justify-center active:scale-95 transition">+</button>
             </div>
           </div>
 
-          <div class="bg-amber-50/60 border border-amber-200/80 rounded-2xl p-3 space-y-2">
-            <label class="flex items-center gap-2 cursor-pointer">
+          <div class="flex items-center justify-between gap-2.5 bg-amber-50/60 border border-amber-200/80 rounded-2xl px-3 py-2">
+            <label class="flex items-center gap-2 cursor-pointer min-w-[105px] shrink-0">
               <input id="checkOpKaddur" type="checkbox" onchange="onOperatorCheckboxToggle('KADDUR', this.checked)" class="w-4 h-4 rounded text-amber-600 accent-amber-600" />
               <span class="text-xs font-extrabold text-amber-800">KADDUR</span>
             </label>
-            <div class="flex items-center gap-1.5">
+            <div class="flex items-center gap-1.5 flex-1">
               <input id="inputKaddur" type="text" inputmode="numeric" placeholder="" onfocus="onOperatorInputFocus(this)" onblur="onOperatorInputBlur(this)" oninput="normalizeOperatorInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmOperatorInput('inputKaddur','KADDUR');}" class="w-full px-3 py-2 bg-white border border-amber-200 rounded-xl text-sm font-extrabold text-slate-900" />
               <button id="plusBtnKaddur" type="button" title="Satıra + Ekle" onclick="appendPlusToOperatorRow('inputKaddur', 'KADDUR')" class="w-9 h-9 shrink-0 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-800 font-extrabold text-base flex items-center justify-center active:scale-95 transition">+</button>
             </div>
           </div>
 
-          <div class="bg-purple-50/60 border border-purple-200/80 rounded-2xl p-3 space-y-2">
-            <label class="flex items-center gap-2 cursor-pointer">
+          <div class="flex items-center justify-between gap-2.5 bg-purple-50/60 border border-purple-200/80 rounded-2xl px-3 py-2">
+            <label class="flex items-center gap-2 cursor-pointer min-w-[105px] shrink-0">
               <input id="checkOpMuhammed" type="checkbox" onchange="onOperatorCheckboxToggle('MUHAMMED', this.checked)" class="w-4 h-4 rounded text-purple-600 accent-purple-600" />
               <span class="text-xs font-extrabold text-purple-800">MUHAMMED</span>
             </label>
-            <div class="flex items-center gap-1.5">
+            <div class="flex items-center gap-1.5 flex-1">
               <input id="inputMuhammed" type="text" inputmode="numeric" placeholder="" onfocus="onOperatorInputFocus(this)" onblur="onOperatorInputBlur(this)" oninput="normalizeOperatorInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmOperatorInput('inputMuhammed','MUHAMMED');}" class="w-full px-3 py-2 bg-white border border-purple-200 rounded-xl text-sm font-extrabold text-slate-900" />
               <button id="plusBtnMuhammed" type="button" title="Satıra + Ekle" onclick="appendPlusToOperatorRow('inputMuhammed', 'MUHAMMED')" class="w-9 h-9 shrink-0 rounded-xl bg-purple-100 hover:bg-purple-200 text-purple-800 font-extrabold text-base flex items-center justify-center active:scale-95 transition">+</button>
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2.5">
+        <button id="startShiftBtn" type="button" onclick="startOperatorShift()" data-i18n="start_shift_btn" class="py-2.5 px-3 rounded-xl bg-[#146C53] hover:bg-[#0F5C45] text-white font-extrabold text-xs shadow-2xs active:scale-95 transition">
+          Vardiya Başlat
+        </button>
+        <button id="endShiftBtn" type="button" onclick="endOperatorShift()" data-i18n="end_shift_btn" class="py-2.5 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs shadow-2xs active:scale-95 transition">
+          Vardiya Bitir
+        </button>
       </div>
 
       <button type="button" onclick="saveOrderEdits()" data-i18n="save_changes_btn" class="w-full bg-[#146C53] hover:bg-[#0F5C45] text-white font-extrabold text-sm py-3.5 rounded-2xl shadow-md active:scale-[0.99] transition">
@@ -627,19 +610,19 @@
     </div>
   </div>
 
-  <!-- MODAL 3: APK GUIDE & CSV EXPORT -->
-  <div id="apkGuideModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-end sm:items-center justify-center">
+  <!-- MODAL 3: EXPORT & RESET -->
+  <div id="exportModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-end sm:items-center justify-center">
     <div class="bg-white w-full max-w-xl rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl bottom-sheet-enter space-y-4">
       <div class="flex items-center justify-between">
-        <h3 class="text-base font-extrabold text-slate-900">APK Kurulumu & Veri Dışa Aktarma</h3>
-        <button type="button" onclick="closeModal('apkGuideModal')" class="p-2 rounded-full bg-slate-100 text-slate-500">
+        <h3 class="text-base font-extrabold text-slate-900">Veri Dışa Aktarma</h3>
+        <button type="button" onclick="closeModal('exportModal')" class="p-2 rounded-full bg-slate-100 text-slate-500">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
       <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 text-xs text-slate-600 space-y-1.5 leading-relaxed">
-        <div class="font-extrabold text-slate-900">Firebase + 15 Kişilik Ekip APK Adımları:</div>
-        <p>1. Üst bardaki <strong>Canlı</strong> butonuna tıklayıp Firebase Console proje ayarlarınızı kontrol edebilirsiniz.</p>
-        <p>2. Ekip üyeleri <strong>Gmail</strong> butonundan kendi <code>@gmail.com</code> adresini eşleştirip sadece kendi alanına veri girer; sadece <strong>Yönetim</strong> etiketli Gmail hesapları yeni emir ekleyip silebilir.</p>
+        <div class="font-extrabold text-slate-900">Çalışma Alanı Bilgisi:</div>
+        <p>• Üretim emirleri, operatör girdileri ve vardiya notları aktif oturum içinde anlık güncellenir.</p>
+        <p>• Tüm iş emirlerini Excel uyumlu CSV formatında indirebilir veya varsayılan listeye dönebilirsiniz.</p>
       </div>
       <div class="grid grid-cols-2 gap-2.5">
         <button type="button" onclick="exportToCSV()" class="py-3 px-3 rounded-xl bg-[#146C53] text-white font-extrabold text-xs">CSV (Excel) İndir</button>
@@ -648,55 +631,15 @@
     </div>
   </div>
 
-  <!-- MODAL 4: FIREBASE CONFIGURATION & LIVE SYNC STATUS -->
-  <div id="syncModal" class="fixed inset-0 z-50 hidden bg-slate-900/55 backdrop-blur-xs flex items-end sm:items-center justify-center">
-    <div class="bg-white w-full max-w-xl rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl bottom-sheet-enter max-h-[92vh] overflow-y-auto space-y-4">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <span id="modalCloudDot" class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-          <h3 class="text-base font-extrabold text-slate-900">Firebase Firestore Veritabanı Ayarları</h3>
-        </div>
-        <button type="button" onclick="closeModal('syncModal')" class="p-2 rounded-full bg-slate-100 text-slate-500">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-      </div>
-
-      <div id="syncTeamSummary" class="bg-emerald-50/70 p-3 rounded-xl border border-emerald-200 text-xs text-emerald-950 font-semibold space-y-1">
-        <div>Firebase Durumu: <span id="cloudStatusText">Bağlanıyor...</span></div>
-        <div>Koleksiyon Yolu: <code class="text-[11px] bg-white px-1.5 py-0.5 rounded border border-emerald-200">artifacts/{appId}/public/data/extruder_orders</code></div>
-        <div class="text-[11px] font-mono text-slate-600 break-all">Firebase UID: <span id="fullUserIdDisplay">-</span></div>
-      </div>
-
-      <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2.5">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-extrabold text-slate-800">Firebase Proje Yapılandırması (JSON)</span>
-          <span class="text-[10px] font-bold text-slate-500">Firebase Console → Proje Ayarları</span>
-        </div>
-        <textarea id="firebaseConfigJsonInput" rows="5" placeholder='{"apiKey":"AIzaSy...","authDomain":"proje.firebaseapp.com","projectId":"proje-id"}'
-          class="w-full p-2.5 bg-white border border-slate-200 rounded-xl font-mono text-[11px] text-slate-800"></textarea>
-        <div class="grid grid-cols-2 gap-2">
-          <button type="button" onclick="saveCustomFirebaseConfig()" class="py-2.5 px-3 rounded-xl bg-[#146C53] hover:bg-[#0F5C45] text-white font-extrabold text-xs">
-            Firebase'e Bağlan
-          </button>
-          <button type="button" onclick="pushAllLocalToFirebase()" class="py-2.5 px-3 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-800 font-bold text-xs">
-            Tüm Verileri Gönder
-          </button>
-        </div>
-      </div>
-
-      <button type="button" onclick="closeModal('syncModal')" class="w-full bg-slate-900 text-white font-bold text-xs py-3 rounded-xl">Kapat</button>
-    </div>
-  </div>
-
-  <!-- MODAL 5: GMAIL SIGN-IN & 15-PERSON TEAM DIRECTORY -->
+  <!-- MODAL 4: ROLE / OPERATOR SELECTION -->
   <div id="accountModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center">
     <div class="bg-white w-full max-w-xl rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl bottom-sheet-enter max-h-[92vh] overflow-y-auto space-y-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center font-extrabold text-sm text-[#146C53]">G</div>
+          <div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center font-extrabold text-sm text-[#146C53]">R</div>
           <div>
-            <h3 class="text-base font-extrabold text-slate-900">Gmail Giriş Takibi & Yetkilendirme</h3>
-            <p class="text-[11px] text-slate-500">Operatör = Gmail eşleştirme ve Yönetim etiketi kontrolü</p>
+            <h3 class="text-base font-extrabold text-slate-900">Aktif Rol & Yetki Seçimi</h3>
+            <p class="text-[11px] text-slate-500">Yönetim, Operatör veya İzleyici profili seçin</p>
           </div>
         </div>
         <button id="closeAccountModalBtn" type="button" onclick="closeModal('accountModal')" class="p-2 rounded-full bg-slate-100 text-slate-500">
@@ -704,785 +647,13 @@
         </button>
       </div>
 
-      <!-- Aktif Oturum & Yetki Özeti -->
-      <div id="activePermissionBanner" class="bg-emerald-50/80 border border-emerald-200 rounded-2xl p-3 text-xs space-y-1">
-        <div class="font-extrabold text-slate-900">Aktif Oturum: <span id="activeSessionSummary" class="text-[#146C53]">Seçilmedi</span></div>
-        <div id="activePermissionDetail" class="text-[11px] text-slate-600">Her satırın karşısına virgülle (<code>,</code>) ayırarak 2-3 Gmail adresi ekleyebilirsiniz.</div>
-      </div>
-
-      <!-- 6 Sabit Satır: Yönetim, İsa, Muhiddin, Kaddur, Muhammed, İzleyici = Çoklu Gmail Kutucuğu -->
       <div id="roleAssignmentsList" class="space-y-2"></div>
 
-      <!-- Yönetim PIN Alanı (Yönetim Gmail kaydedilirken veya girişte kontrol edilir) -->
-      <div id="adminPinWrapper" class="hidden bg-amber-50 border border-amber-200 rounded-2xl p-3 flex items-center justify-between gap-2">
-        <label for="adminPinInput" class="text-xs font-extrabold text-amber-900 shrink-0">Yönetim PIN:</label>
-        <input id="adminPinInput" type="password" inputmode="numeric" placeholder="1453" class="w-28 px-3 py-1.5 bg-white border border-amber-300 rounded-xl text-xs font-extrabold text-slate-900 text-center" />
-      </div>
-
-      <button type="button" onclick="saveRoleAssignmentsAndLogin()" class="w-full bg-[#146C53] hover:bg-[#0F5C45] text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-sm active:scale-95 transition">
-        Kaydet ve Giriş Yap
+      <button type="button" onclick="applySelectedRoleProfile()" class="w-full bg-[#146C53] hover:bg-[#0F5C45] text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-sm active:scale-95 transition">
+        Rolü Uygula
       </button>
     </div>
   </div>
-
-  <!-- FIREBASE REALTIME CLOUD & AUTH MODULE -->
-  <script type="module">
-    import { initializeApp, getApps, deleteApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, onSnapshot, collection, writeBatch } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    const MAX_TEAM_MEMBERS = 15;
-    const MANAGEMENT_PIN = '1453';
-    const DEFAULT_OWNER_GMAIL = 'oozkaankrt@gmail.com';
-    const CUSTOM_FB_STORAGE_KEY = 'extruder_custom_firebase_config_v1';
-    const ROLE_MAP_STORAGE_KEY = 'extruder_role_gmail_map_v1';
-    const ACTIVE_ACCOUNT_STORAGE_KEY = 'extruder_active_role_account_v1';
-
-    const DEFAULT_EMBEDDED_FIREBASE_CONFIG = {
-      apiKey: "AIzaSyDcDLbU8rJPjTyDtLYuX40uVqOK7IYDMeI",
-      authDomain: "extruder-1.firebaseapp.com",
-      projectId: "extruder-1",
-      storageBucket: "extruder-1.firebasestorage.app",
-      messagingSenderId: "656942553417",
-      appId: "1:656942553417:web:c26ddf4a302c810475e298",
-      measurementId: "G-QK0GLCQ8QG"
-    };
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'extruder-1-shared';
-
-    const ROLE_SLOTS = [
-      { key: 'YONETIM', label: 'Yönetim', kind: 'MANAGEMENT', badge: 'Sınırsız Yetki' },
-      { key: 'ISA', label: 'İsa', kind: 'OPERATOR', operatorCode: 'İSA', badge: 'Başlat/Bitir · KG' },
-      { key: 'MUHIDDIN', label: 'Muhiddin', kind: 'OPERATOR', operatorCode: 'MUHİDDİN', badge: 'Başlat/Bitir · KG' },
-      { key: 'KADDUR', label: 'Kaddur', kind: 'OPERATOR', operatorCode: 'KADDUR', badge: 'Başlat/Bitir · KG' },
-      { key: 'MUHAMMED', label: 'Muhammed', kind: 'OPERATOR', operatorCode: 'MUHAMMED', badge: 'Başlat/Bitir · KG' },
-      { key: 'IZLEYICI', label: 'İzleyici', kind: 'VIEWER', badge: 'Sadece İzleme' }
-    ];
-
-    let firebaseApp = null;
-    let auth = null;
-    let db = null;
-    let currentAuthUser = null;
-    let isFirebaseConnected = false;
-    let isApplyingRemoteUpdate = false;
-    let teamMembers = [];
-    let accessLogs = [];
-    let unsubOrders = null;
-    let unsubNotes = null;
-    let unsubMembers = null;
-    let unsubLogs = null;
-    let roleGmailMap = {
-      YONETIM: DEFAULT_OWNER_GMAIL,
-      ISA: '',
-      MUHIDDIN: '',
-      KADDUR: '',
-      MUHAMMED: '',
-      IZLEYICI: ''
-    };
-    let activeRoleSession = null; // { slotKey, label, kind, operatorCode, email, emails }
-    let currentGmailProfile = null;
-
-    function getOrdersColRef() {
-      return collection(db, 'artifacts', appId, 'public', 'data', 'extruder_orders');
-    }
-
-    function getNotesColRef() {
-      return collection(db, 'artifacts', appId, 'public', 'data', 'extruder_notes');
-    }
-
-    function getMembersColRef() {
-      return collection(db, 'artifacts', appId, 'public', 'data', 'extruder_members');
-    }
-
-    function getLogsColRef() {
-      return collection(db, 'artifacts', appId, 'public', 'data', 'extruder_access_logs');
-    }
-
-    function parseEmailsList(rawInput) {
-      if (Array.isArray(rawInput)) {
-        return rawInput
-          .map(e => String(e || '').trim().toLowerCase())
-          .filter(Boolean);
-      }
-      return String(rawInput || '')
-        .split(/[\n,;]+/)
-        .map(e => e.trim().toLowerCase())
-        .filter(Boolean);
-    }
-
-    function normalizeEmailsField(rawVal) {
-      return parseEmailsList(rawVal).join(', ');
-    }
-
-    function getPrimaryEmail(rawVal) {
-      const list = parseEmailsList(rawVal);
-      return list[0] || '';
-    }
-
-    function buildSessionFromSlot(slotKey, rawEmails) {
-      const slot = ROLE_SLOTS.find(s => s.key === slotKey) || ROLE_SLOTS[5];
-      const emails = parseEmailsList(rawEmails);
-      return {
-        slotKey: slot.key,
-        label: slot.label,
-        kind: slot.kind,
-        operatorCode: slot.operatorCode || null,
-        email: emails[0] || '',
-        emails
-      };
-    }
-
-    // Yetki yardımcıları (Global erişime açık)
-    // - Yönetim: sınırsız her yetkiye sahip (emir ekleme, silme, sıra, KG, vardiya, not silme vb.)
-    // - İsa / Muhiddin / Kaddur / Muhammed: sadece iş emri başlat/bitir, KG giriş ve vardiya/not ekleme
-    // - İzleyici: sadece izler (hiçbir değiştirme/silme/ekleme/KG/vardiya işlemi yapamaz)
-    window.getCurrentUserPermissions = function() {
-      const sess = activeRoleSession;
-      const emails = sess ? parseEmailsList(sess.emails || sess.email) : [];
-      const isLoggedIn = !!(sess && emails.length > 0);
-      const isManagement = isLoggedIn && sess.kind === 'MANAGEMENT';
-      const isOperator = isLoggedIn && sess.kind === 'OPERATOR';
-      const isViewer = !isLoggedIn || sess.kind === 'VIEWER';
-
-      return {
-        isLoggedIn,
-        email: emails[0] || '',
-        emails,
-        name: isLoggedIn ? sess.label : 'İzleyici',
-        role: isLoggedIn ? sess.label : 'İzleyici',
-        kind: isLoggedIn ? sess.kind : 'VIEWER',
-        isManagement,
-        isOperator,
-        isViewer,
-        mappedOperator: isOperator ? sess.operatorCode : null,
-        canView: true,
-        canStartStopOrder: isManagement || isOperator,
-        canEditKg: isManagement || isOperator,
-        canAddNote: isManagement || isOperator,
-        canDeleteNote: isManagement,
-        canCreateOrder: isManagement,
-        canDeleteOrder: isManagement,
-        canReorderOrders: isManagement,
-        canEditOrderMeta: isManagement
-      };
-    };
-
-    window.guardActionPermission = function(actionKey) {
-      const p = window.getCurrentUserPermissions();
-      if (p.isManagement) return true;
-
-      if (p.isViewer) {
-        if (window.showToast) window.showToast('İzleyici hesabı sadece izleme yetkisine sahiptir');
-        return false;
-      }
-
-      if (p.isOperator) {
-        if (actionKey === 'CREATE_ORDER' || actionKey === 'DELETE_ORDER' || actionKey === 'REORDER_ORDER' || actionKey === 'DELETE_NOTE' || actionKey === 'RESET_DATA') {
-          if (window.showToast) window.showToast(`${p.role} hesabı sadece başlat/bitir ve KG giriş yetkisine sahiptir`);
-          return false;
-        }
-        return true;
-      }
-
-      return false;
-    };
-
-    window.logGmailActivity = async function(actionType, detailText) {
-      const perms = window.getCurrentUserPermissions();
-      const now = new Date();
-      const timeStr = `${String(now.getDate()).padStart(2, '0')}.${String(now.getMonth() + 1).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-      const logEntry = {
-        id: Date.now() + Math.floor(Math.random() * 100),
-        email: perms.email || 'izleyici@gmail.com',
-        operator: perms.mappedOperator || perms.role,
-        role: perms.role,
-        action: actionType,
-        detail: detailText,
-        time: timeStr,
-        timestamp: now.toISOString()
-      };
-
-      accessLogs.unshift(logEntry);
-      accessLogs = accessLogs.slice(0, 40);
-      try {
-        localStorage.setItem('extruder_access_logs', JSON.stringify(accessLogs));
-      } catch (e) {}
-
-      if (db && currentAuthUser) {
-        try {
-          await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'extruder_access_logs', `log_${logEntry.id}`), logEntry);
-        } catch (err) {
-          console.error('Firebase log write error:', err);
-        }
-      }
-    };
-
-    function applyRolePermissionsToUI() {
-      const perms = window.getCurrentUserPermissions();
-      const newOrderBtn = document.getElementById('newOrderMainBtn');
-      if (newOrderBtn) {
-        if (perms.canCreateOrder) {
-          newOrderBtn.classList.remove('opacity-50');
-          newOrderBtn.title = 'Yeni üretim emri oluştur (Yönetim)';
-        } else {
-          newOrderBtn.classList.add('opacity-50');
-          newOrderBtn.title = 'Yeni emir ekleme yalnızca Yönetim yetkisindedir';
-        }
-      }
-
-      const sessionSummaryEl = document.getElementById('activeSessionSummary');
-      const roleChipEl = document.getElementById('activeRoleChip');
-      if (sessionSummaryEl && roleChipEl) {
-        if (perms.isLoggedIn) {
-          const emailDisplay = perms.emails.length > 1
-            ? `${perms.emails[0]} (+${perms.emails.length - 1})`
-            : perms.email;
-          sessionSummaryEl.textContent = `${perms.label} = ${emailDisplay}`;
-          roleChipEl.textContent = perms.isManagement
-            ? 'Sınırsız Yetki'
-            : (perms.isOperator ? 'Başlat/Bitir · KG' : 'Sadece İzleme');
-        } else {
-          sessionSummaryEl.textContent = 'Seçilmedi';
-          roleChipEl.textContent = 'İzleyici';
-        }
-      }
-    }
-
-    function updateFirebaseConnectionIndicators() {
-      const dot = document.getElementById('liveSyncDot');
-      const modalDot = document.getElementById('modalCloudDot');
-      const badgeText = document.getElementById('liveSyncBadgeText');
-      const userIdEl = document.getElementById('fullUserIdDisplay');
-      const cloudStatusEl = document.getElementById('cloudStatusText');
-      const badge = document.getElementById('headerUserBadge');
-      const btnLabel = document.getElementById('accountBtnLabel');
-
-      if (userIdEl) {
-        userIdEl.textContent = currentAuthUser ? currentAuthUser.uid : 'Oturum bekleniyor';
-      }
-
-      if (isFirebaseConnected && db && currentAuthUser) {
-        if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse';
-        if (modalDot) modalDot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500';
-        if (badgeText) badgeText.textContent = 'Canlı';
-        if (cloudStatusEl) {
-          cloudStatusEl.textContent = `Bağlı · Anlık Senkronizasyon Aktif (${teamMembers.length}/${MAX_TEAM_MEMBERS} Gmail üyesi)`;
-        }
-      } else {
-        if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-amber-500';
-        if (modalDot) modalDot.className = 'w-2.5 h-2.5 rounded-full bg-amber-500';
-        if (badgeText) badgeText.textContent = 'Kur';
-        if (cloudStatusEl) {
-          cloudStatusEl.textContent = 'Firebase Config bekleniyor (Yerel yedek aktif)';
-        }
-      }
-
-      if (activeRoleSession && activeRoleSession.email) {
-        if (badge) badge.textContent = `${activeRoleSession.label} = ${activeRoleSession.email}`;
-        if (btnLabel) btnLabel.textContent = activeRoleSession.label;
-      } else {
-        if (badge) badge.textContent = 'Gmail Giriş';
-        if (btnLabel) btnLabel.textContent = 'Gmail';
-      }
-
-      applyRolePermissionsToUI();
-    }
-
-    function renderRoleAssignmentsList() {
-      const container = document.getElementById('roleAssignmentsList');
-      if (!container) return;
-
-      const selectedKey = activeRoleSession?.slotKey || 'YONETIM';
-
-      container.innerHTML = ROLE_SLOTS.map(slot => {
-        const currentEmails = normalizeEmailsField(roleGmailMap[slot.key] || '');
-        const isSelected = selectedKey === slot.key;
-        const safeEmails = window.escapeHtml ? window.escapeHtml(currentEmails) : currentEmails;
-
-        return `
-          <div onclick="selectRoleSlot('${slot.key}')" class="flex items-center gap-2 p-2.5 rounded-2xl border cursor-pointer transition ${isSelected ? 'bg-emerald-50/90 border-[#146C53] ring-2 ring-[#146C53]/15' : 'bg-slate-50/70 border-slate-200/80 hover:bg-slate-50'}">
-            <input type="radio" name="activeRoleRadio" ${isSelected ? 'checked' : ''} onchange="selectRoleSlot('${slot.key}')" onclick="event.stopPropagation()" class="w-4 h-4 accent-[#146C53] shrink-0" />
-            <div class="w-20 shrink-0">
-              <div class="text-xs font-extrabold text-slate-900 leading-tight">${slot.label}</div>
-              <div class="text-[9px] font-semibold text-slate-500 leading-tight truncate">${slot.badge}</div>
-            </div>
-            <span class="text-xs font-extrabold text-slate-400 shrink-0">=</span>
-            <input id="roleEmail_${slot.key}" type="text" inputmode="email" value="${safeEmails}" placeholder="mail1@gmail.com, mail2@gmail.com"
-              onclick="event.stopPropagation(); selectRoleSlot('${slot.key}')"
-              oninput="onRoleEmailChange('${slot.key}', this.value)"
-              class="flex-1 min-w-0 px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-900" />
-          </div>`;
-      }).join('');
-
-      toggleAdminPinField();
-    }
-
-    window.selectRoleSlot = function(slotKey) {
-      const inputEl = document.getElementById(`roleEmail_${slotKey}`);
-      const rawVal = inputEl ? inputEl.value : (roleGmailMap[slotKey] || '');
-      roleGmailMap[slotKey] = rawVal;
-      activeRoleSession = buildSessionFromSlot(slotKey, rawVal);
-
-      document.querySelectorAll('input[name="activeRoleRadio"]').forEach(r => {
-        const parentRow = r.closest('[onclick*="selectRoleSlot"]');
-        const isMatch = parentRow && parentRow.getAttribute('onclick') === `selectRoleSlot('${slotKey}')`;
-        r.checked = Boolean(isMatch);
-        if (parentRow) {
-          parentRow.className = isMatch
-            ? 'flex items-center gap-2 p-2.5 rounded-2xl border cursor-pointer transition bg-emerald-50/90 border-[#146C53] ring-2 ring-[#146C53]/15'
-            : 'flex items-center gap-2 p-2.5 rounded-2xl border cursor-pointer transition bg-slate-50/70 border-slate-200/80 hover:bg-slate-50';
-        }
-      });
-
-      toggleAdminPinField();
-      applyRolePermissionsToUI();
-    };
-
-    window.onRoleEmailChange = function(slotKey, val) {
-      roleGmailMap[slotKey] = String(val || '');
-      if (activeRoleSession && activeRoleSession.slotKey === slotKey) {
-        const updatedSession = buildSessionFromSlot(slotKey, roleGmailMap[slotKey]);
-        activeRoleSession.email = updatedSession.email;
-        activeRoleSession.emails = updatedSession.emails;
-        applyRolePermissionsToUI();
-      }
-      toggleAdminPinField();
-    };
-
-    window.toggleAdminPinField = function() {
-      const pinWrap = document.getElementById('adminPinWrapper');
-      if (!pinWrap) return;
-      const isMgmtSelected = activeRoleSession?.slotKey === 'YONETIM';
-      const mgmtEmails = parseEmailsList(roleGmailMap.YONETIM || '');
-      const hasOnlyDefaultOwner = mgmtEmails.length === 1 && mgmtEmails[0] === DEFAULT_OWNER_GMAIL;
-      pinWrap.classList.toggle('hidden', !(isMgmtSelected && mgmtEmails.length > 0 && !hasOnlyDefaultOwner));
-    };
-
-    async function persistRoleMapToFirebase() {
-      try {
-        localStorage.setItem(ROLE_MAP_STORAGE_KEY, JSON.stringify(roleGmailMap));
-        if (activeRoleSession) {
-          localStorage.setItem(ACTIVE_ACCOUNT_STORAGE_KEY, JSON.stringify(activeRoleSession));
-        }
-      } catch (e) {}
-
-      if (db && currentAuthUser) {
-        try {
-          await setDoc(
-            doc(db, 'artifacts', appId, 'public', 'data', 'extruder_members', 'role_gmail_assignments'),
-            {
-              roleGmailMap,
-              updatedBy: activeRoleSession?.email || 'system',
-              lastActive: new Date().toISOString()
-            },
-            { merge: true }
-          );
-        } catch (err) {
-          console.error('Role map Firebase sync error:', err);
-        }
-      }
-    }
-
-    window.openAccountModal = function() {
-      if (!roleGmailMap.YONETIM) {
-        roleGmailMap.YONETIM = DEFAULT_OWNER_GMAIL;
-      }
-      if (!activeRoleSession) {
-        activeRoleSession = buildSessionFromSlot('YONETIM', roleGmailMap.YONETIM || DEFAULT_OWNER_GMAIL);
-      }
-      renderRoleAssignmentsList();
-      applyRolePermissionsToUI();
-      document.getElementById('accountModal')?.classList.remove('hidden');
-    };
-
-    window.saveRoleAssignmentsAndLogin = async function() {
-      const selectedKey = activeRoleSession?.slotKey || 'YONETIM';
-      const updatedMap = {};
-
-      for (const slot of ROLE_SLOTS) {
-        const el = document.getElementById(`roleEmail_${slot.key}`);
-        const rawVal = el ? el.value : (roleGmailMap[slot.key] || '');
-        const emailList = parseEmailsList(rawVal);
-
-        for (const singleMail of emailList) {
-          if (!/^[a-z0-9._%+-]+@gmail\.com$/i.test(singleMail)) {
-            if (window.showToast) window.showToast(`${slot.label} için geçerli bir @gmail.com adresi girin (${singleMail})`);
-            return;
-          }
-        }
-        updatedMap[slot.key] = emailList.join(', ');
-      }
-
-      if (!updatedMap.YONETIM) {
-        updatedMap.YONETIM = DEFAULT_OWNER_GMAIL;
-      }
-
-      const activeEmails = parseEmailsList(updatedMap[selectedKey] || '');
-      if (activeEmails.length === 0) {
-        if (window.showToast) window.showToast(`Lütfen seçili "${ROLE_SLOTS.find(s => s.key === selectedKey)?.label}" için en az bir Gmail adresi girin`);
-        return;
-      }
-
-      const pin = (document.getElementById('adminPinInput')?.value || '').trim();
-      const prevMgmtEmails = parseEmailsList(roleGmailMap.YONETIM || '');
-      const nextMgmtEmails = parseEmailsList(updatedMap.YONETIM || '');
-      const addedNonOwnerMgmt = nextMgmtEmails.some(m => m !== DEFAULT_OWNER_GMAIL && !prevMgmtEmails.includes(m));
-      const selectingNonOwnerMgmt = selectedKey === 'YONETIM' && !activeEmails.includes(DEFAULT_OWNER_GMAIL);
-
-      if ((addedNonOwnerMgmt || selectingNonOwnerMgmt) && pin !== MANAGEMENT_PIN) {
-        if (window.showToast) window.showToast('Yönetim Gmail kaydı için PIN kodu: 1453');
-        return;
-      }
-
-      roleGmailMap = updatedMap;
-      activeRoleSession = buildSessionFromSlot(selectedKey, activeEmails);
-      currentGmailProfile = {
-        email: activeRoleSession.email,
-        emails: activeRoleSession.emails,
-        name: activeRoleSession.label,
-        mappedOperator: activeRoleSession.operatorCode || 'GENEL',
-        role: activeRoleSession.kind === 'MANAGEMENT' ? 'Yönetim' : (activeRoleSession.kind === 'VIEWER' ? 'İzleyici' : 'Operatör')
-      };
-
-      await persistRoleMapToFirebase();
-      updateFirebaseConnectionIndicators();
-      await window.logGmailActivity('GIRIS', `${activeRoleSession.label} = ${activeRoleSession.emails.join(', ')} giriş yaptı`);
-
-      if (typeof window.refreshAllViewsForPermissions === 'function') {
-        window.refreshAllViewsForPermissions();
-      }
-
-      window.closeModal('accountModal');
-      if (window.showToast) window.showToast(`${activeRoleSession.label} = ${activeRoleSession.email}`);
-    };
-
-    // Eski/doğrudan çağrılan Gmail onay butonlarıyla uyumluluk için köprü fonksiyon
-    window.confirmGmailLogin = async function() {
-      if (typeof window.saveRoleAssignmentsAndLogin === 'function') {
-        await window.saveRoleAssignmentsAndLogin();
-      }
-    };
-
-    async function bootstrapFirebase() {
-      try {
-        const savedMap = localStorage.getItem(ROLE_MAP_STORAGE_KEY);
-        if (savedMap) {
-          roleGmailMap = Object.assign(roleGmailMap, JSON.parse(savedMap));
-        }
-        const savedActive = localStorage.getItem(ACTIVE_ACCOUNT_STORAGE_KEY);
-        if (savedActive) {
-          activeRoleSession = JSON.parse(savedActive);
-        }
-        const savedLogs = localStorage.getItem('extruder_access_logs');
-        if (savedLogs) accessLogs = JSON.parse(savedLogs);
-      } catch (e) {}
-
-      if (!roleGmailMap.YONETIM) {
-        roleGmailMap.YONETIM = DEFAULT_OWNER_GMAIL;
-      }
-
-      if (activeRoleSession && activeRoleSession.slotKey) {
-        activeRoleSession = buildSessionFromSlot(
-          activeRoleSession.slotKey,
-          roleGmailMap[activeRoleSession.slotKey] || activeRoleSession.emails || activeRoleSession.email || ''
-        );
-      } else {
-        activeRoleSession = buildSessionFromSlot('YONETIM', roleGmailMap.YONETIM);
-      }
-
-      updateFirebaseConnectionIndicators();
-
-      let activeConfig = null;
-      if (typeof __firebase_config !== 'undefined' && __firebase_config) {
-        try {
-          activeConfig = JSON.parse(__firebase_config);
-        } catch (e) {}
-      }
-      if (!activeConfig) {
-        try {
-          const customRaw = localStorage.getItem(CUSTOM_FB_STORAGE_KEY);
-          if (customRaw) activeConfig = JSON.parse(customRaw);
-        } catch (e) {}
-      }
-      if (!activeConfig && DEFAULT_EMBEDDED_FIREBASE_CONFIG && DEFAULT_EMBEDDED_FIREBASE_CONFIG.apiKey) {
-        activeConfig = DEFAULT_EMBEDDED_FIREBASE_CONFIG;
-      }
-      if (activeConfig) {
-        const inputEl = document.getElementById('firebaseConfigJsonInput');
-        if (inputEl) inputEl.value = JSON.stringify(activeConfig, null, 2);
-        await connectFirebaseWithConfig(activeConfig);
-      }
-
-      if (!activeRoleSession || !activeRoleSession.email) {
-        setTimeout(() => {
-          window.openAccountModal();
-        }, 350);
-      }
-    }
-
-    function startFirebaseRealtimeListeners() {
-      if (!db || !currentAuthUser) return;
-
-      if (unsubMembers) unsubMembers();
-      unsubMembers = onSnapshot(getMembersColRef(), (snap) => {
-        const list = [];
-        snap.forEach(d => {
-          const data = d.data();
-          if (d.id === 'role_gmail_assignments' && data?.roleGmailMap) {
-            roleGmailMap = Object.assign(roleGmailMap, data.roleGmailMap);
-            if (activeRoleSession && activeRoleSession.slotKey) {
-              activeRoleSession = buildSessionFromSlot(
-                activeRoleSession.slotKey,
-                roleGmailMap[activeRoleSession.slotKey] || activeRoleSession.email || ''
-              );
-            }
-          } else if (data?.email) {
-            list.push(data);
-          }
-        });
-        teamMembers = list.slice(0, MAX_TEAM_MEMBERS);
-        isFirebaseConnected = true;
-        updateFirebaseConnectionIndicators();
-      }, (err) => {
-        console.error('Firestore members snapshot error:', err);
-      });
-
-      if (unsubLogs) unsubLogs();
-      unsubLogs = onSnapshot(getLogsColRef(), (snap) => {
-        const list = [];
-        snap.forEach(d => list.push(d.data()));
-        list.sort((a, b) => String(b.timestamp || '').localeCompare(String(a.timestamp || '')));
-        accessLogs = list.slice(0, 40);
-      }, (err) => {
-        console.error('Firestore logs snapshot error:', err);
-      });
-
-      if (unsubOrders) unsubOrders();
-      unsubOrders = onSnapshot(getOrdersColRef(), async (snap) => {
-        isFirebaseConnected = true;
-        updateFirebaseConnectionIndicators();
-
-        if (snap.empty) {
-          if (typeof window.getCurrentAppState === 'function') {
-            const state = window.getCurrentAppState();
-            await window.pushSharedWorkspaceToCloud(state.orders, state.notes);
-          }
-          return;
-        }
-
-        const remoteOrders = [];
-        let lastEditor = null;
-        snap.forEach(d => {
-          const item = d.data();
-          if (item && !item.deleted && item.id) {
-            remoteOrders.push(item);
-            if (item.updatedByName) lastEditor = item.updatedByName;
-          }
-        });
-
-        if (typeof window.applyRemoteOrdersState === 'function') {
-          isApplyingRemoteUpdate = true;
-          try {
-            window.applyRemoteOrdersState(remoteOrders, lastEditor);
-          } finally {
-            isApplyingRemoteUpdate = false;
-          }
-        }
-      }, (err) => {
-        console.error('Firestore orders snapshot error:', err);
-      });
-
-      if (unsubNotes) unsubNotes();
-      unsubNotes = onSnapshot(getNotesColRef(), (snap) => {
-        if (snap.empty) return;
-        const remoteNotes = [];
-        snap.forEach(d => {
-          const item = d.data();
-          if (item && !item.deleted && item.id) {
-            remoteNotes.push(item);
-          }
-        });
-        remoteNotes.sort((a, b) => Number(b.id || 0) - Number(a.id || 0));
-
-        if (typeof window.applyRemoteNotesState === 'function') {
-          isApplyingRemoteUpdate = true;
-          try {
-            window.applyRemoteNotesState(remoteNotes);
-          } finally {
-            isApplyingRemoteUpdate = false;
-          }
-        }
-      }, (err) => {
-        console.error('Firestore notes snapshot error:', err);
-      });
-    }
-
-    async function connectFirebaseWithConfig(configObj) {
-      if (!configObj || !configObj.apiKey || !configObj.projectId) {
-        return false;
-      }
-      try {
-        if (unsubOrders) { unsubOrders(); unsubOrders = null; }
-        if (unsubNotes) { unsubNotes(); unsubNotes = null; }
-        if (unsubMembers) { unsubMembers(); unsubMembers = null; }
-        if (unsubLogs) { unsubLogs(); unsubLogs = null; }
-
-        for (const existingApp of getApps()) {
-          await deleteApp(existingApp);
-        }
-
-        firebaseApp = initializeApp(configObj);
-        auth = getAuth(firebaseApp);
-        db = getFirestore(firebaseApp);
-
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-          await signInWithCustomToken(auth, __initial_auth_token);
-        } else {
-          await signInAnonymously(auth);
-        }
-
-        onAuthStateChanged(auth, async (user) => {
-          currentAuthUser = user;
-          if (!user) return;
-          isFirebaseConnected = true;
-          updateFirebaseConnectionIndicators();
-          startFirebaseRealtimeListeners();
-        });
-
-        return true;
-      } catch (err) {
-        console.error('Firebase initialization failed:', err);
-        isFirebaseConnected = false;
-        updateFirebaseConnectionIndicators();
-        return false;
-      }
-    }
-
-    window.saveCustomFirebaseConfig = async function() {
-      const raw = (document.getElementById('firebaseConfigJsonInput')?.value || '').trim();
-      if (!raw) {
-        if (window.showToast) window.showToast('Lütfen Firebase JSON yapılandırmasını yapıştırın');
-        return;
-      }
-      try {
-        const normalized = raw
-          .replace(/const\s+firebaseConfig\s*=\s*/i, '')
-          .replace(/;+\s*$/, '');
-        const parsed = JSON.parse(normalized);
-        if (!parsed.apiKey || !parsed.projectId) {
-          if (window.showToast) window.showToast('JSON içinde apiKey ve projectId alanları zorunludur');
-          return;
-        }
-        localStorage.setItem(CUSTOM_FB_STORAGE_KEY, JSON.stringify(parsed));
-        const ok = await connectFirebaseWithConfig(parsed);
-        if (ok) {
-          if (window.showToast) window.showToast('Firebase Firestore veritabanına bağlanıldı');
-        } else {
-          if (window.showToast) window.showToast('Firebase bağlantısı kurulamadı, bilgileri kontrol edin');
-        }
-      } catch (e) {
-        if (window.showToast) window.showToast('Geçersiz JSON formatı');
-      }
-    };
-
-    window.syncSingleOrderToCloud = async function(orderObj) {
-      if (!db || !currentAuthUser || isApplyingRemoteUpdate || !orderObj) return;
-      try {
-        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'extruder_orders', `order_${orderObj.id}`), {
-          ...orderObj,
-          updatedByEmail: activeRoleSession ? activeRoleSession.email : 'ekip@gmail.com',
-          updatedByName: activeRoleSession ? activeRoleSession.label : 'Operatör',
-          updatedAt: new Date().toISOString()
-        }, { merge: true });
-      } catch (err) {
-        console.error('Firebase order write error:', err);
-      }
-    };
-
-    window.deleteSingleOrderFromCloud = async function(orderId) {
-      if (!db || !currentAuthUser || isApplyingRemoteUpdate) return;
-      try {
-        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'extruder_orders', `order_${orderId}`), {
-          deleted: true,
-          deletedByEmail: activeRoleSession ? activeRoleSession.email : 'yonetim@gmail.com',
-          updatedAt: new Date().toISOString()
-        }, { merge: true });
-      } catch (err) {
-        console.error('Firebase order delete error:', err);
-      }
-    };
-
-    window.syncSingleNoteToCloud = async function(noteObj) {
-      if (!db || !currentAuthUser || isApplyingRemoteUpdate || !noteObj) return;
-      try {
-        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'extruder_notes', `note_${noteObj.id}`), {
-          ...noteObj,
-          updatedByEmail: activeRoleSession ? activeRoleSession.email : 'ekip@gmail.com',
-          updatedAt: new Date().toISOString()
-        }, { merge: true });
-      } catch (err) {
-        console.error('Firebase note write error:', err);
-      }
-    };
-
-    window.deleteSingleNoteFromCloud = async function(noteId) {
-      if (!db || !currentAuthUser || isApplyingRemoteUpdate) return;
-      try {
-        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'extruder_notes', `note_${noteId}`), {
-          deleted: true,
-          updatedAt: new Date().toISOString()
-        }, { merge: true });
-      } catch (err) {
-        console.error('Firebase note delete error:', err);
-      }
-    };
-
-    window.pushSharedWorkspaceToCloud = async function(currentOrders, currentNotes) {
-      if (!db || !currentAuthUser || isApplyingRemoteUpdate) return;
-      try {
-        const batch = writeBatch(db);
-        const nowIso = new Date().toISOString();
-        const editorEmail = activeRoleSession ? activeRoleSession.email : 'ekip@gmail.com';
-        const editorName = activeRoleSession ? activeRoleSession.label : 'Operatör';
-
-        (currentOrders || []).forEach(o => {
-          const ref = doc(db, 'artifacts', appId, 'public', 'data', 'extruder_orders', `order_${o.id}`);
-          batch.set(ref, {
-            ...o,
-            updatedByEmail: editorEmail,
-            updatedByName: editorName,
-            updatedAt: nowIso
-          }, { merge: true });
-        });
-
-        (currentNotes || []).forEach(n => {
-          const ref = doc(db, 'artifacts', appId, 'public', 'data', 'extruder_notes', `note_${n.id}`);
-          batch.set(ref, {
-            ...n,
-            updatedByEmail: editorEmail,
-            updatedAt: nowIso
-          }, { merge: true });
-        });
-
-        await batch.commit();
-      } catch (err) {
-        console.error('Firebase batch commit error:', err);
-      }
-    };
-
-    window.pushAllLocalToFirebase = async function() {
-      if (!db || !currentAuthUser) {
-        if (window.showToast) window.showToast('Önce geçerli Firebase ayarlarını kaydedin');
-        return;
-      }
-      if (typeof window.getCurrentAppState === 'function') {
-        const st = window.getCurrentAppState();
-        await window.pushSharedWorkspaceToCloud(st.orders, st.notes);
-        if (window.showToast) window.showToast('Tüm yerel iş emirleri ve notlar Firebase’e aktarıldı');
-      }
-    };
-
-    bootstrapFirebase();
-  </script>
 
   <script>
     const I18N = {
@@ -1490,31 +661,22 @@
         orders_title: 'Üretim Emirleri',
         orders_subtitle: 'Üretim emirlerini bulun ve üretim girdilerini güncelleyin.',
         new_order_btn: 'Yeni emir',
-        search_order_label: 'Emir ara',
         search_order_ph: 'ARTIVE veya ARTICLE THERMOFM',
         filter_period: 'Dönem',
         all_periods: 'Tüm dönemler',
         sep_before: 'Eylül & Öncesi',
-        filter_workflow: 'İş Akışı',
-        all_statuses: 'Tüm durumlar',
         filter_all_colors: 'Durum / Renk: Tümü',
         filter_green_running: '🟢 Çalışıyor (Yeşil)',
         filter_yellow_paused: '🟡 Durdu (Sarı)',
         filter_white_idle: '⚪ Bekleyen (Beyaz)',
         has_remaining: 'Kalan var',
         target_exceeded: 'Hedef aşıldı',
-        not_started: 'Başlanmadı',
-        filter_sort: 'Sırala',
         sort_order_no: 'Sırala: Sıra No (#)',
         sort_color_status: 'Sırala: Renge / Duruma Göre',
         sort_rest_desc: 'Sırala: Kalan (Çoktan aza)',
         sort_ton_desc: 'Sırala: Tonaj (Çoktan aza)',
-        chip_all: 'Tüm emirler',
-        live_period_summary: 'Canlı dönem özeti',
-        detail_link: 'Detay →',
         tap_card_hint: 'Giriş yapmak için karta dokunun',
         orders_listed: (n) => `${n} emir listeleniyor`,
-        mini_stats: (ton, prod) => `Hedef: ${ton} KG · Üretilen: ${prod} KG`,
         no_orders_found: 'Arama kriterlerine uygun emir bulunamadı.',
         status_select: '● Durum Seç',
         status_running: '● Çalışıyor',
@@ -1525,10 +687,6 @@
         menu_paused: 'Durdu',
         menu_finished: 'Bitti',
         menu_reset: 'Durum Seç',
-        badge_exceeded: 'Hedef aşıldı',
-        badge_priority: '⭐ Öncelikli',
-        badge_in_progress: 'Üretimde',
-        badge_queued: 'Sırada',
         progress_label: 'İlerleme',
         excess_label: 'Fazla',
         remaining_label: 'Kalan',
@@ -1542,7 +700,6 @@
         completed_empty_hint: 'Bir emri düzenlerken durumunu “Bitti” yapın.',
         completed_badge_upper: '✓ TAMAMLANDI',
         reopen_order_btn: '↻ Tekrar Başlat',
-        prod_realization: 'Üretim gerçekleşmesi',
         summary_title: 'Dönem Özeti',
         summary_subtitle: 'Extruder hattı genel tonaj ve gerçekleşme durumu.',
         all_short: 'Tümü',
@@ -1612,31 +769,22 @@
         orders_title: 'أوامر الإنتاج',
         orders_subtitle: 'ابحث عن أوامر الإنتاج وقم بتحديث مدخلات المشغلين.',
         new_order_btn: 'أمر جديد',
-        search_order_label: 'بحث عن أمر',
         search_order_ph: 'ابحث عن ARTIVE أو ARTICLE THERMOFM',
         filter_period: 'الفترة',
         all_periods: 'كل الفترات',
         sep_before: 'سبتمبر وما قبل',
-        filter_workflow: 'سير العمل',
-        all_statuses: 'كل الحالات',
         filter_all_colors: 'الحالة / اللون: الكل',
         filter_green_running: '🟢 قيد التشغيل (أخضر)',
         filter_yellow_paused: '🟡 متوقف (أصفر)',
         filter_white_idle: '⚪ في الانتظار (أبيض)',
         has_remaining: 'يوجد متبقي',
         target_exceeded: 'تم تجاوز الهدف',
-        not_started: 'لم يبدأ',
-        filter_sort: 'ترتيب حسب',
         sort_order_no: 'ترتيب: التسلسل (#)',
         sort_color_status: 'ترتيب: حسب اللون / الحالة',
         sort_rest_desc: 'ترتيب: المتبقي (الأكثر)',
         sort_ton_desc: 'ترتيب: الوزن (الأكثر)',
-        chip_all: 'كل الأوامر',
-        live_period_summary: 'ملخص الفترة المباشر',
-        detail_link: 'التفاصيل ←',
         tap_card_hint: 'اضغط على البطاقة لإدخال الإنتاج',
         orders_listed: (n) => `عرض ${n} أمر إنتاج`,
-        mini_stats: (ton, prod) => `الهدف: ${ton} كغ · المنتج: ${prod} كغ`,
         no_orders_found: 'لا توجد أوامر تطابق معايير البحث.',
         status_select: '● اختر الحالة',
         status_running: '● قيد التشغيل',
@@ -1647,10 +795,6 @@
         menu_paused: 'متوقف',
         menu_finished: 'منتهي',
         menu_reset: 'اختر الحالة',
-        badge_exceeded: 'تجاوز الهدف',
-        badge_priority: '⭐ أولوية',
-        badge_in_progress: 'قيد الإنتاج',
-        badge_queued: 'في الدور',
         progress_label: 'التقدم',
         excess_label: 'زيادة',
         remaining_label: 'المتبقي',
@@ -1664,7 +808,6 @@
         completed_empty_hint: 'عند تعديل أي أمر، اختر الحالة "منتهي".',
         completed_badge_upper: '✓ مكتمل',
         reopen_order_btn: '↻ إعادة البدء',
-        prod_realization: 'نسبة إنجاز الإنتاج',
         summary_title: 'ملخص الفترة',
         summary_subtitle: 'إجمالي الأوزان ونسبة الإنجاز لخط الإكسترودر.',
         all_short: 'الكل',
@@ -1734,6 +877,15 @@
 
     const OPERATORS = ['İSA', 'MUHİDDİN', 'KADDUR', 'MUHAMMED'];
 
+    const ROLE_PROFILES = [
+      { key: 'YONETIM', label: 'Yönetim', kind: 'MANAGEMENT', operatorCode: null, desc: 'Sınırsız yetki · Emir ekle/sil/sırala · KG & Vardiya' },
+      { key: 'ISA', label: 'İsa', kind: 'OPERATOR', operatorCode: 'İSA', desc: 'Başlat/Bitir · İsa KG girişi · Vardiya notu' },
+      { key: 'MUHIDDIN', label: 'Muhiddin', kind: 'OPERATOR', operatorCode: 'MUHİDDİN', desc: 'Başlat/Bitir · Muhiddin KG girişi · Vardiya notu' },
+      { key: 'KADDUR', label: 'Kaddur', kind: 'OPERATOR', operatorCode: 'KADDUR', desc: 'Başlat/Bitir · Kaddur KG girişi · Vardiya notu' },
+      { key: 'MUHAMMED', label: 'Muhammed', kind: 'OPERATOR', operatorCode: 'MUHAMMED', desc: 'Başlat/Bitir · Muhammed KG girişi · Vardiya notu' },
+      { key: 'IZLEYICI', label: 'İzleyici', kind: 'VIEWER', operatorCode: null, desc: 'Sadece görüntüleme yetkisi' }
+    ];
+
     const INITIAL_ORDERS = [
       { id: 1, orderNo: 1, priority: true, period: '01.11.2026', createdDate: '01.11.2026', completedDate: null, activeOperator: 'İSA', shiftActive: true, shiftSession: { operator: 'İSA', status: 'ACTIVE', startedAt: '08:00', endedAt: null }, code: 'G1', article: 'ALVEOLE PLASTIQUE PET ŒUF - 15 COMPARTIMENTS - TRANSPARENT 39 GR', artive: 'BOBINE SF-PET 340 760 TRANSPARENT F2', ton: 6131, isa: 0, muhiddin: 0, kaddur: 0, muhammed: 0, closed: false, workStatus: 'RUNNING' },
       { id: 2, orderNo: 2, priority: true, period: '01.11.2026', createdDate: '01.11.2026', completedDate: null, activeOperator: null, shiftActive: false, shiftSession: { operator: 'MUHİDDİN', status: 'IDLE', startedAt: null, endedAt: null }, code: '36', article: 'BARQUETTE PLASTIQUE PET BISCUITS HAPPY 12 8,5 GR TRANSPARENT 03 GRC1', artive: 'BOBINE SF-PET 350 755 TRANSPARENT F2', ton: 18488, isa: 0, muhiddin: 0, kaddur: 0, muhammed: 0, closed: false },
@@ -1765,14 +917,17 @@
       { id: 2, author: 'MUHİDDİN', time: 'Dün 19:40', text: 'G1 hattı ALVEOLE 15 COMPARTIMENTS kalıp ısısı kontrol edildi.' }
     ];
 
-    let currentLang = localStorage.getItem('extruder_lang') || 'tr';
+    let currentLang = 'tr';
+    let currentRoleKey = 'YONETIM';
+    let draftRoleKey = 'YONETIM';
     let orders = [];
     let notes = [];
-    let activeChip = 'ALL';
     let editingOrderId = null;
     let pendingModalShift = null;
+    let isEditingMetricsMode = false;
     let openStatusMenuId = null;
     let openCompletedMenuId = null;
+    let openCompletedFolders = {};
     let toastTimer = null;
 
     const t = (key, ...args) => {
@@ -1784,12 +939,142 @@
     const getProd = (o) => (Number(o.isa) || 0) + (Number(o.muhiddin) || 0) + (Number(o.kaddur) || 0) + (Number(o.muhammed) || 0);
     const getRest = (o) => (Number(o.ton) || 0) - getProd(o);
 
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function formatArtiveHighlight(artiveText) {
+      const safe = escapeHtml(artiveText || '');
+      return safe.replace(/(\b\d{2,4}\s+\d{2,4}\b)/, '<span class="font-extrabold text-slate-900">$1</span>');
+    }
+
+    function showToast(msg) {
+      try {
+        const toastEl = document.getElementById('toast');
+        const msgEl = document.getElementById('toast-msg');
+        if (!toastEl || !msgEl) return;
+        msgEl.textContent = msg;
+        toastEl.classList.remove('hidden');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toastEl.classList.add('hidden');
+        }, 2500);
+      } catch (e) {}
+    }
+
     function formatTodayDate() {
       const now = new Date();
       const dd = String(now.getDate()).padStart(2, '0');
       const mm = String(now.getMonth() + 1).padStart(2, '0');
       const yyyy = now.getFullYear();
       return `${dd}.${mm}.${yyyy}`;
+    }
+
+    function formatClockTime() {
+      const now = new Date();
+      return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    }
+
+    function formatDateTimeNow() {
+      return `${formatTodayDate()} ${formatClockTime()}`;
+    }
+
+    function getActiveRoleProfile() {
+      return ROLE_PROFILES.find(r => r.key === currentRoleKey) || ROLE_PROFILES[0];
+    }
+
+    function getUserPermissions() {
+      const prof = getActiveRoleProfile();
+      const isManagement = prof.kind === 'MANAGEMENT';
+      const isOperator = prof.kind === 'OPERATOR';
+      const isViewer = prof.kind === 'VIEWER';
+      return {
+        role: prof.label,
+        kind: prof.kind,
+        isManagement,
+        isOperator,
+        isViewer,
+        mappedOperator: prof.operatorCode || null,
+        canStartStopOrder: isManagement || isOperator,
+        canEditKg: isManagement || isOperator,
+        canAddNote: isManagement || isOperator,
+        canDeleteNote: isManagement,
+        canCreateOrder: isManagement,
+        canDeleteOrder: isManagement,
+        canReorderOrders: isManagement
+      };
+    }
+
+    function guardAction(actionKey) {
+      const p = getUserPermissions();
+      if (p.isManagement) return true;
+      if (p.isViewer) {
+        showToast('İzleyici rolü sadece görüntüleme yetkisine sahiptir');
+        return false;
+      }
+      if (p.isOperator) {
+        if (['CREATE_ORDER', 'DELETE_ORDER', 'REORDER_ORDER', 'DELETE_NOTE', 'RESET_DATA'].includes(actionKey)) {
+          showToast(`${p.role} rolü yalnızca başlat/bitir ve KG girişi yapabilir`);
+          return false;
+        }
+        return true;
+      }
+      return false;
+    }
+
+    function updateHeaderRoleUI() {
+      const prof = getActiveRoleProfile();
+      const badge = document.getElementById('headerUserBadge');
+      const btnLabel = document.getElementById('accountBtnLabel');
+      const newOrderBtn = document.getElementById('newOrderMainBtn');
+      if (badge) badge.textContent = prof.label;
+      if (btnLabel) btnLabel.textContent = prof.label;
+      if (newOrderBtn) {
+        newOrderBtn.classList.toggle('opacity-50', prof.kind !== 'MANAGEMENT');
+      }
+    }
+
+    function openAccountModal() {
+      draftRoleKey = currentRoleKey;
+      const listEl = document.getElementById('roleAssignmentsList');
+      if (listEl) {
+        listEl.innerHTML = ROLE_PROFILES.map(r => {
+          const active = r.key === draftRoleKey;
+          return `
+            <button type="button" onclick="selectDraftRole('${r.key}')" class="w-full flex items-center justify-between gap-3 p-3 rounded-2xl border text-left transition ${active ? 'bg-emerald-50 border-[#146C53] ring-2 ring-[#146C53]/15' : 'bg-slate-50 border-slate-200 hover:bg-slate-100/70'}">
+              <div class="min-w-0">
+                <div class="text-xs font-extrabold text-slate-900">${r.label}</div>
+                <div class="text-[11px] text-slate-500 mt-0.5">${r.desc}</div>
+              </div>
+              <span class="w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${active ? 'border-[#146C53]' : 'border-slate-300'}">
+                ${active ? '<span class="w-2 h-2 rounded-full bg-[#146C53]"></span>' : ''}
+              </span>
+            </button>`;
+        }).join('');
+      }
+      document.getElementById('accountModal')?.classList.remove('hidden');
+    }
+
+    function selectDraftRole(key) {
+      draftRoleKey = key;
+      openAccountModal();
+    }
+
+    function applySelectedRoleProfile() {
+      currentRoleKey = draftRoleKey;
+      updateHeaderRoleUI();
+      closeModal('accountModal');
+      renderOrders();
+      renderCompletedOrders();
+      if (!document.getElementById('tab-ozet')?.classList.contains('hidden')) renderSummary('ALL');
+      if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) renderOperationTab();
+      if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) renderReports();
+      if (!document.getElementById('tab-notlar')?.classList.contains('hidden')) renderNotes();
+      showToast(`Aktif rol: ${getActiveRoleProfile().label}`);
     }
 
     function getActiveOperatorName(order) {
@@ -1808,16 +1093,14 @@
     function ensureOrderDates(order) {
       if (!order || typeof order !== 'object') return order;
       if (!order.createdDate) {
-        order.createdDate = /^\d{2}\.\d{2}\.\d{4}$/.test(order.period || '')
-          ? order.period
-          : formatTodayDate();
+        order.createdDate = /^\d{2}\.\d{2}\.\d{4}$/.test(order.period || '') ? order.period : formatTodayDate();
       }
-      if (!order.lastActionDate) {
-        order.lastActionDate = order.completedDate || order.createdDate || formatTodayDate();
+      if (!order.lastActionDateTime) {
+        order.lastActionDateTime = `${order.completedDate || order.createdDate || formatTodayDate()} 08:00`;
       }
       const isClosed = !!(order.closed || order.workStatus === 'FINISHED');
       if (isClosed) {
-        if (!order.completedDate) order.completedDate = order.lastActionDate || formatTodayDate();
+        if (!order.completedDate) order.completedDate = order.createdDate || formatTodayDate();
         order.shiftActive = false;
         order.activeOperator = null;
       } else {
@@ -1840,9 +1123,681 @@
       return order;
     }
 
-    function formatClockTime() {
-      const now = new Date();
-      return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    function getWorkStatus(o) {
+      if (!o) return 'IDLE';
+      if (o.closed || o.workStatus === 'FINISHED') return 'FINISHED';
+      if (o.workStatus === 'RUNNING') return 'RUNNING';
+      if (o.workStatus === 'PAUSED') return 'PAUSED';
+      if (o.workStatus === 'RESET') return 'RESET';
+      return 'IDLE';
+    }
+
+    function normalizeOrderNumbers(movedId = null, desiredNo = null) {
+      const active = orders.filter(o => !o.closed).sort((a, b) => (a.orderNo || 999) - (b.orderNo || 999) || a.id - b.id);
+      const runningOrder = active.find(o => getWorkStatus(o) === 'RUNNING');
+
+      if (movedId !== null && desiredNo !== null) {
+        const idx = active.findIndex(o => o.id === movedId);
+        if (idx !== -1) {
+          const [moved] = active.splice(idx, 1);
+          const pool = runningOrder ? active.filter(o => o.id !== runningOrder.id) : active;
+          const targetIdx = Math.max(0, Math.min(pool.length, Math.floor(Number(desiredNo) || 1) - 1));
+          pool.splice(targetIdx, 0, moved);
+          if (runningOrder) {
+            pool.unshift(runningOrder);
+          }
+          active.splice(0, active.length, ...pool);
+        }
+      } else if (runningOrder) {
+        const restPool = active.filter(o => o.id !== runningOrder.id);
+        active.splice(0, active.length, runningOrder, ...restPool);
+      }
+
+      let seq = 1;
+      active.forEach((o) => {
+        if (getWorkStatus(o) === 'RUNNING') {
+          o.orderNo = 0;
+        } else {
+          o.orderNo = seq++;
+        }
+      });
+    }
+
+    function updateOrderNumberInline(id, newVal) {
+      if (!guardAction('REORDER_ORDER')) {
+        refreshActiveMenus();
+        return;
+      }
+      const targetOrder = orders.find(x => x.id === id);
+      if (targetOrder && getWorkStatus(targetOrder) === 'RUNNING') {
+        targetOrder.orderNo = 0;
+        refreshActiveMenus();
+        showToast('Çalışan iş emri sırası #0 kalır');
+        return;
+      }
+      const num = parseInt(newVal, 10);
+      if (!Number.isFinite(num) || num < 0) {
+        refreshActiveMenus();
+        return;
+      }
+      normalizeOrderNumbers(id, num === 0 ? 1 : num);
+      refreshActiveMenus();
+      showToast(`İş emri #${targetOrder ? targetOrder.orderNo : num} sırasına alındı`);
+    }
+
+    function toggleWorkStatusMenu(event, id) {
+      if (event) event.stopPropagation();
+      openStatusMenuId = openStatusMenuId === id ? null : id;
+      refreshActiveMenus();
+    }
+
+    function setOrderWorkStatus(event, id, newStatus) {
+      if (event) event.stopPropagation();
+      if (!guardAction('START_STOP_ORDER')) {
+        openStatusMenuId = null;
+        refreshActiveMenus();
+        return;
+      }
+      openStatusMenuId = null;
+      const idx = orders.findIndex(x => x.id === id);
+      if (idx === -1) return;
+
+      orders[idx].lastActionDateTime = formatDateTimeNow();
+
+      if (newStatus === 'RESET') {
+        orders[idx].workStatus = 'RESET';
+        orders[idx].closed = false;
+        orders[idx].completedDate = null;
+        orders[idx].shiftActive = false;
+        orders[idx].activeOperator = null;
+        orders[idx].shiftSession = { operator: null, status: 'RESET', startedAt: null, endedAt: null };
+        refreshActiveMenus();
+        renderCompletedOrders();
+        showToast('Durum sıfırlandı');
+        return;
+      }
+
+      orders[idx].workStatus = newStatus;
+      if (newStatus === 'FINISHED') {
+        orders[idx].closed = true;
+        orders[idx].completedDate = formatTodayDate();
+        orders[idx].shiftActive = false;
+        orders[idx].activeOperator = null;
+        showToast('Durum: ■ Bitti');
+      } else {
+        orders[idx].closed = false;
+        orders[idx].completedDate = null;
+        if (newStatus === 'RUNNING') {
+          if (!orders[idx].activeOperator) {
+            orders[idx].activeOperator = getShiftPickerOperator(orders[idx]);
+            orders[idx].shiftActive = true;
+          }
+          orders.forEach(item => {
+            if (item.id !== id && item.workStatus === 'RUNNING') {
+              item.workStatus = 'PAUSED';
+            }
+          });
+          showToast('Durum: ● Çalışıyor');
+        } else {
+          showToast('Durum: ⏸ Durdu');
+        }
+        normalizeOrderNumbers();
+      }
+
+      refreshActiveMenus();
+      renderCompletedOrders();
+    }
+
+    function renderWorkStatusButton(o) {
+      const status = getWorkStatus(o);
+      const isMenuOpen = openStatusMenuId === o.id;
+
+      let btnClass = 'bg-slate-100 text-slate-700 border-slate-200';
+      let btnLabel = t('status_select');
+
+      if (status === 'RUNNING') {
+        btnClass = 'bg-emerald-600 text-white border-emerald-700 shadow-2xs';
+        btnLabel = t('status_running');
+      } else if (status === 'PAUSED') {
+        btnClass = 'bg-amber-400 text-amber-950 border-amber-500 shadow-2xs';
+        btnLabel = t('status_paused');
+      } else if (status === 'FINISHED') {
+        btnClass = 'bg-rose-600 text-white border-rose-700 shadow-2xs';
+        btnLabel = t('status_finished');
+      }
+
+      return `
+        <div onclick="event.stopPropagation()" class="relative inline-block shrink-0">
+          <button type="button" onclick="toggleWorkStatusMenu(event, ${o.id})"
+            class="inline-flex items-center gap-1 whitespace-nowrap px-2 py-1 rounded-lg border text-[10px] leading-tight font-extrabold active:scale-95 transition ${btnClass}">
+            <span class="whitespace-nowrap">${btnLabel}</span>
+            <svg class="w-2.5 h-2.5 opacity-80 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          ${isMenuOpen ? `
+            <div class="absolute ltr:right-0 rtl:left-0 top-full mt-1 z-30 w-36 bg-white rounded-xl shadow-xl border border-slate-200 p-1 space-y-0.5">
+              <button type="button" onclick="setOrderWorkStatus(event, ${o.id}, 'RUNNING')"
+                class="w-full flex items-center gap-1.5 whitespace-nowrap px-2 py-1.5 rounded-lg text-[10px] leading-tight font-extrabold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 transition ltr:text-left rtl:text-right">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                <span>${t('menu_running')}</span>
+              </button>
+              <button type="button" onclick="setOrderWorkStatus(event, ${o.id}, 'PAUSED')"
+                class="w-full flex items-center gap-1.5 whitespace-nowrap px-2 py-1.5 rounded-lg text-[10px] leading-tight font-extrabold text-amber-800 bg-amber-50 hover:bg-amber-100 transition ltr:text-left rtl:text-right">
+                <span class="w-2 h-2 rounded-full bg-amber-400 shrink-0"></span>
+                <span>${t('menu_paused')}</span>
+              </button>
+              <button type="button" onclick="setOrderWorkStatus(event, ${o.id}, 'FINISHED')"
+                class="w-full flex items-center gap-1.5 whitespace-nowrap px-2 py-1.5 rounded-lg text-[10px] leading-tight font-extrabold text-rose-800 bg-rose-50 hover:bg-rose-100 transition ltr:text-left rtl:text-right">
+                <span class="w-2 h-2 rounded-full bg-rose-500 shrink-0"></span>
+                <span>${t('menu_finished')}</span>
+              </button>
+              <button type="button" onclick="setOrderWorkStatus(event, ${o.id}, 'RESET')"
+                class="w-full flex items-center gap-1.5 whitespace-nowrap px-2 py-1.5 rounded-lg text-[10px] leading-tight font-extrabold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 transition ltr:text-left rtl:text-right">
+                <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
+                <span>${t('menu_reset')}</span>
+              </button>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    function renderRunningOperatorBar(o) {
+      if (getWorkStatus(o) !== 'RUNNING') return '';
+      const activeOp = getActiveOperatorName(o);
+      const displayOperatorText = activeOp
+        ? `<span class="text-xs font-extrabold text-slate-900 select-none pointer-events-none truncate">${escapeHtml(activeOp)}</span>`
+        : `<span class="text-xs font-extrabold text-rose-600 tracking-wide select-none pointer-events-none truncate">${t('start_shift_prompt')}</span>`;
+
+      return `
+        <div onclick="event.stopPropagation()" class="flex items-center justify-between gap-2 pt-1.5 border-t border-emerald-200/80">
+          <div class="flex items-center gap-1.5 min-w-0">
+            <span class="w-2 h-2 rounded-full ${activeOp ? 'bg-emerald-600 animate-pulse' : 'bg-rose-600'} shrink-0"></span>
+            <span class="text-[11px] font-bold ${activeOp ? 'text-emerald-900' : 'text-rose-700'} select-none pointer-events-none shrink-0">${t('running_operator_badge')}:</span>
+            ${displayOperatorText}
+          </div>
+        </div>
+      `;
+    }
+
+    function refreshActiveMenus() {
+      renderOrders();
+      if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) {
+        renderOperationTab();
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      if (openStatusMenuId !== null && !e.target.closest('[onclick*="toggleWorkStatusMenu"]')) {
+        openStatusMenuId = null;
+        refreshActiveMenus();
+      }
+      if (openCompletedMenuId !== null && !e.target.closest('[onclick*="toggleCompletedMenu"]')) {
+        openCompletedMenuId = null;
+        renderCompletedOrders();
+      }
+    });
+
+    function clearOrderFilters() {
+      const searchEl = document.getElementById('searchInput');
+      const colorStatusEl = document.getElementById('filterColorStatus');
+      const sortEl = document.getElementById('sortBy');
+      if (searchEl) searchEl.value = '';
+      if (colorStatusEl) colorStatusEl.value = 'ALL';
+      if (sortEl) sortEl.value = 'ORDER_NO';
+      renderOrders();
+      showToast(currentLang === 'ar' ? 'تمت إعادة ضبط الفلاتر' : 'Filtreler sıfırlandı');
+    }
+
+    function renderOrders() {
+      const q = (document.getElementById('searchInput')?.value || '').trim().toLowerCase();
+      const colorStatus = document.getElementById('filterColorStatus')?.value || 'ALL';
+      const sort = document.getElementById('sortBy')?.value || 'ORDER_NO';
+
+      let filtered = orders.filter(o => {
+        if (o.closed) return false;
+        const rest = getRest(o);
+        const wStatus = getWorkStatus(o);
+
+        if (
+          q &&
+          !String(o.article || '').toLowerCase().includes(q) &&
+          !String(o.artive || '').toLowerCase().includes(q) &&
+          !String(o.code || '').toLowerCase().includes(q)
+        ) return false;
+
+        if (colorStatus === 'RUNNING' && wStatus !== 'RUNNING') return false;
+        if (colorStatus === 'PAUSED' && wStatus !== 'PAUSED') return false;
+        if (colorStatus === 'IDLE' && wStatus === 'RUNNING') return false;
+        if (colorStatus === 'REMAINING' && rest <= 0) return false;
+        if (colorStatus === 'EXCEEDED' && rest >= 0) return false;
+
+        return true;
+      });
+
+      if (sort === 'COLOR_STATUS') {
+        const rank = (item) => {
+          const st = getWorkStatus(item);
+          if (st === 'RUNNING') return 0;
+          if (st === 'PAUSED') return 1;
+          return 2;
+        };
+        filtered.sort((a, b) => rank(a) - rank(b) || (a.orderNo || 999) - (b.orderNo || 999));
+      } else if (sort === 'REST_DESC') {
+        filtered.sort((a, b) => getRest(b) - getRest(a));
+      } else if (sort === 'TON_DESC') {
+        filtered.sort((a, b) => b.ton - a.ton);
+      } else {
+        filtered.sort((a, b) => (a.orderNo || 999) - (b.orderNo || 999));
+      }
+
+      const runningList = filtered.filter(o => getWorkStatus(o) === 'RUNNING');
+      const otherList = filtered.filter(o => getWorkStatus(o) !== 'RUNNING');
+      filtered = [...runningList, ...otherList];
+
+      const countLabelEl = document.getElementById('orderCountLabel');
+      if (countLabelEl) countLabelEl.textContent = t('orders_listed', filtered.length);
+
+      const container = document.getElementById('ordersList');
+      if (!container) return;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="pro-card rounded-3xl p-8 text-center">
+            <div class="text-slate-400 text-sm font-medium">${t('no_orders_found')}</div>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(o => {
+        const prod = getProd(o);
+        const rest = getRest(o);
+        const isExceeded = rest < 0;
+        const isNearComplete = !isExceeded && rest <= 150 && prod > 0;
+        const wStatus = getWorkStatus(o);
+        const isRunning = wStatus === 'RUNNING';
+        const isPaused = wStatus === 'PAUSED';
+
+        const cardHighlight = isRunning
+          ? 'order-card-3d-running'
+          : (isPaused ? 'order-card-3d-paused' : 'order-card-3d');
+        const seqBoxClass = isRunning
+          ? 'seq-square-3d seq-square-3d-running'
+          : (isPaused ? 'seq-square-3d seq-square-3d-paused' : 'seq-square-3d');
+        const topDateStr = escapeHtml(o.createdDate || formatTodayDate());
+
+        return `
+        <div onclick="openEditModal(${o.id})" class="rounded-2xl p-3 ${cardHighlight} active:scale-[0.99] transition cursor-pointer space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <div onclick="event.stopPropagation()" class="inline-flex items-center justify-center ${seqBoxClass}" title="Sıra numarasını değiştirin">
+              <input type="number" inputmode="numeric" min="1" value="${o.orderNo}"
+                onchange="updateOrderNumberInline(${o.id}, this.value)"
+                onkeydown="if(event.key==='Enter'){this.blur();}"
+                class="w-full bg-transparent text-slate-900 text-[10px] font-extrabold text-center leading-none rounded outline-none" />
+            </div>
+            <span class="text-[11px] font-semibold text-slate-700 bg-white/90 border border-slate-200/80 px-2.5 py-0.5 rounded-md shadow-2xs text-center">${topDateStr}</span>
+            ${renderWorkStatusButton(o)}
+          </div>
+
+          <div>
+            <p class="text-xs font-semibold text-slate-600 flex flex-wrap items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#146C53]"></span>
+              <span>${formatArtiveHighlight(o.artive)}</span>
+            </p>
+            <h3 class="text-[9px] leading-tight font-medium text-slate-500 mt-0.5">${escapeHtml(o.article)}</h3>
+          </div>
+
+          <div class="grid grid-cols-3 bg-slate-50/90 border border-slate-200/90 rounded-2xl py-2.5 px-2 text-center">
+            <div>
+              <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_order')}</div>
+              <div class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight mt-1">${fmt(o.ton)} KG</div>
+            </div>
+            <div class="border-x border-slate-200/90">
+              <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_prod')}</div>
+              <div class="text-xs sm:text-sm font-extrabold text-[#146C53] leading-tight mt-1">${fmt(prod)} KG</div>
+            </div>
+            <div>
+              <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_rem')}</div>
+              <div class="text-xs sm:text-sm font-extrabold ${isExceeded || isNearComplete ? 'text-rose-600' : 'text-amber-600'} leading-tight mt-1">${fmt(rest)} KG</div>
+            </div>
+          </div>
+
+          ${renderRunningOperatorBar(o)}
+        </div>`;
+      }).join('');
+    }
+
+    function parseKgInput(rawVal) {
+      const cleaned = String(rawVal ?? '')
+        .replace(/\s+/g, '')
+        .replace(/,/g, '.')
+        .replace(/[^0-9+.]/g, '')
+        .replace(/\++$/, '');
+      if (!cleaned) return 0;
+      const total = cleaned
+        .split('+')
+        .filter(Boolean)
+        .reduce((sum, part) => {
+          const val = parseFloat(part);
+          return sum + (Number.isFinite(val) ? val : 0);
+        }, 0);
+      return Number.isFinite(total) && total >= 0 ? Math.round(total * 1000) / 1000 : 0;
+    }
+
+    function toggleCompletedMenu(event, id) {
+      if (event) event.stopPropagation();
+      openCompletedMenuId = openCompletedMenuId === id ? null : id;
+      renderCompletedOrders();
+    }
+
+    function restartCompletedOrderAsRunning(event, id) {
+      if (event) event.stopPropagation();
+      if (!guardAction('START_STOP_ORDER')) {
+        openCompletedMenuId = null;
+        renderCompletedOrders();
+        return;
+      }
+      openCompletedMenuId = null;
+      const idx = orders.findIndex(x => x.id === id);
+      if (idx === -1) return;
+
+      const defaultOp = getShiftPickerOperator(orders[idx]);
+      orders.forEach(item => {
+        if (item.id !== id && !item.closed && item.workStatus === 'RUNNING') {
+          item.workStatus = 'PAUSED';
+        }
+      });
+
+      orders[idx].closed = false;
+      orders[idx].completedDate = null;
+      orders[idx].lastActionDateTime = formatDateTimeNow();
+      orders[idx].workStatus = 'RUNNING';
+      orders[idx].shiftActive = true;
+      orders[idx].activeOperator = defaultOp;
+      orders[idx].shiftSession = {
+        operator: defaultOp,
+        status: 'ACTIVE',
+        startedAt: formatClockTime(),
+        endedAt: null
+      };
+
+      normalizeOrderNumbers();
+      renderOrders();
+      renderCompletedOrders();
+      showToast(`#${orders[idx].orderNo} Bitenler'den çıkarıldı · Çalışıyor`);
+    }
+
+    function getCompletedMonthFolderInfo(order) {
+      const rawDate = String(order.completedDate || order.createdDate || order.period || '').trim();
+      const match = rawDate.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+      const trMonths = {
+        '01': 'OCAK', '02': 'ŞUBAT', '03': 'MART', '04': 'NİSAN',
+        '05': 'MAYIS', '06': 'HAZİRAN', '07': 'TEMMUZ', '08': 'AĞUSTOS',
+        '09': 'EYLÜL', '10': 'EKİM', '11': 'KASIM', '12': 'ARALIK'
+      };
+      const arMonths = {
+        '01': 'يناير', '02': 'فبراير', '03': 'مارس', '04': 'أبريل',
+        '05': 'مايو', '06': 'يونيو', '07': 'يوليو', '08': 'أغسطس',
+        '09': 'سبتمبر', '10': 'أكتوبر', '11': 'نوفمبر', '12': 'ديسمبر'
+      };
+
+      if (match) {
+        const mm = match[2];
+        const yyyy = match[3];
+        const monthLabel = currentLang === 'ar' ? (arMonths[mm] || mm) : (trMonths[mm] || mm);
+        return {
+          key: `${yyyy}-${mm}`,
+          title: `${monthLabel} ${yyyy}`,
+          sortKey: `${yyyy}${mm}`
+        };
+      }
+
+      if (rawDate.toLowerCase().includes('eylül')) {
+        return {
+          key: '2026-09',
+          title: currentLang === 'ar' ? 'سبتمبر 2026' : 'EYLÜL 2026',
+          sortKey: '202609'
+        };
+      }
+
+      return {
+        key: 'OTHER',
+        title: currentLang === 'ar' ? 'أخرى' : 'DİĞER',
+        sortKey: '000000'
+      };
+    }
+
+    function toggleCompletedFolder(folderKey) {
+      const currentState = openCompletedFolders[folderKey] !== false;
+      openCompletedFolders[folderKey] = !currentState;
+      renderCompletedOrders();
+    }
+
+    function renderCompletedOrders() {
+      const q = (document.getElementById('completedSearch')?.value || '').trim().toLocaleLowerCase('tr-TR');
+      const all = orders.filter(o => o.closed);
+      const list = all.filter(o => !q || [o.article, o.artive, o.code, o.period, o.completedDate].some(v => String(v || '').toLocaleLowerCase('tr-TR').includes(q))).sort((a, b) => b.id - a.id);
+
+      const countEl = document.getElementById('completedCount');
+      const el = document.getElementById('completedOrdersList');
+      if (countEl) countEl.textContent = t('emir_unit', all.length);
+      if (!el) return;
+
+      if (!list.length) {
+        el.innerHTML = `
+          <div class="pro-card rounded-2xl p-8 text-center">
+            <div class="text-3xl mb-2">✓</div>
+            <div class="text-sm font-bold text-slate-700">${q ? t('no_completed_match') : t('no_completed_yet')}</div>
+            <p class="text-xs text-slate-400 mt-1">${t('completed_empty_hint')}</p>
+          </div>`;
+        return;
+      }
+
+      const folderMap = new Map();
+      list.forEach(o => {
+        const info = getCompletedMonthFolderInfo(o);
+        if (!folderMap.has(info.key)) {
+          folderMap.set(info.key, { ...info, items: [] });
+        }
+        folderMap.get(info.key).items.push(o);
+      });
+
+      const folders = Array.from(folderMap.values()).sort((a, b) => b.sortKey.localeCompare(a.sortKey));
+
+      el.innerHTML = folders.map(folder => {
+        const isOpen = q ? true : (openCompletedFolders[folder.key] !== false);
+        const totalFolderProd = folder.items.reduce((sum, item) => sum + getProd(item), 0);
+
+        const cardsHtml = folder.items.map(o => {
+          const prod = getProd(o);
+          const rest = getRest(o);
+          const doneDateStr = escapeHtml(o.completedDate || o.createdDate || formatTodayDate());
+          const isMenuOpen = openCompletedMenuId === o.id;
+          return `
+            <article onclick="openEditModal(${o.id})" class="completed-card pro-card rounded-2xl p-3.5 space-y-2.5 cursor-pointer active:scale-[.99]">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center flex-wrap gap-2">
+                  <span class="px-2 py-1 rounded-lg bg-slate-900 text-white text-xs font-bold">#${escapeHtml(o.orderNo || o.code)}</span>
+                  <span class="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">${t('completed_date_label')}: ${doneDateStr}</span>
+                </div>
+                <div onclick="event.stopPropagation()" class="relative inline-block shrink-0">
+                  <button type="button" onclick="toggleCompletedMenu(event, ${o.id})" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-[10px] font-bold active:scale-95 transition">
+                    <span>${t('completed_badge_upper')}</span>
+                    <svg class="w-2.5 h-2.5 opacity-80" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                  </button>
+                  ${isMenuOpen ? `
+                    <div class="absolute ltr:right-0 rtl:left-0 top-full mt-1 z-30 w-36 bg-white rounded-xl shadow-xl border border-slate-200 p-1">
+                      <button type="button" onclick="restartCompletedOrderAsRunning(event, ${o.id})"
+                        class="w-full flex items-center gap-1.5 whitespace-nowrap px-2.5 py-2 rounded-lg text-[11px] font-extrabold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 transition ltr:text-left rtl:text-right">
+                        <span>${t('reopen_order_btn')}</span>
+                      </button>
+                    </div>
+                  ` : ''}
+                </div>
+              </div>
+              <div>
+                <p class="text-[11px] font-semibold text-slate-600 flex flex-wrap items-center gap-1">${formatArtiveHighlight(o.artive)}</p>
+                <h3 class="text-[10px] leading-snug font-medium text-slate-500 mt-0.5">${escapeHtml(o.article)}</h3>
+              </div>
+              <div class="grid grid-cols-3 bg-slate-50/90 border border-slate-200/90 rounded-2xl py-2.5 px-2 text-center">
+                <div>
+                  <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_order')}</div>
+                  <div class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight mt-1">${fmt(o.ton)} KG</div>
+                </div>
+                <div class="border-x border-slate-200/90">
+                  <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_prod')}</div>
+                  <div class="text-xs sm:text-sm font-extrabold text-[#146C53] leading-tight mt-1">${fmt(prod)} KG</div>
+                </div>
+                <div>
+                  <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_rem')}</div>
+                  <div class="text-xs sm:text-sm font-extrabold ${rest < 0 ? 'text-rose-600' : 'text-amber-600'} leading-tight mt-1">${fmt(rest)} KG</div>
+                </div>
+              </div>
+            </article>`;
+        }).join('');
+
+        return `
+          <div class="rounded-2xl bg-white/95 border border-slate-200/90 shadow-xs overflow-hidden">
+            <button type="button" onclick="toggleCompletedFolder('${folder.key}')"
+              class="w-full flex items-center justify-between gap-2 px-3.5 py-3 bg-gradient-to-r from-emerald-50/90 via-white to-slate-50 hover:bg-emerald-50/60 transition">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="w-8 h-8 rounded-xl bg-amber-100 border border-amber-200 text-amber-700 flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2h-8l-2-2z"/>
+                  </svg>
+                </div>
+                <div class="min-w-0 ltr:text-left rtl:text-right">
+                  <div class="text-xs font-extrabold text-slate-900 tracking-wide">${escapeHtml(folder.title)}</div>
+                  <div class="text-[10px] font-semibold text-slate-500">${t('emir_unit', folder.items.length)} · ${fmt(totalFolderProd)} KG</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 shrink-0">
+                <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-extrabold">${folder.items.length}</span>
+                <svg class="w-4 h-4 text-slate-500 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </div>
+            </button>
+            ${isOpen ? `<div class="p-2.5 space-y-2.5 bg-slate-50/70 border-t border-slate-200/70">${cardsHtml}</div>` : ''}
+          </div>`;
+      }).join('');
+    }
+
+    function exportToCSV() {
+      try {
+        const headers = ['SIRA NO', 'DONEM', 'OLUSTURMA TARIHI', 'BITIS TARIHI', 'CALISAN OPERATOR', 'ONCELIK', 'ARTICLE THERMOFM', 'ARTIVE', 'TON', 'ISA', 'MUHIDDIN', 'KADDUR', 'MUHAMMED', 'QTT PROD', 'REST', 'DURUM'];
+        const sortedOrders = [...orders].sort((a, b) => (a.orderNo || 999) - (b.orderNo || 999));
+        const rows = sortedOrders.map(o => {
+          const prod = getProd(o);
+          const rest = getRest(o);
+          return [
+            o.orderNo || '',
+            o.period,
+            o.createdDate || '',
+            o.closed ? (o.completedDate || '') : '',
+            getActiveOperatorName(o),
+            o.priority ? 'EVET' : 'HAYIR',
+            `"${String(o.article || '').replace(/"/g, '""')}"`,
+            `"${String(o.artive || '').replace(/"/g, '""')}"`,
+            o.ton,
+            o.isa,
+            o.muhiddin,
+            o.kaddur,
+            o.muhammed,
+            prod,
+            rest,
+            o.closed ? 'TAMAMLANDI' : 'AKTIF'
+          ].join(';');
+        });
+
+        const csvContent = '\uFEFF' + [headers.join(';'), ...rows].join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `EXTRUDER_Uretim_Emirleri_${new Date().toISOString().slice(0, 10)}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('CSV dosyası indirildi');
+      } catch (e) {
+        showToast('CSV dışa aktarma hatası');
+      }
+    }
+
+    function closeModal(id) {
+      document.getElementById(id)?.classList.add('hidden');
+    }
+
+    function openNewOrderModal() {
+      if (!guardAction('CREATE_ORDER')) {
+        openAccountModal();
+        return;
+      }
+      const activeCount = orders.filter(o => !o.closed).length;
+      const codeEl = document.getElementById('newCode');
+      const articleEl = document.getElementById('newArticle');
+      const artiveEl = document.getElementById('newArtive');
+      const tonEl = document.getElementById('newTon');
+      const prioEl = document.getElementById('newPriority');
+
+      if (codeEl) codeEl.value = activeCount + 1;
+      if (articleEl) articleEl.value = '';
+      if (artiveEl) artiveEl.value = '';
+      if (tonEl) tonEl.value = '';
+      if (prioEl) prioEl.checked = false;
+
+      document.getElementById('newOrderModal')?.classList.remove('hidden');
+    }
+
+    function createNewOrder() {
+      if (!guardAction('CREATE_ORDER')) return;
+      const article = (document.getElementById('newArticle')?.value || '').trim();
+      const artive = (document.getElementById('newArtive')?.value || '').trim();
+      const ton = parseKgInput(document.getElementById('newTon')?.value);
+      const desiredOrderNo = parseInt(document.getElementById('newCode')?.value, 10) || 1;
+      const period = document.getElementById('newPeriod')?.value || '01.11.2026';
+      const priority = !!document.getElementById('newPriority')?.checked;
+
+      if (!article || ton <= 0) {
+        showToast(currentLang === 'ar' ? 'يرجى إدخال اسم المنتج والوزن' : 'Lütfen ürün adı ve tonaj girin');
+        return;
+      }
+
+      const todayStr = formatTodayDate();
+      const newId = Date.now();
+      const defaultOp = OPERATORS[Math.max(0, desiredOrderNo - 1) % OPERATORS.length];
+      const newOrder = ensureOrderDates({
+        id: newId,
+        orderNo: desiredOrderNo,
+        priority,
+        period,
+        createdDate: todayStr,
+        lastActionDateTime: formatDateTimeNow(),
+        completedDate: null,
+        activeOperator: defaultOp,
+        code: String(desiredOrderNo),
+        article: article.toUpperCase(),
+        artive: (artive || 'BOBINE SF-PET STANDARD').toUpperCase(),
+        ton,
+        isa: 0,
+        muhiddin: 0,
+        kaddur: 0,
+        muhammed: 0,
+        closed: false,
+        workStatus: 'IDLE'
+      });
+
+      orders.unshift(newOrder);
+      normalizeOrderNumbers(newId, desiredOrderNo);
+      closeModal('newOrderModal');
+      renderOrders();
+      renderCompletedOrders();
+      showToast(currentLang === 'ar' ? `تمت إضافة أمر العمل رقم #${newOrder.orderNo}` : `#${newOrder.orderNo} nolu emir eklendi`);
     }
 
     function getSelectedModalOperator() {
@@ -1947,6 +1902,7 @@
     }
 
     function startOperatorShift() {
+      if (!guardAction('START_STOP_ORDER')) return;
       const idx = orders.findIndex(x => x.id === editingOrderId);
       if (idx === -1 || !pendingModalShift) return;
 
@@ -1958,6 +1914,7 @@
       }
 
       const nowTime = formatClockTime();
+      pendingModalShift.lastActionDateTime = formatDateTimeNow();
       pendingModalShift.workStatus = 'RUNNING';
       pendingModalShift.shiftActive = true;
       pendingModalShift.activeOperator = opName;
@@ -1968,17 +1925,26 @@
         endedAt: null
       };
 
+      const periodEl = document.getElementById('editModalPeriod');
+      if (periodEl) {
+        periodEl.textContent = currentLang === 'ar'
+          ? `آخر تحديث: ${pendingModalShift.lastActionDateTime}`
+          : `Son İşlem: ${pendingModalShift.lastActionDateTime}`;
+      }
+
       updateModalShiftUI(orders[idx]);
       showToast(t('shift_started_toast', opName, nowTime));
     }
 
     function endOperatorShift() {
+      if (!guardAction('START_STOP_ORDER')) return;
       const idx = orders.findIndex(x => x.id === editingOrderId);
       if (idx === -1 || !pendingModalShift) return;
 
       const opName = pendingModalShift.activeOperator || getSelectedModalOperator() || pendingModalShift.shiftSession?.operator || 'İSA';
       const nowTime = formatClockTime();
 
+      pendingModalShift.lastActionDateTime = formatDateTimeNow();
       pendingModalShift.shiftActive = false;
       pendingModalShift.activeOperator = null;
       pendingModalShift.shiftSession = {
@@ -1988,30 +1954,22 @@
         endedAt: nowTime
       };
 
+      const periodEl = document.getElementById('editModalPeriod');
+      if (periodEl) {
+        periodEl.textContent = currentLang === 'ar'
+          ? `آخر تحديث: ${pendingModalShift.lastActionDateTime}`
+          : `Son İşlem: ${pendingModalShift.lastActionDateTime}`;
+      }
+
       syncOperatorCheckboxesUI(null, false);
       updateModalShiftUI(orders[idx]);
       showToast(t('shift_ended_toast', opName, nowTime));
-    }
-
-    function parseKgExpression(rawValue) {
-      if (typeof rawValue === 'number') {
-        return Number.isFinite(rawValue) && rawValue >= 0 ? rawValue : 0;
-      }
-      const cleaned = String(rawValue || '').replace(/\s+/g, '').replace(',', '.');
-      if (!cleaned) return 0;
-      if (!/^[+-]?\d+(\.\d+)?([+-]\d+(\.\d+)?)*$/.test(cleaned)) return 0;
-      const parts = cleaned.match(/[+-]?\d+(\.\d+)?/g);
-      if (!parts) return 0;
-      const total = parts.reduce((sum, token) => sum + (parseFloat(token) || 0), 0);
-      return Number.isFinite(total) && total >= 0 ? Math.round(total * 1000) / 1000 : 0;
     }
 
     function normalizeOperatorInput(inputEl) {
       if (!inputEl) return;
       const rawBefore = String(inputEl.value || '');
       const hasPlus = rawBefore.includes('+');
-      // Sadece rakam, artı (+) ve ondalık ayırıcı (, .) karakterlerine izin ver;
-      // eğer kullanıcı '+' ile toplama yapıyorsa binlik ayırıcı noktaları bozmadan temizle
       let cleaned = rawBefore
         .replace(/\s+/g, '')
         .replace(/[^0-9+.,]/g, '')
@@ -2021,7 +1979,6 @@
       if (hasPlus) {
         cleaned = cleaned.replace(/,/g, '.');
       } else {
-        // Tekli sayıda virgülü ondalık noktaya çevir
         cleaned = cleaned.replace(/,/g, '.');
       }
 
@@ -2036,7 +1993,7 @@
       const inputEl = document.getElementById(inputId);
       if (!inputEl || inputEl.disabled) return;
 
-      let currentVal = String(inputEl.value || '').trim();
+      let currentVal = String(inputEl.dataset.rawExpr || inputEl.value || '').trim();
       if (currentVal.includes('=')) {
         currentVal = currentVal.split('=')[0].trim();
       }
@@ -2089,7 +2046,6 @@
 
     function onOperatorInputBlur(inputEl) {
       if (!inputEl) return;
-      // Klavye kapatılırken veya odak çıkarken sondaki yarım kalan '.' veya '+' işaretini temizle
       const raw = String(inputEl.value || '')
         .trim()
         .replace(/[.+,]+$/g, '');
@@ -2098,31 +2054,18 @@
       if (numericVal <= 0 && !raw) {
         inputEl.value = '';
       } else {
-        inputEl.value = raw;
+        inputEl.value = String(numericVal);
       }
       recalcEditModal();
     }
 
-    // Klavyenin alt kısmındaki aşağı ok (⌄) alanına dokunulduğunda aktif operatör girdisindeki
-    // sondaki nokta (.) veya artı (+) işaretini anında temizle
-    document.addEventListener('pointerdown', (e) => {
-      const opInputs = ['inputIsa', 'inputMuhiddin', 'inputKaddur', 'inputMuhammed'];
-      const activeId = document.activeElement && document.activeElement.id;
-      if (opInputs.includes(activeId)) {
-        const activeEl = document.activeElement;
-        const cleaned = String(activeEl.value || '').trim().replace(/[.+,]+$/g, '');
-        if (cleaned !== activeEl.value) {
-          activeEl.value = cleaned;
-          activeEl.dataset.rawExpr = cleaned;
-          recalcEditModal();
-        }
-      }
-    }, true);
-
     function getOperatorRawExpression(inputId) {
       const inputEl = document.getElementById(inputId);
       if (!inputEl) return '';
-      return String(inputEl.value || inputEl.dataset.rawExpr || '')
+      const activeSource = document.activeElement === inputEl
+        ? inputEl.value
+        : (inputEl.dataset.rawExpr || inputEl.value || '');
+      return String(activeSource)
         .trim()
         .replace(/[.+,]+$/g, '');
     }
@@ -2132,875 +2075,21 @@
       if (!inputEl) return;
 
       const raw = getOperatorRawExpression(inputId);
-
       inputEl.dataset.rawExpr = raw;
       const numericVal = parseKgInput(raw);
 
       if (numericVal <= 0 && !raw) {
         inputEl.value = '';
       } else {
-        inputEl.value = raw;
+        inputEl.value = String(numericVal);
       }
 
       if (document.activeElement === inputEl) {
         inputEl.blur();
       }
-      // Mobilde ekran klavyesinin kapanmasını garanti altına al
-      try {
-        if (document.activeElement && typeof document.activeElement.blur === 'function') {
-          document.activeElement.blur();
-        }
-      } catch (e) {}
-
       recalcEditModal();
-
-      const idx = orders.findIndex(x => x.id === editingOrderId);
-      if (idx !== -1) {
-        const rawIsa = getOperatorRawExpression('inputIsa');
-        const rawMuh = getOperatorRawExpression('inputMuhiddin');
-        const rawKad = getOperatorRawExpression('inputKaddur');
-        const rawMam = getOperatorRawExpression('inputMuhammed');
-
-        orders[idx].isaExpr = rawIsa.includes('+') ? rawIsa : '';
-        orders[idx].muhiddinExpr = rawMuh.includes('+') ? rawMuh : '';
-        orders[idx].kaddurExpr = rawKad.includes('+') ? rawKad : '';
-        orders[idx].muhammedExpr = rawMam.includes('+') ? rawMam : '';
-
-        orders[idx].isa = parseKgInput(rawIsa);
-        orders[idx].muhiddin = parseKgInput(rawMuh);
-        orders[idx].kaddur = parseKgInput(rawKad);
-        orders[idx].muhammed = parseKgInput(rawMam);
-        orders[idx].lastActionDate = formatTodayDate();
-
-        saveState(orders[idx]);
-        renderOrders();
-        renderCompletedOrders();
-        if (!document.getElementById('tab-ozet')?.classList.contains('hidden')) renderSummary('ALL');
-        if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) renderOperationTab();
-        if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) renderReports();
-      }
-
-      const opName = operatorLabel || '';
-      showToast(
-        currentLang === 'ar'
-          ? `✅ تم تأكيد كمية ${opName}: ${fmt(numericVal)} كغ`
-          : `✅ ${opName} miktarı onaylandı: ${fmt(numericVal)} KG`
-      );
+      showToast(`${operatorLabel}: ${fmt(numericVal)} KG`);
     }
-
-    function formatOperatorExprDisplay(exprStr, numericTotal) {
-      const expr = String(exprStr || '').trim();
-      if (expr && expr.includes('+')) {
-        return `${escapeHtml(expr)} = <strong>${fmt(numericTotal)}</strong>`;
-      }
-      return fmt(numericTotal);
-    }
-
-    function escapeHtml(str) {
-      return String(str || '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-    }
-
-    function formatArtiveHighlight(artiveText) {
-      const safe = escapeHtml(artiveText || '');
-      return safe.replace(/(\b\d{2,4}\s+\d{2,4}\b)/, '<span class="font-extrabold text-slate-900">$1</span>');
-    }
-
-    function showToast(msg) {
-      try {
-        const toastEl = document.getElementById('toast');
-        const msgEl = document.getElementById('toast-msg');
-        if (!toastEl || !msgEl) return;
-        msgEl.textContent = msg;
-        toastEl.classList.remove('hidden');
-        if (toastTimer) clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => {
-          toastEl.classList.add('hidden');
-        }, 2600);
-      } catch (e) {}
-    }
-    window.showToast = showToast;
-
-    function saveState(changedOrder = null) {
-      try {
-        localStorage.setItem('extruder_orders_v1', JSON.stringify(orders));
-        localStorage.setItem('extruder_notes_v1', JSON.stringify(notes));
-      } catch (e) {}
-      if (changedOrder && typeof window.syncSingleOrderToCloud === 'function') {
-        window.syncSingleOrderToCloud(changedOrder);
-      } else if (typeof window.pushSharedWorkspaceToCloud === 'function') {
-        window.pushSharedWorkspaceToCloud(orders, notes);
-      }
-    }
-
-    window.getCurrentAppState = function() {
-      return { orders, notes };
-    };
-
-    window.applyRemoteOrdersState = function(remoteOrders) {
-      if (Array.isArray(remoteOrders) && remoteOrders.length > 0) {
-        orders = remoteOrders.map(ensureOrderDates);
-        normalizeOrderNumbers();
-      }
-      try { localStorage.setItem('extruder_orders_v1', JSON.stringify(orders)); } catch (e) {}
-      renderOrders();
-      renderCompletedOrders();
-      if (!document.getElementById('tab-ozet')?.classList.contains('hidden')) renderSummary('ALL');
-      if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) renderOperationTab();
-      if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) renderReports();
-    };
-
-    window.applyRemoteNotesState = function(remoteNotes) {
-      if (Array.isArray(remoteNotes)) {
-        notes = remoteNotes;
-      }
-      try { localStorage.setItem('extruder_notes_v1', JSON.stringify(notes)); } catch (e) {}
-      if (!document.getElementById('tab-notlar')?.classList.contains('hidden')) renderNotes();
-    };
-
-    function loadState() {
-      try {
-        const savedOrders = localStorage.getItem('extruder_orders_v1');
-        const savedNotes = localStorage.getItem('extruder_notes_v1');
-        if (savedOrders) {
-          const parsed = JSON.parse(savedOrders);
-          orders = Array.isArray(parsed) && parsed.length > 0
-            ? parsed.map(ensureOrderDates)
-            : JSON.parse(JSON.stringify(INITIAL_ORDERS)).map(ensureOrderDates);
-        } else {
-          orders = JSON.parse(JSON.stringify(INITIAL_ORDERS)).map(ensureOrderDates);
-        }
-        if (savedNotes) {
-          const parsedNotes = JSON.parse(savedNotes);
-          notes = Array.isArray(parsedNotes) ? parsedNotes : JSON.parse(JSON.stringify(INITIAL_NOTES));
-        } else {
-          notes = JSON.parse(JSON.stringify(INITIAL_NOTES));
-        }
-      } catch (e) {
-        orders = JSON.parse(JSON.stringify(INITIAL_ORDERS)).map(ensureOrderDates);
-        notes = JSON.parse(JSON.stringify(INITIAL_NOTES));
-      }
-      normalizeOrderNumbers();
-    }
-
-    function applyLanguage(lang) {
-      currentLang = lang === 'ar' ? 'ar' : 'tr';
-      localStorage.setItem('extruder_lang', currentLang);
-      document.documentElement.lang = currentLang;
-      document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-
-      const toggleLabel = document.getElementById('langToggleLabel');
-      if (toggleLabel) toggleLabel.textContent = currentLang === 'ar' ? 'TR' : 'AR';
-
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (key) el.textContent = t(key);
-      });
-      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-        const key = el.getAttribute('data-i18n-placeholder');
-        if (key) el.setAttribute('placeholder', t(key));
-      });
-
-      renderOrders();
-      renderCompletedOrders();
-      if (!document.getElementById('tab-ozet')?.classList.contains('hidden')) renderSummary('ALL');
-      if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) renderOperationTab();
-      if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) renderReports();
-      if (!document.getElementById('tab-notlar')?.classList.contains('hidden')) renderNotes();
-    }
-
-    function toggleLanguage() {
-      applyLanguage(currentLang === 'tr' ? 'ar' : 'tr');
-    }
-
-    function getWorkStatus(o) {
-      if (!o) return 'IDLE';
-      if (o.closed || o.workStatus === 'FINISHED') return 'FINISHED';
-      if (o.workStatus === 'RUNNING') return 'RUNNING';
-      if (o.workStatus === 'PAUSED') return 'PAUSED';
-      if (o.workStatus === 'RESET') return 'RESET';
-      return 'IDLE';
-    }
-
-    function toggleWorkStatusMenu(event, id) {
-      if (event) event.stopPropagation();
-      openStatusMenuId = openStatusMenuId === id ? null : id;
-      refreshActiveMenus();
-    }
-
-    function setOrderOperatorInline(id, opName) {
-      const idx = orders.findIndex(x => x.id === id);
-      if (idx === -1) return;
-      if (OPERATORS.includes(opName)) {
-        orders[idx].activeOperator = opName;
-        orders[idx].shiftActive = true;
-        orders[idx].lastActionDate = formatTodayDate();
-        orders[idx].shiftSession = {
-          operator: opName,
-          status: 'ACTIVE',
-          startedAt: orders[idx].shiftSession?.startedAt || formatClockTime(),
-          endedAt: null
-        };
-      }
-      saveState(orders[idx]);
-      refreshActiveMenus();
-      showToast(`${t('running_operator_badge')}: ${opName}`);
-    }
-
-    function renderRunningOperatorBar(o) {
-      if (getWorkStatus(o) !== 'RUNNING') return '';
-      const activeOp = getActiveOperatorName(o);
-      const isShiftEndedWithoutOperator = !activeOp && (o.shiftActive === false || o.shiftSession?.status === 'ENDED' || !o.shiftSession?.operator);
-      const displayOperatorText = activeOp
-        ? `<span class="text-xs font-extrabold text-slate-900 select-none pointer-events-none truncate">${escapeHtml(activeOp)}</span>`
-        : (isShiftEndedWithoutOperator
-          ? `<span class="text-xs font-extrabold text-rose-600 tracking-wide select-none pointer-events-none truncate">${t('start_shift_prompt')}</span>`
-          : `<span class="text-xs font-extrabold text-rose-600 tracking-wide select-none pointer-events-none truncate">${t('start_shift_prompt')}</span>`);
-
-      return `
-        <div onclick="event.stopPropagation()" class="flex items-center justify-between gap-2 pt-1.5 border-t border-emerald-200/80">
-          <div class="flex items-center gap-1.5 min-w-0">
-            <span class="w-2 h-2 rounded-full ${activeOp ? 'bg-emerald-600 animate-pulse' : 'bg-rose-600'} shrink-0"></span>
-            <span class="text-[11px] font-bold ${activeOp ? 'text-emerald-900' : 'text-rose-700'} select-none pointer-events-none shrink-0">${t('running_operator_badge')}:</span>
-            ${displayOperatorText}
-          </div>
-        </div>
-      `;
-    }
-
-    function refreshActiveMenus() {
-      renderOrders();
-      if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) {
-        renderOperationTab();
-      }
-    }
-
-    function setOrderWorkStatus(event, id, newStatus) {
-      if (event) event.stopPropagation();
-      if (typeof window.guardActionPermission === 'function' && !window.guardActionPermission('START_STOP_ORDER')) {
-        openStatusMenuId = null;
-        refreshActiveMenus();
-        return;
-      }
-      openStatusMenuId = null;
-      const idx = orders.findIndex(x => x.id === id);
-      if (idx === -1) return;
-
-      orders[idx].lastActionDate = formatTodayDate();
-
-      if (newStatus === 'RESET') {
-        orders[idx].workStatus = 'RESET';
-        orders[idx].closed = false;
-        orders[idx].completedDate = null;
-        orders[idx].shiftActive = false;
-        orders[idx].activeOperator = null;
-        orders[idx].shiftSession = {
-          operator: null,
-          status: 'RESET',
-          startedAt: null,
-          endedAt: null
-        };
-        saveState(orders[idx]);
-        refreshActiveMenus();
-        try { renderCompletedOrders(); } catch (e) {}
-        showToast(currentLang === 'ar' ? 'تمت إعادة الضبط (دون تغيير)' : 'Durum: ○ Sıfırlandı');
-        return;
-      }
-
-      orders[idx].workStatus = newStatus;
-      if (newStatus === 'FINISHED') {
-        orders[idx].closed = true;
-        orders[idx].completedDate = formatTodayDate();
-        orders[idx].shiftActive = false;
-        orders[idx].activeOperator = null;
-        showToast(currentLang === 'ar' ? 'الحالة: ■ منتهي' : 'Durum: ■ Bitti (Tamamlananlara taşındı)');
-      } else {
-        orders[idx].closed = false;
-        orders[idx].completedDate = null;
-        if (newStatus === 'RUNNING') {
-          if (!orders[idx].activeOperator) {
-            const defaultOp = getShiftPickerOperator(orders[idx]);
-            orders[idx].activeOperator = defaultOp;
-            orders[idx].shiftActive = true;
-          }
-          orders.forEach(item => {
-            if (item.id !== id && item.workStatus === 'RUNNING') {
-              item.workStatus = 'PAUSED';
-            }
-          });
-          showToast(currentLang === 'ar' ? 'الحالة: ● قيد التشغيل (أخضر)' : 'Durum: ● Çalışıyor (Yeşil)');
-        } else {
-          showToast(currentLang === 'ar' ? 'الحالة: ⏸ متوقف (أصفر)' : 'Durum: ⏸ Durdu (Sarı)');
-        }
-        normalizeOrderNumbers();
-      }
-
-      saveState();
-      refreshActiveMenus();
-      try { renderCompletedOrders(); } catch (e) {}
-    }
-
-    function renderWorkStatusButton(o) {
-      const status = getWorkStatus(o);
-      const isMenuOpen = openStatusMenuId === o.id;
-
-      let btnClass = 'bg-slate-100 text-slate-700 border-slate-200';
-      let btnLabel = t('status_select');
-
-      if (status === 'RUNNING') {
-        btnClass = 'bg-emerald-600 text-white border-emerald-700 shadow-2xs';
-        btnLabel = t('status_running');
-      } else if (status === 'PAUSED') {
-        btnClass = 'bg-amber-400 text-amber-950 border-amber-500 shadow-2xs';
-        btnLabel = t('status_paused');
-      } else if (status === 'FINISHED') {
-        btnClass = 'bg-rose-600 text-white border-rose-700 shadow-2xs';
-        btnLabel = t('status_finished');
-      } else if (status === 'RESET') {
-        btnClass = 'bg-slate-200 text-slate-800 border-slate-300 shadow-2xs';
-        btnLabel = t('status_reset');
-      }
-
-      return `
-        <div onclick="event.stopPropagation()" class="relative inline-block shrink-0">
-          <button type="button" onclick="toggleWorkStatusMenu(event, ${o.id})"
-            class="inline-flex items-center gap-1 whitespace-nowrap px-2 py-1 rounded-lg border text-[10px] leading-tight font-extrabold active:scale-95 transition ${btnClass}">
-            <span class="whitespace-nowrap">${btnLabel}</span>
-            <svg class="w-2.5 h-2.5 opacity-80 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-            </svg>
-          </button>
-          ${isMenuOpen ? `
-            <div class="absolute ltr:right-0 rtl:left-0 top-full mt-1 z-30 w-36 bg-white rounded-xl shadow-xl border border-slate-200 p-1 space-y-0.5">
-              <button type="button" onclick="setOrderWorkStatus(event, ${o.id}, 'RUNNING')"
-                class="w-full flex items-center gap-1.5 whitespace-nowrap px-2 py-1.5 rounded-lg text-[10px] leading-tight font-extrabold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 transition ltr:text-left rtl:text-right">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
-                <span>${t('menu_running')}</span>
-              </button>
-              <button type="button" onclick="setOrderWorkStatus(event, ${o.id}, 'PAUSED')"
-                class="w-full flex items-center gap-1.5 whitespace-nowrap px-2 py-1.5 rounded-lg text-[10px] leading-tight font-extrabold text-amber-800 bg-amber-50 hover:bg-amber-100 transition ltr:text-left rtl:text-right">
-                <span class="w-2 h-2 rounded-full bg-amber-400 shrink-0"></span>
-                <span>${t('menu_paused')}</span>
-              </button>
-              <button type="button" onclick="setOrderWorkStatus(event, ${o.id}, 'FINISHED')"
-                class="w-full flex items-center gap-1.5 whitespace-nowrap px-2 py-1.5 rounded-lg text-[10px] leading-tight font-extrabold text-rose-800 bg-rose-50 hover:bg-rose-100 transition ltr:text-left rtl:text-right">
-                <span class="w-2 h-2 rounded-full bg-rose-500 shrink-0"></span>
-                <span>${t('menu_finished')}</span>
-              </button>
-              <button type="button" onclick="setOrderWorkStatus(event, ${o.id}, 'RESET')"
-                class="w-full flex items-center gap-1.5 whitespace-nowrap px-2 py-1.5 rounded-lg text-[10px] leading-tight font-extrabold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 transition ltr:text-left rtl:text-right">
-                <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
-                <span>${t('menu_reset')}</span>
-              </button>
-            </div>
-          ` : ''}
-        </div>
-      `;
-    }
-
-    document.addEventListener('click', (e) => {
-      if (openStatusMenuId !== null && !e.target.closest('[onclick*="toggleWorkStatusMenu"]')) {
-        openStatusMenuId = null;
-        refreshActiveMenus();
-      }
-      if (openCompletedMenuId !== null && !e.target.closest('[onclick*="toggleCompletedMenu"]')) {
-        openCompletedMenuId = null;
-        renderCompletedOrders();
-      }
-    });
-
-    function normalizeOrderNumbers(movedId = null, desiredNo = null) {
-      const active = orders.filter(o => !o.closed).sort((a, b) => (a.orderNo || 999) - (b.orderNo || 999) || a.id - b.id);
-      const runningOrder = active.find(o => getWorkStatus(o) === 'RUNNING');
-
-      if (movedId !== null && desiredNo !== null) {
-        const idx = active.findIndex(o => o.id === movedId);
-        if (idx !== -1) {
-          const [moved] = active.splice(idx, 1);
-          const pool = runningOrder ? active.filter(o => o.id !== runningOrder.id) : active;
-          const targetIdx = Math.max(0, Math.min(pool.length, Math.floor(Number(desiredNo) || 1) - 1));
-          pool.splice(targetIdx, 0, moved);
-          if (runningOrder) {
-            pool.unshift(runningOrder);
-          }
-          active.splice(0, active.length, ...pool);
-        }
-      } else if (runningOrder) {
-        const restPool = active.filter(o => o.id !== runningOrder.id);
-        active.splice(0, active.length, runningOrder, ...restPool);
-      }
-
-      let seq = 1;
-      active.forEach((o) => {
-        if (getWorkStatus(o) === 'RUNNING') {
-          o.orderNo = 0;
-        } else {
-          o.orderNo = seq++;
-        }
-      });
-    }
-
-    function updateOrderNumberInline(id, newVal) {
-      if (typeof window.guardActionPermission === 'function' && !window.guardActionPermission('REORDER_ORDER')) {
-        refreshActiveMenus();
-        return;
-      }
-      const targetOrder = orders.find(x => x.id === id);
-      if (targetOrder && getWorkStatus(targetOrder) === 'RUNNING') {
-        targetOrder.orderNo = 0;
-        saveState(targetOrder);
-        refreshActiveMenus();
-        showToast('Çalışan iş emri sırası her zaman #0 olarak kalır');
-        return;
-      }
-      const num = parseInt(newVal, 10);
-      if (!Number.isFinite(num) || num < 0) {
-        refreshActiveMenus();
-        return;
-      }
-      normalizeOrderNumbers(id, num === 0 ? 1 : num);
-      saveState();
-      refreshActiveMenus();
-      showToast(`İş emri #${targetOrder ? targetOrder.orderNo : num} sırasına alındı`);
-    }
-
-    function setQuickChip(chip) {
-      activeChip = chip;
-      document.querySelectorAll('.chip-btn').forEach(btn => {
-        const isActive = btn.dataset.chip === chip;
-        btn.className = isActive
-          ? 'chip-btn px-3.5 py-1.5 rounded-full text-xs font-semibold border border-[#146C53] bg-[#ECFDF5] text-[#146C53] transition'
-          : 'chip-btn px-3.5 py-1.5 rounded-full text-xs font-medium border border-slate-200 bg-white text-slate-600 transition';
-      });
-      renderOrders();
-    }
-
-    function clearOrderFilters() {
-      const searchEl = document.getElementById('searchInput');
-      const colorStatusEl = document.getElementById('filterColorStatus');
-      const periodEl = document.getElementById('filterPeriod');
-      const workflowEl = document.getElementById('filterWorkflow');
-      const sortEl = document.getElementById('sortBy');
-
-      if (searchEl) searchEl.value = '';
-      if (colorStatusEl) colorStatusEl.value = 'ALL';
-      if (periodEl) periodEl.value = 'ALL';
-      if (workflowEl) workflowEl.value = 'ALL';
-      if (sortEl) sortEl.value = 'ORDER_NO';
-
-      activeChip = 'ALL';
-      document.querySelectorAll('.chip-btn').forEach(btn => {
-        const isActive = btn.dataset.chip === 'ALL';
-        btn.className = isActive
-          ? 'chip-btn px-3.5 py-1.5 rounded-full text-xs font-semibold border border-[#146C53] bg-[#ECFDF5] text-[#146C53] transition'
-          : 'chip-btn px-3.5 py-1.5 rounded-full text-xs font-medium border border-slate-200 bg-white text-slate-600 transition';
-      });
-
-      renderOrders();
-      showToast(currentLang === 'ar' ? 'تمت إعادة ضبط الفلاتر' : 'Filtreler sıfırlandı');
-    }
-
-    function renderOrders() {
-      const q = (document.getElementById('searchInput')?.value || '').trim().toLowerCase();
-      const colorStatus = document.getElementById('filterColorStatus')?.value || 'ALL';
-      const period = document.getElementById('filterPeriod')?.value || 'ALL';
-      const workflow = document.getElementById('filterWorkflow')?.value || 'ALL';
-      const sort = document.getElementById('sortBy')?.value || 'ORDER_NO';
-
-      let filtered = orders.filter(o => {
-        if (o.closed) return false;
-        const prod = getProd(o);
-        const rest = getRest(o);
-        const wStatus = getWorkStatus(o);
-
-        if (
-          q &&
-          !String(o.article || '').toLowerCase().includes(q) &&
-          !String(o.artive || '').toLowerCase().includes(q) &&
-          !String(o.code || '').toLowerCase().includes(q)
-        ) return false;
-
-        if (period !== 'ALL' && o.period !== period) return false;
-
-        if (colorStatus === 'RUNNING' && wStatus !== 'RUNNING') return false;
-        if (colorStatus === 'PAUSED' && wStatus !== 'PAUSED') return false;
-        if (colorStatus === 'IDLE' && wStatus === 'RUNNING') return false;
-        if (colorStatus === 'REMAINING' && rest <= 0) return false;
-        if (colorStatus === 'EXCEEDED' && rest >= 0) return false;
-
-        if (workflow === 'REMAINING' && rest <= 0) return false;
-        if (workflow === 'EXCEEDED' && rest >= 0) return false;
-        if (workflow === 'NOT_STARTED' && prod > 0) return false;
-
-        if (activeChip === 'REMAINING' && rest <= 0) return false;
-        if (activeChip === 'EXCEEDED' && rest >= 0) return false;
-
-        return true;
-      });
-
-      if (sort === 'COLOR_STATUS') {
-        const rank = (item) => {
-          const st = getWorkStatus(item);
-          if (st === 'RUNNING') return 0;
-          if (st === 'PAUSED') return 1;
-          return 2;
-        };
-        filtered.sort((a, b) => rank(a) - rank(b) || (a.orderNo || 999) - (b.orderNo || 999));
-      } else if (sort === 'REST_DESC') {
-        filtered.sort((a, b) => getRest(b) - getRest(a));
-      } else if (sort === 'TON_DESC') {
-        filtered.sort((a, b) => b.ton - a.ton);
-      } else {
-        filtered.sort((a, b) => (a.orderNo || 999) - (b.orderNo || 999));
-      }
-
-      const runningList = filtered.filter(o => getWorkStatus(o) === 'RUNNING');
-      const otherList = filtered.filter(o => getWorkStatus(o) !== 'RUNNING');
-      filtered = [...runningList, ...otherList];
-
-      const totalTon = filtered.reduce((acc, o) => acc + (Number(o.ton) || 0), 0);
-      const totalProd = filtered.reduce((acc, o) => acc + getProd(o), 0);
-      const miniPeriodEl = document.getElementById('miniSummaryPeriod');
-      const miniStatsEl = document.getElementById('miniSummaryStats');
-      const countLabelEl = document.getElementById('orderCountLabel');
-
-      if (miniPeriodEl) miniPeriodEl.textContent = `· ${period === 'ALL' ? t('all_periods') : period}`;
-      if (miniStatsEl) miniStatsEl.textContent = t('mini_stats', fmt(totalTon), fmt(totalProd));
-      if (countLabelEl) countLabelEl.textContent = t('orders_listed', filtered.length);
-
-      const container = document.getElementById('ordersList');
-      if (!container) return;
-
-      if (filtered.length === 0) {
-        container.innerHTML = `
-          <div class="pro-card rounded-3xl p-8 text-center">
-            <div class="text-slate-400 text-sm font-medium">${t('no_orders_found')}</div>
-          </div>`;
-        return;
-      }
-
-      container.innerHTML = filtered.map(o => {
-        const prod = getProd(o);
-        const rest = getRest(o);
-        const isExceeded = rest < 0;
-        const isNearComplete = !isExceeded && rest <= 150 && prod > 0;
-        const wStatus = getWorkStatus(o);
-        const isRunning = wStatus === 'RUNNING';
-        const isPaused = wStatus === 'PAUSED';
-
-        const cardHighlight = isRunning
-          ? 'order-card-3d-running'
-          : (isPaused ? 'order-card-3d-paused' : 'order-card-3d');
-        const seqBoxClass = isRunning
-          ? 'seq-square-3d seq-square-3d-running'
-          : (isPaused ? 'seq-square-3d seq-square-3d-paused' : 'seq-square-3d');
-        const topDateStr = escapeHtml(o.createdDate || formatTodayDate());
-
-        return `
-        <div onclick="openEditModal(${o.id})" class="rounded-2xl p-3 ${cardHighlight} active:scale-[0.99] transition cursor-pointer space-y-2">
-          <div class="flex items-center justify-between gap-2">
-            <div onclick="event.stopPropagation()" class="inline-flex items-center justify-center ${seqBoxClass}" title="Sıra numarasını değiştirin">
-              <span class="text-[9px] font-extrabold text-slate-500 mr-0.5 leading-none">#</span>
-              <input type="number" inputmode="numeric" min="1" value="${o.orderNo}"
-                onchange="updateOrderNumberInline(${o.id}, this.value)"
-                onkeydown="if(event.key==='Enter'){this.blur();}"
-                class="w-6 bg-transparent text-slate-900 text-[10px] font-extrabold text-center leading-none rounded outline-none" />
-            </div>
-            <span class="text-[11px] font-semibold text-slate-700 bg-white/90 border border-slate-200/80 px-2.5 py-0.5 rounded-md shadow-2xs text-center">${topDateStr}</span>
-            ${renderWorkStatusButton(o)}
-          </div>
-
-          <div>
-            <p class="text-xs font-semibold text-slate-600 flex flex-wrap items-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full bg-[#146C53]"></span>
-              <span>${formatArtiveHighlight(o.artive)}</span>
-            </p>
-            <h3 class="text-[9px] leading-tight font-medium text-slate-500 mt-0.5">${escapeHtml(o.article)}</h3>
-          </div>
-
-          <div class="grid grid-cols-3 gap-1.5 pt-1 text-center">
-            <div class="metric-box-order rounded-xl py-1.5 px-1.5">
-              <div class="text-[10px] font-bold text-[#64748B] leading-none tracking-wide">${t('metric_order')}</div>
-              <div class="text-xs font-extrabold text-[#1E293B] leading-tight mt-1">${fmt(o.ton)}</div>
-            </div>
-            <div class="metric-box-prod rounded-xl py-1.5 px-1.5">
-              <div class="text-[10px] font-bold text-[#146C53] leading-none tracking-wide">${t('metric_prod')}</div>
-              <div class="text-xs font-extrabold text-[#146C53] leading-tight mt-1">${fmt(prod)}</div>
-            </div>
-            <div class="${isExceeded || isNearComplete ? 'metric-box-rem-alert' : 'metric-box-rem'} rounded-xl py-1.5 px-1.5">
-              <div class="text-[10px] font-bold ${isExceeded || isNearComplete ? 'text-rose-600' : 'text-[#C2820A]'} leading-none tracking-wide">${t('metric_rem')}</div>
-              <div class="text-xs font-extrabold ${isExceeded || isNearComplete ? 'text-rose-600' : 'text-[#B45309]'} leading-tight mt-1">${fmt(rest)}</div>
-            </div>
-          </div>
-
-          ${renderRunningOperatorBar(o)}
-        </div>`;
-      }).join('');
-    }
-
-    function parseKgInput(rawVal) {
-      const cleaned = String(rawVal ?? '')
-        .replace(/\s+/g, '')
-        .replace(/,/g, '.')
-        .replace(/[^0-9+.]/g, '')
-        .replace(/\++$/, '');
-      if (!cleaned) return 0;
-      const total = cleaned
-        .split('+')
-        .filter(Boolean)
-        .reduce((sum, part) => {
-          const val = parseFloat(part);
-          return sum + (Number.isFinite(val) ? val : 0);
-        }, 0);
-      return Number.isFinite(total) && total >= 0 ? Math.round(total * 1000) / 1000 : 0;
-    }
-
-    function toggleCompletedMenu(event, id) {
-      if (event) event.stopPropagation();
-      openCompletedMenuId = openCompletedMenuId === id ? null : id;
-      renderCompletedOrders();
-    }
-
-    function restartCompletedOrderAsRunning(event, id) {
-      if (event) event.stopPropagation();
-      if (typeof window.guardActionPermission === 'function' && !window.guardActionPermission('START_STOP_ORDER')) {
-        openCompletedMenuId = null;
-        renderCompletedOrders();
-        return;
-      }
-      openCompletedMenuId = null;
-      const idx = orders.findIndex(x => x.id === id);
-      if (idx === -1) return;
-
-      const defaultOp = getShiftPickerOperator(orders[idx]);
-      orders.forEach(item => {
-        if (item.id !== id && !item.closed && item.workStatus === 'RUNNING') {
-          item.workStatus = 'PAUSED';
-        }
-      });
-
-      orders[idx].closed = false;
-      orders[idx].completedDate = null;
-      orders[idx].lastActionDate = formatTodayDate();
-      orders[idx].workStatus = 'RUNNING';
-      orders[idx].shiftActive = true;
-      orders[idx].activeOperator = defaultOp;
-      orders[idx].shiftSession = {
-        operator: defaultOp,
-        status: 'ACTIVE',
-        startedAt: formatClockTime(),
-        endedAt: null
-      };
-
-      normalizeOrderNumbers();
-      saveState();
-      renderOrders();
-      renderCompletedOrders();
-      if (!document.getElementById('tab-ozet')?.classList.contains('hidden')) renderSummary('ALL');
-      if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) renderOperationTab();
-      if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) renderReports();
-      if (typeof window.logGmailActivity === 'function') {
-        window.logGmailActivity('TEKRAR_BASLATILDI', `#${orders[idx].orderNo} (${orders[idx].artive}) Bitenler'den çıkarılıp Çalışıyor yapıldı`);
-      }
-      showToast(currentLang === 'ar' ? 'تمت إعادة البدء وأصبح قيد التشغيل' : `#${orders[idx].orderNo} Bitenler'den çıkarıldı · Çalışıyor`);
-    }
-
-    function renderCompletedOrders() {
-      const q = (document.getElementById('completedSearch')?.value || '').trim().toLocaleLowerCase('tr-TR');
-      const all = orders.filter(o => o.closed);
-      const list = all.filter(o => !q || [o.article, o.artive, o.code, o.period].some(v => String(v || '').toLocaleLowerCase('tr-TR').includes(q))).sort((a, b) => b.id - a.id);
-
-      const countEl = document.getElementById('completedCount');
-      const el = document.getElementById('completedOrdersList');
-
-      if (countEl) countEl.textContent = t('emir_unit', all.length);
-
-      if (!el) return;
-
-      if (!list.length) {
-        el.innerHTML = `
-          <div class="pro-card rounded-2xl p-8 text-center">
-            <div class="text-3xl mb-2">✓</div>
-            <div class="text-sm font-bold text-slate-700">${q ? t('no_completed_match') : t('no_completed_yet')}</div>
-            <p class="text-xs text-slate-400 mt-1">${t('completed_empty_hint')}</p>
-          </div>`;
-        return;
-      }
-
-      el.innerHTML = list.map(o => {
-        const prod = getProd(o);
-        const rest = getRest(o);
-        const doneDateStr = escapeHtml(o.completedDate || o.lastActionDate || o.createdDate || formatTodayDate());
-        const isMenuOpen = openCompletedMenuId === o.id;
-        return `
-          <article onclick="openEditModal(${o.id})" class="completed-card pro-card rounded-2xl p-3.5 space-y-2.5 cursor-pointer active:scale-[.99]">
-            <div class="flex items-center justify-between gap-2">
-              <div class="flex items-center flex-wrap gap-2">
-                <span class="px-2 py-1 rounded-lg bg-slate-900 text-white text-xs font-bold">#${escapeHtml(o.orderNo || o.code)}</span>
-                <span class="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">${t('completed_date_label')}: ${doneDateStr}</span>
-              </div>
-              <div onclick="event.stopPropagation()" class="relative inline-block shrink-0">
-                <button type="button" onclick="toggleCompletedMenu(event, ${o.id})" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-[10px] font-bold active:scale-95 transition">
-                  <span>${t('completed_badge_upper')}</span>
-                  <svg class="w-2.5 h-2.5 opacity-80" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                  </svg>
-                </button>
-                ${isMenuOpen ? `
-                  <div class="absolute ltr:right-0 rtl:left-0 top-full mt-1 z-30 w-36 bg-white rounded-xl shadow-xl border border-slate-200 p-1">
-                    <button type="button" onclick="restartCompletedOrderAsRunning(event, ${o.id})"
-                      class="w-full flex items-center gap-1.5 whitespace-nowrap px-2.5 py-2 rounded-lg text-[11px] font-extrabold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 transition ltr:text-left rtl:text-right">
-                      <span>${t('reopen_order_btn')}</span>
-                    </button>
-                  </div>
-                ` : ''}
-              </div>
-            </div>
-            <div>
-              <p class="text-[11px] font-semibold text-slate-600 flex flex-wrap items-center gap-1">${formatArtiveHighlight(o.artive)}</p>
-              <h3 class="text-[10px] leading-snug font-medium text-slate-500 mt-0.5">${escapeHtml(o.article)}</h3>
-            </div>
-            <div class="grid grid-cols-3 gap-1.5 pt-0.5 text-center">
-              <div class="metric-box-order rounded-xl py-1.5 px-1.5">
-                <div class="text-[10px] font-bold text-[#64748B] leading-none tracking-wide">${t('metric_order')}</div>
-                <div class="text-xs font-extrabold text-[#1E293B] leading-tight mt-1">${fmt(o.ton)}</div>
-              </div>
-              <div class="metric-box-prod rounded-xl py-1.5 px-1.5">
-                <div class="text-[10px] font-bold text-[#146C53] leading-none tracking-wide">${t('metric_prod')}</div>
-                <div class="text-xs font-extrabold text-[#146C53] leading-tight mt-1">${fmt(prod)}</div>
-              </div>
-              <div class="${rest < 0 ? 'metric-box-rem-alert' : 'metric-box-rem'} rounded-xl py-1.5 px-1.5">
-                <div class="text-[10px] font-bold ${rest < 0 ? 'text-rose-600' : 'text-[#C2820A]'} leading-none tracking-wide">${t('metric_rem')}</div>
-                <div class="text-xs font-extrabold ${rest < 0 ? 'text-rose-600' : 'text-[#B45309]'} leading-tight mt-1">${fmt(rest)}</div>
-              </div>
-            </div>
-          </article>`;
-      }).join('');
-    }
-
-    function exportToCSV() {
-      try {
-        const headers = ['SIRA NO', 'DONEM', 'OLUSTURMA TARIHI', 'BITIS TARIHI', 'CALISAN OPERATOR', 'ONCELIK', 'ARTICLE THERMOFM', 'ARTIVE', 'TON', 'ISA', 'MUHIDDIN', 'KADDUR', 'MUHAMMED', 'QTT PROD', 'REST', 'DURUM'];
-        const sortedOrders = [...orders].sort((a, b) => (a.orderNo || 999) - (b.orderNo || 999));
-        const rows = sortedOrders.map(o => {
-          const prod = getProd(o);
-          const rest = getRest(o);
-          return [
-            o.orderNo || '',
-            o.period,
-            o.createdDate || '',
-            o.closed ? (o.completedDate || '') : '',
-            getActiveOperatorName(o),
-            o.priority ? 'EVET' : 'HAYIR',
-            `"${String(o.article || '').replace(/"/g, '""')}"`,
-            `"${String(o.artive || '').replace(/"/g, '""')}"`,
-            o.ton,
-            o.isa,
-            o.muhiddin,
-            o.kaddur,
-            o.muhammed,
-            prod,
-            rest,
-            o.closed ? 'TAMAMLANDI' : 'AKTIF'
-          ].join(';');
-        });
-
-        const csvContent = '\uFEFF' + [headers.join(';'), ...rows].join('\n');
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `EXTRUDER_Firebase_Uretim_Emirleri_${new Date().toISOString().slice(0, 10)}.csv`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        showToast('CSV dosyası indirildi');
-      } catch (e) {
-        showToast('CSV dışa aktarma hatası');
-      }
-    }
-
-    function closeModal(id) {
-      document.getElementById(id)?.classList.add('hidden');
-    }
-    window.closeModal = closeModal;
-
-    function openNewOrderModal() {
-      const perms = typeof window.getCurrentUserPermissions === 'function'
-        ? window.getCurrentUserPermissions()
-        : { canCreateOrder: true };
-      if (!perms.canCreateOrder) {
-        showToast('Yeni iş emri ekleme yetkisi sadece Yönetim etiketine aittir');
-        if (typeof window.openAccountModal === 'function') window.openAccountModal();
-        return;
-      }
-
-      const activeCount = orders.filter(o => !o.closed).length;
-      const codeEl = document.getElementById('newCode');
-      const articleEl = document.getElementById('newArticle');
-      const artiveEl = document.getElementById('newArtive');
-      const tonEl = document.getElementById('newTon');
-      const prioEl = document.getElementById('newPriority');
-
-      if (codeEl) codeEl.value = activeCount + 1;
-      if (articleEl) articleEl.value = '';
-      if (artiveEl) artiveEl.value = '';
-      if (tonEl) tonEl.value = '';
-      if (prioEl) prioEl.checked = false;
-
-      document.getElementById('newOrderModal')?.classList.remove('hidden');
-    }
-    window.openNewOrderModal = openNewOrderModal;
-
-    function createNewOrder() {
-      const article = (document.getElementById('newArticle')?.value || '').trim();
-      const artive = (document.getElementById('newArtive')?.value || '').trim();
-      const ton = parseKgExpression(document.getElementById('newTon')?.value);
-      const desiredOrderNo = parseInt(document.getElementById('newCode')?.value, 10) || 1;
-      const period = document.getElementById('newPeriod')?.value || '01.11.2026';
-      const priority = !!document.getElementById('newPriority')?.checked;
-
-      if (!article || ton <= 0) {
-        showToast(currentLang === 'ar' ? 'يرجى إدخال اسم المنتج والوزن' : 'Lütfen ürün adı ve tonaj girin');
-        return;
-      }
-
-      const todayStr = formatTodayDate();
-      const newId = Date.now();
-      const defaultOp = OPERATORS[Math.max(0, desiredOrderNo - 1) % OPERATORS.length];
-      const newOrder = ensureOrderDates({
-        id: newId,
-        orderNo: desiredOrderNo,
-        priority,
-        period,
-        createdDate: todayStr,
-        completedDate: null,
-        activeOperator: defaultOp,
-        code: String(desiredOrderNo),
-        article: article.toUpperCase(),
-        artive: (artive || 'BOBINE SF-PET STANDARD').toUpperCase(),
-        ton,
-        isa: 0,
-        muhiddin: 0,
-        kaddur: 0,
-        muhammed: 0,
-        closed: false,
-        workStatus: 'IDLE'
-      });
-
-      orders.unshift(newOrder);
-      normalizeOrderNumbers(newId, desiredOrderNo);
-      saveState(newOrder);
-      closeModal('newOrderModal');
-      renderOrders();
-      renderCompletedOrders();
-      showToast(currentLang === 'ar' ? `تمت إضافة أمر العمل رقم #${newOrder.orderNo}` : `#${newOrder.orderNo} nolu emir eklendi`);
-    }
-    window.createNewOrder = createNewOrder;
 
     function openEditModal(id) {
       const o = orders.find(x => x.id === id);
@@ -3010,7 +2099,21 @@
 
       const perms = typeof window.getCurrentUserPermissions === 'function'
         ? window.getCurrentUserPermissions()
-        : { isManagement: true, isOperator: true, isViewer: false };
+        : (typeof getUserPermissions === 'function' ? getUserPermissions() : { isManagement: true, isOperator: true, isViewer: false });
+
+      isEditingMetricsMode = false;
+      const editMetricsBtn = document.getElementById('editOrderMetricsBtn');
+      const manTonEl = document.getElementById('manualTonInput');
+      const manProdEl = document.getElementById('manualProdInput');
+      const manRestEl = document.getElementById('manualRestInput');
+      if (manTonEl) { manTonEl.classList.add('hidden'); manTonEl.value = ''; }
+      if (manProdEl) { manProdEl.classList.add('hidden'); manProdEl.value = ''; }
+      if (manRestEl) { manRestEl.classList.add('hidden'); manRestEl.value = ''; }
+
+      if (editMetricsBtn) {
+        editMetricsBtn.classList.toggle('hidden', !perms.isManagement);
+        editMetricsBtn.className = 'px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-xs active:scale-95 transition' + (perms.isManagement ? '' : ' hidden');
+      }
 
       pendingModalShift = {
         shiftActive: !!(o.shiftActive && o.activeOperator),
@@ -3031,12 +2134,16 @@
         deleteOrderBtn.classList.toggle('hidden', !perms.canDeleteOrder);
       }
 
-      const createdStr = `${t('created_date_label')}: ${o.createdDate || formatTodayDate()}`;
+      const lastActionStr = o.lastActionDateTime || `${o.createdDate || formatTodayDate()} 08:00`;
       const periodEl = document.getElementById('editModalPeriod');
-      if (periodEl) periodEl.textContent = `${o.period} · ${createdStr}`;
+      if (periodEl) {
+        periodEl.textContent = currentLang === 'ar'
+          ? `آخر تحديث: ${lastActionStr}`
+          : `Son İşlem: ${lastActionStr}`;
+      }
 
       const artiveEl = document.getElementById('editModalArtive');
-      if (artiveEl) artiveEl.innerHTML = `${formatArtiveHighlight(o.artive)} — <span class="font-medium text-slate-600">${escapeHtml(o.article)}</span>`;
+      if (artiveEl) artiveEl.innerHTML = `${formatArtiveHighlight(o.artive)}`;
 
       if (pendingModalShift.shiftActive && pendingModalShift.activeOperator) {
         syncOperatorCheckboxesUI(pendingModalShift.activeOperator, true);
@@ -3055,10 +2162,10 @@
       const kadRaw = o.kaddurExpr || (o.kaddur ? String(o.kaddur) : '');
       const mamRaw = o.muhammedExpr || (o.muhammed ? String(o.muhammed) : '');
 
-      if (isaInput) { isaInput.value = isaRaw; isaInput.dataset.rawExpr = isaRaw; }
-      if (muhInput) { muhInput.value = muhRaw; muhInput.dataset.rawExpr = muhRaw; }
-      if (kadInput) { kadInput.value = kadRaw; kadInput.dataset.rawExpr = kadRaw; }
-      if (mamInput) { mamInput.value = mamRaw; mamInput.dataset.rawExpr = mamRaw; }
+      if (isaInput) { isaInput.dataset.rawExpr = isaRaw; isaInput.value = o.isa ? String(o.isa) : ''; }
+      if (muhInput) { muhInput.dataset.rawExpr = muhRaw; muhInput.value = o.muhiddin ? String(o.muhiddin) : ''; }
+      if (kadInput) { kadInput.dataset.rawExpr = kadRaw; kadInput.value = o.kaddur ? String(o.kaddur) : ''; }
+      if (mamInput) { mamInput.dataset.rawExpr = mamRaw; mamInput.value = o.muhammed ? String(o.muhammed) : ''; }
 
       const opControlMap = [
         { op: 'İSA', inputId: 'inputIsa', plusId: 'plusBtnIsa', checkId: 'checkOpIsa' },
@@ -3096,9 +2203,124 @@
     }
     window.openEditModal = openEditModal;
 
+    function toggleOrderMetricsEditor() {
+      const perms = typeof window.getCurrentUserPermissions === 'function'
+        ? window.getCurrentUserPermissions()
+        : (typeof getUserPermissions === 'function' ? getUserPermissions() : { isManagement: true });
+      if (!perms.isManagement) {
+        showToast('Sipariş, üretim ve kalan düzenleme yetkisi sadece Yönetim Gmail hesabına aittir');
+        return;
+      }
+      const o = orders.find(x => x.id === editingOrderId);
+      if (!o) return;
+
+      isEditingMetricsMode = !isEditingMetricsMode;
+      const manTonEl = document.getElementById('manualTonInput');
+      const manProdEl = document.getElementById('manualProdInput');
+      const manRestEl = document.getElementById('manualRestInput');
+      const btnEl = document.getElementById('editOrderMetricsBtn');
+
+      if (isEditingMetricsMode) {
+        const currentProd = getProd(o);
+        const currentTon = Number(o.ton) || 0;
+        const currentRest = currentTon - currentProd;
+        if (manTonEl) { manTonEl.value = currentTon; manTonEl.classList.remove('hidden'); }
+        if (manProdEl) { manProdEl.value = currentProd; manProdEl.classList.remove('hidden'); }
+        if (manRestEl) { manRestEl.value = currentRest; manRestEl.classList.remove('hidden'); }
+        if (btnEl) {
+          btnEl.className = 'px-3 py-1.5 rounded-xl bg-amber-500 text-white border border-amber-600 font-extrabold text-xs active:scale-95 transition';
+        }
+      } else {
+        if (manTonEl) manTonEl.classList.add('hidden');
+        if (manProdEl) manProdEl.classList.add('hidden');
+        if (manRestEl) manRestEl.classList.add('hidden');
+        if (btnEl) {
+          btnEl.className = 'px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-xs active:scale-95 transition';
+        }
+      }
+    }
+    window.toggleOrderMetricsEditor = toggleOrderMetricsEditor;
+
+    function onManualMetricInput(sourceField) {
+      const perms = typeof window.getCurrentUserPermissions === 'function'
+        ? window.getCurrentUserPermissions()
+        : (typeof getUserPermissions === 'function' ? getUserPermissions() : { isManagement: true });
+      if (!perms.isManagement) return;
+
+      const manTonEl = document.getElementById('manualTonInput');
+      const manProdEl = document.getElementById('manualProdInput');
+      const manRestEl = document.getElementById('manualRestInput');
+      if (!manTonEl || !manProdEl || !manRestEl) return;
+
+      let tonVal = parseFloat(manTonEl.value);
+      let prodVal = parseFloat(manProdEl.value);
+      let restVal = parseFloat(manRestEl.value);
+
+      if (sourceField === 'TON') {
+        if (Number.isFinite(tonVal) && Number.isFinite(prodVal)) {
+          manRestEl.value = Math.round((tonVal - prodVal) * 1000) / 1000;
+        }
+      } else if (sourceField === 'PROD') {
+        if (Number.isFinite(tonVal) && Number.isFinite(prodVal)) {
+          manRestEl.value = Math.round((tonVal - prodVal) * 1000) / 1000;
+        }
+      } else if (sourceField === 'REST') {
+        if (Number.isFinite(tonVal) && Number.isFinite(restVal)) {
+          const derivedProd = Math.max(0, Math.round((tonVal - restVal) * 1000) / 1000);
+          manProdEl.value = derivedProd;
+          const isaInput = document.getElementById('inputIsa');
+          const muhInput = document.getElementById('inputMuhiddin');
+          const kadInput = document.getElementById('inputKaddur');
+          const mamInput = document.getElementById('inputMuhammed');
+          if (isaInput) { isaInput.value = derivedProd ? String(derivedProd) : ''; isaInput.dataset.rawExpr = isaInput.value; }
+          if (muhInput) { muhInput.value = ''; muhInput.dataset.rawExpr = ''; }
+          if (kadInput) { kadInput.value = ''; kadInput.dataset.rawExpr = ''; }
+          if (mamInput) { mamInput.value = ''; mamInput.dataset.rawExpr = ''; }
+        }
+      }
+
+      tonVal = parseFloat(manTonEl.value);
+      prodVal = parseFloat(manProdEl.value);
+      restVal = parseFloat(manRestEl.value);
+
+      const tonEl = document.getElementById('editCalcTon');
+      const prodEl = document.getElementById('editCalcProd');
+      const restEl = document.getElementById('editCalcRest');
+
+      if (tonEl && Number.isFinite(tonVal)) tonEl.textContent = fmt(tonVal) + ' KG';
+      if (prodEl && Number.isFinite(prodVal)) prodEl.textContent = fmt(prodVal) + ' KG';
+      if (restEl && Number.isFinite(restVal)) {
+        restEl.textContent = fmt(restVal) + ' KG';
+        restEl.className = `text-sm font-extrabold mt-0.5 ${restVal <= 150 ? 'text-rose-600' : 'text-amber-600'}`;
+      }
+    }
+    window.onManualMetricInput = onManualMetricInput;
+
     function recalcEditModal() {
       const o = orders.find(x => x.id === editingOrderId);
       if (!o) return;
+      const manTonEl = document.getElementById('manualTonInput');
+      const manProdEl = document.getElementById('manualProdInput');
+      const manRestEl = document.getElementById('manualRestInput');
+
+      if (isEditingMetricsMode && manTonEl && manProdEl && manRestEl) {
+        const ton = Number.isFinite(parseFloat(manTonEl.value)) ? parseFloat(manTonEl.value) : (Number(o.ton) || 0);
+        const prod = Number.isFinite(parseFloat(manProdEl.value)) ? parseFloat(manProdEl.value) : 0;
+        const rest = Math.round((ton - prod) * 1000) / 1000;
+        manRestEl.value = rest;
+
+        const tonEl = document.getElementById('editCalcTon');
+        const prodEl = document.getElementById('editCalcProd');
+        const restEl = document.getElementById('editCalcRest');
+        if (tonEl) tonEl.textContent = fmt(ton) + ' KG';
+        if (prodEl) prodEl.textContent = fmt(prod) + ' KG';
+        if (restEl) {
+          restEl.textContent = fmt(rest) + ' KG';
+          restEl.className = `text-sm font-extrabold mt-0.5 ${rest <= 150 ? 'text-rose-600' : 'text-amber-600'}`;
+        }
+        return;
+      }
+
       const isa = parseKgInput(getOperatorRawExpression('inputIsa'));
       const muh = parseKgInput(getOperatorRawExpression('inputMuhiddin'));
       const kad = parseKgInput(getOperatorRawExpression('inputKaddur'));
@@ -3106,6 +2328,9 @@
 
       const prod = isa + muh + kad + mam;
       const rest = (Number(o.ton) || 0) - prod;
+
+      if (manProdEl) manProdEl.value = prod;
+      if (manRestEl) manRestEl.value = rest;
 
       const tonEl = document.getElementById('editCalcTon');
       const prodEl = document.getElementById('editCalcProd');
@@ -3120,7 +2345,11 @@
     }
 
     function saveOrderEdits() {
-      if (typeof window.guardActionPermission === 'function' && !window.guardActionPermission('SAVE_ORDER')) {
+      const perms = typeof window.getCurrentUserPermissions === 'function'
+        ? window.getCurrentUserPermissions()
+        : (typeof getUserPermissions === 'function' ? getUserPermissions() : { isManagement: true, isOperator: true, isViewer: false });
+      if (perms.isViewer) {
+        showToast('İzleyici rolü değişiklik kaydedemez');
         return;
       }
       const idx = orders.findIndex(x => x.id === editingOrderId);
@@ -3160,17 +2389,53 @@
       const rawKad = getOperatorRawExpression('inputKaddur');
       const rawMam = getOperatorRawExpression('inputMuhammed');
 
-      orders[idx].isaExpr = rawIsa.includes('+') ? rawIsa : '';
-      orders[idx].muhiddinExpr = rawMuh.includes('+') ? rawMuh : '';
-      orders[idx].kaddurExpr = rawKad.includes('+') ? rawKad : '';
-      orders[idx].muhammedExpr = rawMam.includes('+') ? rawMam : '';
+      if (perms.isManagement || perms.mappedOperator === 'İSA') {
+        orders[idx].isaExpr = rawIsa.includes('+') ? rawIsa : '';
+        orders[idx].isa = parseKgInput(rawIsa);
+      }
+      if (perms.isManagement || perms.mappedOperator === 'MUHİDDİN') {
+        orders[idx].muhiddinExpr = rawMuh.includes('+') ? rawMuh : '';
+        orders[idx].muhiddin = parseKgInput(rawMuh);
+      }
+      if (perms.isManagement || perms.mappedOperator === 'KADDUR') {
+        orders[idx].kaddurExpr = rawKad.includes('+') ? rawKad : '';
+        orders[idx].kaddur = parseKgInput(rawKad);
+      }
+      if (perms.isManagement || perms.mappedOperator === 'MUHAMMED') {
+        orders[idx].muhammedExpr = rawMam.includes('+') ? rawMam : '';
+        orders[idx].muhammed = parseKgInput(rawMam);
+      }
 
-      orders[idx].isa = parseKgInput(rawIsa);
-      orders[idx].muhiddin = parseKgInput(rawMuh);
-      orders[idx].kaddur = parseKgInput(rawKad);
-      orders[idx].muhammed = parseKgInput(rawMam);
-      orders[idx].lastActionDate = formatTodayDate();
+      if (perms.isManagement && isEditingMetricsMode) {
+        const manTonEl = document.getElementById('manualTonInput');
+        const manProdEl = document.getElementById('manualProdInput');
+        const manRestEl = document.getElementById('manualRestInput');
+        const parsedTon = parseFloat(manTonEl?.value);
+        if (Number.isFinite(parsedTon) && parsedTon >= 0) {
+          orders[idx].ton = Math.round(parsedTon * 1000) / 1000;
+        }
+        let targetProd = parseFloat(manProdEl?.value);
+        const parsedRest = parseFloat(manRestEl?.value);
+        if (!Number.isFinite(targetProd) && Number.isFinite(parsedRest)) {
+          targetProd = Math.max(0, Math.round(((Number(orders[idx].ton) || 0) - parsedRest) * 1000) / 1000);
+        }
+        if (Number.isFinite(targetProd) && targetProd >= 0) {
+          const currentSum = getProd(orders[idx]);
+          if (Math.abs(currentSum - targetProd) > 0.0001) {
+            orders[idx].isa = Math.round(targetProd * 1000) / 1000;
+            orders[idx].isaExpr = '';
+            orders[idx].muhiddin = 0;
+            orders[idx].muhiddinExpr = '';
+            orders[idx].kaddur = 0;
+            orders[idx].kaddurExpr = '';
+            orders[idx].muhammed = 0;
+            orders[idx].muhammedExpr = '';
+          }
+        }
+      }
 
+      isEditingMetricsMode = false;
+      orders[idx].lastActionDateTime = formatDateTimeNow();
       if (!orders[idx].createdDate) orders[idx].createdDate = formatTodayDate();
       if (orders[idx].closed || orders[idx].workStatus === 'FINISHED') {
         orders[idx].closed = true;
@@ -3178,10 +2443,14 @@
         if (!orders[idx].completedDate) orders[idx].completedDate = formatTodayDate();
       } else {
         orders[idx].completedDate = null;
-        normalizeOrderNumbers(editingOrderId, newOrderNo);
+        if (perms.canReorderOrders) {
+          normalizeOrderNumbers(editingOrderId, newOrderNo);
+        }
       }
 
-      saveState(orders[idx]);
+      if (typeof saveState === 'function') {
+        saveState(orders[idx]);
+      }
       pendingModalShift = null;
       closeModal('editModal');
       renderOrders();
@@ -3248,6 +2517,7 @@
         }).join('');
       }
     }
+    window.renderSummary = renderSummary;
 
     function renderOperationTab() {
       const top10Container = document.getElementById('opTop10List');
@@ -3286,11 +2556,10 @@
           <div class="flex items-center justify-between gap-2">
             <div class="flex items-center flex-wrap gap-2">
               <div onclick="event.stopPropagation()" class="inline-flex items-center seq-square-3d" title="Sıra numarasını değiştirin">
-                <span class="text-[9px] font-extrabold text-slate-500 mr-0.5 leading-none">#</span>
                 <input type="number" inputmode="numeric" min="1" value="${o.orderNo}"
                   onchange="updateOrderNumberInline(${o.id}, this.value)"
                   onkeydown="if(event.key==='Enter'){this.blur();}"
-                  class="w-6 bg-transparent text-slate-900 text-[10px] font-extrabold text-center leading-none rounded outline-none" />
+                  class="w-full bg-transparent text-slate-900 text-[10px] font-extrabold text-center leading-none rounded outline-none" />
               </div>
               <span class="text-[11px] font-semibold text-slate-700 bg-white/90 border border-slate-200/80 px-2.5 py-0.5 rounded-md">${topDateStr}</span>
               ${renderWorkStatusButton(o)}
@@ -3317,18 +2586,18 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-3 gap-1.5 pt-0.5 text-center">
-            <div class="metric-box-order rounded-xl py-1.5 px-1.5">
-              <div class="text-[10px] font-bold text-[#64748B] leading-none">${t('metric_order')}</div>
-              <div class="text-xs font-extrabold text-[#1E293B] leading-tight mt-1">${fmt(o.ton)}</div>
+          <div class="grid grid-cols-3 bg-slate-50/90 border border-slate-200/90 rounded-2xl py-2.5 px-2 text-center">
+            <div>
+              <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_order')}</div>
+              <div class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight mt-1">${fmt(o.ton)} KG</div>
             </div>
-            <div class="metric-box-prod rounded-xl py-1.5 px-1.5">
-              <div class="text-[10px] font-bold text-[#146C53] leading-none">${t('metric_prod')}</div>
-              <div class="text-xs font-extrabold text-[#146C53] leading-tight mt-1">${fmt(prod)}</div>
+            <div class="border-x border-slate-200/90">
+              <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_prod')}</div>
+              <div class="text-xs sm:text-sm font-extrabold text-[#146C53] leading-tight mt-1">${fmt(prod)} KG</div>
             </div>
-            <div class="${isExceeded || isNearComplete ? 'metric-box-rem-alert' : 'metric-box-rem'} rounded-xl py-1.5 px-1.5">
-              <div class="text-[10px] font-bold ${isExceeded || isNearComplete ? 'text-rose-600' : 'text-[#C2820A]'} leading-none">${t('metric_rem')}</div>
-              <div class="text-xs font-extrabold ${isExceeded || isNearComplete ? 'text-rose-600' : 'text-[#B45309]'} leading-tight mt-1">${fmt(rest)}</div>
+            <div>
+              <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_rem')}</div>
+              <div class="text-xs sm:text-sm font-extrabold ${isExceeded || isNearComplete ? 'text-rose-600' : 'text-amber-600'} leading-tight mt-1">${fmt(rest)} KG</div>
             </div>
           </div>
 
@@ -3336,6 +2605,7 @@
         </div>`;
       }).join('');
     }
+    window.renderOperationTab = renderOperationTab;
 
     function renderReports() {
       const liveNov = orders.filter(o => o.period === '01.11.2026').reduce((s, o) => s + getProd(o), 0);
@@ -3403,6 +2673,7 @@
         `).join('');
       }
     }
+    window.renderReports = renderReports;
 
     function renderNotes() {
       const container = document.getElementById('notesList');
@@ -3435,97 +2706,43 @@
     }
 
     function addNote() {
-      if (typeof window.guardActionPermission === 'function' && !window.guardActionPermission('ADD_NOTE')) {
-        return;
-      }
+      if (!guardAction('ADD_NOTE')) return;
       const input = document.getElementById('noteInput');
       const authorEl = document.getElementById('noteAuthor');
       const text = (input?.value || '').trim();
       if (!text) return;
-      const newNote = {
+      notes.unshift({
         id: Date.now(),
         author: authorEl?.value || 'İSA',
         time: currentLang === 'ar' ? 'الآن' : 'Az önce',
         text
-      };
-      notes.unshift(newNote);
+      });
       if (input) input.value = '';
-      try { localStorage.setItem('extruder_notes_v1', JSON.stringify(notes)); } catch (e) {}
-      if (typeof window.syncSingleNoteToCloud === 'function') {
-        window.syncSingleNoteToCloud(newNote);
-      }
       renderNotes();
       showToast(currentLang === 'ar' ? 'تمت إضافة ملاحظة الوردية' : 'Vardiya notu eklendi');
     }
 
     function deleteNote(noteId) {
-      if (typeof window.guardActionPermission === 'function' && !window.guardActionPermission('DELETE_NOTE')) {
-        return;
-      }
+      if (!guardAction('DELETE_NOTE')) return;
       notes = notes.filter(n => n.id !== noteId);
-      try { localStorage.setItem('extruder_notes_v1', JSON.stringify(notes)); } catch (e) {}
-      if (typeof window.deleteSingleNoteFromCloud === 'function') {
-        window.deleteSingleNoteFromCloud(noteId);
-      }
       renderNotes();
       showToast(currentLang === 'ar' ? 'تم حذف الملاحظة' : 'Vardiya notu silindi');
     }
 
-    window.refreshAllViewsForPermissions = function() {
-      renderOrders();
-      renderCompletedOrders();
-      if (!document.getElementById('tab-ozet')?.classList.contains('hidden')) renderSummary('ALL');
-      if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) renderOperationTab();
-      if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) renderReports();
-      if (!document.getElementById('tab-notlar')?.classList.contains('hidden')) renderNotes();
-    };
-
-    function deleteEditingOrder() {
-      const idx = orders.findIndex(x => x.id === editingOrderId);
-      if (idx === -1) return;
-      const perms = typeof window.getCurrentUserPermissions === 'function'
-        ? window.getCurrentUserPermissions()
-        : { canDeleteOrder: true };
-      if (!perms.canDeleteOrder) {
-        showToast('İş emri silme yetkisi sadece Yönetim etiketine aittir');
-        return;
-      }
-      const removed = orders[idx];
-      orders.splice(idx, 1);
-      normalizeOrderNumbers();
-      saveState();
-      if (typeof window.deleteSingleOrderFromCloud === 'function') {
-        window.deleteSingleOrderFromCloud(removed.id);
-      }
-      pendingModalShift = null;
-      closeModal('editModal');
-      renderOrders();
-      renderCompletedOrders();
-      showToast(`#${removed.orderNo} nolu emir silindi`);
+    function openExportModal() {
+      document.getElementById('exportModal')?.classList.remove('hidden');
     }
-    window.deleteEditingOrder = deleteEditingOrder;
-
-    function openApkGuideModal() {
-      document.getElementById('apkGuideModal')?.classList.remove('hidden');
-    }
-    window.openApkGuideModal = openApkGuideModal;
-
-    function openSyncModal() {
-      document.getElementById('syncModal')?.classList.remove('hidden');
-    }
-    window.openSyncModal = openSyncModal;
 
     function resetToDefaultData() {
+      if (!guardAction('RESET_DATA')) return;
       orders = JSON.parse(JSON.stringify(INITIAL_ORDERS)).map(ensureOrderDates);
       notes = JSON.parse(JSON.stringify(INITIAL_NOTES));
       normalizeOrderNumbers();
-      saveState();
       renderOrders();
       renderCompletedOrders();
-      closeModal('apkGuideModal');
+      closeModal('exportModal');
       showToast('Varsayılan verilere dönüldü');
     }
-    window.resetToDefaultData = resetToDefaultData;
 
     function switchTab(tabName) {
       openStatusMenuId = null;
@@ -3554,16 +2771,48 @@
       window.scrollTo({ top: 0, behavior: 'instant' });
       renderOrders();
       renderCompletedOrders();
-      if (targetTab === 'ozet') renderSummary('ALL');
-      if (targetTab === 'operasyon') renderOperationTab();
-      if (targetTab === 'raporlar') renderReports();
-      if (targetTab === 'notlar') renderNotes();
+      if (targetTab === 'ozet' && typeof renderSummary === 'function') renderSummary('ALL');
+      if (targetTab === 'operasyon' && typeof renderOperationTab === 'function') renderOperationTab();
+      if (targetTab === 'raporlar' && typeof renderReports === 'function') renderReports();
+      if (targetTab === 'notlar' && typeof renderNotes === 'function') renderNotes();
     }
     window.switchTab = switchTab;
 
+    function applyLanguage(lang) {
+      currentLang = lang === 'ar' ? 'ar' : 'tr';
+      document.documentElement.lang = currentLang;
+      document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+
+      const toggleLabel = document.getElementById('langToggleLabel');
+      if (toggleLabel) toggleLabel.textContent = currentLang === 'ar' ? 'TR' : 'AR';
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (key) el.textContent = t(key);
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (key) el.setAttribute('placeholder', t(key));
+      });
+
+      renderOrders();
+      renderCompletedOrders();
+      if (!document.getElementById('tab-ozet')?.classList.contains('hidden')) renderSummary('ALL');
+      if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) renderOperationTab();
+      if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) renderReports();
+      if (!document.getElementById('tab-notlar')?.classList.contains('hidden')) renderNotes();
+    }
+
+    function toggleLanguage() {
+      applyLanguage(currentLang === 'tr' ? 'ar' : 'tr');
+    }
+
     function initApp() {
       try {
-        loadState();
+        orders = JSON.parse(JSON.stringify(INITIAL_ORDERS)).map(ensureOrderDates);
+        notes = JSON.parse(JSON.stringify(INITIAL_NOTES));
+        normalizeOrderNumbers();
+        updateHeaderRoleUI();
         applyLanguage(currentLang);
       } catch (e) {
         orders = JSON.parse(JSON.stringify(INITIAL_ORDERS));
