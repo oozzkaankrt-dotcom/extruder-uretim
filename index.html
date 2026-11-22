@@ -31,7 +31,8 @@
   </script>
   <style>
     body {
-      background-color: #E7ECEA;
+      background-color: #DCE4E0;
+      background-image: radial-gradient(circle at top center, rgba(20, 108, 83, 0.08) 0%, rgba(220, 228, 224, 0) 65%);
       font-family: 'Inter', 'Cairo', sans-serif;
       -webkit-tap-highlight-color: transparent;
       overscroll-behavior-y: none;
@@ -84,11 +85,25 @@
     .nav-btn { min-width: 0; }
     .nav-btn span { white-space: nowrap; }
     .order-card-3d {
-      background: linear-gradient(180deg, #FBFDFC 0%, #F1F5F3 100%);
-      border: 1px solid #CFD8D4;
-      border-bottom-width: 2px;
-      border-bottom-color: #B9C6C0;
-      box-shadow: 0 5px 12px -4px rgba(15, 23, 42, 0.14), 0 2px 4px -1px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      background: linear-gradient(180deg, #FFFFFF 0%, #F7FAF8 100%);
+      border: 1px solid #C3D0CA;
+      border-bottom-width: 2.5px;
+      border-bottom-color: #A8B8B0;
+      box-shadow: 0 8px 18px -6px rgba(15, 23, 42, 0.16), 0 2px 5px -1px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
+    }
+    .order-card-3d-running {
+      background: linear-gradient(180deg, #F3FDF8 0%, #E3F7EC 100%);
+      border: 1.5px solid #10B981;
+      border-bottom-width: 3px;
+      border-bottom-color: #059669;
+      box-shadow: 0 8px 18px -5px rgba(16, 185, 129, 0.25), 0 3px 6px -1px rgba(15, 23, 42, 0.09), inset 0 1px 0 rgba(255, 255, 255, 1);
+    }
+    .order-card-3d-paused {
+      background: linear-gradient(180deg, #FFFDF6 0%, #FEF6DF 100%);
+      border: 1.5px solid #F59E0B;
+      border-bottom-width: 3px;
+      border-bottom-color: #D97706;
+      box-shadow: 0 7px 16px -5px rgba(245, 158, 11, 0.22), 0 2px 5px -1px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
     }
     .order-card-3d-running {
       background: linear-gradient(180deg, #F0FDF7 0%, #E2F7EC 100%);
@@ -419,13 +434,11 @@
       </div>
 
       <div class="pro-card p-4 rounded-2xl space-y-3">
+        <div class="flex items-center justify-between gap-2 text-[11px] text-slate-600 bg-slate-50/90 border border-slate-200/80 rounded-xl px-3 py-2">
+          <span class="font-semibold">Not Sahibi (Gmail):</span>
+          <span id="noteAssignedOwnerBadge" class="font-extrabold text-[#146C53] truncate">Yönetim</span>
+        </div>
         <div class="flex gap-2">
-          <select id="noteAuthor" class="px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800">
-            <option value="İSA">İSA</option>
-            <option value="MUHİDDİN">MUHİDDİN</option>
-            <option value="KADDUR">KADDUR</option>
-            <option value="MUHAMMED">MUHAMMED</option>
-          </select>
           <input id="noteInput" type="text" data-i18n-placeholder="note_ph" placeholder="Vardiya notu yazın..."
             onkeydown="if(event.key==='Enter'){addNote();}"
             class="flex-1 px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900" />
@@ -519,47 +532,47 @@
         </div>
 
         <div class="flex flex-col gap-2">
-          <div class="flex items-center justify-between gap-2.5 bg-blue-50/60 border border-blue-200/80 rounded-2xl px-3 py-2">
+          <div id="opRowIsa" class="flex items-center justify-between gap-2.5 bg-slate-50 border border-slate-200/90 rounded-2xl px-3 py-2 transition">
             <label class="flex items-center gap-2 cursor-pointer min-w-[105px] shrink-0">
               <input id="checkOpIsa" type="checkbox" onchange="onOperatorCheckboxToggle('İSA', this.checked)" class="w-4 h-4 rounded text-blue-600 accent-blue-600" />
-              <span class="text-xs font-extrabold text-blue-800">İSA</span>
+              <span id="opLabelIsa" class="text-xs font-extrabold text-slate-700">İSA</span>
             </label>
             <div class="flex items-center gap-1.5 flex-1">
-              <input id="inputIsa" type="text" inputmode="numeric" placeholder="" onfocus="onOperatorInputFocus(this)" onblur="onOperatorInputBlur(this)" oninput="normalizeOperatorInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmOperatorInput('inputIsa','İSA');}" class="w-full px-3 py-2 bg-white border border-blue-200 rounded-xl text-sm font-extrabold text-slate-900" />
-              <button id="plusBtnIsa" type="button" title="Satıra + Ekle" onclick="appendPlusToOperatorRow('inputIsa', 'İSA')" class="w-9 h-9 shrink-0 rounded-xl bg-blue-100 hover:bg-blue-200 text-blue-800 font-extrabold text-base flex items-center justify-center active:scale-95 transition">+</button>
+              <input id="inputIsa" type="text" inputmode="numeric" placeholder="" onfocus="onOperatorInputFocus(this)" onblur="onOperatorInputBlur(this)" oninput="normalizeOperatorInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmOperatorInput('inputIsa','İSA');}" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm font-extrabold text-slate-900" />
+              <button id="plusBtnIsa" type="button" title="Satıra + Ekle" onclick="appendPlusToOperatorRow('inputIsa', 'İSA')" class="w-9 h-9 shrink-0 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-base flex items-center justify-center active:scale-95 transition">+</button>
             </div>
           </div>
 
-          <div class="flex items-center justify-between gap-2.5 bg-emerald-50/60 border border-emerald-200/80 rounded-2xl px-3 py-2">
+          <div id="opRowMuhiddin" class="flex items-center justify-between gap-2.5 bg-slate-50 border border-slate-200/90 rounded-2xl px-3 py-2 transition">
             <label class="flex items-center gap-2 cursor-pointer min-w-[105px] shrink-0">
               <input id="checkOpMuhiddin" type="checkbox" onchange="onOperatorCheckboxToggle('MUHİDDİN', this.checked)" class="w-4 h-4 rounded text-[#146C53] accent-[#146C53]" />
-              <span class="text-xs font-extrabold text-emerald-800">MUHİDDİN</span>
+              <span id="opLabelMuhiddin" class="text-xs font-extrabold text-slate-700">MUHİDDİN</span>
             </label>
             <div class="flex items-center gap-1.5 flex-1">
-              <input id="inputMuhiddin" type="text" inputmode="numeric" placeholder="" onfocus="onOperatorInputFocus(this)" onblur="onOperatorInputBlur(this)" oninput="normalizeOperatorInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmOperatorInput('inputMuhiddin','MUHİDDİN');}" class="w-full px-3 py-2 bg-white border border-emerald-200 rounded-xl text-sm font-extrabold text-slate-900" />
-              <button id="plusBtnMuhiddin" type="button" title="Satıra + Ekle" onclick="appendPlusToOperatorRow('inputMuhiddin', 'MUHİDDİN')" class="w-9 h-9 shrink-0 rounded-xl bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-extrabold text-base flex items-center justify-center active:scale-95 transition">+</button>
+              <input id="inputMuhiddin" type="text" inputmode="numeric" placeholder="" onfocus="onOperatorInputFocus(this)" onblur="onOperatorInputBlur(this)" oninput="normalizeOperatorInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmOperatorInput('inputMuhiddin','MUHİDDİN');}" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm font-extrabold text-slate-900" />
+              <button id="plusBtnMuhiddin" type="button" title="Satıra + Ekle" onclick="appendPlusToOperatorRow('inputMuhiddin', 'MUHİDDİN')" class="w-9 h-9 shrink-0 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-base flex items-center justify-center active:scale-95 transition">+</button>
             </div>
           </div>
 
-          <div class="flex items-center justify-between gap-2.5 bg-amber-50/60 border border-amber-200/80 rounded-2xl px-3 py-2">
+          <div id="opRowKaddur" class="flex items-center justify-between gap-2.5 bg-slate-50 border border-slate-200/90 rounded-2xl px-3 py-2 transition">
             <label class="flex items-center gap-2 cursor-pointer min-w-[105px] shrink-0">
               <input id="checkOpKaddur" type="checkbox" onchange="onOperatorCheckboxToggle('KADDUR', this.checked)" class="w-4 h-4 rounded text-amber-600 accent-amber-600" />
-              <span class="text-xs font-extrabold text-amber-800">KADDUR</span>
+              <span id="opLabelKaddur" class="text-xs font-extrabold text-slate-700">KADDUR</span>
             </label>
             <div class="flex items-center gap-1.5 flex-1">
-              <input id="inputKaddur" type="text" inputmode="numeric" placeholder="" onfocus="onOperatorInputFocus(this)" onblur="onOperatorInputBlur(this)" oninput="normalizeOperatorInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmOperatorInput('inputKaddur','KADDUR');}" class="w-full px-3 py-2 bg-white border border-amber-200 rounded-xl text-sm font-extrabold text-slate-900" />
-              <button id="plusBtnKaddur" type="button" title="Satıra + Ekle" onclick="appendPlusToOperatorRow('inputKaddur', 'KADDUR')" class="w-9 h-9 shrink-0 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-800 font-extrabold text-base flex items-center justify-center active:scale-95 transition">+</button>
+              <input id="inputKaddur" type="text" inputmode="numeric" placeholder="" onfocus="onOperatorInputFocus(this)" onblur="onOperatorInputBlur(this)" oninput="normalizeOperatorInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmOperatorInput('inputKaddur','KADDUR');}" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm font-extrabold text-slate-900" />
+              <button id="plusBtnKaddur" type="button" title="Satıra + Ekle" onclick="appendPlusToOperatorRow('inputKaddur', 'KADDUR')" class="w-9 h-9 shrink-0 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-base flex items-center justify-center active:scale-95 transition">+</button>
             </div>
           </div>
 
-          <div class="flex items-center justify-between gap-2.5 bg-purple-50/60 border border-purple-200/80 rounded-2xl px-3 py-2">
+          <div id="opRowMuhammed" class="flex items-center justify-between gap-2.5 bg-slate-50 border border-slate-200/90 rounded-2xl px-3 py-2 transition">
             <label class="flex items-center gap-2 cursor-pointer min-w-[105px] shrink-0">
               <input id="checkOpMuhammed" type="checkbox" onchange="onOperatorCheckboxToggle('MUHAMMED', this.checked)" class="w-4 h-4 rounded text-purple-600 accent-purple-600" />
-              <span class="text-xs font-extrabold text-purple-800">MUHAMMED</span>
+              <span id="opLabelMuhammed" class="text-xs font-extrabold text-slate-700">MUHAMMED</span>
             </label>
             <div class="flex items-center gap-1.5 flex-1">
-              <input id="inputMuhammed" type="text" inputmode="numeric" placeholder="" onfocus="onOperatorInputFocus(this)" onblur="onOperatorInputBlur(this)" oninput="normalizeOperatorInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmOperatorInput('inputMuhammed','MUHAMMED');}" class="w-full px-3 py-2 bg-white border border-purple-200 rounded-xl text-sm font-extrabold text-slate-900" />
-              <button id="plusBtnMuhammed" type="button" title="Satıra + Ekle" onclick="appendPlusToOperatorRow('inputMuhammed', 'MUHAMMED')" class="w-9 h-9 shrink-0 rounded-xl bg-purple-100 hover:bg-purple-200 text-purple-800 font-extrabold text-base flex items-center justify-center active:scale-95 transition">+</button>
+              <input id="inputMuhammed" type="text" inputmode="numeric" placeholder="" onfocus="onOperatorInputFocus(this)" onblur="onOperatorInputBlur(this)" oninput="normalizeOperatorInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmOperatorInput('inputMuhammed','MUHAMMED');}" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm font-extrabold text-slate-900" />
+              <button id="plusBtnMuhammed" type="button" title="Satıra + Ekle" onclick="appendPlusToOperatorRow('inputMuhammed', 'MUHAMMED')" class="w-9 h-9 shrink-0 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-base flex items-center justify-center active:scale-95 transition">+</button>
             </div>
           </div>
         </div>
@@ -997,8 +1010,8 @@
     ];
 
     const INITIAL_NOTES = [
-      { id: 1, author: 'İSA', time: 'Bugün 08:15', text: '36 nolu hatta PACK FAMILY 45 BIG NOIR OPAQUE bobin değişimi yapıldı, üretim devam ediyor.' },
-      { id: 2, author: 'MUHİDDİN', time: 'Dün 19:40', text: 'G1 hattı ALVEOLE 15 COMPARTIMENTS kalıp ısısı kontrol edildi.' }
+      { id: 1, author: 'İSA', time: '18.11.2026 08:15', text: '36 nolu hatta PACK FAMILY 45 BIG NOIR OPAQUE bobin değişimi yapıldı, üretim devam ediyor.' },
+      { id: 2, author: 'MUHİDDİN', time: '21.11.2026 19:40', text: 'G1 hattı ALVEOLE 15 COMPARTIMENTS kalıp ısısı kontrol edildi.' }
     ];
 
     let currentLang = 'tr';
@@ -1067,31 +1080,97 @@
       return `${formatTodayDate()} ${formatClockTime()}`;
     }
 
+    function formatCompletedDateTimeLabel(order) {
+      const raw = String((order && (order.completedDate || order.lastActionDateTime || order.createdDate)) || '').trim();
+      if (!raw) return formatDateTimeNow();
+      if (/^\d{2}\.\d{2}\.\d{4}\s+\d{2}:\d{2}/.test(raw)) {
+        return raw;
+      }
+      if (/^\d{2}\.\d{2}\.\d{4}$/.test(raw)) {
+        const lastAction = String((order && order.lastActionDateTime) || '').trim();
+        const timeMatch = lastAction.match(/\b(\d{2}:\d{2})\b/);
+        return `${raw} ${timeMatch ? timeMatch[1] : '00:00'}`;
+      }
+      return raw;
+    }
+
     function getActiveRoleProfile() {
       return ROLE_PROFILES.find(r => r.key === currentRoleKey) || ROLE_PROFILES[0];
     }
 
     function canManageGmailAssignments() {
-      const normalizedCurrent = String(currentAccountEmail || '').trim().toLowerCase();
-      return normalizedCurrent === GMAIL_ADMIN_EMAIL.toLowerCase();
+      return String(currentAccountEmail || '').trim().toLowerCase() === GMAIL_ADMIN_EMAIL.toLowerCase();
+    }
+
+    function getGmailMatchedProfile(emailStr = currentAccountEmail) {
+      const normalized = String(emailStr || '').trim().toLowerCase();
+      if (!normalized) return null;
+      return ROLE_PROFILES.find(r => Array.isArray(r.emails) && r.emails.some(em => String(em || '').trim().toLowerCase() === normalized)) || null;
+    }
+
+    function getGmailMatchedOperator(emailStr = currentAccountEmail) {
+      const matched = getGmailMatchedProfile(emailStr);
+      if (matched && matched.kind === 'OPERATOR' && matched.operatorCode) {
+        return matched.operatorCode;
+      }
+      return null;
+    }
+
+    function getAssignedNoteAuthorName() {
+      const matchedProfile = getGmailMatchedProfile();
+      if (matchedProfile) {
+        if (matchedProfile.kind === 'OPERATOR' && matchedProfile.operatorCode) {
+          return matchedProfile.operatorCode;
+        }
+        return matchedProfile.label;
+      }
+      const prof = getActiveRoleProfile();
+      if (prof.kind === 'OPERATOR' && prof.operatorCode) {
+        return prof.operatorCode;
+      }
+      return prof.label;
+    }
+
+    function canDeleteNotesByRole() {
+      const prof = getActiveRoleProfile();
+      return prof.kind === 'MANAGEMENT' || prof.kind === 'TECHNICIAN';
+    }
+
+    function canStartShiftForOperator(opName) {
+      const prof = getActiveRoleProfile();
+      if (!opName) return false;
+      if (prof.kind === 'MANAGEMENT' || prof.kind === 'TECHNICIAN') {
+        return true;
+      }
+      if (prof.kind === 'OPERATOR') {
+        const gmailOp = getGmailMatchedOperator();
+        if (!gmailOp) return false;
+        return gmailOp === opName && prof.operatorCode === opName;
+      }
+      return false;
     }
 
     function getUserPermissions() {
       const prof = getActiveRoleProfile();
       const isManagement = prof.kind === 'MANAGEMENT';
+      const isTechnician = prof.kind === 'TECHNICIAN';
       const isOperator = prof.kind === 'OPERATOR';
       const isViewer = prof.kind === 'VIEWER';
+      const gmailMatchedOp = getGmailMatchedOperator();
+      const effectiveOp = isOperator ? gmailMatchedOp : null;
       return {
         role: prof.label,
         kind: prof.kind,
         isManagement,
+        isTechnician,
         isOperator,
         isViewer,
-        mappedOperator: prof.operatorCode || null,
-        canStartStopOrder: isManagement || isOperator,
-        canEditKg: isManagement || isOperator,
-        canAddNote: isManagement || isOperator,
-        canDeleteNote: isManagement,
+        gmailMatchedOperator: gmailMatchedOp,
+        mappedOperator: effectiveOp,
+        canStartStopOrder: isManagement || isTechnician || Boolean(effectiveOp),
+        canEditKg: isManagement || isTechnician || Boolean(effectiveOp),
+        canAddNote: true,
+        canDeleteNote: isManagement || isTechnician,
         canCreateOrder: isManagement,
         canDeleteOrder: isManagement,
         canReorderOrders: isManagement
@@ -1244,6 +1323,14 @@
 
     function applySelectedRoleProfile() {
       currentRoleKey = draftRoleKey;
+      const selectedProf = ROLE_PROFILES.find(r => r.key === currentRoleKey);
+      if (selectedProf && selectedProf.kind === 'OPERATOR') {
+        const currentEmail = String(currentAccountEmail || '').trim().toLowerCase();
+        const isCurrentMatched = Array.isArray(selectedProf.emails) && selectedProf.emails.some(em => String(em || '').trim().toLowerCase() === currentEmail);
+        if (!isCurrentMatched && Array.isArray(selectedProf.emails) && selectedProf.emails.length > 0) {
+          currentAccountEmail = String(selectedProf.emails[0]).trim().toLowerCase();
+        }
+      }
       updateHeaderRoleUI();
       closeModal('accountModal');
       renderOrders();
@@ -1398,7 +1485,7 @@
       orders[idx].workStatus = newStatus;
       if (newStatus === 'FINISHED') {
         orders[idx].closed = true;
-        orders[idx].completedDate = formatTodayDate();
+        orders[idx].completedDate = formatDateTimeNow();
         orders[idx].shiftActive = false;
         orders[idx].activeOperator = null;
         showToast('Durum: ■ Bitti');
@@ -1626,7 +1713,7 @@
             <h3 class="text-[9px] leading-tight font-medium text-slate-500 mt-0.5">${escapeHtml(o.article)}</h3>
           </div>
 
-          <div class="grid grid-cols-3 bg-slate-50/90 border border-slate-200/90 rounded-2xl py-2.5 px-2 text-center">
+          <div class="grid grid-cols-3 bg-[#EBF1EE]/90 border border-[#C8D4CE] rounded-2xl py-2.5 px-2 text-center">
             <div>
               <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_order')}</div>
               <div class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight mt-1">${fmt(o.ton)}</div>
@@ -1790,14 +1877,13 @@
         const cardsHtml = folder.items.map(o => {
           const prod = getProd(o);
           const rest = getRest(o);
-          const doneDateStr = escapeHtml(o.completedDate || o.createdDate || formatTodayDate());
+          const doneDateTimeStr = escapeHtml(formatCompletedDateTimeLabel(o));
           const isMenuOpen = openCompletedMenuId === o.id;
           return `
             <article onclick="openEditModal(${o.id})" class="completed-card pro-card rounded-2xl p-3.5 space-y-2.5 cursor-pointer active:scale-[.99]">
               <div class="flex items-center justify-between gap-2">
                 <div class="flex items-center flex-wrap gap-2">
-                  <span class="px-2 py-1 rounded-lg bg-slate-900 text-white text-xs font-bold">#${escapeHtml(o.orderNo || o.code)}</span>
-                  <span class="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">${t('completed_date_label')}: ${doneDateStr}</span>
+                  <span class="text-[11px] font-bold text-slate-700 bg-slate-100 border border-slate-200/80 px-2.5 py-1 rounded-lg">${t('completed_date_label')}: ${doneDateTimeStr}</span>
                 </div>
                 <div onclick="event.stopPropagation()" class="relative inline-block shrink-0">
                   <button type="button" onclick="toggleCompletedMenu(event, ${o.id})" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-[10px] font-bold active:scale-95 transition">
@@ -2002,6 +2088,100 @@
       });
     }
 
+    function updateOperatorRowsColorUI(order) {
+      const draft = pendingModalShift || {
+        shiftActive: !!(order && order.shiftActive && order.activeOperator),
+        activeOperator: (order && order.activeOperator) || null,
+        shiftSession: Object.assign({ operator: null, status: 'IDLE' }, (order && order.shiftSession) || {})
+      };
+      const checkedOp = getSelectedModalOperator();
+      const highlightedOp = (draft.shiftActive && draft.activeOperator)
+        ? draft.activeOperator
+        : (checkedOp || (draft.shiftSession && draft.shiftSession.status === 'ACTIVE' ? draft.shiftSession.operator : null) || null);
+
+      const rowThemes = {
+        'İSA': {
+          rowId: 'opRowIsa',
+          labelId: 'opLabelIsa',
+          inputId: 'inputIsa',
+          plusId: 'plusBtnIsa',
+          rowActive: 'bg-blue-50/75 border-rose-500 ring-1 ring-rose-500/30',
+          rowNeutral: 'bg-slate-50 border-slate-200/90',
+          labelActive: 'text-blue-800',
+          labelNeutral: 'text-slate-700',
+          inputActive: 'border-rose-400',
+          inputNeutral: 'border-slate-200',
+          plusActive: 'bg-blue-100 hover:bg-blue-200 text-blue-800',
+          plusNeutral: 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+        },
+        'MUHİDDİN': {
+          rowId: 'opRowMuhiddin',
+          labelId: 'opLabelMuhiddin',
+          inputId: 'inputMuhiddin',
+          plusId: 'plusBtnMuhiddin',
+          rowActive: 'bg-emerald-50/75 border-rose-500 ring-1 ring-rose-500/30',
+          rowNeutral: 'bg-slate-50 border-slate-200/90',
+          labelActive: 'text-emerald-800',
+          labelNeutral: 'text-slate-700',
+          inputActive: 'border-rose-400',
+          inputNeutral: 'border-slate-200',
+          plusActive: 'bg-emerald-100 hover:bg-emerald-200 text-emerald-800',
+          plusNeutral: 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+        },
+        'KADDUR': {
+          rowId: 'opRowKaddur',
+          labelId: 'opLabelKaddur',
+          inputId: 'inputKaddur',
+          plusId: 'plusBtnKaddur',
+          rowActive: 'bg-amber-50/75 border-rose-500 ring-1 ring-rose-500/30',
+          rowNeutral: 'bg-slate-50 border-slate-200/90',
+          labelActive: 'text-amber-800',
+          labelNeutral: 'text-slate-700',
+          inputActive: 'border-rose-400',
+          inputNeutral: 'border-slate-200',
+          plusActive: 'bg-amber-100 hover:bg-amber-200 text-amber-800',
+          plusNeutral: 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+        },
+        'MUHAMMED': {
+          rowId: 'opRowMuhammed',
+          labelId: 'opLabelMuhammed',
+          inputId: 'inputMuhammed',
+          plusId: 'plusBtnMuhammed',
+          rowActive: 'bg-purple-50/75 border-rose-500 ring-1 ring-rose-500/30',
+          rowNeutral: 'bg-slate-50 border-slate-200/90',
+          labelActive: 'text-purple-800',
+          labelNeutral: 'text-slate-700',
+          inputActive: 'border-rose-400',
+          inputNeutral: 'border-slate-200',
+          plusActive: 'bg-purple-100 hover:bg-purple-200 text-purple-800',
+          plusNeutral: 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+        }
+      };
+
+      OPERATORS.forEach(op => {
+        const theme = rowThemes[op];
+        if (!theme) return;
+        const isOpActive = highlightedOp === op;
+        const rowEl = document.getElementById(theme.rowId);
+        const labelEl = document.getElementById(theme.labelId);
+        const inputEl = document.getElementById(theme.inputId);
+        const plusEl = document.getElementById(theme.plusId);
+
+        if (rowEl) {
+          rowEl.className = `flex items-center justify-between gap-2.5 rounded-2xl px-3 py-2 transition border ${isOpActive ? theme.rowActive : theme.rowNeutral}`;
+        }
+        if (labelEl) {
+          labelEl.className = `text-xs font-extrabold ${isOpActive ? theme.labelActive : theme.labelNeutral}`;
+        }
+        if (inputEl && !inputEl.disabled) {
+          inputEl.className = `w-full px-3 py-2 bg-white border rounded-xl text-sm font-extrabold text-slate-900 ${isOpActive ? theme.inputActive : theme.inputNeutral}`;
+        }
+        if (plusEl && !plusEl.disabled) {
+          plusEl.className = `w-9 h-9 shrink-0 rounded-xl font-extrabold text-base flex items-center justify-center active:scale-95 transition ${isOpActive ? theme.plusActive : theme.plusNeutral}`;
+        }
+      });
+    }
+
     function updateModalShiftUI(order) {
       const statusEl = document.getElementById('modalShiftStatusText');
       const startBtn = document.getElementById('startShiftBtn');
@@ -2016,16 +2196,23 @@
       const session = draft.shiftSession || {};
       const isShiftRunning = !!(draft.shiftActive && draft.activeOperator);
       const activeSelectedOp = checkedOp || draft.activeOperator || session.operator || null;
+      const allowedForOp = activeSelectedOp ? canStartShiftForOperator(activeSelectedOp) : false;
 
       if (startBtn) {
-        startBtn.disabled = !activeSelectedOp;
-        startBtn.classList.toggle('opacity-50', !activeSelectedOp);
-        startBtn.classList.toggle('cursor-not-allowed', !activeSelectedOp);
+        const shouldDisable = !activeSelectedOp || !allowedForOp;
+        startBtn.disabled = shouldDisable;
+        startBtn.classList.toggle('opacity-50', shouldDisable);
+        startBtn.classList.toggle('cursor-not-allowed', shouldDisable);
       }
 
       if (statusEl) {
         if (isShiftRunning && draft.activeOperator) {
           statusEl.textContent = t('shift_active_info', draft.activeOperator, session.startedAt || formatClockTime());
+        } else if (activeSelectedOp && !allowedForOp) {
+          const gmailOp = getGmailMatchedOperator();
+          statusEl.textContent = gmailOp
+            ? `Gmail eşleşmeniz (${gmailOp}) yalnızca kendi vardiyanızı başlatmanıza izin verir`
+            : `Bu Gmail adresi (${currentAccountEmail || '-'}) herhangi bir operatörle eşleşmiyor`;
         } else if (activeSelectedOp && session.status === 'ENDED' && session.endedAt) {
           statusEl.textContent = t('shift_finished_info', activeSelectedOp, session.startedAt, session.endedAt);
         } else if (activeSelectedOp) {
@@ -2034,6 +2221,8 @@
           statusEl.textContent = t('shift_no_operator_info');
         }
       }
+
+      updateOperatorRowsColorUI(order);
     }
 
     function onOperatorCheckboxToggle(opName, isChecked) {
@@ -2044,6 +2233,17 @@
         'KADDUR': 'checkOpKaddur',
         'MUHAMMED': 'checkOpMuhammed'
       };
+
+      if (isChecked && !canStartShiftForOperator(opName)) {
+        const box = document.getElementById(checkIds[opName]);
+        if (box) box.checked = false;
+        const gmailOp = getGmailMatchedOperator();
+        showToast(gmailOp
+          ? `Gmail eşleşmeniz (${gmailOp}) sadece kendi adınıza vardiya seçmenize izin verir`
+          : 'Bu Gmail hesabı için operatör vardiya yetkisi bulunmuyor');
+        if (idx !== -1) updateModalShiftUI(orders[idx]);
+        return;
+      }
 
       OPERATORS.forEach(op => {
         const box = document.getElementById(checkIds[op]);
@@ -2088,6 +2288,12 @@
       if (!opName) {
         updateModalShiftUI(orders[idx]);
         showToast(t('select_operator_first_toast'));
+        return;
+      }
+
+      if (!canStartShiftForOperator(opName)) {
+        updateModalShiftUI(orders[idx]);
+        showToast(`${opName} adına vardiya başlatma yetkiniz yok (Gmail eşleşmesi gerekli)`);
         return;
       }
 
@@ -2346,7 +2552,8 @@
       ];
 
       opControlMap.forEach(item => {
-        const canEditThisOp = perms.isManagement || (perms.isOperator && perms.mappedOperator === item.op);
+        const canEditThisOp = perms.isManagement || perms.isTechnician || (perms.isOperator && perms.mappedOperator === item.op);
+        const canSelectThisOpShift = perms.isManagement || perms.isTechnician || (perms.isOperator && canStartShiftForOperator(item.op));
         const inp = document.getElementById(item.inputId);
         const pls = document.getElementById(item.plusId);
         const chk = document.getElementById(item.checkId);
@@ -2360,7 +2567,7 @@
           pls.classList.toggle('opacity-40', !canEditThisOp);
         }
         if (chk) {
-          chk.disabled = perms.isViewer;
+          chk.disabled = perms.isViewer || !canSelectThisOpShift;
         }
       });
 
@@ -2743,7 +2950,7 @@
               </div>
             </div>
 
-            <div class="grid grid-cols-3 bg-slate-50/90 border border-slate-200/90 rounded-2xl py-2.5 px-2 text-center">
+            <div class="grid grid-cols-3 bg-[#EBF1EE]/90 border border-[#C8D4CE] rounded-2xl py-2.5 px-2 text-center">
               <div>
                 <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_order')}</div>
                 <div class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight mt-1">${fmt(o.ton)} KG</div>
@@ -2987,7 +3194,15 @@
     function renderNotes() {
       const container = document.getElementById('notesList');
       const badgeEl = document.getElementById('notesCountBadge');
+      const ownerBadgeEl = document.getElementById('noteAssignedOwnerBadge');
+      const assignedAuthor = getAssignedNoteAuthorName();
+      const canDelete = canDeleteNotesByRole();
+
       if (badgeEl) badgeEl.textContent = t('notes_unit', notes.length);
+      if (ownerBadgeEl) {
+        const emailSuffix = currentAccountEmail ? ` (${currentAccountEmail})` : '';
+        ownerBadgeEl.textContent = `${assignedAuthor}${emailSuffix}`;
+      }
       if (!container) return;
 
       if (notes.length === 0) {
@@ -3001,13 +3216,15 @@
       container.innerHTML = notes.map(n => `
         <div class="pro-card p-4 rounded-2xl space-y-1.5">
           <div class="flex items-center justify-between gap-2">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center flex-wrap gap-2">
               <span class="text-xs font-extrabold text-[#146C53]">${escapeHtml(n.author)}</span>
-              <span class="text-[11px] text-slate-400">${escapeHtml(n.time)}</span>
+              <span class="text-[11px] font-semibold text-slate-500 bg-slate-100 border border-slate-200/80 px-2 py-0.5 rounded-md tabular-nums">${escapeHtml(n.time)}</span>
             </div>
-            <button type="button" onclick="deleteNote(${n.id})" class="text-[11px] font-bold text-rose-600 hover:text-rose-700 px-2 py-0.5 rounded-lg hover:bg-rose-50 transition">
-              ${t('delete_note_btn')}
-            </button>
+            ${canDelete ? `
+              <button type="button" onclick="deleteNote(${n.id})" class="text-[11px] font-bold text-rose-600 hover:text-rose-700 px-2 py-0.5 rounded-lg hover:bg-rose-50 transition">
+                ${t('delete_note_btn')}
+              </button>
+            ` : ''}
           </div>
           <p class="text-xs text-slate-700 leading-relaxed">${escapeHtml(n.text)}</p>
         </div>
@@ -3017,13 +3234,13 @@
     function addNote() {
       if (!guardAction('ADD_NOTE')) return;
       const input = document.getElementById('noteInput');
-      const authorEl = document.getElementById('noteAuthor');
       const text = (input?.value || '').trim();
       if (!text) return;
+      const assignedAuthor = getAssignedNoteAuthorName();
       notes.unshift({
         id: Date.now(),
-        author: authorEl?.value || 'İSA',
-        time: currentLang === 'ar' ? 'الآن' : 'Az önce',
+        author: assignedAuthor,
+        time: formatDateTimeNow(),
         text
       });
       if (input) input.value = '';
@@ -3032,7 +3249,10 @@
     }
 
     function deleteNote(noteId) {
-      if (!guardAction('DELETE_NOTE')) return;
+      if (!canDeleteNotesByRole()) {
+        showToast('Not silme yetkisi yalnızca Teknisyen ve Yönetim rollerine aittir');
+        return;
+      }
       notes = notes.filter(n => n.id !== noteId);
       renderNotes();
       showToast(currentLang === 'ar' ? 'تم حذف الملاحظة' : 'Vardiya notu silindi');
