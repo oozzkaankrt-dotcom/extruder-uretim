@@ -433,7 +433,7 @@
         <div id="monthlyUnifiedKgTable" class="w-full min-w-0"></div>
       </div>
 
-      <!-- Alt İki Grafik Alanı: İşaretli çerçeve alanına tam oturacak şekilde hizalanmış çift grafik bloğu -->
+      <!-- Alt İki Grafik Alanı -->
       <div id="reportsBottomChartsZone" class="w-full min-w-0 bg-[#F4F8F6]/90 border border-[#C5D5CD] rounded-xl p-1.5 mt-1 space-y-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]">
         <!-- Aylık Üretim Karşılaştırması (KG) - Diklemesine Sütunlar -->
         <div class="bg-white/95 border border-slate-200/90 rounded-lg px-1.5 py-2.5 w-full min-w-0 overflow-hidden space-y-1.5 shadow-2xs">
@@ -518,24 +518,36 @@
 
   <!-- MODAL 1: EDIT PRODUCTION ORDER -->
   <div id="editModal" class="fixed inset-0 z-50 hidden bg-slate-900/55 backdrop-blur-xs flex items-end sm:items-center justify-center">
-    <div class="bg-white w-full max-w-xl rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl bottom-sheet-enter max-h-[92vh] overflow-y-auto space-y-4">
-      <div class="w-10 h-1 bg-slate-200 rounded-full mx-auto sm:hidden"></div>
+    <div class="bg-white w-full max-w-xl rounded-t-3xl sm:rounded-3xl p-5 pt-3 shadow-2xl bottom-sheet-enter max-h-[92vh] overflow-y-auto space-y-4">
+      <div class="relative flex items-center justify-center min-h-[28px]">
+        <div class="w-10 h-1 bg-slate-200 rounded-full sm:hidden"></div>
+        <button type="button" onclick="closeModal('editModal')" aria-label="Kapat" class="absolute ltr:right-0 rtl:left-0 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 active:scale-95 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
 
       <div class="flex items-center justify-between gap-2">
         <div class="inline-flex items-center gap-1.5 bg-slate-100 border border-slate-200 rounded-xl px-2.5 py-1">
           <span data-i18n="order_seq_short" class="text-[11px] font-extrabold text-slate-500">SIRA #</span>
           <input id="editOrderNoInput" type="number" min="1" class="w-12 bg-white border border-slate-200 rounded-lg text-xs font-extrabold text-center py-0.5 text-slate-900" />
         </div>
-        <div class="flex items-center gap-1.5">
-          <button id="editOrderMetricsBtn" type="button" onclick="toggleOrderMetricsEditor()" class="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-xs active:scale-95 transition">
-            Düzenle
+        <div id="editModalActionMenuWrap" class="relative inline-block">
+          <button id="editModalSelectMenuBtn" type="button" onclick="toggleEditModalSelectMenu(event)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 font-extrabold text-xs active:scale-95 transition">
+            <span>Seç</span>
+            <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
           </button>
-          <button id="deleteOrderModalBtn" type="button" onclick="deleteEditingOrder()" class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-extrabold text-xs active:scale-95 transition">
-            Sil
-          </button>
-          <button type="button" onclick="closeModal('editModal')" class="p-2 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-          </button>
+          <div id="editModalSelectDropdown" class="hidden absolute ltr:right-0 rtl:left-0 top-full mt-1.5 z-30 w-36 bg-white rounded-2xl shadow-xl border border-slate-200 p-1.5 space-y-1">
+            <button id="editOrderMetricsBtn" type="button" onclick="handleEditModalSelectAction('EDIT')" class="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-extrabold text-slate-800 hover:bg-emerald-50 transition ltr:text-left rtl:text-right">
+              <span>🟢</span>
+              <span>Düzenle</span>
+            </button>
+            <button id="deleteOrderModalBtn" type="button" onclick="handleEditModalSelectAction('DELETE')" class="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-extrabold text-rose-700 hover:bg-rose-50 transition ltr:text-left rtl:text-right">
+              <span>🔴</span>
+              <span>Sil</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -743,15 +755,15 @@
         tap_card_hint: 'Giriş yapmak için karta dokunun',
         orders_listed: (n) => `${n} emir listeleniyor`,
         no_orders_found: 'Arama kriterlerine uygun emir bulunamadı.',
-        status_select: '● Durum Seç',
+        status_select: 'GİRİŞ',
         status_running: '● Çalışıyor',
         status_paused: '⏸ Durdu',
         status_finished: '■ Bitti',
-        status_reset: '● Durum Seç',
+        status_reset: 'GİRİŞ',
         menu_running: 'Çalışıyor',
         menu_paused: 'Durdu',
         menu_finished: 'Bitti',
-        menu_reset: 'Durum Seç',
+        menu_reset: 'GİRİŞ',
         progress_label: 'İlerleme',
         excess_label: 'Fazla',
         remaining_label: 'Kalan',
@@ -838,6 +850,7 @@
         end_shift_btn: 'BİTİR',
         shift_started_toast: (op, time) => `${op} için vardiya başlatıldı (${time})`,
         shift_ended_toast: (op, time) => `${op} için vardiya bitirildi (${time})`,
+        active_order_running_warning: (orderNo) => `ÇALIŞAN BİR İŞ EMRİ VAR! (#${orderNo} aktif)`,
         select_operator_first_toast: 'Lütfen önce vardiya başlatacak operatör kutucuğu seçin',
         shift_active_info: (op, startTime) => `✓ ${op} — Vardiya aktif (Başlangıç: ${startTime})`,
         shift_finished_info: (op, startTime, endTime) => `${op} — Vardiya bitti (${startTime || '-'} → ${endTime})`,
@@ -868,15 +881,15 @@
         tap_card_hint: 'اضغط على البطاقة لإدخال الإنتاج',
         orders_listed: (n) => `عرض ${n} أمر إنتاج`,
         no_orders_found: 'لا توجد أوامر تطابق معايير البحث.',
-        status_select: '● اختر الحالة',
+        status_select: 'دخول',
         status_running: '● قيد التشغيل',
         status_paused: '⏸ متوقف',
         status_finished: '■ منتهي',
-        status_reset: '● اختر الحالة',
+        status_reset: 'دخول',
         menu_running: 'قيد التشغيل',
         menu_paused: 'متوقف',
         menu_finished: 'منتهي',
-        menu_reset: 'اختر الحالة',
+        menu_reset: 'دخول',
         progress_label: 'التقدم',
         excess_label: 'زيادة',
         remaining_label: 'المتبقي',
@@ -963,6 +976,7 @@
         end_shift_btn: 'إنهاء',
         shift_started_toast: (op, time) => `تم بدء وردية ${op} (${time})`,
         shift_ended_toast: (op, time) => `تم إنهاء وردية ${op} (${time})`,
+        active_order_running_warning: (orderNo) => `ÇALIŞAN BİR İŞ EMRİ VAR! (#${orderNo} قيد التشغيل)`,
         select_operator_first_toast: 'يرجى تحديد مربع المشغل أولاً قبل بدء الوردية',
         shift_active_info: (op, startTime) => `✓ ${op} — الوردية نشطة (البدء: ${startTime})`,
         shift_finished_info: (op, startTime, endTime) => `${op} — انتهت الوردية (${startTime || '-'} ← ${endTime})`,
@@ -1074,6 +1088,8 @@
     let openStatusMenuId = null;
     let openCompletedMenuId = null;
     let openCompletedFolders = {};
+    let expandedIdleOrderId = null;
+    let lastEndedShiftOrderId = null;
     let draggedOrderId = null;
     let toastTimer = null;
     let currentOrderSortMode = 'DEFAULT';
@@ -1089,7 +1105,6 @@
     const getProd = (o) => (Number(o.isa) || 0) + (Number(o.muhiddin) || 0) + (Number(o.kaddur) || 0) + (Number(o.muhammed) || 0);
     const getRest = (o) => (Number(o.ton) || 0) - getProd(o);
 
-    // Formats today's date as DD.MM.YYYY
     function formatTodayDate() {
       const now = new Date();
       const dd = String(now.getDate()).padStart(2, '0');
@@ -1116,6 +1131,14 @@
         const toastEl = document.getElementById('toast');
         const msgEl = document.getElementById('toast-msg');
         if (!toastEl || !msgEl) return;
+        const isAlertWarning = String(msg || '').toUpperCase().includes('ÇALIŞAN BİR İŞ EMRİ VAR');
+        const dotEl = toastEl.querySelector('span.rounded-full');
+        toastEl.className = isAlertWarning
+          ? 'fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-rose-50 border-2 border-rose-600 text-rose-700 text-xs font-extrabold px-4 py-2.5 rounded-full shadow-xl flex items-center gap-2 transition-all tracking-wide'
+          : 'fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-lg flex items-center gap-2 transition-all';
+        if (dotEl) {
+          dotEl.className = isAlertWarning ? 'w-2 h-2 rounded-full bg-rose-600 animate-pulse' : 'w-2 h-2 rounded-full bg-emerald-400';
+        }
         msgEl.textContent = msg;
         toastEl.classList.remove('hidden');
         if (toastTimer) clearTimeout(toastTimer);
@@ -1125,7 +1148,6 @@
       } catch (e) {}
     }
 
-    // Sends a browser/system notification if permitted and supported
     function notifyNewWorkOrderAdded(order) {
       const title = currentLang === 'ar' ? 'أمر إنتاج جديد' : 'Yeni İş Emri Eklendi';
       const orderNoText = order && order.orderNo ? `#${order.orderNo}` : '';
@@ -1181,7 +1203,6 @@
       return normalizedCurrent === GMAIL_ADMIN_EMAIL.toLowerCase();
     }
 
-    // Checks whether the active account holds Management identity via Gmail or active profile
     function hasManagementGmailIdentity() {
       const prof = getActiveRoleProfile();
       const normalizedCurrent = String(currentAccountEmail || '').trim().toLowerCase();
@@ -1198,7 +1219,6 @@
       return prof.kind === 'MANAGEMENT' && isCurrentMgmtGmail;
     }
 
-    // Checks whether the active user has Management identity for drag-and-drop ordering
     function canDragReorderOrders() {
       const prof = getActiveRoleProfile();
       return prof.kind === 'MANAGEMENT' || hasManagementGmailIdentity();
@@ -1464,11 +1484,22 @@
 
     function getWorkStatus(o) {
       if (!o) return 'IDLE';
+      if (o.cancelled || o.workStatus === 'CANCELLED') return 'CANCELLED';
       if (o.closed || o.workStatus === 'FINISHED') return 'FINISHED';
       if (o.workStatus === 'RUNNING') return 'RUNNING';
       if (o.workStatus === 'PAUSED') return 'PAUSED';
       if (o.workStatus === 'RESET') return 'RESET';
       return 'IDLE';
+    }
+
+    function getCurrentlyRunningOrder(excludeId = null) {
+      return orders.find(o =>
+        o &&
+        !o.closed &&
+        o.id !== excludeId &&
+        getWorkStatus(o) === 'RUNNING' &&
+        Boolean(getActiveOperatorName(o))
+      ) || null;
     }
 
     function getGmailMatchedOperator() {
@@ -1490,8 +1521,753 @@
 
     function toggleWorkStatusMenu(event, id) {
       if (event) event.stopPropagation();
-      openStatusMenuId = openStatusMenuId === id ? null : id;
+      openStatusMenuId = null;
+      openEditModal(id);
+      setTimeout(() => {
+        const startShiftBtn = document.getElementById('startShiftBtn');
+        if (startShiftBtn) {
+          startShiftBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          if (!startShiftBtn.disabled) {
+            startShiftBtn.focus({ preventScroll: true });
+          }
+        }
+      }, 60);
+    }
+
+    function toggleIdleOrderDetailView(event, id) {
+      if (event) event.stopPropagation();
+      if (lastEndedShiftOrderId === id) {
+        lastEndedShiftOrderId = null;
+      }
+      expandedIdleOrderId = expandedIdleOrderId === id ? null : id;
       refreshActiveMenus();
+    }
+
+    function collapseExpandedOrderDetailView() {
+      if (expandedIdleOrderId === null) return;
+      expandedIdleOrderId = null;
+      refreshActiveMenus();
+    }
+
+    let scrollCollapseRaf = null;
+    function handleViewportScrollCollapse() {
+      if (expandedIdleOrderId === null) return;
+      if (scrollCollapseRaf) return;
+      scrollCollapseRaf = window.requestAnimationFrame(() => {
+        scrollCollapseRaf = null;
+        collapseExpandedOrderDetailView();
+      });
+    }
+
+    window.addEventListener('scroll', handleViewportScrollCollapse, { passive: true });
+    window.addEventListener('wheel', handleViewportScrollCollapse, { passive: true });
+    document.addEventListener('touchmove', handleViewportScrollCollapse, { passive: true });
+
+    const OPERATOR_INPUT_CONFIG = [
+      { name: 'İSA', rowId: 'opRowIsa', checkId: 'checkOpIsa', labelId: 'opLabelIsa', inputId: 'inputIsa', plusId: 'plusBtnIsa', field: 'isa', activeBorder: 'border-blue-500 ring-2 ring-blue-500/20 bg-blue-50/40' },
+      { name: 'MUHİDDİN', rowId: 'opRowMuhiddin', checkId: 'checkOpMuhiddin', labelId: 'opLabelMuhiddin', inputId: 'inputMuhiddin', plusId: 'plusBtnMuhiddin', field: 'muhiddin', activeBorder: 'border-emerald-600 ring-2 ring-emerald-600/20 bg-emerald-50/40' },
+      { name: 'KADDUR', rowId: 'opRowKaddur', checkId: 'checkOpKaddur', labelId: 'opLabelKaddur', inputId: 'inputKaddur', plusId: 'plusBtnKaddur', field: 'kaddur', activeBorder: 'border-amber-500 ring-2 ring-amber-500/20 bg-amber-50/40' },
+      { name: 'MUHAMMED', rowId: 'opRowMuhammed', checkId: 'checkOpMuhammed', labelId: 'opLabelMuhammed', inputId: 'inputMuhammed', plusId: 'plusBtnMuhammed', field: 'muhammed', activeBorder: 'border-purple-500 ring-2 ring-purple-500/20 bg-purple-50/40' }
+    ];
+
+    function closeModal(modalId) {
+      const el = document.getElementById(modalId);
+      if (el) el.classList.add('hidden');
+      if (modalId === 'editModal') {
+        editingOrderId = null;
+        pendingModalShift = null;
+        isEditingMetricsMode = false;
+        closeEditModalSelectMenu();
+      }
+    }
+
+    function closeEditModalSelectMenu() {
+      const dropdown = document.getElementById('editModalSelectDropdown');
+      if (dropdown) dropdown.classList.add('hidden');
+    }
+
+    function toggleEditModalSelectMenu(event) {
+      if (event) event.stopPropagation();
+      if (!hasManagementGmailIdentity()) {
+        closeEditModalSelectMenu();
+        showToast('Bu alanda yalnızca Yönetim Gmail kimliği işlem yapabilir');
+        return;
+      }
+      const dropdown = document.getElementById('editModalSelectDropdown');
+      if (dropdown) {
+        dropdown.classList.toggle('hidden');
+      }
+    }
+
+    function handleEditModalSelectAction(actionType) {
+      closeEditModalSelectMenu();
+      if (!hasManagementGmailIdentity()) {
+        showToast('Bu alanda yalnızca Yönetim Gmail kimliği işlem yapabilir');
+        return;
+      }
+      if (actionType === 'EDIT') {
+        toggleOrderMetricsEditor();
+      } else if (actionType === 'DELETE') {
+        deleteEditingOrder();
+      }
+    }
+
+    function openNewOrderModal() {
+      if (!guardAction('CREATE_ORDER')) return;
+      const artEl = document.getElementById('newArticle');
+      const artiveEl = document.getElementById('newArtive');
+      const tonEl = document.getElementById('newTon');
+      const prioEl = document.getElementById('newPriority');
+      if (artEl) artEl.value = '';
+      if (artiveEl) artiveEl.value = '';
+      if (tonEl) tonEl.value = '';
+      if (prioEl) prioEl.checked = false;
+      document.getElementById('newOrderModal')?.classList.remove('hidden');
+    }
+
+    function createNewOrder() {
+      if (!guardAction('CREATE_ORDER')) return;
+      const article = String(document.getElementById('newArticle')?.value || '').trim();
+      const artive = String(document.getElementById('newArtive')?.value || '').trim();
+      const ton = parseKgInput(document.getElementById('newTon')?.value || '0');
+      const priority = Boolean(document.getElementById('newPriority')?.checked);
+
+      if (!article && !artive) {
+        showToast('Lütfen ürün adı veya bobin kodu girin');
+        return;
+      }
+      if (ton <= 0) {
+        showToast('Lütfen geçerli bir hedef tonaj (KG) girin');
+        return;
+      }
+
+      const maxId = orders.reduce((m, o) => Math.max(m, Number(o.id) || 0), 0);
+      const today = formatTodayDate();
+      const newOrder = ensureOrderDates({
+        id: maxId + 1,
+        orderNo: orders.filter(o => !o.closed).length + 1,
+        priority,
+        period: today,
+        createdDate: today,
+        completedDate: null,
+        lastActionDateTime: formatDateTimeNow(),
+        activeOperator: null,
+        shiftActive: false,
+        shiftSession: { operator: 'İSA', status: 'IDLE', startedAt: null, endedAt: null },
+        code: '36',
+        article: article || artive,
+        artive: artive || article,
+        ton,
+        isa: 0,
+        muhiddin: 0,
+        kaddur: 0,
+        muhammed: 0,
+        closed: false,
+        workStatus: 'IDLE'
+      });
+
+      orders.push(newOrder);
+      addedOrderTimestamps.push(Date.now());
+      normalizeOrderNumbers();
+      closeModal('newOrderModal');
+      renderOrders();
+      saveStateToStorage();
+      notifyNewWorkOrderAdded(newOrder);
+      showToast(`#${newOrder.orderNo} yeni iş emri oluşturuldu`);
+    }
+
+    function openEditModal(id) {
+      const order = orders.find(o => o.id === id);
+      if (!order) return;
+
+      const perms = getUserPermissions();
+      editingOrderId = id;
+      isEditingMetricsMode = false;
+
+      const isOrderRunning = getWorkStatus(order) === 'RUNNING' && Boolean(order.shiftActive);
+      const activeOp = isOrderRunning ? getActiveOperatorName(order) : null;
+
+      pendingModalShift = {
+        operator: activeOp || null,
+        status: isOrderRunning ? 'ACTIVE' : 'IDLE',
+        startedAt: isOrderRunning ? ((order.shiftSession && order.shiftSession.startedAt) || null) : null,
+        endedAt: (order.shiftSession && order.shiftSession.endedAt) || null
+      };
+
+      const seqInput = document.getElementById('editOrderNoInput');
+      if (seqInput) {
+        seqInput.value = order.orderNo ?? '';
+        seqInput.disabled = !perms.canReorderOrders || getWorkStatus(order) === 'RUNNING';
+      }
+
+      const canMgmtGmailAct = hasManagementGmailIdentity();
+      const selectMenuBtn = document.getElementById('editModalSelectMenuBtn');
+      const editMetricsBtn = document.getElementById('editOrderMetricsBtn');
+      const deleteOrderBtn = document.getElementById('deleteOrderModalBtn');
+      closeEditModalSelectMenu();
+      if (selectMenuBtn) {
+        selectMenuBtn.classList.toggle('opacity-50', !canMgmtGmailAct);
+      }
+      if (editMetricsBtn) editMetricsBtn.disabled = !canMgmtGmailAct;
+      if (deleteOrderBtn) deleteOrderBtn.disabled = !canMgmtGmailAct;
+
+      const periodEl = document.getElementById('editModalPeriod');
+      const artiveEl = document.getElementById('editModalArtive');
+      if (periodEl) {
+        periodEl.textContent = `Son İşlem: ${order.lastActionDateTime || order.createdDate || formatTodayDate()}`;
+      }
+      if (artiveEl) {
+        artiveEl.textContent = order.artive || order.article || '';
+      }
+
+      const manualTonEl = document.getElementById('manualTonInput');
+      const manualProdEl = document.getElementById('manualProdInput');
+      const manualRestEl = document.getElementById('manualRestInput');
+      if (manualTonEl) { manualTonEl.value = Number(order.ton) || 0; manualTonEl.classList.add('hidden'); }
+      if (manualProdEl) { manualProdEl.value = getProd(order); manualProdEl.classList.add('hidden'); }
+      if (manualRestEl) { manualRestEl.value = getRest(order); manualRestEl.classList.add('hidden'); }
+
+      OPERATOR_INPUT_CONFIG.forEach(cfg => {
+        const inputEl = document.getElementById(cfg.inputId);
+        const val = Number(order[cfg.field]) || 0;
+        if (inputEl) {
+          inputEl.value = val > 0 ? String(val) : '';
+          const canEditThisOp = perms.isManagement || perms.isTechnician || (perms.mappedOperator === cfg.name);
+          inputEl.disabled = !canEditThisOp;
+        }
+        const plusBtn = document.getElementById(cfg.plusId);
+        if (plusBtn) {
+          const canEditThisOp = perms.isManagement || perms.isTechnician || (perms.mappedOperator === cfg.name);
+          plusBtn.disabled = !canEditThisOp;
+        }
+      });
+
+      syncModalOperatorRowsUI();
+      updateModalCalculatedTotals();
+      updateModalShiftBanner();
+
+      document.getElementById('editModal')?.classList.remove('hidden');
+    }
+
+    function syncModalOperatorRowsUI() {
+      const selectedOp = pendingModalShift ? pendingModalShift.operator : null;
+      OPERATOR_INPUT_CONFIG.forEach(cfg => {
+        const rowEl = document.getElementById(cfg.rowId);
+        const checkEl = document.getElementById(cfg.checkId);
+        const isSelected = selectedOp === cfg.name;
+        if (checkEl) checkEl.checked = isSelected;
+        if (rowEl) {
+          rowEl.className = `flex items-center justify-between gap-2.5 border rounded-2xl px-3 py-2 transition cursor-pointer ${isSelected ? cfg.activeBorder : 'bg-slate-50 border-slate-200/90'}`;
+        }
+      });
+    }
+
+    function selectOperatorRowByName(opName) {
+      if (!OPERATORS.includes(opName)) return;
+      const order = orders.find(o => o.id === editingOrderId);
+      const isAlreadySame = pendingModalShift && pendingModalShift.operator === opName;
+      if (isAlreadySame && !(order && order.shiftActive && getActiveOperatorName(order) === opName)) {
+        pendingModalShift.operator = null;
+      } else {
+        if (!pendingModalShift) pendingModalShift = { operator: opName, status: 'IDLE', startedAt: null, endedAt: null };
+        pendingModalShift.operator = opName;
+        if (order && order.shiftActive && getActiveOperatorName(order) === opName) {
+          pendingModalShift.status = 'ACTIVE';
+          pendingModalShift.startedAt = (order.shiftSession && order.shiftSession.startedAt) || formatClockTime();
+        } else {
+          pendingModalShift.status = 'IDLE';
+        }
+      }
+      syncModalOperatorRowsUI();
+      updateModalShiftBanner();
+    }
+
+    function onOperatorCheckboxToggle(opName, checked) {
+      if (checked) {
+        selectOperatorRowByName(opName);
+      } else {
+        if (pendingModalShift && pendingModalShift.operator === opName) {
+          pendingModalShift.operator = null;
+        }
+        syncModalOperatorRowsUI();
+        updateModalShiftBanner();
+      }
+    }
+
+    function onOperatorInputFocus(inputEl) {
+      if (!inputEl) return;
+      const matchCfg = OPERATOR_INPUT_CONFIG.find(c => c.inputId === inputEl.id);
+      if (matchCfg && (!pendingModalShift || pendingModalShift.operator !== matchCfg.name)) {
+        if (!pendingModalShift) pendingModalShift = { operator: matchCfg.name, status: 'IDLE', startedAt: null, endedAt: null };
+        pendingModalShift.operator = matchCfg.name;
+        syncModalOperatorRowsUI();
+        updateModalShiftBanner();
+      }
+    }
+
+    function onOperatorInputBlur(inputEl) {
+      if (!inputEl) return;
+      inputEl.value = String(inputEl.value || '').replace(/\++$/, '');
+      updateModalCalculatedTotals();
+    }
+
+    function normalizeOperatorInput(inputEl) {
+      if (!inputEl) return;
+      inputEl.value = String(inputEl.value || '').replace(/[^0-9+.,]/g, '');
+      updateModalCalculatedTotals();
+    }
+
+    function appendPlusToOperatorRow(inputId, opName) {
+      const inputEl = document.getElementById(inputId);
+      if (!inputEl || inputEl.disabled) return;
+      if (opName && (!pendingModalShift || pendingModalShift.operator !== opName)) {
+        selectOperatorRowByName(opName);
+      }
+      const cur = String(inputEl.value || '').trim();
+      if (cur && !cur.endsWith('+')) {
+        inputEl.value = `${cur}+`;
+      }
+      inputEl.focus();
+    }
+
+    function confirmOperatorInput(inputId, opName) {
+      const inputEl = document.getElementById(inputId);
+      if (!inputEl) return;
+      const parsed = parseKgInput(inputEl.value);
+      inputEl.value = parsed > 0 ? String(parsed) : '';
+      updateModalCalculatedTotals();
+      inputEl.blur();
+      if (opName) showToast(`${opName}: ${fmt(parsed)} KG`);
+    }
+
+    function toggleOrderMetricsEditor() {
+      if (!hasManagementGmailIdentity()) {
+        showToast('Bu alanda yalnızca Yönetim Gmail kimliği işlem yapabilir');
+        return;
+      }
+      isEditingMetricsMode = !isEditingMetricsMode;
+      ['manualTonInput', 'manualProdInput', 'manualRestInput'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('hidden', !isEditingMetricsMode);
+      });
+    }
+
+    function onManualMetricInput(which) {
+      const tonEl = document.getElementById('manualTonInput');
+      const prodEl = document.getElementById('manualProdInput');
+      const restEl = document.getElementById('manualRestInput');
+      if (!tonEl || !prodEl || !restEl) return;
+      const tonVal = Math.max(0, parseFloat(tonEl.value) || 0);
+      const prodVal = Math.max(0, parseFloat(prodEl.value) || 0);
+      if (which === 'TON' || which === 'PROD') {
+        restEl.value = Math.round((tonVal - prodVal) * 1000) / 1000;
+      }
+      updateModalCalculatedTotals();
+    }
+
+    function updateModalCalculatedTotals() {
+      const order = orders.find(o => o.id === editingOrderId);
+      if (!order) return;
+
+      const manualTonEl = document.getElementById('manualTonInput');
+      const manualProdEl = document.getElementById('manualProdInput');
+      const manualRestEl = document.getElementById('manualRestInput');
+      const calcTonEl = document.getElementById('editCalcTon');
+      const calcProdEl = document.getElementById('editCalcProd');
+      const calcRestEl = document.getElementById('editCalcRest');
+
+      const baseTon = (isEditingMetricsMode && manualTonEl && manualTonEl.value !== '')
+        ? Math.max(0, parseFloat(manualTonEl.value) || 0)
+        : (Number(order.ton) || 0);
+
+      let totalProd = 0;
+      OPERATOR_INPUT_CONFIG.forEach(cfg => {
+        const inp = document.getElementById(cfg.inputId);
+        const val = inp ? parseKgInput(inp.value) : (Number(order[cfg.field]) || 0);
+        totalProd += val;
+      });
+
+      const finalProd = (isEditingMetricsMode && manualProdEl && !manualProdEl.classList.contains('hidden') && manualProdEl.value !== '')
+        ? Math.max(0, parseFloat(manualProdEl.value) || 0)
+        : totalProd;
+
+      const finalRest = (isEditingMetricsMode && manualRestEl && !manualRestEl.classList.contains('hidden') && manualRestEl.value !== '')
+        ? (parseFloat(manualRestEl.value) || 0)
+        : (baseTon - finalProd);
+
+      if (calcTonEl) calcTonEl.textContent = `${fmt(baseTon)} KG`;
+      if (calcProdEl) calcProdEl.textContent = `${fmt(finalProd)} KG`;
+      if (calcRestEl) {
+        calcRestEl.textContent = `${fmt(finalRest)} KG`;
+        calcRestEl.className = `text-sm font-extrabold mt-0.5 ${finalRest < 0 ? 'text-rose-600' : 'text-amber-600'}`;
+      }
+    }
+
+    function updateModalShiftBanner() {
+      const statusEl = document.getElementById('modalShiftStatusText');
+      const startBtn = document.getElementById('startShiftBtn');
+      const endBtn = document.getElementById('endShiftBtn');
+      const order = orders.find(o => o.id === editingOrderId);
+
+      const selectedOp = pendingModalShift && OPERATORS.includes(pendingModalShift.operator)
+        ? pendingModalShift.operator
+        : null;
+      const sessionStatus = pendingModalShift ? pendingModalShift.status : 'IDLE';
+      const startedAt = pendingModalShift ? pendingModalShift.startedAt : null;
+      const endedAt = pendingModalShift ? pendingModalShift.endedAt : null;
+
+      if (statusEl) {
+        if (!selectedOp) {
+          statusEl.textContent = t('shift_no_operator_info');
+          statusEl.className = 'text-[11px] font-semibold text-slate-600 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-2';
+        } else if (sessionStatus === 'ACTIVE' && order && order.shiftActive && getActiveOperatorName(order) === selectedOp) {
+          statusEl.textContent = t('shift_active_info', selectedOp, startedAt || formatClockTime());
+          statusEl.className = 'text-[11px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2';
+        } else if (sessionStatus === 'ENDED' && endedAt) {
+          statusEl.textContent = t('shift_finished_info', selectedOp, startedAt, endedAt);
+          statusEl.className = 'text-[11px] font-semibold text-slate-700 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-2';
+        } else {
+          statusEl.textContent = t('shift_idle_info', selectedOp);
+          statusEl.className = 'text-[11px] font-semibold text-slate-600 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-2';
+        }
+      }
+
+      if (startBtn) {
+        const canStart = Boolean(selectedOp) && canStartShiftForOperator(selectedOp);
+        startBtn.disabled = !canStart;
+        startBtn.classList.toggle('opacity-50', !canStart);
+      }
+
+      if (endBtn) {
+        const canEnd = Boolean(order) && !order.closed;
+        endBtn.disabled = !canEnd;
+        endBtn.classList.toggle('opacity-50', !canEnd);
+      }
+    }
+
+    function startOperatorShift() {
+      if (!guardAction('START_STOP_ORDER')) return;
+      const order = orders.find(o => o.id === editingOrderId);
+      if (!order) return;
+
+      const op = pendingModalShift && OPERATORS.includes(pendingModalShift.operator)
+        ? pendingModalShift.operator
+        : null;
+      if (!op) {
+        showToast(t('select_operator_first_toast'));
+        return;
+      }
+
+      if (!canStartShiftForOperator(op)) {
+        const gmailOp = getGmailMatchedOperator();
+        showToast(gmailOp
+          ? `Gmail eşleşmeniz (${gmailOp}) yalnızca kendi vardiyanızı başlatmanıza izin verir`
+          : 'Bu Gmail hesabı için operatör vardiya yetkisi bulunmuyor');
+        return;
+      }
+
+      const activeRunningOrder = getCurrentlyRunningOrder(order.id);
+      if (activeRunningOrder) {
+        const statusEl = document.getElementById('modalShiftStatusText');
+        if (statusEl) {
+          statusEl.textContent = t('active_order_running_warning', activeRunningOrder.orderNo || activeRunningOrder.id);
+          statusEl.className = 'text-xs font-extrabold text-rose-700 bg-rose-50 border border-rose-400 rounded-xl px-3 py-2';
+        }
+        showToast(t('active_order_running_warning', activeRunningOrder.orderNo || activeRunningOrder.id));
+        return;
+      }
+
+      const nowClock = formatClockTime();
+      orders.forEach(o => {
+        if (o.id !== order.id && !o.closed && getWorkStatus(o) === 'RUNNING') {
+          o.workStatus = 'PAUSED';
+          o.shiftActive = false;
+          o.activeOperator = null;
+        }
+      });
+
+      order.closed = false;
+      order.completedDate = null;
+      order.workStatus = 'RUNNING';
+      order.shiftActive = true;
+      order.activeOperator = op;
+      order.orderStartTime = nowClock;
+      order.orderEndTime = null;
+      order.lastActionDateTime = formatDateTimeNow();
+      order.shiftSession = {
+        operator: op,
+        status: 'ACTIVE',
+        startedAt: nowClock,
+        endedAt: null
+      };
+
+      pendingModalShift = {
+        operator: op,
+        status: 'ACTIVE',
+        startedAt: nowClock,
+        endedAt: null
+      };
+
+      updateModalShiftBanner();
+      normalizeOrderNumbers();
+      renderOrders();
+      saveStateToStorage();
+      showToast(t('shift_started_toast', op, nowClock));
+    }
+
+    function endOperatorShift() {
+      if (!guardAction('START_STOP_ORDER')) return;
+      const order = orders.find(o => o.id === editingOrderId);
+      if (!order) return;
+      const target = orders.find(o => o.id === editingOrderId);
+      if (!target) return;
+      const op = (pendingModalShift && pendingModalShift.operator) || getActiveOperatorName(order) || getShiftPickerOperator(order);
+      const nowClock = formatClockTime();
+      const startedAt = (pendingModalShift && pendingModalShift.startedAt) || (target.shiftSession && target.shiftSession.startedAt) || null;
+
+      target.workStatus = 'RUNNING';
+      target.shiftActive = true;
+      target.activeOperator = null;
+      target.orderEndTime = nowClock;
+      target.lastActionDateTime = formatDateTimeNow();
+      expandedIdleOrderId = null;
+      lastEndedShiftOrderId = target.id;
+      target.shiftSession = {
+        operator: op,
+        status: 'ENDED',
+        startedAt,
+        endedAt: nowClock
+      };
+
+      pendingModalShift = {
+        operator: op,
+        status: 'ENDED',
+        startedAt,
+        endedAt: nowClock
+      };
+
+      updateModalShiftBanner();
+      closeModal('editModal');
+      normalizeOrderNumbers();
+      renderOrders();
+      saveStateToStorage();
+      showToast(t('shift_ended_toast', op, nowClock));
+    }
+
+    function saveOrderEdits() {
+      const order = orders.find(o => o.id === editingOrderId);
+      if (!order) {
+        closeModal('editModal');
+        return;
+      }
+
+      const perms = getUserPermissions();
+      if (isEditingMetricsMode && hasManagementGmailIdentity()) {
+        const manualTon = parseFloat(document.getElementById('manualTonInput')?.value);
+        if (Number.isFinite(manualTon) && manualTon > 0) {
+          order.ton = Math.round(manualTon * 1000) / 1000;
+        }
+      }
+
+      if (perms.canEditKg) {
+        OPERATOR_INPUT_CONFIG.forEach(cfg => {
+          const canEditThisOp = perms.isManagement || perms.isTechnician || (perms.mappedOperator === cfg.name);
+          if (!canEditThisOp) return;
+          const inp = document.getElementById(cfg.inputId);
+          if (inp) {
+            order[cfg.field] = parseKgInput(inp.value);
+          }
+        });
+      }
+
+      const seqInput = document.getElementById('editOrderNoInput');
+      if (seqInput && perms.canReorderOrders && getWorkStatus(order) !== 'RUNNING') {
+        const nextNo = parseInt(seqInput.value, 10);
+        if (Number.isFinite(nextNo) && nextNo >= 1) {
+          normalizeOrderNumbers(order.id, nextNo);
+        }
+      }
+
+      order.lastActionDateTime = formatDateTimeNow();
+      closeModal('editModal');
+      renderOrders();
+      renderCompletedOrders();
+      if (!document.getElementById('tab-ozet')?.classList.contains('hidden')) renderSummary('ALL');
+      if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) renderOperationTab();
+      if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) renderReports();
+      saveStateToStorage();
+      showToast('Değişiklikler kaydedildi');
+    }
+
+    function deleteEditingOrder() {
+      if (!hasManagementGmailIdentity()) {
+        showToast('Bu alanda yalnızca Yönetim Gmail kimliği işlem yapabilir');
+        return;
+      }
+      if (editingOrderId === null) return;
+      orders = orders.filter(o => o.id !== editingOrderId);
+      closeModal('editModal');
+      normalizeOrderNumbers();
+      renderOrders();
+      renderCompletedOrders();
+      saveStateToStorage();
+      showToast('İş emri silindi');
+    }
+
+    function cancelLastWorkOrder() {
+      if (!hasManagementGmailIdentity()) {
+        showToast('Bu alanda yalnızca Yönetim Gmail kimliği işlem yapabilir');
+        return;
+      }
+      const activeOrders = orders.filter(o => !o.closed && !o.cancelled);
+      if (!activeOrders.length) {
+        showToast('İptal edilecek aktif iş emri bulunamadı');
+        return;
+      }
+      const lastOrder = [...activeOrders].sort((a, b) => (Number(b.id) || 0) - (Number(a.id) || 0))[0];
+      const cancelledNo = lastOrder.orderNo;
+      if (editingOrderId === lastOrder.id) {
+        closeModal('editModal');
+      }
+      if (expandedIdleOrderId === lastOrder.id) {
+        expandedIdleOrderId = null;
+      }
+      if (lastEndedShiftOrderId === lastOrder.id) {
+        lastEndedShiftOrderId = null;
+      }
+      lastOrder.cancelled = true;
+      lastOrder.closed = false;
+      lastOrder.shiftActive = false;
+      lastOrder.activeOperator = null;
+      lastOrder.workStatus = 'CANCELLED';
+      lastOrder.lastActionDateTime = formatDateTimeNow();
+      pruneExpiredAddedOrders();
+      if (addedOrderTimestamps.length > 0) {
+        addedOrderTimestamps.pop();
+      }
+      updateAddedOrdersBadge();
+      normalizeOrderNumbers();
+      renderOrders();
+      renderCompletedOrders();
+      if (!document.getElementById('tab-ozet')?.classList.contains('hidden')) renderSummary('ALL');
+      if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) renderOperationTab();
+      if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) renderReports();
+      saveStateToStorage();
+      showToast(`#${cancelledNo} son iş emri iptal edildi`);
+    }
+
+    function renderSummary(periodFilter = 'ALL') {
+      document.querySelectorAll('.sum-period-btn').forEach(btn => {
+        const isAct = btn.dataset.sumPeriod === periodFilter;
+        btn.className = isAct
+          ? 'sum-period-btn px-3.5 py-1.5 rounded-full text-xs font-semibold pro-pill-active'
+          : 'sum-period-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200';
+      });
+
+      const list = periodFilter === 'ALL' ? orders : orders.filter(o => o.period === periodFilter);
+      const sumTon = list.reduce((s, o) => s + (Number(o.ton) || 0), 0);
+      const sumProd = list.reduce((s, o) => s + getProd(o), 0);
+      const sumRest = Math.max(0, sumTon - sumProd);
+      const pct = sumTon > 0 ? Math.min(100, Math.round((sumProd / sumTon) * 100)) : 0;
+      const prioCount = list.filter(o => !o.closed && o.priority).length;
+
+      const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+      setTxt('sumTon', `${fmt(sumTon)} KG`);
+      setTxt('sumOrderCount', t('work_orders_count', list.length));
+      setTxt('sumProd', `${fmt(sumProd)} KG`);
+      setTxt('sumPercent', t('pct_completed', pct));
+      setTxt('sumRest', `${fmt(sumRest)} KG`);
+      setTxt('sumPriority', String(prioCount));
+      setTxt('sumOverallBarLabel', `%${pct}`);
+      const barFill = document.getElementById('sumOverallBarFill');
+      if (barFill) barFill.style.width = `${pct}%`;
+
+      const opWrap = document.getElementById('summaryOperators');
+      if (opWrap) {
+        const opTotals = [
+          { name: 'İSA', val: list.reduce((s, o) => s + (Number(o.isa) || 0), 0), color: 'bg-blue-600' },
+          { name: 'MUHİDDİN', val: list.reduce((s, o) => s + (Number(o.muhiddin) || 0), 0), color: 'bg-[#146C53]' },
+          { name: 'KADDUR', val: list.reduce((s, o) => s + (Number(o.kaddur) || 0), 0), color: 'bg-amber-500' },
+          { name: 'MUHAMMED', val: list.reduce((s, o) => s + (Number(o.muhammed) || 0), 0), color: 'bg-purple-600' }
+        ];
+        const maxOp = Math.max(1, ...opTotals.map(x => x.val));
+        opWrap.innerHTML = opTotals.map(op => {
+          const w = Math.round((op.val / maxOp) * 100);
+          return `
+            <div class="space-y-1">
+              <div class="flex items-center justify-between text-xs font-bold">
+                <span class="text-slate-800">${op.name}</span>
+                <span class="text-slate-900 tabular-nums">${fmt(op.val)} KG</span>
+              </div>
+              <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                <div class="h-full ${op.color} rounded-full" style="width: ${w}%"></div>
+              </div>
+            </div>`;
+        }).join('');
+      }
+    }
+
+    function renderOperationTab() {
+      const container = document.getElementById('opTop10List');
+      if (!container) return;
+      const top10 = orders
+        .filter(o => !o.closed && !o.cancelled)
+        .sort((a, b) => (a.orderNo || 999) - (b.orderNo || 999))
+        .slice(0, 10);
+
+      if (!top10.length) {
+        container.innerHTML = `<div class="pro-card rounded-2xl p-6 text-center text-xs text-slate-400">${t('no_active_orders')}</div>`;
+        return;
+      }
+
+      container.innerHTML = top10.map(o => {
+        const prod = getProd(o);
+        const rest = getRest(o);
+        const isRunning = getWorkStatus(o) === 'RUNNING';
+        return `
+          <div onclick="openEditModal(${o.id})" class="rounded-2xl p-3 ${isRunning ? 'order-card-3d-running' : 'order-card-3d'} cursor-pointer active:scale-[0.99] transition space-y-1.5">
+            <div class="flex items-center justify-between gap-2">
+              <span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold ${isRunning ? 'bg-emerald-700 text-white' : 'bg-slate-200 text-slate-800'}">#${o.orderNo}</span>
+              <span class="text-[11px] font-bold text-slate-800 truncate flex-1">${formatArtiveHighlight(o.artive)}</span>
+              <span class="text-[11px] font-extrabold text-[#146C53] tabular-nums">${fmt(prod)} / ${fmt(o.ton)} KG</span>
+            </div>
+            <div class="flex items-center justify-between text-[10px] text-slate-500">
+              <span class="truncate">${escapeHtml(o.article)}</span>
+              <span class="font-bold text-amber-700 shrink-0 ltr:ml-2 rtl:mr-2">${t('remaining_label')}: ${fmt(rest)} KG</span>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    function exportToCSV() {
+      const headers = ['SiraNo', 'Durum', 'Donem', 'Kod', 'Article', 'Artive', 'SiparisKG', 'IsaKG', 'MuhiddinKG', 'KaddurKG', 'MuhammedKG', 'UretimKG', 'KalanKG'];
+      const rows = orders.map(o => [
+        o.orderNo,
+        o.closed ? 'BITTI' : getWorkStatus(o),
+        o.period,
+        o.code,
+        `"${String(o.article || '').replace(/"/g, '""')}"`,
+        `"${String(o.artive || '').replace(/"/g, '""')}"`,
+        o.ton,
+        o.isa || 0,
+        o.muhiddin || 0,
+        o.kaddur || 0,
+        o.muhammed || 0,
+        getProd(o),
+        getRest(o)
+      ].join(';'));
+
+      const blob = new Blob(['\uFEFF' + [headers.join(';'), ...rows].join('\n')], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `extruder_emirler_${formatTodayDate()}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      closeModal('exportModal');
+      showToast('CSV dosyası indirildi');
     }
 
     function setOrderWorkStatus(event, id, nextStatus) {
@@ -1502,18 +2278,34 @@
         return;
       }
 
-      const idx = orders.findIndex(x => x.id === id);
-      if (idx === -1) return;
+      const target = orders.find(o => o.id === id);
+      if (!target) return;
 
-      const target = orders[idx];
-      ensureOrderDates(target);
+      const defaultOp = getShiftPickerOperator(target);
+      if (nextStatus === 'RUNNING' && !canStartShiftForOperator(defaultOp)) {
+        const gmailOp = getGmailMatchedOperator();
+        showToast(gmailOp
+          ? `Gmail eşleşmeniz (${gmailOp}) yalnızca kendi vardiyanızı başlatmanıza izin verir`
+          : 'Bu Gmail hesabı için operatör vardiya yetkisi bulunmuyor');
+        refreshActiveMenus();
+        return;
+      }
+
       target.lastActionDateTime = formatDateTimeNow();
 
       if (nextStatus === 'RUNNING') {
-        const defaultOp = getShiftPickerOperator(target);
-        orders.forEach((item, i) => {
-          if (i !== idx && !item.closed && item.workStatus === 'RUNNING') {
-            item.workStatus = 'PAUSED';
+        const activeRunningOrder = getCurrentlyRunningOrder(id);
+        if (activeRunningOrder) {
+          showToast(t('active_order_running_warning', activeRunningOrder.orderNo || activeRunningOrder.id));
+          refreshActiveMenus();
+          return;
+        }
+
+        orders.forEach(o => {
+          if (o.id !== id && !o.closed && getWorkStatus(o) === 'RUNNING') {
+            o.workStatus = 'PAUSED';
+            o.shiftActive = false;
+            o.activeOperator = null;
           }
         });
         target.closed = false;
@@ -1536,6 +2328,9 @@
         target.workStatus = 'PAUSED';
         target.shiftActive = false;
         target.activeOperator = null;
+        if (expandedIdleOrderId === id) {
+          expandedIdleOrderId = null;
+        }
         const pauseClock = formatClockTime();
         target.orderEndTime = pauseClock;
         target.shiftSession = {
@@ -1590,12 +2385,14 @@
       showToast(`#${target.orderNo || target.id} ${t('status_' + nextStatus.toLowerCase()) || nextStatus}`);
     }
 
-    // Renders the status dropdown pill on each work order card
-    function renderWorkStatusButton(order) {
+    function renderWorkStatusButton(order, hideWhenIdleCompact = false) {
       const status = getWorkStatus(order);
+      if (hideWhenIdleCompact && status !== 'RUNNING' && status !== 'PAUSED' && status !== 'FINISHED') {
+        return '';
+      }
+
       let label = t('status_select');
       let btnClass = 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200';
-
       if (status === 'RUNNING') {
         label = t('status_running');
         btnClass = 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-700 shadow-2xs';
@@ -1614,7 +2411,7 @@
           <button type="button" onclick="toggleWorkStatusMenu(event, ${order.id})"
             class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border text-[10px] font-extrabold active:scale-95 transition ${btnClass}">
             <span>${escapeHtml(label)}</span>
-            <svg class="w-2.5 h-2.5 opacity-80" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <svg class="w-2.5 h-2.5 opacity-85" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
             </svg>
           </button>
@@ -1622,26 +2419,30 @@
             <div class="absolute ltr:right-0 rtl:left-0 top-full mt-1 z-30 w-32 bg-white rounded-xl shadow-xl border border-slate-200 p-1 space-y-0.5">
               <button type="button" onclick="setOrderWorkStatus(event, ${order.id}, 'RUNNING')"
                 class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-emerald-700 hover:bg-emerald-50 transition ltr:text-left rtl:text-right">
-                <span>●</span><span>${t('menu_running')}</span>
+                <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                <span>${t('menu_running')}</span>
               </button>
               <button type="button" onclick="setOrderWorkStatus(event, ${order.id}, 'PAUSED')"
                 class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-amber-700 hover:bg-amber-50 transition ltr:text-left rtl:text-right">
-                <span>⏸</span><span>${t('menu_paused')}</span>
+                <span class="w-2 h-2 rounded-full bg-amber-400 shrink-0"></span>
+                <span>${t('menu_paused')}</span>
               </button>
               <button type="button" onclick="setOrderWorkStatus(event, ${order.id}, 'FINISHED')"
                 class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-slate-800 hover:bg-slate-100 transition ltr:text-left rtl:text-right">
-                <span>■</span><span>${t('menu_finished')}</span>
+                <span class="w-2 h-2 rounded-sm bg-slate-800 shrink-0"></span>
+                <span>${t('menu_finished')}</span>
               </button>
+              <div class="border-t border-slate-100 my-0.5"></div>
               <button type="button" onclick="setOrderWorkStatus(event, ${order.id}, 'RESET')"
-                class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold text-slate-500 hover:bg-slate-50 transition ltr:text-left rtl:text-right">
-                <span>↺</span><span>${t('menu_reset')}</span>
+                class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-slate-600 hover:bg-slate-100 transition ltr:text-left rtl:text-right">
+                <span class="w-2 h-2 rounded-full bg-slate-300 shrink-0"></span>
+                <span>${t('menu_reset')}</span>
               </button>
             </div>
           ` : ''}
         </div>`;
     }
 
-    // Renders the active operator indicator row on running or alerted work order cards
     function renderRunningOperatorBar(order, showCardClock = false) {
       const wStatus = getWorkStatus(order);
       const isFinished = wStatus === 'FINISHED' || !!(order && order.closed);
@@ -1690,7 +2491,7 @@
     }
 
     function normalizeOrderNumbers(movedId = null, desiredNo = null) {
-      const active = orders.filter(o => !o.closed).sort((a, b) => (a.orderNo || 999) - (b.orderNo || 999) || a.id - b.id);
+      const active = orders.filter(o => !o.closed && !o.cancelled).sort((a, b) => (a.orderNo || 999) - (b.orderNo || 999) || a.id - b.id);
       const runningOrder = active.find(o => getWorkStatus(o) === 'RUNNING');
       const pausedOrders = active.filter(o => getWorkStatus(o) === 'PAUSED' && (!runningOrder || o.id !== runningOrder.id));
 
@@ -1749,7 +2550,6 @@
       showToast(`İş emri #${targetOrder ? targetOrder.orderNo : num} sırasına alındı`);
     }
 
-    // Handles drag start for work order cards when user holds Management identity
     function handleOrderDragStart(event, id) {
       if (!canDragReorderOrders()) {
         if (event) event.preventDefault();
@@ -1791,7 +2591,6 @@
       }
     }
 
-    // Reorders work orders upon drop onto a target card
     function handleOrderDrop(event, targetId) {
       if (event) {
         event.preventDefault();
@@ -1861,6 +2660,16 @@
         openCompletedMenuId = null;
         renderCompletedOrders();
       }
+      const editSelectWrap = document.getElementById('editModalActionMenuWrap');
+      if (editSelectWrap && !editSelectWrap.contains(e.target)) {
+        closeEditModalSelectMenu();
+      }
+      if (expandedIdleOrderId !== null) {
+        const expandedCardEl = document.querySelector(`[data-order-card-id="${expandedIdleOrderId}"]`);
+        if (!expandedCardEl || !expandedCardEl.contains(e.target)) {
+          collapseExpandedOrderDetailView();
+        }
+      }
     });
 
     function clearOrderFilters() {
@@ -1880,7 +2689,6 @@
       renderOrders();
     }
 
-    // Prunes newly added order timestamps older than 24 hours and updates badge count
     function pruneExpiredAddedOrders() {
       const cutoff = Date.now() - TWENTY_FOUR_HOURS_MS;
       addedOrderTimestamps = addedOrderTimestamps.filter(ts => Number(ts) > cutoff);
@@ -1909,7 +2717,7 @@
       const sort = document.getElementById('sortBy')?.value || currentOrderSortMode || 'ORDER_NO';
 
       let filtered = orders.filter(o => {
-        if (o.closed) return false;
+        if (o.closed || o.cancelled) return false;
         const rest = getRest(o);
         const wStatus = getWorkStatus(o);
 
@@ -1928,6 +2736,10 @@
 
         return true;
       });
+
+      const endedOrderObj = lastEndedShiftOrderId !== null
+        ? filtered.find(o => o.id === lastEndedShiftOrderId && getWorkStatus(o) === 'PAUSED')
+        : null;
 
       if (sort === 'BY_STATUS' || sort === 'COLOR_STATUS') {
         const rank = (item) => {
@@ -1958,7 +2770,11 @@
       const runningList = filtered.filter(o => getWorkStatus(o) === 'RUNNING');
       const pausedList = filtered.filter(o => getWorkStatus(o) === 'PAUSED');
       const otherList = filtered.filter(o => getWorkStatus(o) !== 'RUNNING' && getWorkStatus(o) !== 'PAUSED');
-      filtered = [...runningList, ...pausedList, ...otherList];
+      const isEmirlerTabActive = !document.getElementById('tab-emirler')?.classList.contains('hidden');
+      const isDefaultOrderSequence = sort === 'ORDER_NO' || sort === 'DEFAULT';
+      filtered = (isEmirlerTabActive && isDefaultOrderSequence)
+        ? [...runningList, ...pausedList, ...otherList]
+        : [...runningList, ...pausedList, ...otherList];
 
       const container = document.getElementById('ordersList');
       if (!container) return;
@@ -1994,31 +2810,72 @@
         const isNearComplete = !isExceeded && rest <= 150 && prod > 0;
         const wStatus = getWorkStatus(o);
         const isRunning = wStatus === 'RUNNING';
-        const isPaused = wStatus === 'PAUSED';
-        const needsShiftStart = isRunning && !getActiveOperatorName(o);
+        const hasProduction = !isRunning && prod > 0;
+        const isCompactListItem = !isRunning;
+        const isExpanded = isCompactListItem && expandedIdleOrderId === o.id;
         const canDragCard = canDragReorderOrders() && !isRunning;
 
-        // Emirler sekmesinde: Çalışıyor -> Yeşil, Durdu -> Turuncu, Durum Seç (diğerleri) -> Sarı
         const cardHighlight = isRunning
-          ? (needsShiftStart ? 'order-card-3d-running-alert' : 'order-card-3d-running')
-          : (isPaused ? 'order-card-3d-orange' : 'order-card-3d-yellow');
+          ? 'order-card-3d-running'
+          : (hasProduction ? 'order-card-3d-orange' : 'order-card-3d-yellow');
         const seqBoxClass = isRunning
           ? 'seq-square-3d seq-square-3d-running'
-          : (isPaused ? 'seq-square-3d seq-square-3d-orange' : 'seq-square-3d seq-square-3d-yellow');
+          : (hasProduction ? 'seq-square-3d seq-square-3d-orange' : 'seq-square-3d seq-square-3d-yellow');
         const dateBoxClass = isRunning
           ? 'bg-[#BBF7D0] border-[#4ADE80] text-emerald-950'
-          : (isPaused ? 'bg-[#FFEDD5] border-[#FDBA74] text-orange-950' : 'bg-[#FEF9C3] border-[#FDE047] text-yellow-900');
+          : (hasProduction ? 'bg-[#FED7AA] border-[#FB923C] text-orange-950' : 'bg-[#FEF9C3] border-[#FDE047] text-amber-950');
         const metricBoxClass = isRunning
           ? 'bg-[#F0FDF4]/95 border-[#86EFAC]'
-          : (isPaused ? 'bg-[#FFF7ED]/95 border-[#FED7AA]' : 'bg-[#FFFDF2]/95 border-[#FEF08A]');
+          : (hasProduction ? 'bg-[#FFF7ED]/95 border-[#FDBA74]' : 'bg-[#FEFCE8]/95 border-[#FDE047]');
         const dotColorClass = isRunning
           ? 'bg-[#16A34A]'
-          : (isPaused ? 'bg-orange-500' : 'bg-amber-400');
+          : (hasProduction ? 'bg-orange-500' : 'bg-amber-400');
         const rawLastAction = String(o.lastActionDateTime || '').trim();
         const lastActionDateMatch = rawLastAction.match(/^(\d{2}\.\d{2}\.\d{4})/);
         const topDateStr = escapeHtml(
           (lastActionDateMatch && lastActionDateMatch[1]) || o.createdDate || formatTodayDate()
         );
+
+        if (isCompactListItem && !isExpanded) {
+          return `
+          <div data-order-card-id="${o.id}"
+            draggable="${canDragCard ? 'true' : 'false'}"
+            ondragstart="handleOrderDragStart(event, ${o.id})"
+            ondragover="handleOrderDragOver(event, ${o.id})"
+            ondragleave="handleOrderDragLeave(event)"
+            ondrop="handleOrderDrop(event, ${o.id})"
+            ondragend="handleOrderDragEnd(event)"
+            onclick="toggleIdleOrderDetailView(event, ${o.id})"
+            class="rounded-2xl p-3 ${cardHighlight} active:scale-[0.99] transition cursor-pointer space-y-2">
+          <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2 min-w-0 flex-1">
+                <div onclick="event.stopPropagation()" class="inline-flex items-center justify-center shrink-0 ${seqBoxClass}" title="Sıra numarasını değiştirin">
+                  <input type="number" inputmode="numeric" min="1" value="${o.orderNo}"
+                    onchange="updateOrderNumberInline(${o.id}, this.value)"
+                    onkeydown="if(event.key==='Enter'){this.blur();}"
+                    class="w-full bg-transparent text-slate-900 text-[10px] font-extrabold text-center leading-none rounded outline-none" />
+                </div>
+                <span class="w-1.5 h-1.5 rounded-full ${dotColorClass} shrink-0"></span>
+                <span class="text-[11px] font-bold text-slate-800 truncate">${formatArtiveHighlight(o.artive)}</span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 ${metricBoxClass} border rounded-lg py-1 px-1.5 text-center shadow-2xs tabular-nums">
+              <div>
+                <div class="text-[8px] font-bold text-slate-400 leading-none tracking-tight">${t('metric_order')}</div>
+                <div class="text-[10.5px] font-extrabold text-slate-900 leading-none mt-0.5">${fmt(o.ton)}</div>
+              </div>
+              <div class="border-x ${hasProduction ? 'border-orange-200/90' : 'border-amber-200/80'}">
+                <div class="text-[8px] font-bold text-slate-400 leading-none tracking-tight">${t('metric_prod')}</div>
+                <div class="text-[10.5px] font-extrabold text-[#146C53] leading-none mt-0.5">${fmt(prod)}</div>
+              </div>
+              <div>
+                <div class="text-[8px] font-bold text-slate-400 leading-none tracking-tight">${t('metric_rem')}</div>
+                <div class="text-[10.5px] font-extrabold ${isExceeded || isNearComplete ? 'text-rose-600' : (hasProduction ? 'text-orange-600' : 'text-amber-600')} leading-none mt-0.5">${fmt(rest)}</div>
+              </div>
+            </div>
+          </div>`;
+        }
 
         return `
         <div data-order-card-id="${o.id}"
@@ -2028,14 +2885,20 @@
           ondragleave="handleOrderDragLeave(event)"
           ondrop="handleOrderDrop(event, ${o.id})"
           ondragend="handleOrderDragEnd(event)"
-          onclick="openEditModal(${o.id})"
-          class="rounded-2xl p-3 ${cardHighlight} active:scale-[0.99] transition cursor-pointer space-y-2">
+          class="rounded-2xl p-3 ${cardHighlight} transition space-y-2 ${isExpanded ? (hasProduction ? 'ring-2 ring-orange-400/60' : 'ring-2 ring-amber-400/60') : ''}">
           <div class="flex items-center justify-between gap-2">
-            <div onclick="event.stopPropagation()" class="inline-flex items-center justify-center shrink-0 ${seqBoxClass}" title="Sıra numarasını değiştirin">
-              <input type="number" inputmode="numeric" min="1" value="${o.orderNo}"
-                onchange="updateOrderNumberInline(${o.id}, this.value)"
-                onkeydown="if(event.key==='Enter'){this.blur();}"
-                class="w-full bg-transparent text-slate-900 text-[10px] font-extrabold text-center leading-none rounded outline-none" />
+            <div class="flex items-center gap-1.5 shrink-0">
+              <div onclick="event.stopPropagation()" class="inline-flex items-center justify-center shrink-0 ${seqBoxClass}" title="Sıra numarasını değiştirin">
+                <input type="number" inputmode="numeric" min="1" value="${o.orderNo}"
+                  onchange="updateOrderNumberInline(${o.id}, this.value)"
+                  onkeydown="if(event.key==='Enter'){this.blur();}"
+                  class="w-full bg-transparent text-slate-900 text-[10px] font-extrabold text-center leading-none rounded outline-none" />
+              </div>
+              ${isExpanded ? `
+                <button type="button" onclick="toggleIdleOrderDetailView(event, ${o.id})" title="Listeye Dön"
+                  class="px-2 py-0.5 rounded-lg ${hasProduction ? 'bg-orange-100 hover:bg-orange-200 border-orange-300 text-orange-900' : 'bg-amber-100 hover:bg-amber-200 border-amber-300 text-amber-900'} border text-[10px] font-extrabold transition">
+                  Liste
+                </button>` : ''}
             </div>
             <span class="inline-flex items-center justify-center shrink-0 h-[22px] px-2.5 rounded-lg border text-[10px] leading-none font-bold tabular-nums text-center ${dateBoxClass}">${topDateStr}</span>
             ${renderWorkStatusButton(o)}
@@ -2055,13 +2918,13 @@
                 <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_order')}</div>
                 <div class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight mt-1">${fmt(o.ton)}</div>
               </div>
-              <div class="border-x border-orange-200/80">
+              <div class="border-x ${hasProduction ? 'border-orange-200/90' : 'border-amber-200/80'}">
                 <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_prod')}</div>
                 <div class="text-xs sm:text-sm font-extrabold text-[#146C53] leading-tight mt-1">${fmt(prod)}</div>
               </div>
               <div>
                 <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_rem')}</div>
-                <div class="text-xs sm:text-sm font-extrabold ${isExceeded || isNearComplete ? 'text-rose-600' : 'text-amber-600'} leading-tight mt-1">${fmt(rest)}</div>
+                <div class="text-xs sm:text-sm font-extrabold ${isExceeded || isNearComplete ? 'text-rose-600' : (hasProduction ? 'text-orange-600' : 'text-amber-600')} leading-tight mt-1">${fmt(rest)}</div>
               </div>
             </div>
           </div>
@@ -2071,9 +2934,13 @@
       };
 
       const runningCardsHtml = filtered.filter(o => getWorkStatus(o) === 'RUNNING').map(renderOrderCard).join('');
-      const remainingCardsHtml = filtered.filter(o => getWorkStatus(o) !== 'RUNNING').map(renderOrderCard).join('');
+      const endedOrderCardHtml = (isEmirlerTabActive && endedOrderObj) ? renderOrderCard(endedOrderObj) : '';
+      const remainingCardsHtml = filtered
+        .filter(o => getWorkStatus(o) !== 'RUNNING' && (!endedOrderCardHtml || o.id !== endedOrderObj.id))
+        .map(renderOrderCard)
+        .join('');
 
-      container.innerHTML = runningCardsHtml + metaBarHtml + remainingCardsHtml;
+      container.innerHTML = runningCardsHtml + metaBarHtml + endedOrderCardHtml + remainingCardsHtml;
     }
 
     function parseKgInput(rawVal) {
@@ -2230,7 +3097,6 @@
 
       const folders = Array.from(folderMap.values()).sort((a, b) => b.sortKey.localeCompare(a.sortKey));
 
-      // Her ay (veya klasör) için belirgin ve farklı çerçeve/vurgu renkleri
       const monthThemes = {
         '01': { wrapper: 'border-sky-300', header: 'from-sky-50/90 via-white to-sky-50/40 hover:bg-sky-50/60', badge: 'bg-sky-100 text-sky-900', kgText: 'text-sky-700' },
         '02': { wrapper: 'border-indigo-300', header: 'from-indigo-50/90 via-white to-indigo-50/40 hover:bg-indigo-50/60', badge: 'bg-indigo-100 text-indigo-900', kgText: 'text-indigo-700' },
@@ -2265,9 +3131,10 @@
           const rest = getRest(o);
           const doneDateTimeStr = escapeHtml(formatCompletedDateTimeLabel(o));
           const isMenuOpen = openCompletedMenuId === o.id;
+          const cardClass = 'completed-card';
           return `
-            <article onclick="openEditModal(${o.id})" class="completed-card rounded-2xl p-3 space-y-2 cursor-pointer active:scale-[0.99] transition">
-              <div class="flex items-center justify-between gap-2">
+          <div class="rounded-2xl p-3 ${cardClass} transition space-y-2">
+            <div class="flex items-center justify-between gap-2">
                 <span class="inline-flex items-center justify-center shrink-0 h-[22px] px-2.5 rounded-lg bg-rose-100/95 border border-rose-300 text-[10px] leading-none font-bold text-rose-900 tabular-nums text-center">${doneDateTimeStr}</span>
                 <div onclick="event.stopPropagation()" class="relative inline-block shrink-0">
                   <button type="button" onclick="toggleCompletedMenu(event, ${o.id})" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-rose-600 hover:bg-rose-700 text-white border border-rose-700 text-[10px] font-extrabold shadow-2xs active:scale-95 transition">
@@ -2309,1171 +3176,25 @@
                   </div>
                 </div>
               </div>
-            </article>`;
+            </div>`;
         }).join('');
 
         return `
-          <div class="rounded-2xl bg-white/95 border-2 ${theme.wrapper} shadow-xs overflow-hidden">
-            <button type="button" onclick="toggleCompletedFolder('${folder.key}')"
-              class="w-full flex items-center justify-between gap-2 px-3.5 py-3 bg-gradient-to-r ${theme.header} transition">
-              <div class="w-12 shrink-0"></div>
-              <div class="flex-1 min-w-0 flex items-center justify-center gap-2 whitespace-nowrap">
-                <span class="text-xs font-extrabold text-slate-900 tracking-wide truncate">${escapeHtml(folder.title)}</span>
-                <span class="text-slate-300 font-bold select-none">·</span>
-                <span class="text-xs font-extrabold ${theme.kgText} tabular-nums shrink-0">${fmt(totalFolderProd)} KG</span>
+          <div class="rounded-2xl border-2 ${theme.wrapper} bg-white/95 overflow-hidden shadow-xs">
+            <button type="button" onclick="toggleCompletedFolder('${escapeHtml(folder.key)}')"
+              class="w-full px-3.5 py-3 bg-gradient-to-r ${theme.header} flex items-center justify-between gap-2 transition">
+              <div class="flex items-center gap-2 min-w-0">
+                <span class="px-2.5 py-1 rounded-xl text-xs font-extrabold ${theme.badge} shrink-0">${escapeHtml(folder.title)}</span>
+                <span class="text-xs font-bold text-slate-600 truncate">${t('emir_unit', folder.items.length)}</span>
               </div>
-              <div class="flex items-center justify-end gap-2 w-12 shrink-0">
-                <span class="px-2 py-0.5 rounded-full ${theme.badge} text-[10px] font-extrabold">${folder.items.length}</span>
-                <svg class="w-4 h-4 text-slate-500 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <div class="flex items-center gap-2 shrink-0">
+                <span class="text-xs font-extrabold ${theme.kgText} tabular-nums">${fmt(totalFolderProd)} KG</span>
+                <svg class="w-4 h-4 text-slate-500 transition-transform ${isOpen ? 'rotate-180' : ''}" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
                 </svg>
               </div>
             </button>
-            ${isOpen ? `<div class="p-2.5 space-y-2.5 bg-slate-50/70 border-t border-slate-200/70">${cardsHtml}</div>` : ''}
-          </div>`;
-      }).join('');
-    }
-
-    function exportToCSV() {
-      try {
-        const headers = ['SIRA NO', 'DONEM', 'OLUSTURMA TARIHI', 'BITIS TARIHI', 'CALISAN OPERATOR', 'ONCELIK', 'ARTICLE THERMOFM', 'ARTIVE', 'TON', 'ISA', 'MUHIDDIN', 'KADDUR', 'MUHAMMED', 'QTT PROD', 'REST', 'DURUM'];
-        const sortedOrders = [...orders].sort((a, b) => (a.orderNo || 999) - (b.orderNo || 999));
-        const rows = sortedOrders.map(o => {
-          const prod = getProd(o);
-          const rest = getRest(o);
-          return [
-            o.orderNo || '',
-            o.period,
-            o.createdDate || '',
-            o.closed ? (o.completedDate || '') : '',
-            getActiveOperatorName(o),
-            o.priority ? 'EVET' : 'HAYIR',
-            `"${String(o.article || '').replace(/"/g, '""')}"`,
-            `"${String(o.artive || '').replace(/"/g, '""')}"`,
-            o.ton,
-            o.isa,
-            o.muhiddin,
-            o.kaddur,
-            o.muhammed,
-            prod,
-            rest,
-            o.closed ? 'TAMAMLANDI' : 'AKTIF'
-          ].join(';');
-        });
-
-        const csvContent = '\uFEFF' + [headers.join(';'), ...rows].join('\n');
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `EXTRUDER_Uretim_Emirleri_${new Date().toISOString().slice(0, 10)}.csv`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        showToast('CSV dosyası indirildi');
-      } catch (e) {
-        showToast('CSV dışa aktarma hatası');
-      }
-    }
-
-    function closeModal(id) {
-      document.getElementById(id)?.classList.add('hidden');
-    }
-
-    function openNewOrderModal() {
-      if (!guardAction('CREATE_ORDER')) {
-        openAccountModal();
-        return;
-      }
-      try {
-        if ('Notification' in window && Notification.permission === 'default') {
-          Notification.requestPermission().catch(() => {});
-        }
-      } catch (e) {}
-      const articleEl = document.getElementById('newArticle');
-      const artiveEl = document.getElementById('newArtive');
-      const tonEl = document.getElementById('newTon');
-      const prioEl = document.getElementById('newPriority');
-
-      if (articleEl) articleEl.value = '';
-      if (artiveEl) artiveEl.value = '';
-      if (tonEl) tonEl.value = '';
-      if (prioEl) prioEl.checked = false;
-
-      document.getElementById('newOrderModal')?.classList.remove('hidden');
-    }
-
-    function createNewOrder() {
-      if (!guardAction('CREATE_ORDER')) return;
-      const article = (document.getElementById('newArticle')?.value || '').trim();
-      const artive = (document.getElementById('newArtive')?.value || '').trim();
-      const ton = parseKgInput(document.getElementById('newTon')?.value);
-      const desiredOrderNo = orders.filter(o => !o.closed).length + 1;
-      const period = '01.11.2026';
-      const priority = !!document.getElementById('newPriority')?.checked;
-
-      if (!article || ton <= 0) {
-        showToast(currentLang === 'ar' ? 'يرجى إدخال اسم المنتج والوزن' : 'Lütfen ürün adı ve tonaj girin');
-        return;
-      }
-
-      const todayStr = formatTodayDate();
-      const newId = Date.now();
-      const defaultOp = OPERATORS[Math.max(0, desiredOrderNo - 1) % OPERATORS.length];
-      const newOrder = ensureOrderDates({
-        id: newId,
-        orderNo: desiredOrderNo,
-        priority,
-        period,
-        createdDate: todayStr,
-        lastActionDateTime: formatDateTimeNow(),
-        completedDate: null,
-        activeOperator: defaultOp,
-        code: String(desiredOrderNo),
-        article: article.toUpperCase(),
-        artive: (artive || 'BOBINE SF-PET STANDARD').toUpperCase(),
-        ton,
-        isa: 0,
-        muhiddin: 0,
-        kaddur: 0,
-        muhammed: 0,
-        closed: false,
-        workStatus: 'IDLE'
-      });
-
-      orders.unshift(newOrder);
-      addedOrderTimestamps.push(Date.now());
-      updateAddedOrdersBadge();
-      normalizeOrderNumbers(newId, desiredOrderNo);
-      closeModal('newOrderModal');
-      renderOrders();
-      renderCompletedOrders();
-      notifyNewWorkOrderAdded(newOrder);
-      saveStateToStorage();
-      showToast(currentLang === 'ar' ? `تمت إضافة أمر العمل رقم #${newOrder.orderNo}` : `Yeni iş emri bildirimi: #${newOrder.orderNo} eklendi`);
-    }
-
-    function getSelectedModalOperator() {
-      const checkMap = [
-        { op: 'İSA', el: document.getElementById('checkOpIsa') },
-        { op: 'MUHİDDİN', el: document.getElementById('checkOpMuhiddin') },
-        { op: 'KADDUR', el: document.getElementById('checkOpKaddur') },
-        { op: 'MUHAMMED', el: document.getElementById('checkOpMuhammed') }
-      ];
-      const checkedItem = checkMap.find(item => item.el && item.el.checked);
-      return checkedItem ? checkedItem.op : null;
-    }
-
-    // Highlights the active or selected operator row inside the edit modal
-    function updateOperatorRowsColorUI(order) {
-      const draft = pendingModalShift || {
-        shiftActive: !!(order && order.shiftActive && order.activeOperator),
-        activeOperator: (order && order.activeOperator) || null,
-        shiftSession: Object.assign({ operator: null, status: 'IDLE' }, (order && order.shiftSession) || {})
-      };
-      const selectedOp = (draft.shiftActive && draft.activeOperator)
-        ? draft.activeOperator
-        : (draft.shiftSession && draft.shiftSession.operator ? draft.shiftSession.operator : null);
-
-      const rowThemes = {
-        'İSA': {
-          rowId: 'opRowIsa',
-          labelId: 'opLabelIsa',
-          inputId: 'inputIsa',
-          plusId: 'plusBtnIsa',
-          rowActive: 'bg-blue-50/75 border-rose-500 ring-1 ring-rose-500/30',
-          rowNeutral: 'bg-slate-50 border-slate-200/90',
-          labelActive: 'text-blue-800',
-          labelNeutral: 'text-slate-700',
-          inputActive: 'border-rose-400',
-          inputNeutral: 'border-slate-200',
-          plusActive: 'bg-blue-100 hover:bg-blue-200 text-blue-800',
-          plusNeutral: 'bg-slate-100 hover:bg-slate-200 text-slate-700'
-        },
-        'MUHİDDİN': {
-          rowId: 'opRowMuhiddin',
-          labelId: 'opLabelMuhiddin',
-          inputId: 'inputMuhiddin',
-          plusId: 'plusBtnMuhiddin',
-          rowActive: 'bg-emerald-50/75 border-rose-500 ring-1 ring-rose-500/30',
-          rowNeutral: 'bg-slate-50 border-slate-200/90',
-          labelActive: 'text-emerald-800',
-          labelNeutral: 'text-slate-700',
-          inputActive: 'border-rose-400',
-          inputNeutral: 'border-slate-200',
-          plusActive: 'bg-emerald-100 hover:bg-emerald-200 text-emerald-800',
-          plusNeutral: 'bg-slate-100 hover:bg-slate-200 text-slate-700'
-        },
-        'KADDUR': {
-          rowId: 'opRowKaddur',
-          labelId: 'opLabelKaddur',
-          inputId: 'inputKaddur',
-          plusId: 'plusBtnKaddur',
-          rowActive: 'bg-amber-50/75 border-rose-500 ring-1 ring-rose-500/30',
-          rowNeutral: 'bg-slate-50 border-slate-200/90',
-          labelActive: 'text-amber-800',
-          labelNeutral: 'text-slate-700',
-          inputActive: 'border-rose-400',
-          inputNeutral: 'border-slate-200',
-          plusActive: 'bg-amber-100 hover:bg-amber-200 text-amber-800',
-          plusNeutral: 'bg-slate-100 hover:bg-slate-200 text-slate-700'
-        },
-        'MUHAMMED': {
-          rowId: 'opRowMuhammed',
-          labelId: 'opLabelMuhammed',
-          inputId: 'inputMuhammed',
-          plusId: 'plusBtnMuhammed',
-          rowActive: 'bg-purple-50/75 border-rose-500 ring-1 ring-rose-500/30',
-          rowNeutral: 'bg-slate-50 border-slate-200/90',
-          labelActive: 'text-purple-800',
-          labelNeutral: 'text-slate-700',
-          inputActive: 'border-rose-400',
-          inputNeutral: 'border-slate-200',
-          plusActive: 'bg-purple-100 hover:bg-purple-200 text-purple-800',
-          plusNeutral: 'bg-slate-100 hover:bg-slate-200 text-slate-700'
-        }
-      };
-
-      OPERATORS.forEach(op => {
-        const theme = rowThemes[op];
-        if (!theme) return;
-        const isOpActive = selectedOp === op;
-        const rowEl = document.getElementById(theme.rowId);
-        const labelEl = document.getElementById(theme.labelId);
-        const inputEl = document.getElementById(theme.inputId);
-        const plusEl = document.getElementById(theme.plusId);
-
-        if (rowEl) {
-          rowEl.className = `flex items-center justify-between gap-2.5 rounded-2xl px-3 py-2 transition border cursor-pointer ${isOpActive ? theme.rowActive : theme.rowNeutral}`;
-        }
-        if (labelEl) {
-          labelEl.className = `text-xs font-extrabold ${isOpActive ? theme.labelActive : theme.labelNeutral}`;
-        }
-        if (inputEl && !inputEl.disabled) {
-          inputEl.className = `w-full px-3 py-2 bg-white border rounded-xl text-sm font-extrabold text-slate-900 ${isOpActive ? theme.inputActive : theme.inputNeutral}`;
-        }
-        if (plusEl && !plusEl.disabled) {
-          plusEl.className = `w-9 h-9 shrink-0 rounded-xl font-extrabold text-base flex items-center justify-center active:scale-95 transition ${isOpActive ? theme.plusActive : theme.plusNeutral}`;
-        }
-      });
-    }
-
-    function selectOperatorRowByName(opName) {
-      const idx = orders.findIndex(x => x.id === editingOrderId);
-      if (idx === -1 || !pendingModalShift) return;
-      const perms = getUserPermissions();
-      const isMgmtGmail = hasManagementGmailIdentity();
-
-      isEditingMetricsMode = false;
-      const editMetricsBtn = document.getElementById('editOrderMetricsBtn');
-      const deleteOrderBtn = document.getElementById('deleteOrderModalBtn');
-      const manTonEl = document.getElementById('manualTonInput');
-      const manProdEl = document.getElementById('manualProdInput');
-      const manRestEl = document.getElementById('manualRestInput');
-      if (manTonEl) { manTonEl.classList.add('hidden'); manTonEl.value = ''; }
-      if (manProdEl) { manProdEl.classList.add('hidden'); manProdEl.value = ''; }
-      if (manRestEl) { manRestEl.classList.add('hidden'); manRestEl.value = ''; }
-
-      if (editMetricsBtn) {
-        editMetricsBtn.classList.toggle('hidden', !perms.isManagement);
-        editMetricsBtn.className = 'px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-xs active:scale-95 transition' + (perms.isManagement ? '' : ' hidden');
-      }
-
-      if (deleteOrderBtn) {
-        deleteOrderBtn.classList.toggle('hidden', !isMgmtGmail);
-        deleteOrderBtn.className = 'px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-extrabold text-xs active:scale-95 transition' + (isMgmtGmail ? '' : ' hidden');
-      }
-
-      const isAlreadyConfirmed = !!(pendingModalShift.shiftActive && pendingModalShift.activeOperator === opName);
-      if (!isAlreadyConfirmed) {
-        pendingModalShift.shiftActive = false;
-        pendingModalShift.activeOperator = null;
-        pendingModalShift.shiftSession = {
-          operator: opName,
-          status: 'IDLE',
-          startedAt: pendingModalShift.shiftSession?.startedAt || null,
-          endedAt: null
-        };
-      }
-      syncOperatorCheckboxesUI(isAlreadyConfirmed ? opName : null, isAlreadyConfirmed);
-      updateModalShiftUI(orders[idx]);
-      recalcEditModal();
-    }
-
-    function syncOperatorCheckboxesUI(activeOp, isShiftRunning) {
-      const checkIds = {
-        'İSA': 'checkOpIsa',
-        'MUHİDDİN': 'checkOpMuhiddin',
-        'KADDUR': 'checkOpKaddur',
-        'MUHAMMED': 'checkOpMuhammed'
-      };
-      const confirmedActive = Boolean(isShiftRunning && activeOp && pendingModalShift && pendingModalShift.shiftActive && pendingModalShift.activeOperator === activeOp);
-      OPERATORS.forEach(op => {
-        const box = document.getElementById(checkIds[op]);
-        if (box) {
-          const isChecked = Boolean(confirmedActive && activeOp === op);
-          box.checked = isChecked;
-          box.indeterminate = false;
-        }
-      });
-    }
-
-    function updateModalShiftUI(order) {
-      const statusEl = document.getElementById('modalShiftStatusText');
-      const startBtn = document.getElementById('startShiftBtn');
-      const draft = pendingModalShift || {
-        shiftActive: !!(order && order.shiftActive && order.activeOperator),
-        activeOperator: (order && order.activeOperator) || null,
-        workStatus: (order && order.workStatus) || 'IDLE',
-        shiftSession: Object.assign({ operator: null, status: 'IDLE', startedAt: null, endedAt: null }, (order && order.shiftSession) || {})
-      };
-
-      const session = draft.shiftSession || {};
-      const isShiftRunning = !!(draft.shiftActive && draft.activeOperator);
-      const activeSelectedOp = isShiftRunning ? draft.activeOperator : (session.operator || null);
-      const allowedForOp = activeSelectedOp ? canStartShiftForOperator(activeSelectedOp) : false;
-
-      if (statusEl) {
-        statusEl.className = isShiftRunning && draft.activeOperator
-          ? 'text-[11px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2'
-          : 'text-[11px] font-semibold text-slate-600 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-2';
-      }
-
-      if (startBtn) {
-        const shouldDisable = !activeSelectedOp || !allowedForOp;
-        startBtn.disabled = shouldDisable;
-        startBtn.classList.toggle('opacity-50', shouldDisable);
-        startBtn.classList.toggle('cursor-not-allowed', shouldDisable);
-      }
-
-      if (statusEl) {
-        if (isShiftRunning && draft.activeOperator) {
-          statusEl.textContent = t('shift_active_info', draft.activeOperator, session.startedAt || formatClockTime());
-        } else if (activeSelectedOp && !allowedForOp) {
-          const gmailOp = getGmailMatchedOperator();
-          statusEl.textContent = gmailOp
-            ? `Gmail eşleşmeniz (${gmailOp}) yalnızca kendi vardiyanızı başlatmanıza izin verir`
-            : `Bu Gmail adresi (${currentAccountEmail || '-'}) herhangi bir operatörle eşleşmiyor`;
-        } else if (activeSelectedOp && session.status === 'ENDED' && session.endedAt) {
-          statusEl.textContent = t('shift_finished_info', activeSelectedOp, session.startedAt, session.endedAt);
-        } else if (activeSelectedOp) {
-          statusEl.textContent = t('shift_idle_info', activeSelectedOp);
-        } else {
-          statusEl.textContent = t('shift_no_operator_info');
-        }
-      }
-
-      updateOperatorRowsColorUI(order);
-    }
-
-    function onOperatorCheckboxToggle(opName, isChecked) {
-      const idx = orders.findIndex(x => x.id === editingOrderId);
-      const checkIds = {
-        'İSA': 'checkOpIsa',
-        'MUHİDDİN': 'checkOpMuhiddin',
-        'KADDUR': 'checkOpKaddur',
-        'MUHAMMED': 'checkOpMuhammed'
-      };
-
-      if (isChecked && !canStartShiftForOperator(opName)) {
-        const box = document.getElementById(checkIds[opName]);
-        if (box) box.checked = false;
-        const gmailOp = getGmailMatchedOperator();
-        showToast(gmailOp
-          ? `Gmail eşleşmeniz (${gmailOp}) sadece kendi adınıza vardiya seçmenize izin verir`
-          : 'Bu Gmail hesabı için operatör vardiya yetkisi bulunmuyor');
-        if (idx !== -1) updateModalShiftUI(orders[idx]);
-        return;
-      }
-
-      if (idx === -1 || !pendingModalShift) return;
-
-      const isCurrentlyConfirmed = !!(pendingModalShift.shiftActive && pendingModalShift.activeOperator === opName);
-
-      if (isChecked) {
-        if (!isCurrentlyConfirmed) {
-          const box = document.getElementById(checkIds[opName]);
-          if (box) {
-            box.checked = false;
-            box.indeterminate = false;
-          }
-          pendingModalShift.shiftSession = {
-            operator: opName,
-            status: 'IDLE',
-            startedAt: pendingModalShift.shiftSession?.startedAt || null,
-            endedAt: null
-          };
-          updateModalShiftUI(orders[idx]);
-          recalcEditModal();
-          showToast(`${opName} seçildi — kutucuğun tiklenmesi için "Vardiya Başlat" butonuna basın`);
-          return;
-        }
-      } else {
-        const wasActive = !!(pendingModalShift.shiftActive && pendingModalShift.activeOperator === opName);
-        pendingModalShift.shiftActive = false;
-        pendingModalShift.activeOperator = null;
-        pendingModalShift.shiftSession = {
-          operator: null,
-          status: wasActive ? 'ENDED' : 'IDLE',
-          startedAt: pendingModalShift.shiftSession?.startedAt || null,
-          endedAt: wasActive ? formatClockTime() : null
-        };
-        syncOperatorCheckboxesUI(null, false);
-      }
-
-      updateModalShiftUI(orders[idx]);
-      recalcEditModal();
-    }
-
-    function startOperatorShift() {
-      if (!guardAction('START_STOP_ORDER')) return;
-      const idx = orders.findIndex(x => x.id === editingOrderId);
-      if (idx === -1 || !pendingModalShift) return;
-
-      const opName = getSelectedModalOperator() || pendingModalShift.shiftSession?.operator || pendingModalShift.activeOperator || null;
-      if (!opName) {
-        updateModalShiftUI(orders[idx]);
-        showToast(t('select_operator_first_toast'));
-        return;
-      }
-
-      if (!canStartShiftForOperator(opName)) {
-        updateModalShiftUI(orders[idx]);
-        showToast(`${opName} adına vardiya başlatma yetkiniz yok (Gmail eşleşmesi gerekli)`);
-        return;
-      }
-
-      const nowTime = formatClockTime();
-      pendingModalShift.lastActionDateTime = formatDateTimeNow();
-      pendingModalShift.workStatus = 'RUNNING';
-      pendingModalShift.shiftActive = true;
-      pendingModalShift.activeOperator = opName;
-      pendingModalShift.orderStartTime = pendingModalShift.orderStartTime || orders[idx].orderStartTime || nowTime;
-      pendingModalShift.orderEndTime = null;
-      pendingModalShift.shiftSession = {
-        operator: opName,
-        status: 'ACTIVE',
-        startedAt: nowTime,
-        endedAt: null
-      };
-
-      syncOperatorCheckboxesUI(opName, true);
-      const activeCheckMap = {
-        'İSA': 'checkOpIsa',
-        'MUHİDDİN': 'checkOpMuhiddin',
-        'KADDUR': 'checkOpKaddur',
-        'MUHAMMED': 'checkOpMuhammed'
-      };
-      const activeBox = document.getElementById(activeCheckMap[opName]);
-      if (activeBox) {
-        activeBox.indeterminate = false;
-        activeBox.checked = true;
-      }
-
-      const periodEl = document.getElementById('editModalPeriod');
-      if (periodEl) {
-        periodEl.textContent = currentLang === 'ar'
-          ? `آخر تحديث: ${pendingModalShift.lastActionDateTime}`
-          : `Son İşlem: ${pendingModalShift.lastActionDateTime}`;
-      }
-
-      updateModalShiftUI(orders[idx]);
-      showToast(`✓ ${t('shift_started_toast', opName, nowTime)}`);
-    }
-
-    function endOperatorShift() {
-      if (!guardAction('START_STOP_ORDER')) return;
-      const idx = orders.findIndex(x => x.id === editingOrderId);
-      if (idx === -1 || !pendingModalShift) return;
-
-      const opName = pendingModalShift.activeOperator || getSelectedModalOperator() || pendingModalShift.shiftSession?.operator || 'İSA';
-      const nowTime = formatClockTime();
-
-      pendingModalShift.lastActionDateTime = formatDateTimeNow();
-      pendingModalShift.shiftActive = false;
-      pendingModalShift.activeOperator = null;
-      pendingModalShift.orderEndTime = nowTime;
-      pendingModalShift.shiftSession = {
-        operator: opName,
-        status: 'ENDED',
-        startedAt: pendingModalShift.shiftSession?.startedAt || nowTime,
-        endedAt: nowTime
-      };
-
-      const periodEl = document.getElementById('editModalPeriod');
-      if (periodEl) {
-        periodEl.textContent = currentLang === 'ar'
-          ? `آخر تحديث: ${pendingModalShift.lastActionDateTime}`
-          : `Son İşlem: ${pendingModalShift.lastActionDateTime}`;
-      }
-
-      syncOperatorCheckboxesUI(null, false);
-      updateModalShiftUI(orders[idx]);
-      showToast(t('shift_ended_toast', opName, nowTime));
-    }
-
-    function normalizeOperatorInput(inputEl) {
-      if (!inputEl) return;
-      const rawBefore = String(inputEl.value || '');
-      const hasPlus = rawBefore.includes('+');
-      let cleaned = rawBefore
-        .replace(/\s+/g, '')
-        .replace(/[^0-9+.,]/g, '')
-        .replace(/\+{2,}/g, '+')
-        .replace(/^\+/, '');
-
-      if (hasPlus) {
-        cleaned = cleaned.replace(/,/g, '.');
-      } else {
-        cleaned = cleaned.replace(/,/g, '.');
-      }
-
-      if (inputEl.value !== cleaned) {
-        inputEl.value = cleaned;
-      }
-      inputEl.dataset.rawExpr = cleaned;
-      recalcEditModal();
-    }
-
-    function appendPlusToOperatorRow(inputId, operatorLabel) {
-      const inputEl = document.getElementById(inputId);
-      if (!inputEl || inputEl.disabled) return;
-
-      let currentVal = String(inputEl.dataset.rawExpr || inputEl.value || '').trim();
-      if (currentVal.includes('=')) {
-        currentVal = currentVal.split('=')[0].trim();
-      }
-      currentVal = currentVal.replace(/\s+/g, '').replace(/,/g, '.').replace(/[^0-9+.]/g, '');
-
-      if (!currentVal) {
-        inputEl.value = '';
-        inputEl.dataset.rawExpr = '';
-      } else if (currentVal.endsWith('+')) {
-        inputEl.value = currentVal;
-        inputEl.dataset.rawExpr = currentVal;
-      } else {
-        const nextVal = `${currentVal}+`;
-        inputEl.value = nextVal;
-        inputEl.dataset.rawExpr = nextVal;
-      }
-
-      inputEl.focus();
-      setTimeout(() => {
-        const len = inputEl.value.length;
-        try {
-          inputEl.setSelectionRange(len, len);
-        } catch (e) {}
-        inputEl.scrollLeft = inputEl.scrollWidth;
-      }, 0);
-
-      recalcEditModal();
-      const totalNow = parseKgInput(inputEl.value);
-      if (totalNow > 0) {
-        showToast(`${operatorLabel}: ${inputEl.value} (${fmt(totalNow)} KG)`);
-      }
-    }
-
-    function onOperatorInputFocus(inputEl) {
-      if (!inputEl) return;
-      const rawExpr = String(inputEl.dataset.rawExpr || '').trim();
-      if (rawExpr && rawExpr !== '0') {
-        inputEl.value = rawExpr;
-      } else if (inputEl.value === '0') {
-        inputEl.value = '';
-      }
-      setTimeout(() => {
-        const len = inputEl.value.length;
-        try {
-          inputEl.setSelectionRange(len, len);
-        } catch (e) {}
-        inputEl.scrollLeft = inputEl.scrollWidth;
-      }, 0);
-    }
-
-    function onOperatorInputBlur(inputEl) {
-      if (!inputEl) return;
-      const raw = String(inputEl.value || '')
-        .trim()
-        .replace(/[.+,]+$/g, '');
-      inputEl.dataset.rawExpr = raw;
-      const numericVal = parseKgInput(raw);
-      if (numericVal <= 0 && !raw) {
-        inputEl.value = '';
-      } else {
-        inputEl.value = String(numericVal);
-      }
-      recalcEditModal();
-    }
-
-    function getOperatorRawExpression(inputId) {
-      const inputEl = document.getElementById(inputId);
-      if (!inputEl) return '';
-      const activeSource = document.activeElement === inputEl
-        ? inputEl.value
-        : (inputEl.dataset.rawExpr || inputEl.value || '');
-      return String(activeSource)
-        .trim()
-        .replace(/[.+,]+$/g, '');
-    }
-
-    function confirmOperatorInput(inputId, operatorLabel) {
-      const inputEl = document.getElementById(inputId);
-      if (!inputEl) return;
-
-      const raw = getOperatorRawExpression(inputId);
-      inputEl.dataset.rawExpr = raw;
-      const numericVal = parseKgInput(raw);
-
-      if (numericVal <= 0 && !raw) {
-        inputEl.value = '';
-      } else {
-        inputEl.value = String(numericVal);
-      }
-
-      if (document.activeElement === inputEl) {
-        inputEl.blur();
-      }
-      recalcEditModal();
-      showToast(`${operatorLabel}: ${fmt(numericVal)} KG`);
-    }
-
-    function openEditModal(id) {
-      const o = orders.find(x => x.id === id);
-      if (!o) return;
-      editingOrderId = id;
-      ensureOrderDates(o);
-
-      const perms = getUserPermissions();
-      const isMgmtGmail = hasManagementGmailIdentity();
-
-      isEditingMetricsMode = false;
-      const editMetricsBtn = document.getElementById('editOrderMetricsBtn');
-      const deleteOrderBtn = document.getElementById('deleteOrderModalBtn');
-      const manTonEl = document.getElementById('manualTonInput');
-      const manProdEl = document.getElementById('manualProdInput');
-      const manRestEl = document.getElementById('manualRestInput');
-      if (manTonEl) { manTonEl.classList.add('hidden'); manTonEl.value = ''; }
-      if (manProdEl) { manProdEl.classList.add('hidden'); manProdEl.value = ''; }
-      if (manRestEl) { manRestEl.classList.add('hidden'); manRestEl.value = ''; }
-
-      if (editMetricsBtn) {
-        editMetricsBtn.classList.toggle('hidden', !perms.isManagement);
-        editMetricsBtn.className = 'px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-xs active:scale-95 transition' + (perms.isManagement ? '' : ' hidden');
-      }
-
-      if (deleteOrderBtn) {
-        deleteOrderBtn.classList.toggle('hidden', !isMgmtGmail);
-        deleteOrderBtn.className = 'px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-extrabold text-xs active:scale-95 transition' + (isMgmtGmail ? '' : ' hidden');
-      }
-
-      pendingModalShift = {
-        shiftActive: !!(o.shiftActive && o.activeOperator),
-        activeOperator: o.shiftActive && OPERATORS.includes(o.activeOperator) ? o.activeOperator : null,
-        workStatus: o.workStatus || 'IDLE',
-        shiftSession: Object.assign({ operator: null, status: 'IDLE', startedAt: null, endedAt: null }, o.shiftSession || {})
-      };
-
-      const orderNoInput = document.getElementById('editOrderNoInput');
-      if (orderNoInput) {
-        orderNoInput.value = o.orderNo || 1;
-        orderNoInput.disabled = !perms.canReorderOrders;
-        orderNoInput.classList.toggle('opacity-60', !perms.canReorderOrders);
-      }
-
-      const lastActionStr = o.lastActionDateTime || `${o.createdDate || formatTodayDate()} 08:00`;
-      const periodEl = document.getElementById('editModalPeriod');
-      if (periodEl) {
-        periodEl.textContent = currentLang === 'ar'
-          ? `آخر تحديث: ${lastActionStr}`
-          : `Son İşlem: ${lastActionStr}`;
-      }
-
-      const artiveEl = document.getElementById('editModalArtive');
-      if (artiveEl) artiveEl.innerHTML = `${formatArtiveHighlight(o.artive)}`;
-
-      if (pendingModalShift.shiftActive && pendingModalShift.activeOperator) {
-        syncOperatorCheckboxesUI(pendingModalShift.activeOperator, true);
-      } else {
-        syncOperatorCheckboxesUI(null, false);
-      }
-      updateModalShiftUI(o);
-
-      const isaInput = document.getElementById('inputIsa');
-      const muhInput = document.getElementById('inputMuhiddin');
-      const kadInput = document.getElementById('inputKaddur');
-      const mamInput = document.getElementById('inputMuhammed');
-
-      const isaRaw = o.isaExpr || (o.isa ? String(o.isa) : '');
-      const muhRaw = o.muhiddinExpr || (o.muhiddin ? String(o.muhiddin) : '');
-      const kadRaw = o.kaddurExpr || (o.kaddur ? String(o.kaddur) : '');
-      const mamRaw = o.muhammedExpr || (o.muhammed ? String(o.muhammed) : '');
-
-      if (isaInput) { isaInput.dataset.rawExpr = isaRaw; isaInput.value = o.isa ? String(o.isa) : ''; }
-      if (muhInput) { muhInput.dataset.rawExpr = muhRaw; muhInput.value = o.muhiddin ? String(o.muhiddin) : ''; }
-      if (kadInput) { kadInput.dataset.rawExpr = kadRaw; kadInput.value = o.kaddur ? String(o.kaddur) : ''; }
-      if (mamInput) { mamInput.dataset.rawExpr = mamRaw; mamInput.value = o.muhammed ? String(o.muhammed) : ''; }
-
-      const opControlMap = [
-        { op: 'İSA', inputId: 'inputIsa', plusId: 'plusBtnIsa', checkId: 'checkOpIsa' },
-        { op: 'MUHİDDİN', inputId: 'inputMuhiddin', plusId: 'plusBtnMuhiddin', checkId: 'checkOpMuhiddin' },
-        { op: 'KADDUR', inputId: 'inputKaddur', plusId: 'plusBtnKaddur', checkId: 'checkOpKaddur' },
-        { op: 'MUHAMMED', inputId: 'inputMuhammed', plusId: 'plusBtnMuhammed', checkId: 'checkOpMuhammed' }
-      ];
-
-      opControlMap.forEach(item => {
-        const canEditThisOp = perms.isManagement || perms.isTechnician || (perms.isOperator && perms.mappedOperator === item.op);
-        const canSelectThisOpShift = perms.isManagement || perms.isTechnician || (perms.isOperator && canStartShiftForOperator(item.op));
-        const inp = document.getElementById(item.inputId);
-        const pls = document.getElementById(item.plusId);
-        const chk = document.getElementById(item.checkId);
-        if (inp) {
-          inp.disabled = !canEditThisOp;
-          inp.classList.toggle('bg-slate-100', !canEditThisOp);
-          inp.classList.toggle('opacity-60', !canEditThisOp);
-        }
-        if (pls) {
-          pls.disabled = !canEditThisOp;
-          pls.classList.toggle('opacity-40', !canEditThisOp);
-        }
-        if (chk) {
-          chk.disabled = perms.isViewer || !canSelectThisOpShift;
-        }
-      });
-
-      const startBtn = document.getElementById('startShiftBtn');
-      const endBtn = document.getElementById('endShiftBtn');
-      if (startBtn) startBtn.disabled = perms.isViewer;
-      if (endBtn) endBtn.disabled = perms.isViewer;
-
-      recalcEditModal();
-      document.getElementById('editModal')?.classList.remove('hidden');
-    }
-
-    // Deletes the currently opened work order when authorized as Management Gmail account
-    function deleteEditingOrder() {
-      if (!hasManagementGmailIdentity()) {
-        showToast(currentLang === 'ar' ? 'الحذف متاح فقط لحساب الإدارة' : 'Silme işlemi yalnızca Yönetim kimliğine sahip Gmail hesabı içindir');
-        return;
-      }
-      if (editingOrderId === null) return;
-      const idx = orders.findIndex(x => x.id === editingOrderId);
-      if (idx === -1) return;
-
-      const removed = orders[idx];
-      orders.splice(idx, 1);
-      if (!removed.closed) {
-        normalizeOrderNumbers();
-      }
-      pendingModalShift = null;
-      editingOrderId = null;
-      closeModal('editModal');
-      renderOrders();
-      renderCompletedOrders();
-      if (!document.getElementById('tab-ozet')?.classList.contains('hidden')) renderSummary('ALL');
-      if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) renderOperationTab();
-      if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) renderReports();
-      saveStateToStorage();
-      showToast(currentLang === 'ar' ? 'تم حذف أمر الإنتاج' : `İş emri #${removed.orderNo || removed.id} silindi`);
-    }
-
-    function toggleOrderMetricsEditor() {
-      const perms = getUserPermissions();
-      if (!perms.isManagement) {
-        showToast('Sipariş, üretim ve kalan düzenleme yetkisi sadece Yönetim rolüne aittir');
-        return;
-      }
-      const o = orders.find(x => x.id === editingOrderId);
-      if (!o) return;
-
-      isEditingMetricsMode = !isEditingMetricsMode;
-      const manTonEl = document.getElementById('manualTonInput');
-      const manProdEl = document.getElementById('manualProdInput');
-      const manRestEl = document.getElementById('manualRestInput');
-      const btnEl = document.getElementById('editOrderMetricsBtn');
-
-      if (isEditingMetricsMode) {
-        const currentProd = getProd(o);
-        const currentTon = Number(o.ton) || 0;
-        const currentRest = currentTon - currentProd;
-        if (manTonEl) { manTonEl.value = currentTon; manTonEl.classList.remove('hidden'); }
-        if (manProdEl) { manProdEl.value = currentProd; manProdEl.classList.remove('hidden'); }
-        if (manRestEl) { manRestEl.value = currentRest; manRestEl.classList.remove('hidden'); }
-        if (btnEl) {
-          btnEl.className = 'px-3 py-1.5 rounded-xl bg-amber-500 text-white border border-amber-600 font-extrabold text-xs active:scale-95 transition';
-        }
-      } else {
-        if (manTonEl) manTonEl.classList.add('hidden');
-        if (manProdEl) manProdEl.classList.add('hidden');
-        if (manRestEl) manRestEl.classList.add('hidden');
-        if (btnEl) {
-          btnEl.className = 'px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-xs active:scale-95 transition';
-        }
-      }
-    }
-
-    function onManualMetricInput(sourceField) {
-      const perms = getUserPermissions();
-      if (!perms.isManagement) return;
-
-      const manTonEl = document.getElementById('manualTonInput');
-      const manProdEl = document.getElementById('manualProdInput');
-      const manRestEl = document.getElementById('manualRestInput');
-      if (!manTonEl || !manProdEl || !manRestEl) return;
-
-      let tonVal = parseFloat(manTonEl.value);
-      let prodVal = parseFloat(manProdEl.value);
-      let restVal = parseFloat(manRestEl.value);
-
-      if (sourceField === 'TON' || sourceField === 'PROD') {
-        if (Number.isFinite(tonVal) && Number.isFinite(prodVal)) {
-          manRestEl.value = Math.round((tonVal - prodVal) * 1000) / 1000;
-        }
-      } else if (sourceField === 'REST') {
-        if (Number.isFinite(tonVal) && Number.isFinite(restVal)) {
-          const derivedProd = Math.max(0, Math.round((tonVal - restVal) * 1000) / 1000);
-          manProdEl.value = derivedProd;
-          const isaInput = document.getElementById('inputIsa');
-          const muhInput = document.getElementById('inputMuhiddin');
-          const kadInput = document.getElementById('inputKaddur');
-          const mamInput = document.getElementById('inputMuhammed');
-          if (isaInput) { isaInput.value = derivedProd ? String(derivedProd) : ''; isaInput.dataset.rawExpr = isaInput.value; }
-          if (muhInput) { muhInput.value = ''; muhInput.dataset.rawExpr = ''; }
-          if (kadInput) { kadInput.value = ''; kadInput.dataset.rawExpr = ''; }
-          if (mamInput) { mamInput.value = ''; mamInput.dataset.rawExpr = ''; }
-        }
-      }
-
-      tonVal = parseFloat(manTonEl.value);
-      prodVal = parseFloat(manProdEl.value);
-      restVal = parseFloat(manRestEl.value);
-
-      const tonEl = document.getElementById('editCalcTon');
-      const prodEl = document.getElementById('editCalcProd');
-      const restEl = document.getElementById('editCalcRest');
-
-      if (tonEl && Number.isFinite(tonVal)) tonEl.textContent = fmt(tonVal) + ' KG';
-      if (prodEl && Number.isFinite(prodVal)) prodEl.textContent = fmt(prodVal) + ' KG';
-      if (restEl && Number.isFinite(restVal)) {
-        restEl.textContent = fmt(restVal) + ' KG';
-        restEl.className = `text-sm font-extrabold mt-0.5 ${restVal <= 150 ? 'text-rose-600' : 'text-amber-600'}`;
-      }
-    }
-
-    function recalcEditModal() {
-      const o = orders.find(x => x.id === editingOrderId);
-      if (!o) return;
-      const manTonEl = document.getElementById('manualTonInput');
-      const manProdEl = document.getElementById('manualProdInput');
-      const manRestEl = document.getElementById('manualRestInput');
-
-      if (isEditingMetricsMode && manTonEl && manProdEl && manRestEl) {
-        const ton = Number.isFinite(parseFloat(manTonEl.value)) ? parseFloat(manTonEl.value) : (Number(o.ton) || 0);
-        const prod = Number.isFinite(parseFloat(manProdEl.value)) ? parseFloat(manProdEl.value) : 0;
-        const rest = Math.round((ton - prod) * 1000) / 1000;
-        manRestEl.value = rest;
-
-        const tonEl = document.getElementById('editCalcTon');
-        const prodEl = document.getElementById('editCalcProd');
-        const restEl = document.getElementById('editCalcRest');
-        if (tonEl) tonEl.textContent = fmt(ton) + ' KG';
-        if (prodEl) prodEl.textContent = fmt(prod) + ' KG';
-        if (restEl) {
-          restEl.textContent = fmt(rest) + ' KG';
-          restEl.className = `text-sm font-extrabold mt-0.5 ${rest <= 150 ? 'text-rose-600' : 'text-amber-600'}`;
-        }
-        return;
-      }
-
-      const isa = parseKgInput(getOperatorRawExpression('inputIsa'));
-      const muh = parseKgInput(getOperatorRawExpression('inputMuhiddin'));
-      const kad = parseKgInput(getOperatorRawExpression('inputKaddur'));
-      const mam = parseKgInput(getOperatorRawExpression('inputMuhammed'));
-
-      const prod = isa + muh + kad + mam;
-      const rest = (Number(o.ton) || 0) - prod;
-
-      if (manProdEl) manProdEl.value = prod;
-      if (manRestEl) manRestEl.value = rest;
-
-      const tonEl = document.getElementById('editCalcTon');
-      const prodEl = document.getElementById('editCalcProd');
-      const restEl = document.getElementById('editCalcRest');
-
-      if (tonEl) tonEl.textContent = fmt(o.ton) + ' KG';
-      if (prodEl) prodEl.textContent = fmt(prod) + ' KG';
-      if (restEl) {
-        restEl.textContent = fmt(rest) + ' KG';
-        restEl.className = `text-sm font-extrabold mt-0.5 ${rest <= 150 ? 'text-rose-600' : 'text-amber-600'}`;
-      }
-    }
-
-    function saveOrderEdits() {
-      const perms = getUserPermissions();
-      if (perms.isViewer) {
-        showToast('İzleyici rolü değişiklik kaydedemez');
-        return;
-      }
-      const idx = orders.findIndex(x => x.id === editingOrderId);
-      if (idx === -1) return;
-
-      const orderNoInput = document.getElementById('editOrderNoInput');
-      const newOrderNo = parseInt(orderNoInput?.value, 10) || orders[idx].orderNo;
-      const draft = pendingModalShift || {
-        shiftActive: false,
-        activeOperator: null,
-        workStatus: orders[idx].workStatus || 'IDLE',
-        shiftSession: { operator: null, status: 'IDLE', startedAt: null, endedAt: null }
-      };
-
-      orders[idx].shiftActive = !!(draft.shiftActive && draft.activeOperator);
-      orders[idx].activeOperator = orders[idx].shiftActive ? draft.activeOperator : null;
-      orders[idx].workStatus = draft.workStatus || orders[idx].workStatus || 'IDLE';
-      if (draft.orderStartTime) orders[idx].orderStartTime = draft.orderStartTime;
-      orders[idx].orderEndTime = draft.orderEndTime !== undefined ? draft.orderEndTime : (orders[idx].orderEndTime || null);
-      if (orders[idx].workStatus === 'FINISHED' || orders[idx].closed) {
-        orders[idx].orderEndTime = orders[idx].orderEndTime || formatClockTime();
-        orders[idx].orderStartTime = null;
-      }
-      orders[idx].shiftSession = {
-        operator: draft.shiftSession?.operator || null,
-        status: orders[idx].shiftActive ? 'ACTIVE' : (draft.shiftSession?.status || 'IDLE'),
-        startedAt: (orders[idx].workStatus === 'FINISHED' || orders[idx].closed) ? null : (draft.shiftSession?.startedAt || null),
-        endedAt: orders[idx].shiftActive ? null : (draft.shiftSession?.endedAt || orders[idx].orderEndTime || null)
-      };
-
-      if (orders[idx].workStatus === 'RUNNING') {
-        orders[idx].closed = false;
-        orders[idx].completedDate = null;
-        if (!orders[idx].orderStartTime) {
-          orders[idx].orderStartTime = orders[idx].shiftSession?.startedAt || formatClockTime();
-        }
-        orders[idx].orderEndTime = null;
-        orders.forEach((item, i) => {
-          if (i !== idx && item.workStatus === 'RUNNING') {
-            item.workStatus = 'PAUSED';
-          }
-        });
-      }
-
-      const rawIsa = getOperatorRawExpression('inputIsa');
-      const rawMuh = getOperatorRawExpression('inputMuhiddin');
-      const rawKad = getOperatorRawExpression('inputKaddur');
-      const rawMam = getOperatorRawExpression('inputMuhammed');
-
-      if (perms.isManagement || perms.mappedOperator === 'İSA') {
-        orders[idx].isaExpr = rawIsa.includes('+') ? rawIsa : '';
-        orders[idx].isa = parseKgInput(rawIsa);
-      }
-      if (perms.isManagement || perms.mappedOperator === 'MUHİDDİN') {
-        orders[idx].muhiddinExpr = rawMuh.includes('+') ? rawMuh : '';
-        orders[idx].muhiddin = parseKgInput(rawMuh);
-      }
-      if (perms.isManagement || perms.mappedOperator === 'KADDUR') {
-        orders[idx].kaddurExpr = rawKad.includes('+') ? rawKad : '';
-        orders[idx].kaddur = parseKgInput(rawKad);
-      }
-      if (perms.isManagement || perms.mappedOperator === 'MUHAMMED') {
-        orders[idx].muhammedExpr = rawMam.includes('+') ? rawMam : '';
-        orders[idx].muhammed = parseKgInput(rawMam);
-      }
-
-      if (perms.isManagement && isEditingMetricsMode) {
-        const manTonEl = document.getElementById('manualTonInput');
-        const manProdEl = document.getElementById('manualProdInput');
-        const manRestEl = document.getElementById('manualRestInput');
-        const parsedTon = parseFloat(manTonEl?.value);
-        if (Number.isFinite(parsedTon) && parsedTon >= 0) {
-          orders[idx].ton = Math.round(parsedTon * 1000) / 1000;
-        }
-        let targetProd = parseFloat(manProdEl?.value);
-        const parsedRest = parseFloat(manRestEl?.value);
-        if (!Number.isFinite(targetProd) && Number.isFinite(parsedRest)) {
-          targetProd = Math.max(0, Math.round(((Number(orders[idx].ton) || 0) - parsedRest) * 1000) / 1000);
-        }
-        if (Number.isFinite(targetProd) && targetProd >= 0) {
-          const currentSum = getProd(orders[idx]);
-          if (Math.abs(currentSum - targetProd) > 0.0001) {
-            orders[idx].isa = Math.round(targetProd * 1000) / 1000;
-            orders[idx].isaExpr = '';
-            orders[idx].muhiddin = 0;
-            orders[idx].muhiddinExpr = '';
-            orders[idx].kaddur = 0;
-            orders[idx].kaddurExpr = '';
-            orders[idx].muhammed = 0;
-            orders[idx].muhammedExpr = '';
-          }
-        }
-      }
-
-      isEditingMetricsMode = false;
-      orders[idx].lastActionDateTime = formatDateTimeNow();
-      if (!orders[idx].createdDate) orders[idx].createdDate = formatTodayDate();
-      if (orders[idx].closed || orders[idx].workStatus === 'FINISHED') {
-        orders[idx].closed = true;
-        orders[idx].workStatus = 'FINISHED';
-        if (!orders[idx].completedDate) orders[idx].completedDate = formatTodayDate();
-      } else {
-        orders[idx].completedDate = null;
-        if (perms.canReorderOrders) {
-          normalizeOrderNumbers(editingOrderId, newOrderNo);
-        }
-      }
-
-      pendingModalShift = null;
-      closeModal('editModal');
-      renderOrders();
-      renderCompletedOrders();
-      saveStateToStorage();
-      showToast(currentLang === 'ar' ? 'تم حفظ التعديلات' : 'Değişiklikler kaydedildi');
-    }
-
-    function renderSummary(periodFilter = 'ALL') {
-      document.querySelectorAll('.sum-period-btn').forEach(btn => {
-        const active = btn.dataset.sumPeriod === periodFilter;
-        btn.className = active
-          ? 'sum-period-btn px-3.5 py-1.5 rounded-full text-xs font-semibold pro-pill-active'
-          : 'sum-period-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200';
-      });
-
-      const list = periodFilter === 'ALL' ? orders : orders.filter(o => o.period === periodFilter);
-      const ton = list.reduce((s, o) => s + (Number(o.ton) || 0), 0);
-      const prod = list.reduce((s, o) => s + getProd(o), 0);
-      const rest = list.reduce((s, o) => s + Math.max(0, getRest(o)), 0);
-      const prio = list.filter(o => o.priority && !o.closed).length;
-      const pct = ton > 0 ? Math.min(100, Math.round((prod / ton) * 100)) : 0;
-
-      const tonEl = document.getElementById('sumTon');
-      const orderCountEl = document.getElementById('sumOrderCount');
-      const prodEl = document.getElementById('sumProd');
-      const pctEl = document.getElementById('sumPercent');
-      const restEl = document.getElementById('sumRest');
-      const prioEl = document.getElementById('sumPriority');
-      const barLabelEl = document.getElementById('sumOverallBarLabel');
-      const barFillEl = document.getElementById('sumOverallBarFill');
-
-      if (tonEl) tonEl.textContent = fmt(ton) + ' KG';
-      if (orderCountEl) orderCountEl.textContent = t('work_orders_count', list.length);
-      if (prodEl) prodEl.textContent = fmt(prod) + ' KG';
-      if (pctEl) pctEl.textContent = t('pct_completed', pct);
-      if (restEl) restEl.textContent = fmt(rest) + ' KG';
-      if (prioEl) prioEl.textContent = prio;
-      if (barLabelEl) barLabelEl.textContent = `%${pct}`;
-      if (barFillEl) barFillEl.style.width = `${pct}%`;
-
-      const ops = [
-        { name: 'İSA', val: list.reduce((s, o) => s + (Number(o.isa) || 0), 0), color: 'bg-blue-600' },
-        { name: 'MUHİDDİN', val: list.reduce((s, o) => s + (Number(o.muhiddin) || 0), 0), color: 'bg-[#146C53]' },
-        { name: 'KADDUR', val: list.reduce((s, o) => s + (Number(o.kaddur) || 0), 0), color: 'bg-amber-500' },
-        { name: 'MUHAMMED', val: list.reduce((s, o) => s + (Number(o.muhammed) || 0), 0), color: 'bg-purple-600' }
-      ].sort((a, b) => b.val - a.val);
-
-      const maxOp = Math.max(1, ...ops.map(x => x.val));
-      const opContainer = document.getElementById('summaryOperators');
-      if (opContainer) {
-        opContainer.innerHTML = ops.map(op => {
-          const w = Math.round((op.val / maxOp) * 100);
-          return `
-            <div>
-              <div class="flex justify-between text-xs font-bold mb-1">
-                <span class="text-slate-700">${op.name}</span>
-                <span class="text-slate-900">${fmt(op.val)} KG</span>
-              </div>
-              <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                <div class="${op.color} h-full rounded-full" style="width:${w}%"></div>
-              </div>
-            </div>`;
-        }).join('');
-      }
-    }
-
-    function renderOperationTab() {
-      const container = document.getElementById('opTop10List');
-      if (!container) return;
-
-      const activeList = orders
-        .filter(o => !o.closed)
-        .sort((a, b) => (a.orderNo || 999) - (b.orderNo || 999) || a.id - b.id)
-        .slice(0, 10);
-
-      if (activeList.length === 0) {
-        container.innerHTML = `
-          <div class="pro-card rounded-3xl p-8 text-center">
-            <div class="text-slate-400 text-sm font-medium">${t('no_active_orders')}</div>
-          </div>`;
-        return;
-      }
-
-      container.innerHTML = activeList.map((o, idx) => {
-        const prod = getProd(o);
-        const rest = getRest(o);
-        const wStatus = getWorkStatus(o);
-        const isRunning = wStatus === 'RUNNING';
-        const isPaused = wStatus === 'PAUSED';
-        const isExceeded = rest < 0;
-        const isNearComplete = !isExceeded && rest <= 150 && prod > 0;
-        const pct = o.ton > 0 ? Math.max(0, Math.min(100, Math.round((prod / o.ton) * 100))) : 0;
-
-        const cardClass = isRunning
-          ? 'order-card-3d-running'
-          : (isPaused ? 'order-card-3d-paused' : 'order-card-3d');
-        const seqBoxClass = isRunning
-          ? 'seq-square-3d seq-square-3d-running'
-          : (isPaused ? 'seq-square-3d seq-square-3d-paused' : 'seq-square-3d');
-        const rankBadge = idx === 0
-          ? `<span class="px-2 py-0.5 rounded-full bg-[#146C53] text-white text-[10px] font-extrabold">#${o.orderNo}</span>`
-          : `<span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 text-[10px] font-extrabold">#${o.orderNo}</span>`;
-
-        return `
-          <div onclick="openEditModal(${o.id})" class="rounded-2xl p-3 ${cardClass} active:scale-[0.99] transition cursor-pointer space-y-2">
-            <div class="flex items-center justify-between gap-2">
-              <div class="flex items-center gap-1.5">
-                <div onclick="event.stopPropagation()" class="inline-flex items-center justify-center ${seqBoxClass}" title="Sıra numarasını değiştirin">
-                  <input type="number" inputmode="numeric" min="1" value="${o.orderNo}"
-                    onchange="updateOrderNumberInline(${o.id}, this.value)"
-                    onkeydown="if(event.key==='Enter'){this.blur();}"
-                    class="w-full bg-transparent text-slate-900 text-[10px] font-extrabold text-center leading-none rounded outline-none" />
-                </div>
-                ${rankBadge}
-              </div>
-              <span class="text-[11px] font-semibold text-slate-700 bg-white/90 border border-slate-200/80 px-2.5 py-0.5 rounded-md shadow-2xs text-center">${escapeHtml(o.createdDate || formatTodayDate())}</span>
-              ${renderWorkStatusButton(o)}
-            </div>
-
-            <div>
-              <p class="text-xs font-semibold text-slate-600 flex flex-wrap items-center gap-1">
-                <span class="w-1.5 h-1.5 rounded-full bg-[#146C53]"></span>
-                <span>${formatArtiveHighlight(o.artive)}</span>
-              </p>
-              <h3 class="text-[9px] leading-tight font-medium text-slate-500 mt-0.5">${escapeHtml(o.article)}</h3>
-            </div>
-
-            <div class="space-y-1">
-              <div class="flex items-center justify-between text-[10px] font-bold text-slate-600">
-                <span>${t('progress_label')}: %${pct}</span>
-                <span>${isExceeded ? `${t('excess_label')}: ${fmt(Math.abs(rest))} KG` : `${t('remaining_label')}: ${fmt(rest)} KG`}</span>
-              </div>
-              <div class="w-full h-2 bg-slate-200/80 rounded-full overflow-hidden">
-                <div class="h-full ${isExceeded ? 'bg-rose-500' : 'bg-[#146C53]'} rounded-full transition-all duration-300" style="width: ${pct}%"></div>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-3 bg-[#EBF1EE]/90 border border-[#C8D4CE] rounded-2xl py-2.5 px-2 text-center">
-              <div>
-                <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_order')}</div>
-                <div class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight mt-1">${fmt(o.ton)} KG</div>
-              </div>
-              <div class="border-x border-slate-200/90">
-                <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_prod')}</div>
-                <div class="text-xs sm:text-sm font-extrabold text-[#146C53] leading-tight mt-1">${fmt(prod)} KG</div>
-              </div>
-              <div>
-                <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_rem')}</div>
-                <div class="text-xs sm:text-sm font-extrabold ${isExceeded || isNearComplete ? 'text-rose-600' : 'text-amber-600'} leading-tight mt-1">${fmt(rest)} KG</div>
-              </div>
-            </div>
-
-            ${renderRunningOperatorBar(o)}
+            ${isOpen ? `<div class="p-3 space-y-2.5 border-t border-slate-200/80 bg-slate-50/50">${cardsHtml}</div>` : ''}
           </div>`;
       }).join('');
     }
@@ -3505,7 +3226,6 @@
       return null;
     }
 
-    // Renders vertical column statistics exclusively for the Reports tab
     function renderReports() {
       const monthNames = currentLang === 'ar'
         ? ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
@@ -3561,7 +3281,6 @@
       if (yearlyEl) yearlyEl.textContent = `${fmt(yearlyTotal)} KG`;
       if (avgEl) avgEl.textContent = `${fmt(monthlyAvg)} KG`;
 
-      // Tek tablo / tek kart içinde 12 ay (Ocak -> Aralık) diklemesine sütunlar - yatay kaydırmasız tek çerçeve
       const maxMonthVal = Math.max(1, ...monthlyStats.map(m => m.total));
 
       if (prodChartEl) {
@@ -3586,7 +3305,6 @@
           </div>`;
       }
 
-      // 12 ay boyunca her ay için 4 operatörün kendi dikey çubuğu (İSA, MUHİDDİN, KADDUR, MUHAMMED) - yatay kaydırmasız tek çerçeve
       const maxOpGlobalVal = Math.max(
         1,
         ...monthlyStats.flatMap(m => [m.isa, m.muhiddin, m.kaddur, m.muhammed])
@@ -3626,7 +3344,6 @@
             </div>`;
       }
 
-      // 3. Tablo: Her ay ayrı ayrı üretilen KG + 4 operatörün her ay ayrı ayrı ürettiği KG (tek tablo - mobil uygulama ekranına tam sığdırılmış)
       if (unifiedTableEl) {
         const totalIsa = monthlyStats.reduce((sum, m) => sum + m.isa, 0);
         const totalMuh = monthlyStats.reduce((sum, m) => sum + m.muhiddin, 0);
@@ -3887,7 +3604,6 @@
       applyLanguage(currentLang === 'tr' ? 'ar' : 'tr');
     }
 
-    // --- AUTOMATIC LOCAL PERSISTENCE (localStorage) ---
     const STORAGE_KEYS = {
       orders: 'extruder_app_orders_v1',
       notes: 'extruder_app_notes_v1',
