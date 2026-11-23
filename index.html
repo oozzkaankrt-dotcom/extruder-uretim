@@ -416,6 +416,9 @@
           <button id="editOrderMetricsBtn" type="button" onclick="toggleOrderMetricsEditor()" class="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-xs active:scale-95 transition">
             Düzenle
           </button>
+          <button id="deleteOrderModalBtn" type="button" onclick="deleteEditingOrder()" class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-extrabold text-xs active:scale-95 transition">
+            Sil
+          </button>
           <button type="button" onclick="closeModal('editModal')" class="p-2 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
@@ -594,11 +597,226 @@
 
       <div id="roleAssignmentsList" class="space-y-2"></div>
 
+      <div class="pt-1 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-500">
+        <span>Cihaz / Oturum Kimliği:</span>
+        <span id="cloudUserIdDisplay" class="font-mono font-bold text-slate-700 select-all">Bağlanıyor...</span>
+      </div>
+
       <button type="button" onclick="applySelectedRoleProfile()" class="w-full bg-[#146C53] hover:bg-[#0F5C45] text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-sm active:scale-95 transition">
         Rolü Uygula
       </button>
     </div>
   </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'extruder-default-app';
+    let firebaseConfig = null;
+    try {
+      if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+        firebaseConfig = typeof __firebase_config === 'string' ? JSON.parse(__firebase_config) : __firebase_config;
+      }
+    } catch (e) {
+      firebaseConfig = null;
+    }
+
+    let db = null;
+    let auth = null;
+    let cloudUser = null;
+    let cloudReady = false;
+    let isApplyingCloudSnapshot = false;
+    let cloudSaveTimer = null;
+    let unsubscribeWorkspace = null;
+
+    function getSharedWorkspaceDocRef() {
+      if (!db) return null;
+      return doc(db, 'artifacts', appId, 'public', 'data', 'extruder_workspace', 'main_state');
+    }
+
+    function updateCloudUserIdUI() {
+      const el = document.getElementById('cloudUserIdDisplay');
+      if (el) {
+        el.textContent = cloudUser ? cloudUser.uid : (firebaseConfig ? 'Bağlanıyor...' : 'Yerel Mod');
+      }
+    }
+
+    function serializeWorkspacePayload() {
+      window.pruneExpiredAddedOrders();
+      return {
+        orders: JSON.parse(JSON.stringify(window.orders || [])),
+        notes: JSON.parse(JSON.stringify(window.notes || [])),
+        addedOrderTimestamps: Array.isArray(window.addedOrderTimestamps) ? [...window.addedOrderTimestamps] : [],
+        roleProfilesEmails: (window.ROLE_PROFILES || []).map(r => ({
+          key: r.key,
+          emails: Array.isArray(r.emails) ? [...r.emails] : []
+        })),
+        updatedAt: Date.now(),
+        updatedByEmail: String(window.currentAccountEmail || window.GMAIL_ADMIN_EMAIL || ''),
+        updatedByUid: cloudUser ? cloudUser.uid : null
+      };
+    }
+
+    function applyCloudDataToApp(data) {
+      if (!data || typeof data !== 'object') return;
+      isApplyingCloudSnapshot = true;
+      try {
+        if (Array.isArray(data.orders) && data.orders.length > 0) {
+          window.orders = data.orders.map(window.ensureOrderDates);
+        }
+        if (Array.isArray(data.notes)) {
+          window.notes = data.notes;
+        }
+        if (Array.isArray(data.addedOrderTimestamps)) {
+          window.addedOrderTimestamps = data.addedOrderTimestamps.map(Number).filter(n => Number.isFinite(n));
+          window.pruneExpiredAddedOrders();
+        }
+        if (Array.isArray(data.roleProfilesEmails)) {
+          data.roleProfilesEmails.forEach(savedProf => {
+            const target = (window.ROLE_PROFILES || []).find(r => r.key === savedProf.key);
+            if (target && Array.isArray(savedProf.emails)) {
+              target.emails = [...savedProf.emails];
+            }
+          });
+        }
+
+        window.normalizeOrderNumbers();
+        window.updateAddedOrdersBadge();
+        window.updateHeaderRoleUI();
+        window.renderOrders();
+        window.renderCompletedOrders();
+
+        if (!document.getElementById('tab-ozet')?.classList.contains('hidden')) {
+          window.renderSummary('ALL');
+        }
+        if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) {
+          window.renderOperationTab();
+        }
+        if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) {
+          window.renderReports();
+        }
+        if (!document.getElementById('tab-notlar')?.classList.contains('hidden')) {
+          window.renderNotes();
+        }
+        if (!document.getElementById('accountModal')?.classList.contains('hidden')) {
+          window.openAccountModal();
+        }
+      } finally {
+        isApplyingCloudSnapshot = false;
+      }
+    }
+
+    async function pushWorkspaceToCloudImmediate() {
+      if (!cloudReady || !cloudUser || !db || isApplyingCloudSnapshot) return;
+      const docRef = getSharedWorkspaceDocRef();
+      if (!docRef) return;
+      try {
+        await setDoc(docRef, serializeWorkspacePayload(), { merge: true });
+      } catch (e) {
+        if (typeof window.showToast === 'function') {
+          window.showToast('Bulut kaydı sırasında hata oluştu');
+        }
+      }
+    }
+
+    window.syncWorkspaceToCloud = function () {
+      if (!cloudReady || !cloudUser || !db || isApplyingCloudSnapshot) return;
+      if (cloudSaveTimer) clearTimeout(cloudSaveTimer);
+      cloudSaveTimer = setTimeout(() => {
+        pushWorkspaceToCloudImmediate();
+      }, 200);
+    };
+
+    function startRealtimeWorkspaceListener() {
+      if (!cloudReady || !cloudUser || !db) return;
+      if (typeof unsubscribeWorkspace === 'function') {
+        unsubscribeWorkspace();
+      }
+      const docRef = getSharedWorkspaceDocRef();
+      if (!docRef) return;
+
+      unsubscribeWorkspace = onSnapshot(
+        docRef,
+        async (snap) => {
+          if (!snap.exists()) {
+            try {
+              await setDoc(docRef, serializeWorkspacePayload(), { merge: true });
+            } catch (e) {}
+            return;
+          }
+          const remoteData = snap.data();
+          if (remoteData && remoteData.updatedByUid === cloudUser.uid && !isApplyingCloudSnapshot) {
+            return;
+          }
+          applyCloudDataToApp(remoteData);
+        },
+        (error) => {
+          if (typeof window.showToast === 'function') {
+            window.showToast('Canlı bulut bağlantısı kesildi');
+          }
+        }
+      );
+    }
+
+    async function initCloudSync() {
+      if (!firebaseConfig) {
+        updateCloudUserIdUI();
+        return;
+      }
+      try {
+        const app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+
+        cloudUser = auth.currentUser;
+        if (!cloudUser) {
+          cloudUser = await new Promise((resolve) => {
+            const unsub = onAuthStateChanged(auth, (u) => {
+              unsub();
+              resolve(u);
+            });
+          });
+        }
+
+        if (!cloudUser) return;
+        cloudReady = true;
+        updateCloudUserIdUI();
+
+        const docRef = getSharedWorkspaceDocRef();
+        if (docRef) {
+          const initialSnap = await getDoc(docRef);
+          if (initialSnap.exists()) {
+            applyCloudDataToApp(initialSnap.data());
+          } else {
+            await setDoc(docRef, serializeWorkspacePayload(), { merge: true });
+          }
+        }
+
+        startRealtimeWorkspaceListener();
+        if (typeof window.showToast === 'function') {
+          window.showToast(window.currentLang === 'ar' ? 'تمت المزامنة السحابية' : 'Bulut senkronizasyonu aktif');
+        }
+      } catch (e) {
+        updateCloudUserIdUI();
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initCloudSync();
+    });
+
+    if (document.readyState !== 'loading') {
+      initCloudSync();
+    }
+  </script>
 
   <script>
     const I18N = {
@@ -840,6 +1058,8 @@
 
     const GMAIL_ADMIN_EMAIL = 'oozzkaankrt@gmail.com';
     let currentAccountEmail = 'oozzkaankrt@gmail.com';
+    window.GMAIL_ADMIN_EMAIL = GMAIL_ADMIN_EMAIL;
+    window.currentAccountEmail = currentAccountEmail;
 
     const ROLE_PROFILES = [
       {
@@ -899,6 +1119,7 @@
         emails: []
       }
     ];
+    window.ROLE_PROFILES = ROLE_PROFILES;
 
     const INITIAL_ORDERS = [
       { id: 1, orderNo: 1, priority: true, period: '01.11.2026', createdDate: '01.11.2026', completedDate: null, activeOperator: 'İSA', shiftActive: true, shiftSession: { operator: 'İSA', status: 'ACTIVE', startedAt: '08:00', endedAt: null }, code: 'G1', article: 'ALVEOLE PLASTIQUE PET ŒUF - 15 COMPARTIMENTS - TRANSPARENT 39 GR', artive: 'BOBINE SF-PET 340 760 TRANSPARENT F2', ton: 6131, isa: 0, muhiddin: 0, kaddur: 0, muhammed: 0, closed: false, workStatus: 'RUNNING' },
@@ -939,10 +1160,14 @@
     let openStatusMenuId = null;
     let openCompletedMenuId = null;
     let openCompletedFolders = {};
+    let draggedOrderId = null;
     let toastTimer = null;
     let currentOrderSortMode = 'DEFAULT';
     let addedOrdersCount = 0;
     let addedOrderTimestamps = [];
+    window.orders = orders;
+    window.notes = notes;
+    window.addedOrderTimestamps = addedOrderTimestamps;
     const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
     const t = (key, ...args) => {
       const val = (I18N[currentLang] && I18N[currentLang][key]) || I18N.tr[key] || key;
@@ -953,6 +1178,7 @@
     const getProd = (o) => (Number(o.isa) || 0) + (Number(o.muhiddin) || 0) + (Number(o.kaddur) || 0) + (Number(o.muhammed) || 0);
     const getRest = (o) => (Number(o.ton) || 0) - getProd(o);
 
+    // Formats today's date as DD.MM.YYYY
     function formatTodayDate() {
       const now = new Date();
       const dd = String(now.getDate()).padStart(2, '0');
@@ -987,6 +1213,7 @@
         }, 2500);
       } catch (e) {}
     }
+    window.showToast = showToast;
 
     // Sends a browser/system notification if permitted and supported
     function notifyNewWorkOrderAdded(order) {
@@ -1044,12 +1271,27 @@
       return normalizedCurrent === GMAIL_ADMIN_EMAIL.toLowerCase();
     }
 
-    function getGmailMatchedOperator(emailStr = currentAccountEmail) {
-      const normalized = String(emailStr || '').trim().toLowerCase();
-      if (!normalized) return null;
-      const opProfiles = ROLE_PROFILES.filter(r => r.kind === 'OPERATOR' && r.operatorCode);
-      const matched = opProfiles.find(r => Array.isArray(r.emails) && r.emails.some(em => String(em || '').trim().toLowerCase() === normalized));
-      return matched ? matched.operatorCode : null;
+    // Checks whether the active account holds Management identity via Gmail or active profile
+    function hasManagementGmailIdentity() {
+      const prof = getActiveRoleProfile();
+      const normalizedCurrent = String(currentAccountEmail || '').trim().toLowerCase();
+      const mgmtProfile = ROLE_PROFILES.find(r => r.key === 'YONETIM');
+      const assignedMgmtEmails = Array.isArray(mgmtProfile?.emails)
+        ? mgmtProfile.emails.map(em => String(em || '').trim().toLowerCase())
+        : [GMAIL_ADMIN_EMAIL.toLowerCase()];
+
+      const isCurrentMgmtGmail = Boolean(normalizedCurrent) && (
+        normalizedCurrent === GMAIL_ADMIN_EMAIL.toLowerCase() ||
+        assignedMgmtEmails.includes(normalizedCurrent)
+      );
+
+      return prof.kind === 'MANAGEMENT' && isCurrentMgmtGmail;
+    }
+
+    // Checks whether the active user has Management identity for drag-and-drop ordering
+    function canDragReorderOrders() {
+      const prof = getActiveRoleProfile();
+      return prof.kind === 'MANAGEMENT' || hasManagementGmailIdentity();
     }
 
     function canStartShiftForOperator(opName) {
@@ -1126,6 +1368,7 @@
         noteOwnerEl.textContent = `${prof.label}${mailText}`;
       }
     }
+    window.updateHeaderRoleUI = updateHeaderRoleUI;
 
     function openAccountModal() {
       draftRoleKey = currentRoleKey;
@@ -1189,10 +1432,12 @@
       }
       document.getElementById('accountModal')?.classList.remove('hidden');
     }
+    window.openAccountModal = openAccountModal;
 
     function updateCurrentAccountEmail(nextEmail) {
       const cleaned = String(nextEmail || '').trim().toLowerCase();
       currentAccountEmail = cleaned;
+      window.currentAccountEmail = currentAccountEmail;
       openAccountModal();
       if (canManageGmailAssignments()) {
         showToast(`Gmail atama yetkisi aktif: ${GMAIL_ADMIN_EMAIL}`);
@@ -1222,6 +1467,7 @@
       profile.emails.push(val);
       inputEl.value = '';
       openAccountModal();
+      saveStateToStorage();
       showToast(`${profile.label} satırına Gmail eklendi`);
     }
 
@@ -1234,6 +1480,7 @@
       if (!profile || !Array.isArray(profile.emails)) return;
       profile.emails.splice(index, 1);
       openAccountModal();
+      saveStateToStorage();
       showToast('Gmail adresi kaldırıldı');
     }
 
@@ -1252,6 +1499,7 @@
           currentAccountEmail = String(selectedProf.emails[0]).trim().toLowerCase();
         }
       }
+      window.currentAccountEmail = currentAccountEmail;
       updateHeaderRoleUI();
       closeModal('accountModal');
       renderOrders();
@@ -1260,6 +1508,7 @@
       if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) renderOperationTab();
       if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) renderReports();
       if (!document.getElementById('tab-notlar')?.classList.contains('hidden')) renderNotes();
+      saveStateToStorage();
       showToast(`Aktif rol: ${getActiveRoleProfile().label}`);
     }
 
@@ -1308,6 +1557,7 @@
       }
       return order;
     }
+    window.ensureOrderDates = ensureOrderDates;
 
     function getWorkStatus(o) {
       if (!o) return 'IDLE';
@@ -1316,6 +1566,189 @@
       if (o.workStatus === 'PAUSED') return 'PAUSED';
       if (o.workStatus === 'RESET') return 'RESET';
       return 'IDLE';
+    }
+
+    function getGmailMatchedOperator() {
+      const normalizedCurrent = String(currentAccountEmail || '').trim().toLowerCase();
+      if (!normalizedCurrent) return null;
+      const opProfiles = ROLE_PROFILES.filter(r => r.kind === 'OPERATOR' && r.operatorCode);
+      const matched = opProfiles.find(r =>
+        Array.isArray(r.emails) && r.emails.some(em => String(em || '').trim().toLowerCase() === normalizedCurrent)
+      );
+      return matched ? matched.operatorCode : null;
+    }
+
+    function refreshActiveMenus() {
+      renderOrders();
+      if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) {
+        renderOperationTab();
+      }
+    }
+
+    function toggleWorkStatusMenu(event, id) {
+      if (event) event.stopPropagation();
+      openStatusMenuId = openStatusMenuId === id ? null : id;
+      refreshActiveMenus();
+    }
+
+    function setOrderWorkStatus(event, id, nextStatus) {
+      if (event) event.stopPropagation();
+      openStatusMenuId = null;
+      if (!guardAction('START_STOP_ORDER')) {
+        refreshActiveMenus();
+        return;
+      }
+
+      const idx = orders.findIndex(x => x.id === id);
+      if (idx === -1) return;
+
+      const target = orders[idx];
+      ensureOrderDates(target);
+      target.lastActionDateTime = formatDateTimeNow();
+
+      if (nextStatus === 'RUNNING') {
+        const defaultOp = getShiftPickerOperator(target);
+        orders.forEach((item, i) => {
+          if (i !== idx && !item.closed && item.workStatus === 'RUNNING') {
+            item.workStatus = 'PAUSED';
+          }
+        });
+        target.closed = false;
+        target.completedDate = null;
+        target.workStatus = 'RUNNING';
+        target.shiftActive = true;
+        target.activeOperator = defaultOp;
+        target.shiftSession = {
+          operator: defaultOp,
+          status: 'ACTIVE',
+          startedAt: target.shiftSession?.startedAt || formatClockTime(),
+          endedAt: null
+        };
+      } else if (nextStatus === 'PAUSED') {
+        target.closed = false;
+        target.completedDate = null;
+        target.workStatus = 'PAUSED';
+        target.shiftActive = false;
+        target.activeOperator = null;
+        target.shiftSession = {
+          operator: target.shiftSession?.operator || null,
+          status: 'ENDED',
+          startedAt: target.shiftSession?.startedAt || null,
+          endedAt: formatClockTime()
+        };
+      } else if (nextStatus === 'FINISHED') {
+        target.closed = true;
+        target.completedDate = formatTodayDate();
+        target.workStatus = 'FINISHED';
+        target.shiftActive = false;
+        target.activeOperator = null;
+        target.shiftSession = {
+          operator: target.shiftSession?.operator || null,
+          status: 'ENDED',
+          startedAt: target.shiftSession?.startedAt || null,
+          endedAt: formatClockTime()
+        };
+      } else {
+        target.closed = false;
+        target.completedDate = null;
+        target.workStatus = 'RESET';
+        target.shiftActive = false;
+        target.activeOperator = null;
+        target.shiftSession = {
+          operator: null,
+          status: 'IDLE',
+          startedAt: null,
+          endedAt: null
+        };
+      }
+
+      normalizeOrderNumbers();
+      renderOrders();
+      renderCompletedOrders();
+      if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) {
+        renderOperationTab();
+      }
+      if (!document.getElementById('tab-ozet')?.classList.contains('hidden')) {
+        renderSummary('ALL');
+      }
+      if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) {
+        renderReports();
+      }
+      saveStateToStorage();
+      showToast(`#${target.orderNo || target.id} ${t('status_' + nextStatus.toLowerCase()) || nextStatus}`);
+    }
+
+    // Renders the status dropdown pill on each work order card
+    function renderWorkStatusButton(order) {
+      const status = getWorkStatus(order);
+      let label = t('status_select');
+      let btnClass = 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200';
+
+      if (status === 'RUNNING') {
+        label = t('status_running');
+        btnClass = 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-700 shadow-2xs';
+      } else if (status === 'PAUSED') {
+        label = t('status_paused');
+        btnClass = 'bg-amber-400 hover:bg-amber-500 text-slate-950 border-amber-500 shadow-2xs';
+      } else if (status === 'FINISHED') {
+        label = t('status_finished');
+        btnClass = 'bg-slate-800 hover:bg-slate-900 text-white border-slate-900';
+      }
+
+      const isOpen = openStatusMenuId === order.id;
+
+      return `
+        <div onclick="event.stopPropagation()" class="relative inline-block shrink-0">
+          <button type="button" onclick="toggleWorkStatusMenu(event, ${order.id})"
+            class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border text-[10px] font-extrabold active:scale-95 transition ${btnClass}">
+            <span>${escapeHtml(label)}</span>
+            <svg class="w-2.5 h-2.5 opacity-80" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          ${isOpen ? `
+            <div class="absolute ltr:right-0 rtl:left-0 top-full mt-1 z-30 w-32 bg-white rounded-xl shadow-xl border border-slate-200 p-1 space-y-0.5">
+              <button type="button" onclick="setOrderWorkStatus(event, ${order.id}, 'RUNNING')"
+                class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-emerald-700 hover:bg-emerald-50 transition ltr:text-left rtl:text-right">
+                <span>●</span><span>${t('menu_running')}</span>
+              </button>
+              <button type="button" onclick="setOrderWorkStatus(event, ${order.id}, 'PAUSED')"
+                class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-amber-700 hover:bg-amber-50 transition ltr:text-left rtl:text-right">
+                <span>⏸</span><span>${t('menu_paused')}</span>
+              </button>
+              <button type="button" onclick="setOrderWorkStatus(event, ${order.id}, 'FINISHED')"
+                class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-slate-800 hover:bg-slate-100 transition ltr:text-left rtl:text-right">
+                <span>■</span><span>${t('menu_finished')}</span>
+              </button>
+              <button type="button" onclick="setOrderWorkStatus(event, ${order.id}, 'RESET')"
+                class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold text-slate-500 hover:bg-slate-50 transition ltr:text-left rtl:text-right">
+                <span>↺</span><span>${t('menu_reset')}</span>
+              </button>
+            </div>
+          ` : ''}
+        </div>`;
+    }
+
+    // Renders the active operator indicator row on running or alerted work order cards
+    function renderRunningOperatorBar(order) {
+      const wStatus = getWorkStatus(order);
+      const activeOp = getActiveOperatorName(order);
+      if (wStatus !== 'RUNNING') return '';
+
+      if (!activeOp) {
+        return `
+          <div class="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-xl bg-rose-100/90 border border-rose-300 text-rose-900 text-[10px] font-extrabold">
+            <span>● ${t('running_operator_badge')}</span>
+            <span>${t('start_shift_prompt')}</span>
+          </div>`;
+      }
+
+      const startTime = order.shiftSession && order.shiftSession.startedAt ? ` (${escapeHtml(order.shiftSession.startedAt)})` : '';
+      return `
+        <div class="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-xl bg-emerald-100/80 border border-emerald-300/80 text-emerald-950 text-[10px] font-extrabold">
+          <span>● ${t('running_operator_badge')}: ${escapeHtml(activeOp)}</span>
+          <span class="text-emerald-800">${escapeHtml(startTime)}</span>
+        </div>`;
     }
 
     function normalizeOrderNumbers(movedId = null, desiredNo = null) {
@@ -1354,6 +1787,7 @@
         }
       });
     }
+    window.normalizeOrderNumbers = normalizeOrderNumbers;
 
     function updateOrderNumberInline(id, newVal) {
       if (!guardAction('REORDER_ORDER')) {
@@ -1374,166 +1808,110 @@
       }
       normalizeOrderNumbers(id, num === 0 ? 1 : num);
       refreshActiveMenus();
+      saveStateToStorage();
       showToast(`İş emri #${targetOrder ? targetOrder.orderNo : num} sırasına alındı`);
     }
 
-    function toggleWorkStatusMenu(event, id) {
-      if (event) event.stopPropagation();
-      openStatusMenuId = openStatusMenuId === id ? null : id;
-      refreshActiveMenus();
-    }
-
-    function setOrderWorkStatus(event, id, newStatus) {
-      if (event) event.stopPropagation();
-      if (!guardAction('START_STOP_ORDER')) {
-        openStatusMenuId = null;
-        refreshActiveMenus();
+    // Handles drag start for work order cards when user holds Management identity
+    function handleOrderDragStart(event, id) {
+      if (!canDragReorderOrders()) {
+        if (event) event.preventDefault();
+        showToast('Sürükleyerek sıralama yalnızca Yönetim kimliği içindir');
         return;
       }
-      openStatusMenuId = null;
-      const idx = orders.findIndex(x => x.id === id);
-      if (idx === -1) return;
+      const target = orders.find(o => o.id === id && !o.closed);
+      if (!target || getWorkStatus(target) === 'RUNNING') {
+        if (event) event.preventDefault();
+        showToast('Çalışan iş emri sırası #0 sabit kalır');
+        return;
+      }
+      draggedOrderId = id;
+      if (event && event.dataTransfer) {
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', String(id));
+      }
+      if (event && event.currentTarget) {
+        event.currentTarget.classList.add('opacity-60', 'ring-2', 'ring-[#146C53]');
+      }
+    }
 
-      orders[idx].lastActionDateTime = formatDateTimeNow();
+    function handleOrderDragOver(event, targetId) {
+      if (!canDragReorderOrders() || draggedOrderId === null || draggedOrderId === targetId) return;
+      const targetOrder = orders.find(o => o.id === targetId && !o.closed);
+      if (!targetOrder || getWorkStatus(targetOrder) === 'RUNNING') return;
+      if (event) {
+        event.preventDefault();
+        if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
+      }
+      if (event && event.currentTarget) {
+        event.currentTarget.classList.add('border-t-4', 'border-t-[#146C53]');
+      }
+    }
 
-      if (newStatus === 'RESET') {
-        orders[idx].workStatus = 'RESET';
-        orders[idx].closed = false;
-        orders[idx].completedDate = null;
-        orders[idx].shiftActive = false;
-        orders[idx].activeOperator = null;
-        orders[idx].shiftSession = { operator: null, status: 'RESET', startedAt: null, endedAt: null };
-        refreshActiveMenus();
-        renderCompletedOrders();
-        showToast('Durum sıfırlandı');
+    function handleOrderDragLeave(event) {
+      if (event && event.currentTarget) {
+        event.currentTarget.classList.remove('border-t-4', 'border-t-[#146C53]');
+      }
+    }
+
+    // Reorders work orders upon drop onto a target card
+    function handleOrderDrop(event, targetId) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      if (event && event.currentTarget) {
+        event.currentTarget.classList.remove('border-t-4', 'border-t-[#146C53]');
+      }
+      if (!canDragReorderOrders()) {
+        draggedOrderId = null;
+        showToast('Sürükleyerek sıralama yalnızca Yönetim kimliği içindir');
+        return;
+      }
+      const sourceId = draggedOrderId ?? Number(event?.dataTransfer?.getData('text/plain'));
+      draggedOrderId = null;
+      if (!sourceId || sourceId === targetId) return;
+
+      const sourceOrder = orders.find(o => o.id === sourceId && !o.closed);
+      const targetOrder = orders.find(o => o.id === targetId && !o.closed);
+      if (!sourceOrder || !targetOrder) return;
+      if (getWorkStatus(sourceOrder) === 'RUNNING' || getWorkStatus(targetOrder) === 'RUNNING') {
+        showToast('Çalışan iş emri sırası #0 sabit kalır');
         return;
       }
 
-      orders[idx].workStatus = newStatus;
-      if (newStatus === 'FINISHED') {
-        orders[idx].closed = true;
-        orders[idx].completedDate = formatDateTimeNow();
-        orders[idx].shiftActive = false;
-        orders[idx].activeOperator = null;
-        showToast('Durum: ■ Bitti');
-      } else {
-        orders[idx].closed = false;
-        orders[idx].completedDate = null;
-        if (newStatus === 'RUNNING') {
-          if (!orders[idx].activeOperator) {
-            orders[idx].activeOperator = getShiftPickerOperator(orders[idx]);
-            orders[idx].shiftActive = true;
-          }
-          orders.forEach(item => {
-            if (item.id !== id && item.workStatus === 'RUNNING') {
-              item.workStatus = 'PAUSED';
-            }
-          });
-          showToast('Durum: ● Çalışıyor');
-        } else {
-          orders[idx].closed = false;
-          orders[idx].completedDate = null;
-          if (newStatus === 'RUNNING') {
-            if (!orders[idx].activeOperator) {
-              orders[idx].activeOperator = getShiftPickerOperator(orders[idx]);
-              orders[idx].shiftActive = true;
-            }
-            orders.forEach(item => {
-              if (item.id !== id && item.workStatus === 'RUNNING') {
-                item.workStatus = 'PAUSED';
-              }
-            });
-            showToast('Durum: ● Çalışıyor');
-          } else {
-            showToast('Durum: ⏸ Durdu');
-          }
-          normalizeOrderNumbers();
-        }
-        normalizeOrderNumbers();
-      }
+      const orderedPool = orders
+        .filter(o => !o.closed && getWorkStatus(o) !== 'RUNNING')
+        .sort((a, b) => (a.orderNo || 999) - (b.orderNo || 999) || a.id - b.id);
 
-      refreshActiveMenus();
-      renderCompletedOrders();
-    }
+      const fromIdx = orderedPool.findIndex(o => o.id === sourceId);
+      const toIdx = orderedPool.findIndex(o => o.id === targetId);
+      if (fromIdx === -1 || toIdx === -1) return;
 
-    function renderWorkStatusButton(o) {
-      const status = getWorkStatus(o);
-      const isMenuOpen = openStatusMenuId === o.id;
+      const [movedItem] = orderedPool.splice(fromIdx, 1);
+      orderedPool.splice(toIdx, 0, movedItem);
 
-      let btnClass = 'bg-slate-100 text-slate-700 border-slate-200';
-      let btnLabel = t('status_select');
+      const desiredSeq = toIdx + 1;
+      currentOrderSortMode = 'DEFAULT';
+      const sortSelect = document.getElementById('sortBy');
+      if (sortSelect) sortSelect.value = 'ORDER_NO';
 
-      if (status === 'RUNNING') {
-        btnClass = 'bg-emerald-600 text-white border-emerald-700 shadow-2xs';
-        btnLabel = t('status_running');
-      } else if (status === 'PAUSED') {
-        btnClass = 'bg-amber-400 text-amber-950 border-amber-500 shadow-2xs';
-        btnLabel = t('status_paused');
-      } else if (status === 'FINISHED') {
-        btnClass = 'bg-rose-600 text-white border-rose-700 shadow-2xs';
-        btnLabel = t('status_finished');
-      }
-
-      return `
-        <div onclick="event.stopPropagation()" class="relative inline-block shrink-0">
-          <button type="button" onclick="toggleWorkStatusMenu(event, ${o.id})"
-            class="inline-flex items-center gap-1 whitespace-nowrap px-2 py-1 rounded-lg border text-[10px] leading-tight font-extrabold active:scale-95 transition ${btnClass}">
-            <span class="whitespace-nowrap">${btnLabel}</span>
-            <svg class="w-2.5 h-2.5 opacity-80 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-            </svg>
-          </button>
-          ${isMenuOpen ? `
-            <div class="absolute ltr:right-0 rtl:left-0 top-full mt-1 z-30 w-36 bg-white rounded-xl shadow-xl border border-slate-200 p-1 space-y-0.5">
-              <button type="button" onclick="setOrderWorkStatus(event, ${o.id}, 'RUNNING')"
-                class="w-full flex items-center gap-1.5 whitespace-nowrap px-2 py-1.5 rounded-lg text-[10px] leading-tight font-extrabold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 transition ltr:text-left rtl:text-right">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
-                <span>${t('menu_running')}</span>
-              </button>
-              <button type="button" onclick="setOrderWorkStatus(event, ${o.id}, 'PAUSED')"
-                class="w-full flex items-center gap-1.5 whitespace-nowrap px-2 py-1.5 rounded-lg text-[10px] leading-tight font-extrabold text-amber-800 bg-amber-50 hover:bg-amber-100 transition ltr:text-left rtl:text-right">
-                <span class="w-2 h-2 rounded-full bg-amber-400 shrink-0"></span>
-                <span>${t('menu_paused')}</span>
-              </button>
-              <button type="button" onclick="setOrderWorkStatus(event, ${o.id}, 'FINISHED')"
-                class="w-full flex items-center gap-1.5 whitespace-nowrap px-2 py-1.5 rounded-lg text-[10px] leading-tight font-extrabold text-rose-800 bg-rose-50 hover:bg-rose-100 transition ltr:text-left rtl:text-right">
-                <span class="w-2 h-2 rounded-full bg-rose-500 shrink-0"></span>
-                <span>${t('menu_finished')}</span>
-              </button>
-              <button type="button" onclick="setOrderWorkStatus(event, ${o.id}, 'RESET')"
-                class="w-full flex items-center gap-1.5 whitespace-nowrap px-2 py-1.5 rounded-lg text-[10px] leading-tight font-extrabold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 transition ltr:text-left rtl:text-right">
-                <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
-                <span>${t('menu_reset')}</span>
-              </button>
-            </div>
-          ` : ''}
-        </div>
-      `;
-    }
-
-    function renderRunningOperatorBar(o) {
-      if (getWorkStatus(o) !== 'RUNNING') return '';
-      const activeOp = getActiveOperatorName(o);
-      const isStartPromptShown = !activeOp;
-      const displayOperatorText = activeOp
-        ? `<span class="text-xs font-extrabold text-slate-900 select-none pointer-events-none truncate">${escapeHtml(activeOp)}</span>`
-        : `<span class="text-xs font-extrabold text-rose-600 tracking-wide select-none pointer-events-none truncate">${t('start_shift_prompt')}</span>`;
-
-      return `
-        <div onclick="event.stopPropagation()" class="flex items-center justify-between gap-2 pt-1.5 border-t ${isStartPromptShown ? 'border-red-300/90' : 'border-emerald-200/80'}">
-          <div class="flex items-center gap-1.5 min-w-0">
-            <span class="w-2 h-2 rounded-full ${activeOp ? 'bg-emerald-600 animate-pulse' : 'bg-rose-600'} shrink-0"></span>
-            <span class="text-[11px] font-bold ${activeOp ? 'text-emerald-900' : 'text-rose-700'} select-none pointer-events-none shrink-0">${t('running_operator_badge')}:</span>
-            ${displayOperatorText}
-          </div>
-        </div>
-      `;
-    }
-
-    function refreshActiveMenus() {
+      normalizeOrderNumbers(sourceId, desiredSeq);
       renderOrders();
       if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) {
         renderOperationTab();
+      }
+      saveStateToStorage();
+      showToast(`#${movedItem.orderNo} sırasına taşındı`);
+    }
+
+    function handleOrderDragEnd(event) {
+      draggedOrderId = null;
+      document.querySelectorAll('[data-order-card-id]').forEach(card => {
+        card.classList.remove('opacity-60', 'ring-2', 'ring-[#146C53]', 'border-t-4', 'border-t-[#146C53]');
+      });
+      if (event && event.currentTarget) {
+        event.currentTarget.classList.remove('opacity-60', 'ring-2', 'ring-[#146C53]', 'border-t-4', 'border-t-[#146C53]');
       }
     }
 
@@ -1569,8 +1947,10 @@
     function pruneExpiredAddedOrders() {
       const cutoff = Date.now() - TWENTY_FOUR_HOURS_MS;
       addedOrderTimestamps = addedOrderTimestamps.filter(ts => Number(ts) > cutoff);
+      window.addedOrderTimestamps = addedOrderTimestamps;
       addedOrdersCount = addedOrderTimestamps.length;
     }
+    window.pruneExpiredAddedOrders = pruneExpiredAddedOrders;
 
     function updateAddedOrdersBadge() {
       pruneExpiredAddedOrders();
@@ -1586,6 +1966,7 @@
         badgeEl.classList.remove('inline-flex');
       }
     }
+    window.updateAddedOrdersBadge = updateAddedOrdersBadge;
 
     function renderOrders() {
       updateAddedOrdersBadge();
@@ -1681,6 +2062,7 @@
         const isRunning = wStatus === 'RUNNING';
         const isPaused = wStatus === 'PAUSED';
         const needsShiftStart = isRunning && !getActiveOperatorName(o);
+        const canDragCard = canDragReorderOrders() && !isRunning;
 
         const cardHighlight = isRunning
           ? (needsShiftStart ? 'order-card-3d-running-alert' : 'order-card-3d-running')
@@ -1694,13 +2076,32 @@
         const topDateStr = escapeHtml(o.createdDate || formatTodayDate());
 
         return `
-        <div onclick="openEditModal(${o.id})" class="rounded-2xl p-3 ${cardHighlight} active:scale-[0.99] transition cursor-pointer space-y-2">
+        <div data-order-card-id="${o.id}"
+          draggable="${canDragCard ? 'true' : 'false'}"
+          ondragstart="handleOrderDragStart(event, ${o.id})"
+          ondragover="handleOrderDragOver(event, ${o.id})"
+          ondragleave="handleOrderDragLeave(event)"
+          ondrop="handleOrderDrop(event, ${o.id})"
+          ondragend="handleOrderDragEnd(event)"
+          onclick="openEditModal(${o.id})"
+          class="rounded-2xl p-3 ${cardHighlight} active:scale-[0.99] transition cursor-pointer space-y-2">
           <div class="flex items-center justify-between gap-2">
-            <div onclick="event.stopPropagation()" class="inline-flex items-center justify-center shrink-0 ${seqBoxClass}" title="Sıra numarasını değiştirin">
-              <input type="number" inputmode="numeric" min="1" value="${o.orderNo}"
-                onchange="updateOrderNumberInline(${o.id}, this.value)"
-                onkeydown="if(event.key==='Enter'){this.blur();}"
-                class="w-full bg-transparent text-slate-900 text-[10px] font-extrabold text-center leading-none rounded outline-none" />
+            <div class="flex items-center gap-1.5">
+              ${canDragCard ? `
+                <span onclick="event.stopPropagation()" title="Sürükleyerek sırala" class="inline-flex items-center justify-center w-5 h-5 rounded-md bg-slate-100/90 hover:bg-emerald-100 text-slate-500 hover:text-[#146C53] border border-slate-200 cursor-grab active:cursor-grabbing shrink-0">
+                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <circle cx="7" cy="5" r="1.5"/><circle cx="13" cy="5" r="1.5"/>
+                    <circle cx="7" cy="10" r="1.5"/><circle cx="13" cy="10" r="1.5"/>
+                    <circle cx="7" cy="15" r="1.5"/><circle cx="13" cy="15" r="1.5"/>
+                  </svg>
+                </span>
+              ` : ''}
+              <div onclick="event.stopPropagation()" class="inline-flex items-center justify-center shrink-0 ${seqBoxClass}" title="Sıra numarasını değiştirin">
+                <input type="number" inputmode="numeric" min="1" value="${o.orderNo}"
+                  onchange="updateOrderNumberInline(${o.id}, this.value)"
+                  onkeydown="if(event.key==='Enter'){this.blur();}"
+                  class="w-full bg-transparent text-slate-900 text-[10px] font-extrabold text-center leading-none rounded outline-none" />
+              </div>
             </div>
             <span class="inline-flex items-center justify-center shrink-0 h-[22px] px-2.5 rounded-lg border text-[10px] leading-none font-bold tabular-nums text-center ${dateBoxClass}">${topDateStr}</span>
             ${renderWorkStatusButton(o)}
@@ -1740,6 +2141,7 @@
 
       container.innerHTML = runningCardsHtml + metaBarHtml + remainingCardsHtml;
     }
+    window.renderOrders = renderOrders;
 
     function parseKgInput(rawVal) {
       const cleaned = String(rawVal ?? '')
@@ -1798,6 +2200,7 @@
       normalizeOrderNumbers();
       renderOrders();
       renderCompletedOrders();
+      saveStateToStorage();
       showToast(`#${orders[idx].orderNo} Bitenler'den çıkarıldı · Çalışıyor`);
     }
 
@@ -1957,6 +2360,7 @@
           </div>`;
       }).join('');
     }
+    window.renderCompletedOrders = renderCompletedOrders;
 
     function exportToCSV() {
       try {
@@ -2074,6 +2478,7 @@
       renderOrders();
       renderCompletedOrders();
       notifyNewWorkOrderAdded(newOrder);
+      saveStateToStorage();
       showToast(currentLang === 'ar' ? `تمت إضافة أمر العمل رقم #${newOrder.orderNo}` : `Yeni iş emri bildirimi: #${newOrder.orderNo} eklendi`);
     }
 
@@ -2186,15 +2591,26 @@
       const idx = orders.findIndex(x => x.id === editingOrderId);
       if (idx === -1 || !pendingModalShift) return;
       const perms = getUserPermissions();
-      if (perms.isViewer) return;
+      const isMgmtGmail = hasManagementGmailIdentity();
 
-      if (!canStartShiftForOperator(opName)) {
-        const gmailOp = getGmailMatchedOperator();
-        showToast(gmailOp
-          ? `Gmail eşleşmeniz (${gmailOp}) sadece kendi adınıza vardiya seçmenize izin verir`
-          : 'Bu Gmail hesabı için operatör vardiya yetkisi bulunmuyor');
-        updateModalShiftUI(orders[idx]);
-        return;
+      isEditingMetricsMode = false;
+      const editMetricsBtn = document.getElementById('editOrderMetricsBtn');
+      const deleteOrderBtn = document.getElementById('deleteOrderModalBtn');
+      const manTonEl = document.getElementById('manualTonInput');
+      const manProdEl = document.getElementById('manualProdInput');
+      const manRestEl = document.getElementById('manualRestInput');
+      if (manTonEl) { manTonEl.classList.add('hidden'); manTonEl.value = ''; }
+      if (manProdEl) { manProdEl.classList.add('hidden'); manProdEl.value = ''; }
+      if (manRestEl) { manRestEl.classList.add('hidden'); manRestEl.value = ''; }
+
+      if (editMetricsBtn) {
+        editMetricsBtn.classList.toggle('hidden', !perms.isManagement);
+        editMetricsBtn.className = 'px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-xs active:scale-95 transition' + (perms.isManagement ? '' : ' hidden');
+      }
+
+      if (deleteOrderBtn) {
+        deleteOrderBtn.classList.toggle('hidden', !isMgmtGmail);
+        deleteOrderBtn.className = 'px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-extrabold text-xs active:scale-95 transition' + (isMgmtGmail ? '' : ' hidden');
       }
 
       const isAlreadyConfirmed = !!(pendingModalShift.shiftActive && pendingModalShift.activeOperator === opName);
@@ -2653,6 +3069,33 @@
       document.getElementById('editModal')?.classList.remove('hidden');
     }
 
+    // Deletes the currently opened work order when authorized as Management Gmail account
+    function deleteEditingOrder() {
+      if (!hasManagementGmailIdentity()) {
+        showToast(currentLang === 'ar' ? 'الحذف متاح فقط لحساب الإدارة' : 'Silme işlemi yalnızca Yönetim kimliğine sahip Gmail hesabı içindir');
+        return;
+      }
+      if (editingOrderId === null) return;
+      const idx = orders.findIndex(x => x.id === editingOrderId);
+      if (idx === -1) return;
+
+      const removed = orders[idx];
+      orders.splice(idx, 1);
+      if (!removed.closed) {
+        normalizeOrderNumbers();
+      }
+      pendingModalShift = null;
+      editingOrderId = null;
+      closeModal('editModal');
+      renderOrders();
+      renderCompletedOrders();
+      if (!document.getElementById('tab-ozet')?.classList.contains('hidden')) renderSummary('ALL');
+      if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) renderOperationTab();
+      if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) renderReports();
+      saveStateToStorage();
+      showToast(currentLang === 'ar' ? 'تم حذف أمر الإنتاج' : `İş emri #${removed.orderNo || removed.id} silindi`);
+    }
+
     function toggleOrderMetricsEditor() {
       const perms = getUserPermissions();
       if (!perms.isManagement) {
@@ -2890,6 +3333,7 @@
       closeModal('editModal');
       renderOrders();
       renderCompletedOrders();
+      saveStateToStorage();
       showToast(currentLang === 'ar' ? 'تم حفظ التعديلات' : 'Değişiklikler kaydedildi');
     }
 
@@ -2951,6 +3395,7 @@
         }).join('');
       }
     }
+    window.renderSummary = renderSummary;
 
     function renderOperationTab() {
       const container = document.getElementById('opTop10List');
@@ -3042,6 +3487,7 @@
           </div>`;
       }).join('');
     }
+    window.renderOperationTab = renderOperationTab;
 
     function getCompletedOrderMonthIndex(order) {
       const candidates = [order?.completedDate, order?.createdDate, order?.period];
@@ -3183,6 +3629,7 @@
         }
       }
     }
+    window.renderReports = renderReports;
 
     function renderNotes() {
       const container = document.getElementById('notesList');
@@ -3213,6 +3660,7 @@
         </div>
       `).join('');
     }
+    window.renderNotes = renderNotes;
 
     function addNote() {
       if (!guardAction('ADD_NOTE')) return;
@@ -3229,6 +3677,7 @@
       });
       if (input) input.value = '';
       renderNotes();
+      saveStateToStorage();
       showToast(currentLang === 'ar' ? 'تمت إضافة ملاحظة الوردية' : 'Vardiya notu eklendi');
     }
 
@@ -3236,6 +3685,7 @@
       if (!guardAction('DELETE_NOTE')) return;
       notes = notes.filter(n => n.id !== noteId);
       renderNotes();
+      saveStateToStorage();
       showToast(currentLang === 'ar' ? 'تم حذف الملاحظة' : 'Vardiya notu silindi');
     }
 
@@ -3253,6 +3703,8 @@
       normalizeOrderNumbers();
       renderOrders();
       renderCompletedOrders();
+      clearStoredAppState();
+      saveStateToStorage();
       closeModal('exportModal');
       showToast('Varsayılan verilere dönüldü');
     }
@@ -3319,23 +3771,143 @@
       applyLanguage(currentLang === 'tr' ? 'ar' : 'tr');
     }
 
+    // --- AUTOMATIC LOCAL PERSISTENCE (localStorage) ---
+    const STORAGE_KEYS = {
+      orders: 'extruder_app_orders_v1',
+      notes: 'extruder_app_notes_v1',
+      addedOrderTimestamps: 'extruder_app_added_order_ts_v1',
+      roleKey: 'extruder_app_role_key_v1',
+      accountEmail: 'extruder_app_account_email_v1',
+      lang: 'extruder_app_lang_v1'
+    };
+
+    function isLocalStorageAvailable() {
+      try {
+        const testKey = '__extruder_ls_test__';
+        window.localStorage.setItem(testKey, '1');
+        window.localStorage.removeItem(testKey);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function saveStateToStorage() {
+      window.orders = orders;
+      window.notes = notes;
+      window.addedOrderTimestamps = addedOrderTimestamps;
+      window.currentAccountEmail = currentAccountEmail;
+      window.currentLang = currentLang;
+
+      if (typeof window.syncWorkspaceToCloud === 'function') {
+        window.syncWorkspaceToCloud();
+      }
+
+      if (!isLocalStorageAvailable()) return;
+      try {
+        pruneExpiredAddedOrders();
+        window.localStorage.setItem(STORAGE_KEYS.orders, JSON.stringify(orders));
+        window.localStorage.setItem(STORAGE_KEYS.notes, JSON.stringify(notes));
+        window.localStorage.setItem(STORAGE_KEYS.addedOrderTimestamps, JSON.stringify(addedOrderTimestamps));
+        window.localStorage.setItem(STORAGE_KEYS.roleKey, String(currentRoleKey || 'YONETIM'));
+        window.localStorage.setItem(STORAGE_KEYS.accountEmail, String(currentAccountEmail || GMAIL_ADMIN_EMAIL));
+        window.localStorage.setItem(STORAGE_KEYS.lang, String(currentLang || 'tr'));
+      } catch (e) {
+        // Ignore quota or private-mode write errors
+      }
+    }
+
+    function loadStateFromStorage() {
+      if (!isLocalStorageAvailable()) return false;
+      try {
+        const rawOrders = window.localStorage.getItem(STORAGE_KEYS.orders);
+        if (!rawOrders) return false;
+        const parsedOrders = JSON.parse(rawOrders);
+        if (!Array.isArray(parsedOrders) || parsedOrders.length === 0) return false;
+
+        orders = parsedOrders.map(ensureOrderDates);
+        window.orders = orders;
+
+        const rawNotes = window.localStorage.getItem(STORAGE_KEYS.notes);
+        if (rawNotes) {
+          const parsedNotes = JSON.parse(rawNotes);
+          if (Array.isArray(parsedNotes)) {
+            notes = parsedNotes;
+            window.notes = notes;
+          }
+        }
+
+        const rawTs = window.localStorage.getItem(STORAGE_KEYS.addedOrderTimestamps);
+        if (rawTs) {
+          const parsedTs = JSON.parse(rawTs);
+          if (Array.isArray(parsedTs)) {
+            addedOrderTimestamps = parsedTs.map(Number).filter(n => Number.isFinite(n));
+            pruneExpiredAddedOrders();
+            window.addedOrderTimestamps = addedOrderTimestamps;
+          }
+        }
+
+        const savedRole = window.localStorage.getItem(STORAGE_KEYS.roleKey);
+        if (savedRole && ROLE_PROFILES.some(r => r.key === savedRole)) {
+          currentRoleKey = savedRole;
+          draftRoleKey = savedRole;
+        }
+
+        const savedEmail = window.localStorage.getItem(STORAGE_KEYS.accountEmail);
+        if (savedEmail !== null) {
+          currentAccountEmail = savedEmail;
+          window.currentAccountEmail = currentAccountEmail;
+        }
+
+        const savedLang = window.localStorage.getItem(STORAGE_KEYS.lang);
+        if (savedLang === 'tr' || savedLang === 'ar') {
+          currentLang = savedLang;
+          window.currentLang = currentLang;
+        }
+
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function clearStoredAppState() {
+      if (!isLocalStorageAvailable()) return;
+      try {
+        Object.values(STORAGE_KEYS).forEach(k => window.localStorage.removeItem(k));
+      } catch (e) {}
+    }
+
     function initApp() {
       try {
-        orders = JSON.parse(JSON.stringify(INITIAL_ORDERS)).map(ensureOrderDates);
-        notes = JSON.parse(JSON.stringify(INITIAL_NOTES));
-        addedOrderTimestamps = [];
-        addedOrdersCount = 0;
+        const loaded = loadStateFromStorage();
+        if (!loaded) {
+          orders = JSON.parse(JSON.stringify(INITIAL_ORDERS)).map(ensureOrderDates);
+          notes = JSON.parse(JSON.stringify(INITIAL_NOTES));
+          addedOrderTimestamps = [];
+          addedOrdersCount = 0;
+          window.orders = orders;
+          window.notes = notes;
+          window.addedOrderTimestamps = addedOrderTimestamps;
+          saveStateToStorage();
+        }
         updateAddedOrdersBadge();
         setInterval(updateAddedOrdersBadge, 60000);
         normalizeOrderNumbers();
+        saveStateToStorage();
         updateHeaderRoleUI();
         applyLanguage(currentLang);
       } catch (e) {
         orders = JSON.parse(JSON.stringify(INITIAL_ORDERS));
         notes = JSON.parse(JSON.stringify(INITIAL_NOTES));
+        window.orders = orders;
+        window.notes = notes;
         renderOrders();
       }
     }
+
+    window.addEventListener('pagehide', saveStateToStorage);
+    window.addEventListener('beforeunload', saveStateToStorage);
 
     if (document.readyState === 'loading') {
       window.addEventListener('DOMContentLoaded', initApp);
