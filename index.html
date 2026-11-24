@@ -156,10 +156,10 @@
       box-shadow: 0 8px 18px -5px rgba(250, 204, 21, 0.2), 0 2px 5px -1px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.98);
     }
     .seq-square-3d {
-      width: 24px;
-      height: 18px;
+      width: 22px;
+      height: 15px;
       padding: 0 2px;
-      border-radius: 5px;
+      border-radius: 4px;
       background: #F1F5F9;
       border: 1px solid #CBD5E1;
       box-shadow: none;
@@ -311,18 +311,18 @@
   <main id="appMainContainer" class="max-w-3xl mx-auto px-2.5 pt-4 transition-all">
 
     <!-- TAB 1: EMİRLER (ACTIVE WORK ORDERS) -->
-    <section id="tab-emirler" class="space-y-4">
-      <div class="py-1.5 space-y-3">
-        <div class="min-w-0">
-          <h1 data-i18n="orders_title" class="text-[28px] sm:text-[32px] leading-tight font-extrabold text-slate-900 tracking-tight app-section-title">Üretim Emirleri</h1>
-          <p data-i18n="orders_subtitle" class="text-sm sm:text-base text-slate-600 mt-1 leading-snug">Üretim emirlerini bulun ve üretim girdilerini güncelleyin.</p>
+    <section id="tab-emirler" class="space-y-3">
+      <div class="flex items-start justify-between gap-2 pt-0.5">
+        <div>
+          <h1 data-i18n="orders_title" class="text-2xl sm:text-[26px] leading-none font-extrabold text-slate-900 tracking-tight app-section-title">Üretim Emirleri</h1>
+          <p data-i18n="orders_subtitle" class="text-xs text-slate-500 mt-1">Üretim emirlerini bulun ve üretim girdilerini güncelleyin.</p>
         </div>
-        <div class="flex items-center gap-2.5 pt-0.5">
-          <button id="newOrderMainBtn" type="button" onclick="openNewOrderModal()" class="inline-flex items-center gap-2 bg-[#146C53] hover:bg-[#0F5C45] text-white font-extrabold text-sm px-4 py-3 rounded-2xl shadow-sm active:scale-95 transition">
-            <span class="text-base leading-none">+</span>
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button id="newOrderMainBtn" type="button" onclick="openNewOrderModal()" class="inline-flex items-center gap-1 bg-[#146C53] hover:bg-[#0F5C45] text-white font-extrabold text-xs px-3.5 py-2 rounded-2xl shadow-xs active:scale-95 transition">
+            <span>+</span>
             <span data-i18n="new_order_btn">Yeni emir</span>
           </button>
-          <span id="addedOrdersBadge" title="Eklenen yeni iş emri sayısı" class="hidden min-w-[24px] h-[24px] px-1.5 rounded-full bg-[#146C53] text-white text-[11px] font-extrabold items-center justify-center shadow-sm tabular-nums">0</span>
+          <span id="addedOrdersBadge" title="Eklenen yeni iş emri sayısı" class="hidden min-w-[22px] h-[22px] px-1.5 rounded-full bg-[#146C53] text-white text-[10px] font-extrabold items-center justify-center shadow-xs tabular-nums">0</span>
         </div>
       </div>
 
@@ -333,11 +333,11 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103.5 10.5a7.5 7.5 0 0013.15 6.15z"/>
           </svg>
           <input id="searchInput" type="search" enterkeyhint="search" oninput="renderOrders()" onkeydown="if(event.key==='Enter'){this.blur();renderOrders();}" data-i18n-placeholder="search_order_ph" placeholder="ARTIVE veya ARTICLE THERMOFM"
-            class="w-full ltr:pl-9 ltr:pr-3 rtl:pr-9 rtl:pl-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#146C53]" />
+            class="w-full ltr:pl-9 ltr:pr-3.5 rtl:pr-9 rtl:pl-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#146C53]" />
         </div>
       </div>
 
-      <div id="ordersList" class="space-y-2"></div>
+      <div id="ordersList" class="space-y-3"></div>
     </section>
 
     <!-- TAB 2: TAMAMLANAN İŞ EMİRLERİ -->
@@ -439,21 +439,21 @@
     </section>
 
     <!-- TAB 5: RAPORLAR (SADECE BU SAYFADA İSTATİSTİKLER DİKLEMESİNE) -->
-    <section id="tab-raporlar" class="hidden w-full max-w-[420px] mx-auto min-w-0 overflow-x-clip space-y-1 pb-1">
-      <div class="flex items-baseline justify-between gap-1.5 px-0.5 min-w-0">
-        <h2 data-i18n="reports_title" class="text-[13px] font-extrabold text-slate-900 app-section-title leading-none shrink-0">Üretim Raporları</h2>
-        <p data-i18n="reports_subtitle" class="text-[9px] text-slate-500 leading-none truncate">Aylık üretim performansı ve operatör sıralaması.</p>
+    <section id="tab-raporlar" class="hidden w-full max-w-[420px] mx-auto min-w-0 overflow-x-clip space-y-2 pb-1">
+      <div class="flex items-baseline justify-between gap-2 px-0.5 pt-0.5 min-w-0">
+        <h2 data-i18n="reports_title" class="text-[16px] font-extrabold text-slate-900 app-section-title leading-tight shrink-0">Üretim Raporları</h2>
+        <p data-i18n="reports_subtitle" class="text-[10.5px] text-slate-500 leading-tight truncate">Aylık üretim performansı ve operatör sıralaması.</p>
       </div>
 
       <!-- KPI Summary Cards (Yıllık Toplam / Aylık Ort.) -->
-      <div class="grid grid-cols-2 gap-1 w-full min-w-0">
-        <div class="pro-card rounded-lg px-2 py-1 min-w-0 overflow-hidden flex items-center justify-between gap-1">
-          <div data-i18n="yearly_total" class="text-[9px] font-bold text-slate-500 truncate">Yıllık Toplam</div>
-          <div id="repYearly" class="text-[11px] font-extrabold text-slate-900 tabular-nums truncate">0 KG</div>
+      <div class="grid grid-cols-2 gap-2 w-full min-w-0">
+        <div class="pro-card rounded-xl px-3 py-2.5 min-w-0 overflow-hidden flex items-center justify-between gap-1.5">
+          <div data-i18n="yearly_total" class="text-[10.5px] font-bold text-slate-500 truncate">Yıllık Toplam</div>
+          <div id="repYearly" class="text-[13px] font-extrabold text-slate-900 tabular-nums truncate">0 KG</div>
         </div>
-        <div class="pro-card rounded-lg px-2 py-1 min-w-0 overflow-hidden flex items-center justify-between gap-1">
-          <div data-i18n="monthly_avg" class="text-[9px] font-bold text-slate-500 truncate">Aylık Ort.</div>
-          <div id="repAvg" class="text-[11px] font-extrabold text-[#146C53] tabular-nums truncate">0 KG</div>
+        <div class="pro-card rounded-xl px-3 py-2.5 min-w-0 overflow-hidden flex items-center justify-between gap-1.5">
+          <div data-i18n="monthly_avg" class="text-[10.5px] font-bold text-slate-500 truncate">Aylık Ort.</div>
+          <div id="repAvg" class="text-[13px] font-extrabold text-[#146C53] tabular-nums truncate">0 KG</div>
         </div>
       </div>
 
@@ -551,131 +551,139 @@
 
   <!-- MODAL 1: EDIT PRODUCTION ORDER -->
   <div id="editModal" class="fixed inset-0 z-50 hidden bg-slate-900/55 backdrop-blur-xs flex items-end sm:items-center justify-center">
-    <div class="bg-white w-full max-w-xl rounded-t-3xl sm:rounded-3xl p-5 pt-3 shadow-2xl bottom-sheet-enter max-h-[92vh] overflow-y-auto space-y-4">
-      <div class="relative flex items-center justify-center min-h-[28px]">
+    <div class="bg-white w-full max-w-xl rounded-t-3xl sm:rounded-3xl px-4 py-2.5 shadow-2xl bottom-sheet-enter max-h-[96vh] overflow-y-auto space-y-2.5">
+      <!-- Top Drag Handle & Close Button -->
+      <div class="relative flex items-center justify-center min-h-[22px]">
         <div class="w-10 h-1 bg-slate-200 rounded-full sm:hidden"></div>
-        <button type="button" onclick="closeModal('editModal')" aria-label="Kapat" class="absolute ltr:right-0 rtl:left-0 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 active:scale-95 transition">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
       </div>
 
-      <div class="flex items-center justify-between gap-2">
-        <div class="inline-flex items-center gap-1.5 bg-slate-100 border border-slate-200 rounded-xl px-2.5 py-1">
-          <span data-i18n="order_seq_short" class="text-[11px] font-extrabold text-slate-500">SIRA #</span>
-          <input id="editOrderNoInput" type="number" min="1" class="w-12 bg-white border border-slate-200 rounded-lg text-xs font-extrabold text-center py-0.5 text-slate-900" />
+      <!-- Elevated Order Summary Card (Sleek Grey & Compact) -->
+      <div id="editModalSummaryCard" class="rounded-2xl px-3 py-2 bg-gradient-to-b from-slate-100 to-slate-200/85 border border-slate-300 border-b-[2.5px] border-b-slate-400 shadow-xs transition space-y-1.5">
+        <div class="flex items-center justify-between gap-2">
+          <!-- Sequence Badge (#1) -->
+          <div id="editModalSeqBadgeWrap" class="inline-flex items-center justify-center shrink-0 seq-square-3d">
+            <input id="editOrderNoInput" type="number" inputmode="numeric" min="1" class="w-full h-full bg-transparent text-slate-950 text-[10px] font-extrabold text-center leading-none tabular-nums rounded outline-none" />
+          </div>
+
+          <!-- Center Date Pill -->
+          <span id="editModalPeriod" class="inline-flex items-center justify-center shrink-0 h-[20px] px-2.5 rounded-lg bg-white/95 border border-slate-300/90 text-[10px] leading-none font-bold text-slate-800 tabular-nums shadow-2xs">23.11.2026</span>
+
+          <!-- Right Action Dropdown (GİRİŞ / Seç) -->
+          <div id="editModalActionMenuWrap" class="relative inline-block shrink-0">
+            <button id="editModalSelectMenuBtn" type="button" onclick="toggleEditModalSelectMenu(event)"
+              class="inline-flex items-center gap-1 h-[20px] px-2.5 rounded-lg bg-white/95 hover:bg-white border border-slate-300/90 text-[10px] leading-none font-extrabold text-slate-800 shadow-2xs active:scale-95 transition">
+              <span>GİRİŞ</span>
+              <svg class="w-2.5 h-2.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="editModalSelectDropdown" class="hidden absolute ltr:right-0 rtl:left-0 top-full mt-1 z-30 w-36 bg-white rounded-xl shadow-xl border border-slate-200 p-1 space-y-0.5">
+              <button id="editOrderMetricsBtn" type="button" onclick="handleEditModalSelectAction('EDIT')" class="w-full px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-slate-700 hover:bg-slate-100 ltr:text-left rtl:text-right transition">
+                Miktarları Düzenle
+              </button>
+              <button id="deleteOrderModalBtn" type="button" onclick="handleEditModalSelectAction('DELETE')" class="w-full px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-rose-600 hover:bg-rose-50 ltr:text-left rtl:text-right transition">
+                İş Emrini Sil
+              </button>
+            </div>
+          </div>
         </div>
-        <div id="editModalActionMenuWrap" class="relative inline-block">
-          <button id="editModalSelectMenuBtn" type="button" onclick="toggleEditModalSelectMenu(event)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 font-extrabold text-xs active:scale-95 transition">
-            <span>Seç</span>
-            <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-            </svg>
-          </button>
-          <div id="editModalSelectDropdown" class="hidden absolute ltr:right-0 rtl:left-0 top-full mt-1.5 z-30 w-36 bg-white rounded-2xl shadow-xl border border-slate-200 p-1.5 space-y-1">
-            <button id="editOrderMetricsBtn" type="button" onclick="handleEditModalSelectAction('EDIT')" class="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-extrabold text-slate-800 hover:bg-emerald-50 transition ltr:text-left rtl:text-right">
-              <span>🟢</span>
-              <span>Düzenle</span>
-            </button>
-            <button id="deleteOrderModalBtn" type="button" onclick="handleEditModalSelectAction('DELETE')" class="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-extrabold text-rose-700 hover:bg-rose-50 transition ltr:text-left rtl:text-right">
-              <span>🔴</span>
-              <span>Sil</span>
-            </button>
+
+        <!-- Product / Bobin Info -->
+        <div>
+          <p class="text-xs font-semibold text-slate-900 flex flex-wrap items-center gap-1.5">
+            <span id="editModalStatusDot" class="w-2 h-2 rounded-full bg-slate-500 shrink-0"></span>
+            <span id="editModalArtive">BOBINE SF-PET</span>
+          </p>
+          <h3 id="editModalArticle" class="text-[10px] leading-tight font-medium text-slate-600 mt-0.5">ARTICLE</h3>
+        </div>
+
+        <!-- 3-Column Metrics Box (SİPARİŞ / ÜRETİM / KALAN) -->
+        <div class="grid grid-cols-3 bg-white/85 border border-slate-300/80 rounded-xl py-2 px-2 text-center shadow-2xs tabular-nums">
+          <div>
+            <div class="text-[9.5px] font-bold text-slate-400 leading-none tracking-wide" data-i18n="metric_order">SİPARİŞ</div>
+            <div id="editCalcTon" class="text-xs sm:text-sm font-black text-slate-950 leading-tight mt-1">0</div>
+            <input id="manualTonInput" type="number" step="any" oninput="onManualMetricInput('TON')" class="hidden mt-1 w-20 mx-auto px-1.5 py-0.5 bg-white border border-slate-300 rounded text-[11px] font-bold text-center text-slate-900" />
+          </div>
+          <div class="border-x border-slate-300/80">
+            <div class="text-[9.5px] font-bold text-slate-400 leading-none tracking-wide" data-i18n="metric_prod">ÜRETİM</div>
+            <div id="editCalcProd" class="text-xs sm:text-sm font-black text-emerald-700 leading-tight mt-1">0</div>
+            <input id="manualProdInput" type="number" step="any" oninput="onManualMetricInput('PROD')" class="hidden mt-1 w-20 mx-auto px-1.5 py-0.5 bg-white border border-slate-300 rounded text-[11px] font-bold text-center text-emerald-700" />
+          </div>
+          <div>
+            <div class="text-[9.5px] font-bold text-slate-400 leading-none tracking-wide" data-i18n="metric_rem">KALAN</div>
+            <div id="editCalcRest" class="text-xs sm:text-sm font-black text-rose-700 leading-tight mt-1">0</div>
+            <input id="manualRestInput" type="number" step="any" oninput="onManualMetricInput('REST')" class="hidden mt-1 w-20 mx-auto px-1.5 py-0.5 bg-white border border-slate-300 rounded text-[11px] font-bold text-center text-rose-700" />
           </div>
         </div>
       </div>
 
-      <div class="space-y-1">
-        <div id="editModalPeriod" class="text-[11px] font-semibold text-slate-500">01.11.2026</div>
-        <h3 id="editModalArtive" class="text-sm font-extrabold text-slate-900 leading-snug">BOBINE</h3>
-      </div>
-
-      <div class="grid grid-cols-3 gap-2 bg-slate-50 border border-slate-200/80 rounded-2xl p-3 text-center">
-        <div>
-          <div class="text-[10px] font-bold text-slate-400">SİPARİŞ</div>
-          <div id="editCalcTon" class="text-sm font-extrabold text-slate-900 mt-0.5">0 KG</div>
-          <input id="manualTonInput" type="number" step="any" oninput="onManualMetricInput('TON')" placeholder="Sipariş KG"
-            class="hidden mt-1.5 w-full px-2 py-1 bg-white border border-amber-300 rounded-lg text-xs font-extrabold text-slate-900 text-center" />
-        </div>
-        <div class="border-x border-slate-200">
-          <div class="text-[10px] font-bold text-slate-400">ÜRETİM</div>
-          <div id="editCalcProd" class="text-sm font-extrabold text-[#146C53] mt-0.5">0 KG</div>
-          <input id="manualProdInput" type="number" step="any" oninput="onManualMetricInput('PROD')" placeholder="Üretim KG"
-            class="hidden mt-1.5 w-full px-2 py-1 bg-white border border-emerald-300 rounded-lg text-xs font-extrabold text-[#146C53] text-center" />
-        </div>
-        <div>
-          <div class="text-[10px] font-bold text-slate-400">KALAN</div>
-          <div id="editCalcRest" class="text-sm font-extrabold text-amber-600 mt-0.5">0 KG</div>
-          <input id="manualRestInput" type="number" step="any" oninput="onManualMetricInput('REST')" placeholder="Kalan KG"
-            class="hidden mt-1.5 w-full px-2 py-1 bg-white border border-rose-300 rounded-lg text-xs font-extrabold text-amber-700 text-center" />
-        </div>
-      </div>
-
+      <!-- Operator Selector + Single Active KG Entry Row & 4-Operator Breakdown -->
       <div class="space-y-2">
-        <div class="flex items-center justify-between">
-          <span data-i18n="op_inputs_title" class="text-xs font-extrabold text-slate-800">Operatör Üretim Girdileri (KG)</span>
+        <div class="flex items-center justify-between px-0.5">
+          <span data-i18n="op_inputs_title" class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">Operatör Seçimi & Üretim Girişi (KG)</span>
+          <span class="text-[10px] font-bold text-slate-400">Vardiya & Miktar</span>
         </div>
 
-        <div class="flex flex-col gap-2">
-          <div id="opRowIsa" onclick="selectOperatorRowByName('İSA')" class="flex items-center justify-between gap-2.5 bg-slate-50 border border-slate-200/90 rounded-2xl px-3 py-2 transition cursor-pointer">
-            <label onclick="event.stopPropagation()" class="flex items-center gap-2 cursor-pointer min-w-[105px] shrink-0">
-              <input id="checkOpIsa" type="checkbox" onchange="onOperatorCheckboxToggle('İSA', this.checked)" class="w-4 h-4 rounded text-blue-600 accent-blue-600" />
-              <span id="opLabelIsa" class="text-xs font-extrabold text-slate-700">İSA</span>
-            </label>
-            <div onclick="event.stopPropagation()" class="flex items-center gap-1.5 flex-1">
-              <input id="inputIsa" type="text" inputmode="numeric" placeholder="" onfocus="onOperatorInputFocus(this)" onblur="onOperatorInputBlur(this)" oninput="normalizeOperatorInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmOperatorInput('inputIsa','İSA');}" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm font-extrabold text-slate-900" />
-              <button id="plusBtnIsa" type="button" title="Satıra + Ekle" onclick="appendPlusToOperatorRow('inputIsa', 'İSA')" class="w-9 h-9 shrink-0 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-base flex items-center justify-center active:scale-95 transition">+</button>
-            </div>
+        <!-- Single Unified Operator Selector + KG Input Row -->
+        <div id="activeOperatorEntryBox" class="flex items-center gap-2 bg-slate-50/95 border border-slate-200/95 rounded-2xl p-2 shadow-2xs transition-all">
+          <div class="relative flex-1 min-w-[132px]">
+            <select id="operatorSelectDropdown" onchange="onOperatorDropdownChange(this.value)" aria-label="Operatör Seç"
+              class="w-full ltr:pl-3 ltr:pr-8 rtl:pr-3 rtl:pl-8 py-2 bg-white border border-slate-200 focus:border-[#146C53] rounded-xl text-xs font-extrabold tracking-tight shadow-2xs cursor-pointer transition">
+              <option value="" class="text-slate-500 font-bold">Operatör Seçin...</option>
+              <option value="İSA" class="text-blue-700 font-extrabold">● İSA</option>
+              <option value="MUHİDDİN" class="text-[#146C53] font-extrabold">● MUHİDDİN</option>
+              <option value="KADDUR" class="text-amber-700 font-extrabold">● KADDUR</option>
+              <option value="MUHAMMED" class="text-purple-700 font-extrabold">● MUHAMMED</option>
+            </select>
           </div>
-
-          <div id="opRowMuhiddin" onclick="selectOperatorRowByName('MUHİDDİN')" class="flex items-center justify-between gap-2.5 bg-slate-50 border border-slate-200/90 rounded-2xl px-3 py-2 transition cursor-pointer">
-            <label onclick="event.stopPropagation()" class="flex items-center gap-2 cursor-pointer min-w-[105px] shrink-0">
-              <input id="checkOpMuhiddin" type="checkbox" onchange="onOperatorCheckboxToggle('MUHİDDİN', this.checked)" class="w-4 h-4 rounded text-[#146C53] accent-[#146C53]" />
-              <span id="opLabelMuhiddin" class="text-xs font-extrabold text-slate-700">MUHİDDİN</span>
-            </label>
-            <div onclick="event.stopPropagation()" class="flex items-center gap-1.5 flex-1">
-              <input id="inputMuhiddin" type="text" inputmode="numeric" placeholder="" onfocus="onOperatorInputFocus(this)" onblur="onOperatorInputBlur(this)" oninput="normalizeOperatorInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmOperatorInput('inputMuhiddin','MUHİDDİN');}" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm font-extrabold text-slate-900" />
-              <button id="plusBtnMuhiddin" type="button" title="Satıra + Ekle" onclick="appendPlusToOperatorRow('inputMuhiddin', 'MUHİDDİN')" class="w-9 h-9 shrink-0 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-base flex items-center justify-center active:scale-95 transition">+</button>
-            </div>
+          <div class="relative flex-1 min-w-0">
+            <input id="activeOperatorKgInput" type="text" enterkeyhint="done" autocomplete="on" autocorrect="on" autocapitalize="sentences" spellcheck="true" placeholder="0"
+              onpointerdown="prepareKeyboardFocusForOperatorInput(this, event)"
+              onfocus="onSingleOperatorInputFocus(this)"
+              onblur="onSingleOperatorInputBlur(this)"
+              oninput="onSingleOperatorKgInput(this)"
+              onkeydown="if(event.key==='Enter'){event.preventDefault();confirmSingleOperatorInput();}"
+              class="w-full ltr:pl-3 ltr:pr-8 rtl:pr-3 rtl:pl-8 py-2 bg-white border border-slate-200 focus:border-[#146C53] rounded-xl text-sm font-black text-slate-900 ltr:text-right rtl:text-left tabular-nums shadow-2xs transition" />
+            <span class="pointer-events-none absolute ltr:right-2.5 rtl:left-2.5 top-1/2 -translate-y-1/2 text-[9px] font-extrabold text-slate-400 tracking-wider">KG</span>
           </div>
+        </div>
 
-          <div id="opRowKaddur" onclick="selectOperatorRowByName('KADDUR')" class="flex items-center justify-between gap-2.5 bg-slate-50 border border-slate-200/90 rounded-2xl px-3 py-2 transition cursor-pointer">
-            <label onclick="event.stopPropagation()" class="flex items-center gap-2 cursor-pointer min-w-[105px] shrink-0">
-              <input id="checkOpKaddur" type="checkbox" onchange="onOperatorCheckboxToggle('KADDUR', this.checked)" class="w-4 h-4 rounded text-amber-600 accent-amber-600" />
-              <span id="opLabelKaddur" class="text-xs font-extrabold text-slate-700">KADDUR</span>
-            </label>
-            <div onclick="event.stopPropagation()" class="flex items-center gap-1.5 flex-1">
-              <input id="inputKaddur" type="text" inputmode="numeric" placeholder="" onfocus="onOperatorInputFocus(this)" onblur="onOperatorInputBlur(this)" oninput="normalizeOperatorInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmOperatorInput('inputKaddur','KADDUR');}" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm font-extrabold text-slate-900" />
-              <button id="plusBtnKaddur" type="button" title="Satıra + Ekle" onclick="appendPlusToOperatorRow('inputKaddur', 'KADDUR')" class="w-9 h-9 shrink-0 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-base flex items-center justify-center active:scale-95 transition">+</button>
-            </div>
+        <!-- Individual Produced KG Breakdown for All 4 Operators -->
+        <div class="grid grid-cols-4 gap-1.5">
+          <div id="opStatCardIsa" onclick="selectOperatorRowByName('İSA')" class="cursor-pointer rounded-xl bg-blue-50/60 hover:bg-blue-50 border border-blue-200/80 px-2 py-1.5 text-center transition">
+            <div class="text-[9.5px] font-extrabold text-blue-700 tracking-tight truncate">İSA</div>
+            <div class="mt-0.5 text-xs font-black text-slate-900 tabular-nums leading-tight"><span id="opStatValIsa">0</span> <span class="text-[8.5px] font-bold text-slate-400">KG</span></div>
           </div>
-
-          <div id="opRowMuhammed" onclick="selectOperatorRowByName('MUHAMMED')" class="flex items-center justify-between gap-2.5 bg-slate-50 border border-slate-200/90 rounded-2xl px-3 py-2 transition cursor-pointer">
-            <label onclick="event.stopPropagation()" class="flex items-center gap-2 cursor-pointer min-w-[105px] shrink-0">
-              <input id="checkOpMuhammed" type="checkbox" onchange="onOperatorCheckboxToggle('MUHAMMED', this.checked)" class="w-4 h-4 rounded text-purple-600 accent-purple-600" />
-              <span id="opLabelMuhammed" class="text-xs font-extrabold text-slate-700">MUHAMMED</span>
-            </label>
-            <div onclick="event.stopPropagation()" class="flex items-center gap-1.5 flex-1">
-              <input id="inputMuhammed" type="text" inputmode="numeric" placeholder="" onfocus="onOperatorInputFocus(this)" onblur="onOperatorInputBlur(this)" oninput="normalizeOperatorInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmOperatorInput('inputMuhammed','MUHAMMED');}" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm font-extrabold text-slate-900" />
-              <button id="plusBtnMuhammed" type="button" title="Satıra + Ekle" onclick="appendPlusToOperatorRow('inputMuhammed', 'MUHAMMED')" class="w-9 h-9 shrink-0 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-base flex items-center justify-center active:scale-95 transition">+</button>
-            </div>
+          <div id="opStatCardMuhiddin" onclick="selectOperatorRowByName('MUHİDDİN')" class="cursor-pointer rounded-xl bg-emerald-50/60 hover:bg-emerald-50 border border-emerald-200/80 px-2 py-1.5 text-center transition">
+            <div class="text-[9.5px] font-extrabold text-[#146C53] tracking-tight truncate">MUHİDDİN</div>
+            <div class="mt-0.5 text-xs font-black text-slate-900 tabular-nums leading-tight"><span id="opStatValMuhiddin">0</span> <span class="text-[8.5px] font-bold text-slate-400">KG</span></div>
+          </div>
+          <div id="opStatCardKaddur" onclick="selectOperatorRowByName('KADDUR')" class="cursor-pointer rounded-xl bg-amber-50/60 hover:bg-amber-50 border border-amber-200/80 px-2 py-1.5 text-center transition">
+            <div class="text-[9.5px] font-extrabold text-amber-700 tracking-tight truncate">KADDUR</div>
+            <div class="mt-0.5 text-xs font-black text-slate-900 tabular-nums leading-tight"><span id="opStatValKaddur">0</span> <span class="text-[8.5px] font-bold text-slate-400">KG</span></div>
+          </div>
+          <div id="opStatCardMuhammed" onclick="selectOperatorRowByName('MUHAMMED')" class="cursor-pointer rounded-xl bg-purple-50/60 hover:bg-purple-50 border border-purple-200/80 px-2 py-1.5 text-center transition">
+            <div class="text-[9.5px] font-extrabold text-purple-700 tracking-tight truncate">MUHAMMED</div>
+            <div class="mt-0.5 text-xs font-black text-slate-900 tabular-nums leading-tight"><span id="opStatValMuhammed">0</span> <span class="text-[8.5px] font-bold text-slate-400">KG</span></div>
           </div>
         </div>
       </div>
 
-      <div id="modalShiftStatusText" class="text-[11px] font-semibold text-slate-600 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-2">
+      <!-- Shift Status Prompt Bar -->
+      <div id="modalShiftStatusText" class="text-[11px] font-semibold text-slate-600 bg-slate-100 border border-slate-200/90 rounded-xl px-3 py-1.5">
         Vardiya başlatmak için bir operatör kutucuğu seçin
       </div>
 
-      <div class="grid grid-cols-2 gap-2.5">
-        <button id="startShiftBtn" type="button" onclick="startOperatorShift()" data-i18n="start_shift_btn" class="py-2.5 px-3 rounded-xl bg-[#146C53] hover:bg-[#0F5C45] text-white font-extrabold text-xs shadow-2xs active:scale-95 transition">
+      <!-- Start / End Shift Action Buttons -->
+      <div class="grid grid-cols-2 gap-2">
+        <button id="startShiftBtn" type="button" onclick="startOperatorShift()" data-i18n="start_shift_btn" class="py-2.5 px-3 rounded-xl bg-[#146C53] hover:bg-[#0F5C45] text-white font-extrabold text-xs tracking-wide shadow-2xs active:scale-95 transition">
           BAŞLAT
         </button>
-        <button id="endShiftBtn" type="button" onclick="endOperatorShift()" data-i18n="end_shift_btn" class="py-2.5 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs shadow-2xs active:scale-95 transition">
+        <button id="endShiftBtn" type="button" onclick="endOperatorShift()" data-i18n="end_shift_btn" class="py-2.5 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs tracking-wide shadow-2xs active:scale-95 transition">
           BİTİR
         </button>
       </div>
 
-      <button type="button" onclick="saveOrderEdits()" data-i18n="save_changes_btn" class="w-full bg-slate-950 hover:bg-slate-800 border border-slate-900 text-white font-extrabold text-sm py-3.5 rounded-2xl shadow-[0_8px_20px_-6px_rgba(15,23,42,0.55)] active:scale-[0.99] transition">
+      <!-- Primary Save CTA -->
+      <button type="button" onclick="saveOrderEdits()" data-i18n="save_changes_btn" class="w-full bg-slate-950 hover:bg-slate-800 border border-slate-900 text-white font-extrabold text-xs py-2.5 rounded-xl shadow-[0_6px_16px_-6px_rgba(15,23,42,0.55)] active:scale-[0.99] transition">
         Değişiklikleri Kaydet
       </button>
     </div>
@@ -1597,11 +1605,40 @@
     document.addEventListener('touchmove', handleViewportScrollCollapse, { passive: true });
 
     const OPERATOR_INPUT_CONFIG = [
-      { name: 'İSA', rowId: 'opRowIsa', checkId: 'checkOpIsa', labelId: 'opLabelIsa', inputId: 'inputIsa', plusId: 'plusBtnIsa', field: 'isa', activeBorder: 'border-blue-500 ring-2 ring-blue-500/20 bg-blue-50/40' },
-      { name: 'MUHİDDİN', rowId: 'opRowMuhiddin', checkId: 'checkOpMuhiddin', labelId: 'opLabelMuhiddin', inputId: 'inputMuhiddin', plusId: 'plusBtnMuhiddin', field: 'muhiddin', activeBorder: 'border-emerald-600 ring-2 ring-emerald-600/20 bg-emerald-50/40' },
-      { name: 'KADDUR', rowId: 'opRowKaddur', checkId: 'checkOpKaddur', labelId: 'opLabelKaddur', inputId: 'inputKaddur', plusId: 'plusBtnKaddur', field: 'kaddur', activeBorder: 'border-amber-500 ring-2 ring-amber-500/20 bg-amber-50/40' },
-      { name: 'MUHAMMED', rowId: 'opRowMuhammed', checkId: 'checkOpMuhammed', labelId: 'opLabelMuhammed', inputId: 'inputMuhammed', plusId: 'plusBtnMuhammed', field: 'muhammed', activeBorder: 'border-purple-500 ring-2 ring-purple-500/20 bg-purple-50/40' }
+      { name: 'İSA', field: 'isa', statCardId: 'opStatCardIsa', statValId: 'opStatValIsa', selectTextClass: 'text-blue-700', boxBorderClass: 'border-blue-400 ring-2 ring-blue-500/15 bg-blue-50/35', cardActiveClass: 'ring-2 ring-blue-500/50 bg-blue-100/75 border-blue-400', cardIdleClass: 'bg-blue-50/60 hover:bg-blue-50 border-blue-200/80' },
+      { name: 'MUHİDDİN', field: 'muhiddin', statCardId: 'opStatCardMuhiddin', statValId: 'opStatValMuhiddin', selectTextClass: 'text-[#146C53]', boxBorderClass: 'border-emerald-500 ring-2 ring-emerald-600/15 bg-emerald-50/35', cardActiveClass: 'ring-2 ring-emerald-600/50 bg-emerald-100/75 border-emerald-400', cardIdleClass: 'bg-emerald-50/60 hover:bg-emerald-50 border-emerald-200/80' },
+      { name: 'KADDUR', field: 'kaddur', statCardId: 'opStatCardKaddur', statValId: 'opStatValKaddur', selectTextClass: 'text-amber-700', boxBorderClass: 'border-amber-400 ring-2 ring-amber-500/15 bg-amber-50/35', cardActiveClass: 'ring-2 ring-amber-500/50 bg-amber-100/75 border-amber-400', cardIdleClass: 'bg-amber-50/60 hover:bg-amber-50 border-amber-200/80' },
+      { name: 'MUHAMMED', field: 'muhammed', statCardId: 'opStatCardMuhammed', statValId: 'opStatValMuhammed', selectTextClass: 'text-purple-700', boxBorderClass: 'border-purple-400 ring-2 ring-purple-500/15 bg-purple-50/35', cardActiveClass: 'ring-2 ring-purple-500/50 bg-purple-100/75 border-purple-400', cardIdleClass: 'bg-purple-50/60 hover:bg-purple-50 border-purple-200/80' }
     ];
+
+    let draftOperatorKgValues = { isa: 0, muhiddin: 0, kaddur: 0, muhammed: 0 };
+    let draftOperatorKgExpressions = { isa: '', muhiddin: '', kaddur: '', muhammed: '' };
+
+    function sanitizeKgExpression(rawVal) {
+      return String(rawVal ?? '')
+        .replace(/\s+/g, '')
+        .replace(/,/g, '.')
+        .replace(/[^0-9+.]/g, '')
+        .replace(/\+{2,}/g, '+')
+        .replace(/^\+/, '');
+    }
+
+    function formatKgExpressionForDisplay(expr, numericVal) {
+      const cleaned = sanitizeKgExpression(expr).replace(/\++$/, '');
+      if (cleaned.includes('+')) return cleaned;
+      const num = Number(numericVal) || 0;
+      return num > 0 ? String(num) : '';
+    }
+
+    function getOrderOperatorExpression(order, field) {
+      if (!order) return '';
+      if (order.operatorKgExpressions && typeof order.operatorKgExpressions === 'object') {
+        const savedExpr = sanitizeKgExpression(order.operatorKgExpressions[field] || '').replace(/\++$/, '');
+        if (savedExpr) return savedExpr;
+      }
+      const num = Number(order[field]) || 0;
+      return num > 0 ? String(num) : '';
+    }
 
     function closeModal(modalId) {
       const el = document.getElementById(modalId);
@@ -1610,6 +1647,8 @@
         editingOrderId = null;
         pendingModalShift = null;
         isEditingMetricsMode = false;
+        draftOperatorKgValues = { isa: 0, muhiddin: 0, kaddur: 0, muhammed: 0 };
+        draftOperatorKgExpressions = { isa: '', muhiddin: '', kaddur: '', muhammed: '' };
         closeEditModalSelectMenu();
       }
     }
@@ -1715,12 +1754,10 @@
 
     function isOrderStartedForKgInput(order) {
       if (!order || order.closed || order.cancelled) return false;
+      if (pendingModalShift && pendingModalShift.status === 'ACTIVE') return true;
       const wStatus = getWorkStatus(order);
-      const hasShiftHistory = Boolean(
-        order.orderStartTime ||
-        (order.shiftSession && (order.shiftSession.startedAt || order.shiftSession.status === 'ACTIVE' || order.shiftSession.status === 'ENDED'))
-      );
-      return wStatus === 'RUNNING' || wStatus === 'PAUSED' || hasShiftHistory;
+      const sessionStatus = order.shiftSession && order.shiftSession.status;
+      return wStatus === 'RUNNING' && Boolean(order.shiftActive) && sessionStatus === 'ACTIVE';
     }
 
     function openEditModal(id) {
@@ -1761,11 +1798,39 @@
 
       const periodEl = document.getElementById('editModalPeriod');
       const artiveEl = document.getElementById('editModalArtive');
+      const articleEl = document.getElementById('editModalArticle');
+      const summaryCardEl = document.getElementById('editModalSummaryCard');
+      const seqBadgeWrapEl = document.getElementById('editModalSeqBadgeWrap');
+      const statusDotEl = document.getElementById('editModalStatusDot');
+
+      const wStatus = getWorkStatus(order);
+      const isRunning = wStatus === 'RUNNING';
+      const hasProduction = !isRunning && getProd(order) > 0;
+      const isRunningShiftEnded = isRunning && (!activeOp || (order.shiftSession && order.shiftSession.status === 'ENDED'));
+
+      if (summaryCardEl) {
+        summaryCardEl.className = 'rounded-2xl px-3 py-2 bg-gradient-to-b from-slate-100 to-slate-200/85 border border-slate-300 border-b-[2.5px] border-b-slate-400 shadow-xs transition space-y-1.5';
+      }
+      if (seqBadgeWrapEl) {
+        seqBadgeWrapEl.className = 'inline-flex items-center justify-center shrink-0 seq-square-3d';
+      }
+      if (statusDotEl) {
+        const dotStyle = isRunning
+          ? (isRunningShiftEnded ? 'bg-rose-600' : 'bg-emerald-700')
+          : 'bg-slate-500';
+        statusDotEl.className = `w-2 h-2 rounded-full ${dotStyle} shrink-0`;
+      }
+
       if (periodEl) {
-        periodEl.textContent = `Son İşlem: ${order.lastActionDateTime || order.createdDate || formatTodayDate()}`;
+        const rawLast = String(order.lastActionDateTime || '').trim();
+        const dateOnlyMatch = rawLast.match(/^(\d{2}\.\d{2}\.\d{4})/);
+        periodEl.textContent = (dateOnlyMatch && dateOnlyMatch[1]) || order.createdDate || formatTodayDate();
       }
       if (artiveEl) {
-        artiveEl.textContent = order.artive || order.article || '';
+        artiveEl.innerHTML = formatArtiveHighlight(order.artive || order.article || '');
+      }
+      if (articleEl) {
+        articleEl.textContent = order.article || '';
       }
 
       const manualTonEl = document.getElementById('manualTonInput');
@@ -1775,24 +1840,24 @@
       if (manualProdEl) { manualProdEl.value = getProd(order); manualProdEl.classList.add('hidden'); }
       if (manualRestEl) { manualRestEl.value = getRest(order); manualRestEl.classList.add('hidden'); }
 
-      OPERATOR_INPUT_CONFIG.forEach(cfg => {
-        const inputEl = document.getElementById(cfg.inputId);
-        const val = Number(order[cfg.field]) || 0;
-        const canEditThisOp = orderStarted && (perms.isManagement || perms.isTechnician || (perms.mappedOperator === cfg.name));
-        if (inputEl) {
-          inputEl.value = val > 0 ? String(val) : '';
-          inputEl.disabled = !canEditThisOp;
-          inputEl.classList.toggle('bg-slate-100', !canEditThisOp);
-          inputEl.classList.toggle('text-slate-400', !canEditThisOp);
-          inputEl.classList.toggle('cursor-not-allowed', !canEditThisOp);
-        }
-        const plusBtn = document.getElementById(cfg.plusId);
-        if (plusBtn) {
-          plusBtn.disabled = !canEditThisOp;
-          plusBtn.classList.toggle('opacity-40', !canEditThisOp);
-          plusBtn.classList.toggle('cursor-not-allowed', !canEditThisOp);
-        }
-      });
+      draftOperatorKgValues = {
+        isa: Number(order.isa) || 0,
+        muhiddin: Number(order.muhiddin) || 0,
+        kaddur: Number(order.kaddur) || 0,
+        muhammed: Number(order.muhammed) || 0
+      };
+      draftOperatorKgExpressions = {
+        isa: getOrderOperatorExpression(order, 'isa'),
+        muhiddin: getOrderOperatorExpression(order, 'muhiddin'),
+        kaddur: getOrderOperatorExpression(order, 'kaddur'),
+        muhammed: getOrderOperatorExpression(order, 'muhammed')
+      };
+
+      const defaultSelectedOp = (pendingModalShift && pendingModalShift.operator)
+        || (perms.mappedOperator && OPERATORS.includes(perms.mappedOperator) ? perms.mappedOperator : '');
+      if (defaultSelectedOp && pendingModalShift && !pendingModalShift.operator) {
+        pendingModalShift.operator = defaultSelectedOp;
+      }
 
       syncModalOperatorRowsUI();
       updateModalCalculatedTotals();
@@ -1802,22 +1867,67 @@
     }
 
     function syncModalOperatorRowsUI() {
-      const selectedOp = pendingModalShift ? pendingModalShift.operator : null;
+      const order = orders.find(o => o.id === editingOrderId);
+      const perms = getUserPermissions();
+      const orderStarted = isOrderStartedForKgInput(order);
+      const selectedOp = pendingModalShift ? pendingModalShift.operator : '';
+      const activeCfg = OPERATOR_INPUT_CONFIG.find(c => c.name === selectedOp) || null;
+
+      const selectEl = document.getElementById('operatorSelectDropdown');
+      const entryBoxEl = document.getElementById('activeOperatorEntryBox');
+      const singleKgInput = document.getElementById('activeOperatorKgInput');
+
+      if (selectEl) {
+        selectEl.value = activeCfg ? activeCfg.name : '';
+        selectEl.className = `w-full ltr:pl-3 ltr:pr-8 rtl:pr-3 rtl:pl-8 py-2 bg-white border border-slate-200 focus:border-[#146C53] rounded-xl text-xs font-extrabold tracking-tight shadow-2xs cursor-pointer transition ${activeCfg ? activeCfg.selectTextClass : 'text-slate-600'}`;
+      }
+
+      if (entryBoxEl) {
+        entryBoxEl.className = `flex items-center gap-2 border rounded-2xl p-2 shadow-2xs transition-all ${activeCfg ? activeCfg.boxBorderClass : 'bg-slate-50/95 border-slate-200/95'}`;
+      }
+
+      if (singleKgInput) {
+        const canEditSelected = Boolean(activeCfg) && orderStarted && (perms.isManagement || perms.isTechnician || (perms.mappedOperator === activeCfg.name));
+        const currentVal = activeCfg ? (Number(draftOperatorKgValues[activeCfg.field]) || 0) : 0;
+        const currentExpr = activeCfg ? (draftOperatorKgExpressions[activeCfg.field] || '') : '';
+        singleKgInput.readOnly = !canEditSelected;
+        singleKgInput.disabled = !canEditSelected;
+        if (document.activeElement !== singleKgInput) {
+          singleKgInput.value = activeCfg ? formatKgExpressionForDisplay(currentExpr, currentVal) : '';
+        }
+        singleKgInput.setAttribute('aria-disabled', String(!canEditSelected));
+        singleKgInput.classList.toggle('bg-slate-100', !canEditSelected);
+        singleKgInput.classList.toggle('text-slate-400', !canEditSelected);
+        singleKgInput.classList.toggle('cursor-not-allowed', !canEditSelected);
+      }
+
       OPERATOR_INPUT_CONFIG.forEach(cfg => {
-        const rowEl = document.getElementById(cfg.rowId);
-        const checkEl = document.getElementById(cfg.checkId);
-        const isSelected = selectedOp === cfg.name;
-        if (checkEl) checkEl.checked = isSelected;
-        if (rowEl) {
-          rowEl.className = `flex items-center justify-between gap-2.5 border rounded-2xl px-3 py-2 transition cursor-pointer ${isSelected ? cfg.activeBorder : 'bg-slate-50 border-slate-200/90'}`;
+        const cardEl = document.getElementById(cfg.statCardId);
+        const valEl = document.getElementById(cfg.statValId);
+        const isSelected = activeCfg && activeCfg.name === cfg.name;
+        if (valEl) {
+          valEl.textContent = fmt(Number(draftOperatorKgValues[cfg.field]) || 0);
+        }
+        if (cardEl) {
+          cardEl.className = `cursor-pointer rounded-xl border px-2 py-1.5 text-center transition ${isSelected ? cfg.cardActiveClass : cfg.cardIdleClass}`;
         }
       });
     }
 
-    function selectOperatorRowByName(opName) {
+    function onOperatorDropdownChange(opName) {
+      if (!opName || !OPERATORS.includes(opName)) {
+        if (pendingModalShift) pendingModalShift.operator = null;
+        syncModalOperatorRowsUI();
+        updateModalShiftBanner();
+        return;
+      }
+      selectOperatorRowByName(opName, true);
+    }
+
+    function selectOperatorRowByName(opName, forceSelect = false) {
       if (!OPERATORS.includes(opName)) return;
       const order = orders.find(o => o.id === editingOrderId);
-      const isAlreadySame = pendingModalShift && pendingModalShift.operator === opName;
+      const isAlreadySame = !forceSelect && pendingModalShift && pendingModalShift.operator === opName;
       if (isAlreadySame && !(order && order.shiftActive && getActiveOperatorName(order) === opName)) {
         pendingModalShift.operator = null;
       } else {
@@ -1834,105 +1944,97 @@
       updateModalShiftBanner();
     }
 
-    function onOperatorCheckboxToggle(opName, checked) {
-      if (checked) {
-        selectOperatorRowByName(opName);
-      } else {
-        if (pendingModalShift && pendingModalShift.operator === opName) {
-          pendingModalShift.operator = null;
-        }
-        syncModalOperatorRowsUI();
-        updateModalShiftBanner();
-      }
-    }
-
-    function onOperatorInputFocus(inputEl) {
+    function prepareKeyboardFocusForOperatorInput(inputEl, event) {
       if (!inputEl) return;
       const order = orders.find(o => o.id === editingOrderId);
-      if (!isOrderStartedForKgInput(order)) {
-        inputEl.blur();
-        showToast('Önce iş emrini başlatın (BAŞLAT)');
+      const perms = getUserPermissions();
+      const selectedOp = pendingModalShift ? pendingModalShift.operator : '';
+      const canEdit = Boolean(selectedOp) && isOrderStartedForKgInput(order) && (perms.isManagement || perms.isTechnician || (perms.mappedOperator === selectedOp));
+      if (!canEdit) {
+        if (event) event.preventDefault();
+        inputEl.readOnly = true;
+        inputEl.disabled = true;
+        showToast('İş emri başlamadan KG girişi yapılamaz. Önce BAŞLAT butonuna basın.');
         return;
       }
-      const matchCfg = OPERATOR_INPUT_CONFIG.find(c => c.inputId === inputEl.id);
-      if (matchCfg && (!pendingModalShift || pendingModalShift.operator !== matchCfg.name)) {
-        if (!pendingModalShift) pendingModalShift = { operator: matchCfg.name, status: 'IDLE', startedAt: null, endedAt: null };
-        pendingModalShift.operator = matchCfg.name;
-        syncModalOperatorRowsUI();
-        updateModalShiftBanner();
-      }
-    }
-
-    function onOperatorInputBlur(inputEl) {
-      if (!inputEl) return;
-      inputEl.value = String(inputEl.value || '').replace(/\++$/, '');
-      updateModalCalculatedTotals();
-    }
-
-    function normalizeOperatorInput(inputEl) {
-      if (!inputEl) return;
-      const order = orders.find(o => o.id === editingOrderId);
-      if (!isOrderStartedForKgInput(order)) {
-        inputEl.value = '';
-        inputEl.blur();
-        showToast('Başlatılmayan iş emrine KG girilemez');
-        return;
-      }
-      inputEl.value = String(inputEl.value || '').replace(/[^0-9+.,]/g, '');
-      updateModalCalculatedTotals();
-    }
-
-    function appendPlusToOperatorRow(inputId, opName) {
-      const order = orders.find(o => o.id === editingOrderId);
-      if (!isOrderStartedForKgInput(order)) {
-        showToast('Başlatılmayan iş emrine KG girilemez');
-        return;
-      }
-      const inputEl = document.getElementById(inputId);
-      if (!inputEl || inputEl.disabled) return;
-      if (opName && (!pendingModalShift || pendingModalShift.operator !== opName)) {
-        selectOperatorRowByName(opName);
-      }
-      const cur = String(inputEl.value || '').trim();
-      if (cur && !cur.endsWith('+')) {
-        inputEl.value = `${cur}+`;
-      }
-      inputEl.focus();
-    }
-
-    function confirmOperatorInput(inputId, opName) {
-      const inputEl = document.getElementById(inputId);
-      if (!inputEl) return;
-      const parsed = parseKgInput(inputEl.value);
-      inputEl.value = parsed > 0 ? String(parsed) : '';
-      updateModalCalculatedTotals();
-      inputEl.blur();
-      if (opName) showToast(`${opName}: ${fmt(parsed)} KG`);
-    }
-
-    function toggleOrderMetricsEditor() {
-      if (!hasManagementGmailIdentity()) {
-        showToast('Bu alanda yalnızca Yönetim Gmail kimliği işlem yapabilir');
-        return;
-      }
-      isEditingMetricsMode = !isEditingMetricsMode;
-      ['manualTonInput', 'manualProdInput', 'manualRestInput'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.toggle('hidden', !isEditingMetricsMode);
+      inputEl.readOnly = false;
+      inputEl.disabled = false;
+      requestAnimationFrame(() => {
+        try {
+          inputEl.focus({ preventScroll: true });
+          const len = String(inputEl.value || '').length;
+          if (typeof inputEl.setSelectionRange === 'function') {
+            inputEl.setSelectionRange(len, len);
+          }
+        } catch (e) {}
       });
     }
 
-    function onManualMetricInput(which) {
-      const tonEl = document.getElementById('manualTonInput');
-      const prodEl = document.getElementById('manualProdInput');
-      const restEl = document.getElementById('manualRestInput');
-      if (!tonEl || !prodEl || !restEl) return;
-      const tonVal = Math.max(0, parseFloat(tonEl.value) || 0);
-      const prodVal = Math.max(0, parseFloat(prodEl.value) || 0);
-      if (which === 'TON' || which === 'PROD') {
-        restEl.value = Math.round((tonVal - prodVal) * 1000) / 1000;
+    function onSingleOperatorInputFocus(inputEl) {
+      if (!inputEl) return;
+      const order = orders.find(o => o.id === editingOrderId);
+      const perms = getUserPermissions();
+      const selectedOp = pendingModalShift ? pendingModalShift.operator : '';
+      const canEdit = Boolean(selectedOp) && isOrderStartedForKgInput(order) && (perms.isManagement || perms.isTechnician || (perms.mappedOperator === selectedOp));
+      if (!canEdit) {
+        inputEl.readOnly = true;
+        inputEl.disabled = true;
+        try { inputEl.blur(); } catch (e) {}
+        showToast('İş emri başlamadan KG girişi yapılamaz. Önce BAŞLAT butonuna basın.');
+        return;
+      }
+      inputEl.readOnly = false;
+      inputEl.disabled = false;
+    }
+
+    function onSingleOperatorInputBlur(inputEl) {
+      if (!inputEl) return;
+      const order = orders.find(o => o.id === editingOrderId);
+      const selectedOp = pendingModalShift ? pendingModalShift.operator : null;
+      const activeCfg = OPERATOR_INPUT_CONFIG.find(c => c.name === selectedOp);
+      if (activeCfg && isOrderStartedForKgInput(order)) {
+        const cleanedExpr = sanitizeKgExpression(inputEl.value).replace(/\++$/, '');
+        const parsed = parseKgInput(cleanedExpr);
+        draftOperatorKgValues[activeCfg.field] = parsed;
+        draftOperatorKgExpressions[activeCfg.field] = cleanedExpr || (parsed > 0 ? String(parsed) : '');
+        inputEl.value = formatKgExpressionForDisplay(draftOperatorKgExpressions[activeCfg.field], parsed);
+      } else {
+        inputEl.value = String(inputEl.value || '').replace(/\++$/, '');
+      }
+      syncModalOperatorRowsUI();
+      updateModalCalculatedTotals();
+    }
+
+    function onSingleOperatorKgInput(inputEl) {
+      if (!inputEl) return;
+      const order = orders.find(o => o.id === editingOrderId);
+      const perms = getUserPermissions();
+      const selectedOp = pendingModalShift ? pendingModalShift.operator : null;
+      const activeCfg = OPERATOR_INPUT_CONFIG.find(c => c.name === selectedOp);
+      const canEdit = Boolean(activeCfg) && isOrderStartedForKgInput(order) && (perms.isManagement || perms.isTechnician || (perms.mappedOperator === activeCfg.name));
+      if (!canEdit) {
+        inputEl.value = activeCfg ? formatKgExpressionForDisplay(draftOperatorKgExpressions[activeCfg.field], draftOperatorKgValues[activeCfg.field]) : '';
+        return;
+      }
+      if (activeCfg) {
+        const cleanedExpr = sanitizeKgExpression(inputEl.value);
+        if (inputEl.value !== cleanedExpr) {
+          inputEl.value = cleanedExpr;
+        }
+        draftOperatorKgExpressions[activeCfg.field] = cleanedExpr;
+        draftOperatorKgValues[activeCfg.field] = parseKgInput(cleanedExpr);
+        const valEl = document.getElementById(activeCfg.statValId);
+        if (valEl) valEl.textContent = fmt(draftOperatorKgValues[activeCfg.field]);
       }
       updateModalCalculatedTotals();
+    }
+
+    function confirmSingleOperatorInput() {
+      const inputEl = document.getElementById('activeOperatorKgInput');
+      if (inputEl) {
+        onSingleOperatorInputBlur(inputEl);
+        inputEl.blur();
+      }
     }
 
     function updateModalCalculatedTotals() {
@@ -1952,9 +2054,7 @@
 
       let totalProd = 0;
       OPERATOR_INPUT_CONFIG.forEach(cfg => {
-        const inp = document.getElementById(cfg.inputId);
-        const val = inp ? parseKgInput(inp.value) : (Number(order[cfg.field]) || 0);
-        totalProd += val;
+        totalProd += Number(draftOperatorKgValues[cfg.field]) || 0;
       });
 
       const finalProd = (isEditingMetricsMode && manualProdEl && !manualProdEl.classList.contains('hidden') && manualProdEl.value !== '')
@@ -1965,11 +2065,11 @@
         ? (parseFloat(manualRestEl.value) || 0)
         : (baseTon - finalProd);
 
-      if (calcTonEl) calcTonEl.textContent = `${fmt(baseTon)} KG`;
-      if (calcProdEl) calcProdEl.textContent = `${fmt(finalProd)} KG`;
+      if (calcTonEl) calcTonEl.textContent = fmt(baseTon);
+      if (calcProdEl) calcProdEl.textContent = fmt(finalProd);
       if (calcRestEl) {
-        calcRestEl.textContent = `${fmt(finalRest)} KG`;
-        calcRestEl.className = `text-sm font-extrabold mt-0.5 ${finalRest < 0 ? 'text-rose-600' : 'text-amber-600'}`;
+        calcRestEl.textContent = fmt(finalRest);
+        calcRestEl.className = `text-xs sm:text-sm font-black leading-tight mt-0.5 tabular-nums ${finalRest < 0 ? 'text-rose-600' : 'text-rose-700'}`;
       }
     }
 
@@ -2079,25 +2179,7 @@
       };
 
       updateModalShiftBanner();
-      const refreshedOrder = orders.find(o => o.id === editingOrderId);
-      const startedNow = isOrderStartedForKgInput(refreshedOrder);
-      const permsNow = getUserPermissions();
-      OPERATOR_INPUT_CONFIG.forEach(cfg => {
-        const inputEl = document.getElementById(cfg.inputId);
-        const plusBtn = document.getElementById(cfg.plusId);
-        const canEditThisOp = startedNow && (permsNow.isManagement || permsNow.isTechnician || (permsNow.mappedOperator === cfg.name));
-        if (inputEl) {
-          inputEl.disabled = !canEditThisOp;
-          inputEl.classList.toggle('bg-slate-100', !canEditThisOp);
-          inputEl.classList.toggle('text-slate-400', !canEditThisOp);
-          inputEl.classList.toggle('cursor-not-allowed', !canEditThisOp);
-        }
-        if (plusBtn) {
-          plusBtn.disabled = !canEditThisOp;
-          plusBtn.classList.toggle('opacity-40', !canEditThisOp);
-          plusBtn.classList.toggle('cursor-not-allowed', !canEditThisOp);
-        }
-      });
+      syncModalOperatorRowsUI();
       normalizeOrderNumbers();
       renderOrders();
       saveStateToStorage();
@@ -2108,35 +2190,38 @@
       if (!guardAction('START_STOP_ORDER')) return;
       const order = orders.find(o => o.id === editingOrderId);
       if (!order) return;
-      const target = orders.find(o => o.id === editingOrderId);
-      if (!target) return;
       const op = (pendingModalShift && pendingModalShift.operator) || getActiveOperatorName(order) || getShiftPickerOperator(order);
       const nowClock = formatClockTime();
-      const startedAt = (pendingModalShift && pendingModalShift.startedAt) || (target.shiftSession && target.shiftSession.startedAt) || null;
+      const startedAt = (pendingModalShift && pendingModalShift.startedAt) || (order.shiftSession && order.shiftSession.startedAt) || null;
 
-      target.workStatus = 'RUNNING';
-      target.shiftActive = true;
-      target.activeOperator = null;
-      target.orderEndTime = nowClock;
-      target.lastActionDateTime = formatDateTimeNow();
+      order.workStatus = 'RUNNING';
+      order.shiftActive = true;
+      order.activeOperator = null;
+      order.orderEndTime = nowClock;
+      order.lastActionDateTime = formatDateTimeNow();
       expandedIdleOrderId = null;
-      lastEndedShiftOrderId = target.id;
-      target.shiftSession = {
-        operator: op,
+      lastEndedShiftOrderId = order.id;
+      order.shiftSession = {
+        operator: null,
         status: 'ENDED',
         startedAt,
         endedAt: nowClock
       };
 
       pendingModalShift = {
-        operator: op,
+        operator: null,
         status: 'ENDED',
         startedAt,
         endedAt: nowClock
       };
 
+      const selectEl = document.getElementById('operatorSelectDropdown');
+      if (selectEl) {
+        selectEl.value = '';
+      }
+
       updateModalShiftBanner();
-      closeModal('editModal');
+      syncModalOperatorRowsUI();
       normalizeOrderNumbers();
       renderOrders();
       saveStateToStorage();
@@ -2159,13 +2244,16 @@
       }
 
       if (perms.canEditKg && isOrderStartedForKgInput(order)) {
+        if (!order.operatorKgExpressions || typeof order.operatorKgExpressions !== 'object') {
+          order.operatorKgExpressions = {};
+        }
         OPERATOR_INPUT_CONFIG.forEach(cfg => {
           const canEditThisOp = perms.isManagement || perms.isTechnician || (perms.mappedOperator === cfg.name);
           if (!canEditThisOp) return;
-          const inp = document.getElementById(cfg.inputId);
-          if (inp) {
-            order[cfg.field] = parseKgInput(inp.value);
-          }
+          const numericVal = Number(draftOperatorKgValues[cfg.field]) || 0;
+          const cleanedExpr = sanitizeKgExpression(draftOperatorKgExpressions[cfg.field] || '').replace(/\++$/, '');
+          order[cfg.field] = numericVal;
+          order.operatorKgExpressions[cfg.field] = cleanedExpr || (numericVal > 0 ? String(numericVal) : '');
         });
       }
 
@@ -2904,8 +2992,6 @@
       const renderOrderCard = (o) => {
         const prod = getProd(o);
         const rest = getRest(o);
-        const isExceeded = rest < 0;
-        const isNearComplete = !isExceeded && rest <= 150 && prod > 0;
         const wStatus = getWorkStatus(o);
         const isRunning = wStatus === 'RUNNING';
         const activeOpName = getActiveOperatorName(o);
@@ -2937,8 +3023,10 @@
         const rawLastAction = String(o.lastActionDateTime || '').trim();
         const lastActionDateMatch = rawLastAction.match(/^(\d{2}\.\d{2}\.\d{4})/);
         const topDateStr = escapeHtml(
-          (lastActionDateMatch && lastActionDateMatch[1]) || o.createdDate || formatTodayDate()
+          (lastActionDateMatch && lastActionDateMatch[1]) || o.createdDate || o.period || formatTodayDate()
         );
+        const showNonRunningDate = isRunning;
+        const showExpandedCardDate = isRunning || isExpanded;
 
         if (isCompactListItem && !isExpanded) {
           return `
@@ -2950,32 +3038,33 @@
             ondrop="handleOrderDrop(event, ${o.id})"
             ondragend="handleOrderDragEnd(event)"
             onclick="toggleIdleOrderDetailView(event, ${o.id})"
-            class="rounded-2xl p-3 ${cardHighlight} active:scale-[0.99] transition cursor-pointer space-y-2">
-          <div class="flex items-center justify-between gap-2">
-              <div class="flex items-center gap-2 min-w-0 flex-1">
+            class="rounded-2xl px-3 py-1.5 ${cardHighlight} active:scale-[0.995] transition cursor-pointer space-y-1">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-1.5 min-w-0 flex-1">
                 <div onclick="event.stopPropagation()" class="inline-flex items-center justify-center shrink-0 ${seqBoxClass}" title="Sıra numarasını değiştirin">
                   <input type="number" inputmode="numeric" min="1" value="${o.orderNo}"
                     onchange="updateOrderNumberInline(${o.id}, this.value)"
                     onkeydown="if(event.key==='Enter'){this.blur();}"
-                    class="w-full bg-transparent text-slate-950 text-[10px] font-extrabold text-center leading-none rounded outline-none" />
+                    class="w-full bg-transparent text-slate-950 text-[8.5px] font-extrabold text-center leading-none rounded outline-none" />
                 </div>
                 <span class="w-1.5 h-1.5 rounded-full ${dotColorClass} shrink-0"></span>
                 <span class="text-[11px] font-semibold text-slate-800 truncate">${formatArtiveHighlight(o.artive)}</span>
               </div>
+              ${showNonRunningDate ? `<span class="text-[9px] font-bold text-slate-500 tabular-nums shrink-0">${topDateStr}</span>` : ''}
             </div>
 
-            <div class="grid grid-cols-3 ${metricBoxClass} border rounded-lg py-1 px-1.5 text-center shadow-2xs tabular-nums">
+            <div class="grid grid-cols-3 ${metricBoxClass} border rounded-xl py-1 px-1.5 text-center tabular-nums">
               <div>
-                <div class="text-[8px] font-bold text-slate-400 leading-none tracking-tight">${t('metric_order')}</div>
-                <div class="text-[10.5px] font-black text-slate-950 leading-none mt-0.5">${fmt(o.ton)}</div>
+                <div class="text-[7.5px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_order')}</div>
+                <div class="text-[10.5px] font-black text-slate-950 leading-tight mt-0.5">${fmt(o.ton)}</div>
               </div>
               <div class="border-x border-slate-400/35">
-                <div class="text-[8px] font-bold text-slate-400 leading-none tracking-tight">${t('metric_prod')}</div>
-                <div class="text-[10.5px] font-black text-emerald-700 leading-none mt-0.5">${fmt(prod)}</div>
+                <div class="text-[7.5px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_prod')}</div>
+                <div class="text-[10.5px] font-black text-emerald-700 leading-tight mt-0.5">${fmt(prod)}</div>
               </div>
               <div>
-                <div class="text-[8px] font-bold text-slate-400 leading-none tracking-tight">${t('metric_rem')}</div>
-                <div class="text-[10.5px] font-black text-rose-700 leading-none mt-0.5">${fmt(rest)}</div>
+                <div class="text-[7.5px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_rem')}</div>
+                <div class="text-[10.5px] font-black text-rose-700 leading-tight mt-0.5">${fmt(rest)}</div>
               </div>
             </div>
           </div>`;
@@ -2999,7 +3088,7 @@
                   class="w-full h-full bg-transparent text-slate-950 text-[8.5px] font-extrabold text-center leading-none tabular-nums rounded outline-none" />
               </div>
             </div>
-            <span class="inline-flex items-center justify-center shrink-0 h-[18px] px-1.5 rounded-md border text-[8.5px] leading-none font-bold tabular-nums text-center ${dateBoxClass}">${topDateStr}</span>
+            ${showExpandedCardDate ? `<span class="inline-flex items-center justify-center shrink-0 h-[18px] px-2 rounded-md border text-[8.5px] leading-none font-bold tabular-nums text-center ${dateBoxClass}">${topDateStr}</span>` : ''}
             ${renderWorkStatusButton(o)}
           </div>
 
