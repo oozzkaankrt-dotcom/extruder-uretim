@@ -93,25 +93,53 @@
       box-shadow: 0 8px 18px -6px rgba(15, 23, 42, 0.16), 0 2px 5px -1px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
     }
     .order-card-3d-orange {
-      background: linear-gradient(180deg, #FFFBF5 0%, #FFEDD5 100%);
-      border: 1.5px solid #FB923C;
+      background: linear-gradient(180deg, #FFF7ED 0%, #FFE4C2 100%);
+      border: 1.5px solid #EA580C;
       border-bottom-width: 3px;
-      border-bottom-color: #EA580C;
-      box-shadow: 0 8px 18px -6px rgba(234, 88, 12, 0.2), 0 2px 5px -1px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      border-bottom-color: #C2410C;
+      box-shadow: 0 8px 18px -6px rgba(194, 65, 12, 0.22), 0 2px 5px -1px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.96);
     }
     .order-card-3d-yellow {
-      background: linear-gradient(180deg, #FFFDF0 0%, #FEF6B8 100%);
-      border: 1.5px solid #FACC15;
+      background: linear-gradient(180deg, #FEFCE8 0%, #FDE68A 100%);
+      border: 1.5px solid #D97706;
       border-bottom-width: 3px;
-      border-bottom-color: #EAB308;
-      box-shadow: 0 8px 18px -5px rgba(250, 204, 21, 0.22), 0 2px 5px -1px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.98);
+      border-bottom-color: #B45309;
+      box-shadow: 0 8px 18px -5px rgba(180, 83, 9, 0.22), 0 2px 5px -1px rgba(15, 23, 42, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.98);
+    }
+    #tab-emirler .order-card-3d-running {
+      background: linear-gradient(165deg, #ECFDF5 0%, #D1FAE5 58%, #A7F3D0 100%);
+      border: 1.5px solid #059669;
+      border-bottom-width: 3px;
+      border-bottom-color: #047857;
+      box-shadow: 0 10px 22px -6px rgba(5, 150, 105, 0.28), 0 3px 6px -1px rgba(15, 23, 42, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.96);
+    }
+    #tab-emirler .order-card-3d-running-ended {
+      background: linear-gradient(165deg, #FFF5F5 0%, #FEE2E2 58%, #FECACA 100%);
+      border: 1.5px solid #DC2626;
+      border-bottom-width: 3px;
+      border-bottom-color: #B91C1C;
+      box-shadow: 0 10px 22px -6px rgba(220, 38, 38, 0.26), 0 3px 6px -1px rgba(15, 23, 42, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.96);
+    }
+    #tab-emirler .order-card-3d-orange {
+      background: linear-gradient(165deg, #F1F5F9 0%, #E2E8F0 65%, #D8E0E8 100%);
+      border: 1.5px solid #64748B;
+      border-bottom-width: 3px;
+      border-bottom-color: #475569;
+      box-shadow: 0 8px 18px -6px rgba(30, 41, 59, 0.18), 0 2px 5px -1px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.92);
+    }
+    #tab-emirler .order-card-3d-yellow {
+      background: linear-gradient(165deg, #FFFFFF 0%, #F1F5F9 65%, #E2E8F0 100%);
+      border: 1.5px solid #94A3B8;
+      border-bottom-width: 3px;
+      border-bottom-color: #64748B;
+      box-shadow: 0 8px 18px -6px rgba(51, 65, 85, 0.15), 0 2px 5px -1px rgba(15, 23, 42, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.98);
     }
     .order-card-3d-running {
-      background: linear-gradient(180deg, #E8FBF0 0%, #C8F3DC 100%);
-      border: 1.5px solid #16A34A;
+      background: linear-gradient(180deg, #ECFDF5 0%, #A7F3D0 100%);
+      border: 1.5px solid #059669;
       border-bottom-width: 3px;
-      border-bottom-color: #15803D;
-      box-shadow: 0 8px 18px -5px rgba(22, 163, 74, 0.28), 0 3px 6px -1px rgba(15, 23, 42, 0.09), inset 0 1px 0 rgba(255, 255, 255, 1);
+      border-bottom-color: #047857;
+      box-shadow: 0 8px 18px -5px rgba(5, 150, 105, 0.28), 0 3px 6px -1px rgba(15, 23, 42, 0.09), inset 0 1px 0 rgba(255, 255, 255, 1);
     }
     .order-card-3d-running-alert {
       background: linear-gradient(180deg, #FFF6F6 0%, #FDE8E8 100%);
@@ -128,8 +156,8 @@
       box-shadow: 0 8px 18px -5px rgba(250, 204, 21, 0.2), 0 2px 5px -1px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.98);
     }
     .seq-square-3d {
-      width: 34px;
-      height: 16px;
+      width: 24px;
+      height: 18px;
       padding: 0 2px;
       border-radius: 5px;
       background: #F1F5F9;
@@ -149,6 +177,11 @@
     .seq-square-3d-running {
       background: #BBF7D0;
       border-color: #4ADE80;
+      box-shadow: none;
+    }
+    .seq-square-3d-running-ended {
+      background: #FECACA;
+      border-color: #F87171;
       box-shadow: none;
     }
     .seq-square-3d-paused {
@@ -1662,18 +1695,32 @@
         muhiddin: 0,
         kaddur: 0,
         muhammed: 0,
-        closed: false,
-        workStatus: 'IDLE'
+        closed: false
       });
 
       orders.push(newOrder);
       addedOrderTimestamps.push(Date.now());
+      updateAddedOrdersBadge();
       normalizeOrderNumbers();
       closeModal('newOrderModal');
       renderOrders();
+      renderCompletedOrders();
+      if (!document.getElementById('tab-ozet')?.classList.contains('hidden')) renderSummary('ALL');
+      if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) renderOperationTab();
+      if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) renderReports();
       saveStateToStorage();
       notifyNewWorkOrderAdded(newOrder);
       showToast(`#${newOrder.orderNo} yeni iş emri oluşturuldu`);
+    }
+
+    function isOrderStartedForKgInput(order) {
+      if (!order || order.closed || order.cancelled) return false;
+      const wStatus = getWorkStatus(order);
+      const hasShiftHistory = Boolean(
+        order.orderStartTime ||
+        (order.shiftSession && (order.shiftSession.startedAt || order.shiftSession.status === 'ACTIVE' || order.shiftSession.status === 'ENDED'))
+      );
+      return wStatus === 'RUNNING' || wStatus === 'PAUSED' || hasShiftHistory;
     }
 
     function openEditModal(id) {
@@ -1681,6 +1728,7 @@
       if (!order) return;
 
       const perms = getUserPermissions();
+      const orderStarted = isOrderStartedForKgInput(order);
       editingOrderId = id;
       isEditingMetricsMode = false;
 
@@ -1730,15 +1778,19 @@
       OPERATOR_INPUT_CONFIG.forEach(cfg => {
         const inputEl = document.getElementById(cfg.inputId);
         const val = Number(order[cfg.field]) || 0;
+        const canEditThisOp = orderStarted && (perms.isManagement || perms.isTechnician || (perms.mappedOperator === cfg.name));
         if (inputEl) {
           inputEl.value = val > 0 ? String(val) : '';
-          const canEditThisOp = perms.isManagement || perms.isTechnician || (perms.mappedOperator === cfg.name);
           inputEl.disabled = !canEditThisOp;
+          inputEl.classList.toggle('bg-slate-100', !canEditThisOp);
+          inputEl.classList.toggle('text-slate-400', !canEditThisOp);
+          inputEl.classList.toggle('cursor-not-allowed', !canEditThisOp);
         }
         const plusBtn = document.getElementById(cfg.plusId);
         if (plusBtn) {
-          const canEditThisOp = perms.isManagement || perms.isTechnician || (perms.mappedOperator === cfg.name);
           plusBtn.disabled = !canEditThisOp;
+          plusBtn.classList.toggle('opacity-40', !canEditThisOp);
+          plusBtn.classList.toggle('cursor-not-allowed', !canEditThisOp);
         }
       });
 
@@ -1796,6 +1848,12 @@
 
     function onOperatorInputFocus(inputEl) {
       if (!inputEl) return;
+      const order = orders.find(o => o.id === editingOrderId);
+      if (!isOrderStartedForKgInput(order)) {
+        inputEl.blur();
+        showToast('Önce iş emrini başlatın (BAŞLAT)');
+        return;
+      }
       const matchCfg = OPERATOR_INPUT_CONFIG.find(c => c.inputId === inputEl.id);
       if (matchCfg && (!pendingModalShift || pendingModalShift.operator !== matchCfg.name)) {
         if (!pendingModalShift) pendingModalShift = { operator: matchCfg.name, status: 'IDLE', startedAt: null, endedAt: null };
@@ -1813,11 +1871,23 @@
 
     function normalizeOperatorInput(inputEl) {
       if (!inputEl) return;
+      const order = orders.find(o => o.id === editingOrderId);
+      if (!isOrderStartedForKgInput(order)) {
+        inputEl.value = '';
+        inputEl.blur();
+        showToast('Başlatılmayan iş emrine KG girilemez');
+        return;
+      }
       inputEl.value = String(inputEl.value || '').replace(/[^0-9+.,]/g, '');
       updateModalCalculatedTotals();
     }
 
     function appendPlusToOperatorRow(inputId, opName) {
+      const order = orders.find(o => o.id === editingOrderId);
+      if (!isOrderStartedForKgInput(order)) {
+        showToast('Başlatılmayan iş emrine KG girilemez');
+        return;
+      }
       const inputEl = document.getElementById(inputId);
       if (!inputEl || inputEl.disabled) return;
       if (opName && (!pendingModalShift || pendingModalShift.operator !== opName)) {
@@ -2009,6 +2079,25 @@
       };
 
       updateModalShiftBanner();
+      const refreshedOrder = orders.find(o => o.id === editingOrderId);
+      const startedNow = isOrderStartedForKgInput(refreshedOrder);
+      const permsNow = getUserPermissions();
+      OPERATOR_INPUT_CONFIG.forEach(cfg => {
+        const inputEl = document.getElementById(cfg.inputId);
+        const plusBtn = document.getElementById(cfg.plusId);
+        const canEditThisOp = startedNow && (permsNow.isManagement || permsNow.isTechnician || (permsNow.mappedOperator === cfg.name));
+        if (inputEl) {
+          inputEl.disabled = !canEditThisOp;
+          inputEl.classList.toggle('bg-slate-100', !canEditThisOp);
+          inputEl.classList.toggle('text-slate-400', !canEditThisOp);
+          inputEl.classList.toggle('cursor-not-allowed', !canEditThisOp);
+        }
+        if (plusBtn) {
+          plusBtn.disabled = !canEditThisOp;
+          plusBtn.classList.toggle('opacity-40', !canEditThisOp);
+          plusBtn.classList.toggle('cursor-not-allowed', !canEditThisOp);
+        }
+      });
       normalizeOrderNumbers();
       renderOrders();
       saveStateToStorage();
@@ -2069,7 +2158,7 @@
         }
       }
 
-      if (perms.canEditKg) {
+      if (perms.canEditKg && isOrderStartedForKgInput(order)) {
         OPERATOR_INPUT_CONFIG.forEach(cfg => {
           const canEditThisOp = perms.isManagement || perms.isTechnician || (perms.mappedOperator === cfg.name);
           if (!canEditThisOp) return;
@@ -2407,11 +2496,11 @@
       const isOpen = openStatusMenuId === order.id;
 
       return `
-        <div onclick="event.stopPropagation()" class="relative inline-block shrink-0">
+        <div onclick="event.stopPropagation()" class="relative inline-flex items-center shrink-0">
           <button type="button" onclick="toggleWorkStatusMenu(event, ${order.id})"
-            class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border text-[10px] font-extrabold active:scale-95 transition ${btnClass}">
-            <span>${escapeHtml(label)}</span>
-            <svg class="w-2.5 h-2.5 opacity-85" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+            class="inline-flex items-center justify-center gap-0.5 h-[18px] px-1.5 rounded-md border text-[8.5px] leading-none font-extrabold tabular-nums active:scale-95 transition ${btnClass}">
+            <span class="leading-none">${escapeHtml(label)}</span>
+            <svg class="w-2 h-2 opacity-85 shrink-0" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
             </svg>
           </button>
@@ -2447,6 +2536,7 @@
       const wStatus = getWorkStatus(order);
       const isFinished = wStatus === 'FINISHED' || !!(order && order.closed);
       const activeOp = getActiveOperatorName(order);
+      const isShiftEnded = Boolean(order && order.shiftSession && order.shiftSession.status === 'ENDED' && !activeOp);
       if (wStatus !== 'RUNNING' && !isFinished) return '';
 
       const startTime = order.orderStartTime
@@ -2456,8 +2546,16 @@
         || (order.shiftSession && order.shiftSession.endedAt)
         || (isFinished ? formatClockTime() : '');
       const timeLabel = isFinished ? endTime : startTime;
+      const isEmirlerPage = !document.getElementById('tab-emirler')?.classList.contains('hidden');
+      const opBarTone = isEmirlerPage
+        ? (isShiftEnded
+            ? 'px-2.5 py-1.5 rounded-xl bg-rose-950/[0.06] border border-rose-500/35 text-rose-950'
+            : (activeOp
+                ? 'px-2.5 py-1.5 rounded-xl bg-emerald-950/[0.06] border border-emerald-600/35 text-emerald-950'
+                : 'px-2.5 py-1.5 rounded-xl bg-slate-900/[0.05] border border-slate-400/35'))
+        : 'pt-1';
       const timeBadgeHtml = (showCardClock && timeLabel)
-        ? `<span class="text-[11px] font-bold text-slate-700 tabular-nums shrink-0 ltr:mr-3 rtl:ml-3">${escapeHtml(timeLabel)}</span>`
+        ? `<span class="text-[11px] font-bold ${isEmirlerPage ? (isShiftEnded ? 'text-rose-900/90' : 'text-emerald-950/85') : 'text-slate-700'} tabular-nums shrink-0 ltr:mr-3 rtl:ml-3">${escapeHtml(timeLabel)}</span>`
         : '';
 
       if (isFinished) {
@@ -2469,22 +2567,22 @@
 
       if (!activeOp) {
         return `
-          <div class="flex items-center justify-between gap-2 pt-1 text-[11px] font-extrabold">
+          <div class="flex items-center justify-between gap-2 pt-1 ${opBarTone} text-[11px] font-extrabold">
             <div class="flex items-center gap-1.5 min-w-0">
-              <span class="w-2 h-2 rounded-full bg-rose-500 shrink-0"></span>
-              <span class="text-rose-700">${t('running_operator_badge')}:</span>
-              <span class="text-rose-600 truncate">${t('start_shift_prompt')}</span>
+              <span class="w-2 h-2 rounded-full ${isShiftEnded ? 'bg-rose-600' : 'bg-slate-700'} shrink-0"></span>
+              <span class="${isShiftEnded ? 'text-rose-800' : 'text-slate-700'}">${t('running_operator_badge')}:</span>
+              <span class="${isShiftEnded ? 'text-rose-950' : 'text-slate-900'} truncate">${t('start_shift_prompt')}</span>
             </div>
             ${timeBadgeHtml}
           </div>`;
       }
 
       return `
-        <div class="flex items-center justify-between gap-2 pt-1 text-[11px] font-extrabold">
+        <div class="flex items-center justify-between gap-2 pt-1 ${opBarTone} text-[11px] font-extrabold">
           <div class="flex items-center gap-1.5 min-w-0">
-            <span class="w-2 h-2 rounded-full bg-[#10B981] shrink-0"></span>
-            <span class="text-slate-600">${t('running_operator_badge')}:</span>
-            <span class="text-slate-900 truncate">${escapeHtml(activeOp)}</span>
+            <span class="w-2 h-2 rounded-full bg-emerald-700 shrink-0"></span>
+            <span class="text-emerald-900">${t('running_operator_badge')}:</span>
+            <span class="text-emerald-950 truncate">${escapeHtml(activeOp)}</span>
           </div>
           ${timeBadgeHtml}
         </div>`;
@@ -2810,26 +2908,32 @@
         const isNearComplete = !isExceeded && rest <= 150 && prod > 0;
         const wStatus = getWorkStatus(o);
         const isRunning = wStatus === 'RUNNING';
+        const activeOpName = getActiveOperatorName(o);
+        const isRunningShiftEnded = isRunning && (!activeOpName || (o.shiftSession && o.shiftSession.status === 'ENDED'));
         const hasProduction = !isRunning && prod > 0;
         const isCompactListItem = !isRunning;
         const isExpanded = isCompactListItem && expandedIdleOrderId === o.id;
         const canDragCard = canDragReorderOrders() && !isRunning;
 
         const cardHighlight = isRunning
-          ? 'order-card-3d-running'
+          ? (isRunningShiftEnded ? 'order-card-3d-running-ended' : 'order-card-3d-running')
           : (hasProduction ? 'order-card-3d-orange' : 'order-card-3d-yellow');
         const seqBoxClass = isRunning
-          ? 'seq-square-3d seq-square-3d-running'
+          ? (isRunningShiftEnded ? 'seq-square-3d seq-square-3d-running-ended' : 'seq-square-3d seq-square-3d-running')
           : (hasProduction ? 'seq-square-3d seq-square-3d-orange' : 'seq-square-3d seq-square-3d-yellow');
         const dateBoxClass = isRunning
-          ? 'bg-[#BBF7D0] border-[#4ADE80] text-emerald-950'
-          : (hasProduction ? 'bg-[#FED7AA] border-[#FB923C] text-orange-950' : 'bg-[#FEF9C3] border-[#FDE047] text-amber-950');
+          ? (isRunningShiftEnded
+              ? 'bg-rose-100/95 border-rose-500/65 text-rose-950'
+              : 'bg-emerald-100/95 border-emerald-600/60 text-emerald-950')
+          : (hasProduction ? 'bg-slate-200/80 border-slate-500/45 text-slate-800' : 'bg-slate-100/95 border-slate-400/50 text-slate-800');
         const metricBoxClass = isRunning
-          ? 'bg-[#F0FDF4]/95 border-[#86EFAC]'
-          : (hasProduction ? 'bg-[#FFF7ED]/95 border-[#FDBA74]' : 'bg-[#FEFCE8]/95 border-[#FDE047]');
+          ? (isRunningShiftEnded
+              ? 'bg-rose-950/[0.05] border-rose-500/35'
+              : 'bg-emerald-950/[0.05] border-emerald-600/35')
+          : (hasProduction ? 'bg-slate-900/[0.04] border-slate-400/35' : 'bg-slate-900/[0.03] border-slate-300/80');
         const dotColorClass = isRunning
-          ? 'bg-[#16A34A]'
-          : (hasProduction ? 'bg-orange-500' : 'bg-amber-400');
+          ? (isRunningShiftEnded ? 'bg-rose-600' : 'bg-emerald-700')
+          : (hasProduction ? 'bg-slate-600' : 'bg-slate-400');
         const rawLastAction = String(o.lastActionDateTime || '').trim();
         const lastActionDateMatch = rawLastAction.match(/^(\d{2}\.\d{2}\.\d{4})/);
         const topDateStr = escapeHtml(
@@ -2853,25 +2957,25 @@
                   <input type="number" inputmode="numeric" min="1" value="${o.orderNo}"
                     onchange="updateOrderNumberInline(${o.id}, this.value)"
                     onkeydown="if(event.key==='Enter'){this.blur();}"
-                    class="w-full bg-transparent text-slate-900 text-[10px] font-extrabold text-center leading-none rounded outline-none" />
+                    class="w-full bg-transparent text-slate-950 text-[10px] font-extrabold text-center leading-none rounded outline-none" />
                 </div>
                 <span class="w-1.5 h-1.5 rounded-full ${dotColorClass} shrink-0"></span>
-                <span class="text-[11px] font-bold text-slate-800 truncate">${formatArtiveHighlight(o.artive)}</span>
+                <span class="text-[11px] font-semibold text-slate-800 truncate">${formatArtiveHighlight(o.artive)}</span>
               </div>
             </div>
 
             <div class="grid grid-cols-3 ${metricBoxClass} border rounded-lg py-1 px-1.5 text-center shadow-2xs tabular-nums">
               <div>
                 <div class="text-[8px] font-bold text-slate-400 leading-none tracking-tight">${t('metric_order')}</div>
-                <div class="text-[10.5px] font-extrabold text-slate-900 leading-none mt-0.5">${fmt(o.ton)}</div>
+                <div class="text-[10.5px] font-black text-slate-950 leading-none mt-0.5">${fmt(o.ton)}</div>
               </div>
-              <div class="border-x ${hasProduction ? 'border-orange-200/90' : 'border-amber-200/80'}">
+              <div class="border-x border-slate-400/35">
                 <div class="text-[8px] font-bold text-slate-400 leading-none tracking-tight">${t('metric_prod')}</div>
-                <div class="text-[10.5px] font-extrabold text-[#146C53] leading-none mt-0.5">${fmt(prod)}</div>
+                <div class="text-[10.5px] font-black text-emerald-700 leading-none mt-0.5">${fmt(prod)}</div>
               </div>
               <div>
                 <div class="text-[8px] font-bold text-slate-400 leading-none tracking-tight">${t('metric_rem')}</div>
-                <div class="text-[10.5px] font-extrabold ${isExceeded || isNearComplete ? 'text-rose-600' : (hasProduction ? 'text-orange-600' : 'text-amber-600')} leading-none mt-0.5">${fmt(rest)}</div>
+                <div class="text-[10.5px] font-black text-rose-700 leading-none mt-0.5">${fmt(rest)}</div>
               </div>
             </div>
           </div>`;
@@ -2885,46 +2989,41 @@
           ondragleave="handleOrderDragLeave(event)"
           ondrop="handleOrderDrop(event, ${o.id})"
           ondragend="handleOrderDragEnd(event)"
-          class="rounded-2xl p-3 ${cardHighlight} transition space-y-2 ${isExpanded ? (hasProduction ? 'ring-2 ring-orange-400/60' : 'ring-2 ring-amber-400/60') : ''}">
+          class="rounded-2xl p-3 ${cardHighlight} transition space-y-2 ${isExpanded ? 'ring-2 ring-slate-500/60' : ''}">
           <div class="flex items-center justify-between gap-2">
             <div class="flex items-center gap-1.5 shrink-0">
               <div onclick="event.stopPropagation()" class="inline-flex items-center justify-center shrink-0 ${seqBoxClass}" title="Sıra numarasını değiştirin">
                 <input type="number" inputmode="numeric" min="1" value="${o.orderNo}"
                   onchange="updateOrderNumberInline(${o.id}, this.value)"
                   onkeydown="if(event.key==='Enter'){this.blur();}"
-                  class="w-full bg-transparent text-slate-900 text-[10px] font-extrabold text-center leading-none rounded outline-none" />
+                  class="w-full h-full bg-transparent text-slate-950 text-[8.5px] font-extrabold text-center leading-none tabular-nums rounded outline-none" />
               </div>
-              ${isExpanded ? `
-                <button type="button" onclick="toggleIdleOrderDetailView(event, ${o.id})" title="Listeye Dön"
-                  class="px-2 py-0.5 rounded-lg ${hasProduction ? 'bg-orange-100 hover:bg-orange-200 border-orange-300 text-orange-900' : 'bg-amber-100 hover:bg-amber-200 border-amber-300 text-amber-900'} border text-[10px] font-extrabold transition">
-                  Liste
-                </button>` : ''}
             </div>
-            <span class="inline-flex items-center justify-center shrink-0 h-[22px] px-2.5 rounded-lg border text-[10px] leading-none font-bold tabular-nums text-center ${dateBoxClass}">${topDateStr}</span>
+            <span class="inline-flex items-center justify-center shrink-0 h-[18px] px-1.5 rounded-md border text-[8.5px] leading-none font-bold tabular-nums text-center ${dateBoxClass}">${topDateStr}</span>
             ${renderWorkStatusButton(o)}
           </div>
 
           <div class="space-y-2">
             <div>
-              <p class="text-xs font-semibold text-slate-600 flex flex-wrap items-center gap-1">
+              <p class="text-xs font-semibold text-slate-800 flex flex-wrap items-center gap-1">
                 <span class="w-1.5 h-1.5 rounded-full ${dotColorClass}"></span>
                 <span>${formatArtiveHighlight(o.artive)}</span>
               </p>
-              <h3 class="text-[9px] leading-tight font-medium text-slate-500 mt-0.5">${escapeHtml(o.article)}</h3>
+              <h3 class="text-[9.5px] leading-tight font-medium text-slate-500 mt-0.5">${escapeHtml(o.article)}</h3>
             </div>
 
             <div class="grid grid-cols-3 ${metricBoxClass} border rounded-2xl py-2.5 px-2 text-center shadow-2xs">
               <div>
                 <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_order')}</div>
-                <div class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight mt-1">${fmt(o.ton)}</div>
+                <div class="text-xs sm:text-sm font-black text-slate-950 leading-tight mt-1">${fmt(o.ton)}</div>
               </div>
-              <div class="border-x ${hasProduction ? 'border-orange-200/90' : 'border-amber-200/80'}">
+              <div class="border-x border-slate-400/35">
                 <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_prod')}</div>
-                <div class="text-xs sm:text-sm font-extrabold text-[#146C53] leading-tight mt-1">${fmt(prod)}</div>
+                <div class="text-xs sm:text-sm font-black text-emerald-700 leading-tight mt-1">${fmt(prod)}</div>
               </div>
               <div>
                 <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_rem')}</div>
-                <div class="text-xs sm:text-sm font-extrabold ${isExceeded || isNearComplete ? 'text-rose-600' : (hasProduction ? 'text-orange-600' : 'text-amber-600')} leading-tight mt-1">${fmt(rest)}</div>
+                <div class="text-xs sm:text-sm font-black text-rose-700 leading-tight mt-1">${fmt(rest)}</div>
               </div>
             </div>
           </div>
@@ -3400,7 +3499,7 @@
                       <td class="py-[2px] px-0.5 text-center border-r border-[#D3DFD9] ${hasProd ? 'bg-[#F0F7F3]/70' : 'bg-slate-50/40'}">
                         <div class="inline-flex items-center justify-center gap-0.5 max-w-full">
                           <span class="w-1 h-1 rounded-full shrink-0 ${hasProd ? 'bg-[#146C53]' : 'bg-slate-300'}"></span>
-                          <span class="font-extrabold truncate ${hasProd ? 'text-slate-900' : 'text-slate-500'}">${escapeHtml(m.shortLabel)}</span>
+                          <span class="font-bold truncate ${hasProd ? 'text-slate-700' : 'text-slate-500'}">${escapeHtml(m.shortLabel)}</span>
                         </div>
                       </td>
                       <td class="py-[2px] px-0.5 text-center border-x border-[#C8D8D0] ${hasProd ? 'bg-emerald-50/90' : 'bg-slate-50/35'}">
