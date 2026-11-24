@@ -211,19 +211,19 @@
     /* Raporlar sekmesi için diklemesine sütun ve eksen stilleri */
     .report-vertical-track {
       position: relative;
-      height: 118px;
+      height: 146px;
       width: 100%;
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      padding: 4px 1px 0 1px;
+      padding: 6px 1px 0 1px;
       border-bottom: 1.5px solid #CBD5E1;
       background-image: repeating-linear-gradient(
         to top,
         rgba(148, 163, 184, 0.16) 0px,
         rgba(148, 163, 184, 0.16) 1px,
         transparent 1px,
-        transparent 29.5px
+        transparent 36.5px
       );
       border-radius: 4px 4px 0 0;
     }
@@ -237,19 +237,19 @@
     }
     .op-vertical-track {
       position: relative;
-      height: 106px;
+      height: 134px;
       width: 100%;
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      padding: 4px 0 0 0;
+      padding: 6px 0 0 0;
       border-bottom: 1.5px solid #CBD5E1;
       background-image: repeating-linear-gradient(
         to top,
         rgba(148, 163, 184, 0.15) 0px,
         rgba(148, 163, 184, 0.15) 1px,
         transparent 1px,
-        transparent 26.5px
+        transparent 33.5px
       );
       border-radius: 3px 3px 0 0;
     }
@@ -265,8 +265,8 @@
     @media (max-width: 380px) {
       .nav-btn span { font-size: 9px; }
       .nav-btn .nav-icon-wrap { padding: 4px; }
-      .report-vertical-track { height: 96px; }
-      .op-vertical-track { height: 86px; }
+      .report-vertical-track { height: 124px; }
+      .op-vertical-track { height: 112px; }
       .report-vertical-bar { max-width: 11px; }
       .op-vertical-bar { max-width: 4.5px; }
     }
@@ -458,28 +458,28 @@
       </div>
 
       <!-- 1. Sıra: Her Ay Ayrı Ayrı Toplam KG ve 4 Operatörün Aylık KG Dağılımı (Tek Tablo) -->
-      <div class="pro-card rounded-lg p-1 w-full min-w-0 overflow-hidden space-y-0.5">
-        <div class="flex items-center justify-between gap-1 px-0.5 min-w-0">
-          <h3 data-i18n="monthly_unified_table_title" class="text-[9.5px] font-extrabold text-slate-900 leading-none truncate">Aylık Üretim & Operatör KG Tablosu</h3>
-          <span data-i18n="monthly_unified_table_badge" class="text-[7.5px] font-bold text-[#146C53] bg-emerald-50 border border-emerald-200 px-1 py-0.5 rounded-full shrink-0 whitespace-nowrap leading-none">12 Ay · Tek Tablo</span>
+      <div class="pro-card rounded-xl p-1.5 w-full min-w-0 overflow-hidden space-y-1">
+        <div class="flex items-center justify-between gap-1 px-0.5 pt-0.5 min-w-0">
+          <h3 data-i18n="monthly_unified_table_title" class="text-[10px] font-extrabold text-slate-900 leading-none truncate">Aylık Üretim & Operatör KG Tablosu</h3>
+          <span data-i18n="monthly_unified_table_badge" class="text-[7.5px] font-bold text-[#146C53] bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-full shrink-0 whitespace-nowrap leading-none">12 Ay · Tek Tablo</span>
         </div>
         <div id="monthlyUnifiedKgTable" class="w-full min-w-0"></div>
       </div>
 
       <!-- Alt İki Grafik Alanı -->
-      <div id="reportsBottomChartsZone" class="w-full min-w-0 bg-[#F4F8F6]/90 border border-[#C5D5CD] rounded-xl p-1.5 mt-1 space-y-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]">
+      <div id="reportsBottomChartsZone" class="w-full min-w-0 bg-[#F4F8F6]/90 border border-[#C5D5CD] rounded-xl p-2 mt-1.5 space-y-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]">
         <!-- Aylık Üretim Karşılaştırması (KG) - Diklemesine Sütunlar -->
-        <div class="bg-white/95 border border-slate-200/90 rounded-lg px-1.5 py-2.5 w-full min-w-0 overflow-hidden space-y-1.5 shadow-2xs">
+        <div class="bg-white/95 border border-slate-200/90 rounded-xl px-2 py-3 w-full min-w-0 overflow-hidden space-y-2 shadow-2xs">
           <div class="flex items-center justify-between gap-1.5 px-0.5 min-w-0">
-            <h3 data-i18n="monthly_comp" class="text-[10px] font-extrabold text-slate-900 leading-none truncate">Aylık Üretim Karşılaştırması (KG)</h3>
+            <h3 data-i18n="monthly_comp" class="text-[10.5px] font-extrabold text-slate-900 leading-none truncate">Aylık Üretim Karşılaştırması (KG)</h3>
           </div>
           <div id="monthlyProdBarChart" class="w-full min-w-0"></div>
         </div>
 
         <!-- Operatörlerin Ay Ay Diklemesine Üretim Göstergesi -->
-        <div class="bg-white/95 border border-slate-200/90 rounded-lg px-1.5 py-2.5 w-full min-w-0 overflow-hidden space-y-1.5 shadow-2xs">
+        <div class="bg-white/95 border border-slate-200/90 rounded-xl px-2 py-3 w-full min-w-0 overflow-hidden space-y-2 shadow-2xs">
           <div class="flex items-center justify-between gap-1 px-0.5 min-w-0">
-            <h3 data-i18n="monthly_operator_bars_title" class="text-[10px] font-extrabold text-slate-900 leading-none truncate">Aylık Operatör Üretim Göstergesi (KG)</h3>
+            <h3 data-i18n="monthly_operator_bars_title" class="text-[10.5px] font-extrabold text-slate-900 leading-none truncate">Aylık Operatör Üretim Göstergesi (KG)</h3>
             <div class="flex items-center gap-1 text-[7.5px] font-bold leading-none shrink-0">
               <span class="inline-flex items-center gap-0.5 text-slate-700"><span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>İSA</span>
               <span class="inline-flex items-center gap-0.5 text-slate-700"><span class="w-1.5 h-1.5 rounded-full bg-[#146C53]"></span>MUH.</span>
@@ -3473,14 +3473,14 @@
 
       if (prodChartEl) {
         prodChartEl.innerHTML = `
-          <div class="w-full bg-white/95 border border-slate-200/80 rounded-lg px-1 py-1 shadow-2xs">
+          <div class="w-full bg-white/95 border border-slate-200/80 rounded-lg px-1 py-1.5 shadow-2xs">
             <div class="grid grid-cols-12 gap-[1px] items-end">
               ${monthlyStats.map(m => {
                 const heightPct = m.total > 0
                   ? Math.max(12, Math.min(100, Math.round((m.total / maxMonthVal) * 100)))
                   : 4;
                 return `
-                  <div class="flex flex-col items-center space-y-0.5 min-w-0">
+                  <div class="flex flex-col items-center space-y-1 min-w-0">
                     <div class="report-vertical-track">
                       <div class="report-vertical-bar ${m.total > 0 ? 'bg-gradient-to-t from-[#0F5C45] to-[#16916E]' : 'bg-slate-200'}" style="height: ${heightPct}%;" title="${escapeHtml(m.label)} 2026: ${fmt(m.total)} KG"></div>
                     </div>
@@ -3500,7 +3500,7 @@
 
       if (monthlyOpBarsEl) {
         monthlyOpBarsEl.innerHTML = `
-          <div class="w-full bg-white/95 border border-slate-200/80 rounded-lg px-0.5 py-1 shadow-2xs">
+          <div class="w-full bg-white/95 border border-slate-200/80 rounded-lg px-0.5 py-1.5 shadow-2xs">
             <div class="grid grid-cols-12 gap-[1px] items-end">
               ${monthlyStats.map(m => {
                 const opBars = [
@@ -3511,7 +3511,7 @@
                 ];
 
                 return `
-                  <div class="flex flex-col items-center bg-slate-50/85 border border-slate-200/75 rounded px-[1px] py-0.5 space-y-0.5 min-w-0">
+                  <div class="flex flex-col items-center bg-slate-50/85 border border-slate-200/75 rounded px-[1px] py-1 space-y-1 min-w-0">
                       <div class="grid grid-cols-4 gap-[0.5px] w-full items-end">
                         ${opBars.map(op => {
                           const pct = op.val > 0
@@ -3560,14 +3560,14 @@
               </colgroup>
               <thead>
                 <tr class="bg-gradient-to-b from-[#F4F8F6] to-[#E8F0EC] border-b border-[#C6D5CD] text-[7.5px] font-extrabold tracking-tighter leading-none">
-                  <th class="py-[3px] px-0.5 text-center text-slate-800 border-r border-[#C6D5CD]">
+                  <th class="py-[5px] px-0.5 text-center text-slate-800 border-r border-[#C6D5CD]">
                     <span class="block truncate">${escapeHtml(t('col_month'))}</span>
                   </th>
-                  <th class="py-[3px] px-0.5 text-center text-[#0F5C45] bg-emerald-100/75 border-x border-[#B6C9C0]">
+                  <th class="py-[5px] px-0.5 text-center text-[#0F5C45] bg-emerald-100/75 border-x border-[#B6C9C0]">
                     <span class="block truncate">${escapeHtml(t('col_total_short'))}</span>
                   </th>
                   ${opHeaders.map((op, opIdx) => `
-                    <th class="py-[3px] px-0.5 text-center ${op.text} ${op.headerBg} ${opIdx < opHeaders.length - 1 ? 'border-r border-slate-200/90' : ''}" title="${op.label}">
+                    <th class="py-[5px] px-0.5 text-center ${op.text} ${op.headerBg} ${opIdx < opHeaders.length - 1 ? 'border-r border-slate-200/90' : ''}" title="${op.label}">
                       <span class="inline-flex items-center justify-center gap-0.5 max-w-full">
                         <span class="w-1 h-1 rounded-full ${op.dot} shrink-0"></span>
                         <span class="truncate">${op.shortLabel}</span>
@@ -3585,27 +3585,27 @@
 
                   return `
                     <tr class="${rowBg} transition-colors">
-                      <td class="py-[2px] px-0.5 text-center border-r border-[#D3DFD9] ${hasProd ? 'bg-[#F0F7F3]/70' : 'bg-slate-50/40'}">
+                      <td class="py-[3.5px] px-0.5 text-center border-r border-[#D3DFD9] ${hasProd ? 'bg-[#F0F7F3]/70' : 'bg-slate-50/40'}">
                         <div class="inline-flex items-center justify-center gap-0.5 max-w-full">
                           <span class="w-1 h-1 rounded-full shrink-0 ${hasProd ? 'bg-[#146C53]' : 'bg-slate-300'}"></span>
                           <span class="font-bold truncate ${hasProd ? 'text-slate-700' : 'text-slate-500'}">${escapeHtml(m.shortLabel)}</span>
                         </div>
                       </td>
-                      <td class="py-[2px] px-0.5 text-center border-x border-[#C8D8D0] ${hasProd ? 'bg-emerald-50/90' : 'bg-slate-50/35'}">
+                      <td class="py-[3.5px] px-0.5 text-center border-x border-[#C8D8D0] ${hasProd ? 'bg-emerald-50/90' : 'bg-slate-50/35'}">
                         ${hasProd
-                          ? `<span class="inline-flex items-center justify-center max-w-full px-0.5 py-[0.5px] rounded bg-emerald-100/95 border border-emerald-300 text-[#0F5C45] font-extrabold text-[7px] tracking-tighter leading-none truncate">${fmt(m.total)}</span>`
+                          ? `<span class="inline-flex items-center justify-center max-w-full px-1 py-[1px] rounded bg-emerald-100/95 border border-emerald-300 text-[#0F5C45] font-extrabold text-[7px] tracking-tighter leading-none truncate">${fmt(m.total)}</span>`
                           : `<span class="text-slate-400 font-semibold">—</span>`}
                       </td>
-                      <td class="py-[2px] px-0.5 text-center border-r border-slate-200/80 font-bold tracking-tighter ${m.isa > 0 ? 'text-blue-700' : 'text-slate-300 font-normal'}">
+                      <td class="py-[3.5px] px-0.5 text-center border-r border-slate-200/80 font-bold tracking-tighter ${m.isa > 0 ? 'text-blue-700' : 'text-slate-300 font-normal'}">
                         <span class="block truncate">${formatCellKg(m.isa)}</span>
                       </td>
-                      <td class="py-[2px] px-0.5 text-center border-r border-slate-200/80 font-bold tracking-tighter ${m.muhiddin > 0 ? 'text-[#146C53]' : 'text-slate-300 font-normal'}">
+                      <td class="py-[3.5px] px-0.5 text-center border-r border-slate-200/80 font-bold tracking-tighter ${m.muhiddin > 0 ? 'text-[#146C53]' : 'text-slate-300 font-normal'}">
                         <span class="block truncate">${formatCellKg(m.muhiddin)}</span>
                       </td>
-                      <td class="py-[2px] px-0.5 text-center border-r border-slate-200/80 font-bold tracking-tighter ${m.kaddur > 0 ? 'text-amber-700' : 'text-slate-300 font-normal'}">
+                      <td class="py-[3.5px] px-0.5 text-center border-r border-slate-200/80 font-bold tracking-tighter ${m.kaddur > 0 ? 'text-amber-700' : 'text-slate-300 font-normal'}">
                         <span class="block truncate">${formatCellKg(m.kaddur)}</span>
                       </td>
-                      <td class="py-[2px] px-0.5 text-center font-bold tracking-tighter ${m.muhammed > 0 ? 'text-purple-700' : 'text-slate-300 font-normal'}">
+                      <td class="py-[3.5px] px-0.5 text-center font-bold tracking-tighter ${m.muhammed > 0 ? 'text-purple-700' : 'text-slate-300 font-normal'}">
                         <span class="block truncate">${formatCellKg(m.muhammed)}</span>
                       </td>
                     </tr>`;
@@ -3613,22 +3613,22 @@
               </tbody>
               <tfoot>
                 <tr class="bg-gradient-to-r from-slate-900 via-[#0F2922] to-slate-900 text-white text-[7px] font-extrabold leading-none border-t border-[#146C53]">
-                  <td class="py-[3px] px-0.5 text-center border-r border-slate-700/80 text-slate-100">
+                  <td class="py-[5px] px-0.5 text-center border-r border-slate-700/80 text-slate-100">
                     <span class="block truncate tracking-tighter">${escapeHtml(t('yearly_grand_total_short'))}</span>
                   </td>
-                  <td class="py-[3px] px-0.5 text-center bg-[#0B4635]/95 text-emerald-300 border-x border-emerald-700/50 tracking-tighter">
+                  <td class="py-[5px] px-0.5 text-center bg-[#0B4635]/95 text-emerald-300 border-x border-emerald-700/50 tracking-tighter">
                     <span class="block truncate">${fmt(yearlyTotal)}</span>
                   </td>
-                  <td class="py-[3px] px-0.5 text-center border-r border-slate-800 text-blue-300 tracking-tighter">
+                  <td class="py-[5px] px-0.5 text-center border-r border-slate-800 text-blue-300 tracking-tighter">
                     <span class="block truncate">${fmt(totalIsa)}</span>
                   </td>
-                  <td class="py-[3px] px-0.5 text-center border-r border-slate-800 text-emerald-300 tracking-tighter">
+                  <td class="py-[5px] px-0.5 text-center border-r border-slate-800 text-emerald-300 tracking-tighter">
                     <span class="block truncate">${fmt(totalMuh)}</span>
                   </td>
-                  <td class="py-[3px] px-0.5 text-center border-r border-slate-800 text-amber-300 tracking-tighter">
+                  <td class="py-[5px] px-0.5 text-center border-r border-slate-800 text-amber-300 tracking-tighter">
                     <span class="block truncate">${fmt(totalKad)}</span>
                   </td>
-                  <td class="py-[3px] px-0.5 text-center text-purple-300 tracking-tighter">
+                  <td class="py-[5px] px-0.5 text-center text-purple-300 tracking-tighter">
                     <span class="block truncate">${fmt(totalMam)}</span>
                   </td>
                 </tr>
