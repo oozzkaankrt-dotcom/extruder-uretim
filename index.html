@@ -211,19 +211,19 @@
     /* Raporlar sekmesi için diklemesine sütun ve eksen stilleri */
     .report-vertical-track {
       position: relative;
-      height: 146px;
+      height: 112px;
       width: 100%;
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      padding: 6px 1px 0 1px;
+      padding: 4px 1px 0 1px;
       border-bottom: 1.5px solid #CBD5E1;
       background-image: repeating-linear-gradient(
         to top,
         rgba(148, 163, 184, 0.16) 0px,
         rgba(148, 163, 184, 0.16) 1px,
         transparent 1px,
-        transparent 36.5px
+        transparent 28px
       );
       border-radius: 4px 4px 0 0;
     }
@@ -237,19 +237,19 @@
     }
     .op-vertical-track {
       position: relative;
-      height: 134px;
+      height: 102px;
       width: 100%;
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      padding: 6px 0 0 0;
+      padding: 4px 0 0 0;
       border-bottom: 1.5px solid #CBD5E1;
       background-image: repeating-linear-gradient(
         to top,
         rgba(148, 163, 184, 0.15) 0px,
         rgba(148, 163, 184, 0.15) 1px,
         transparent 1px,
-        transparent 33.5px
+        transparent 25.5px
       );
       border-radius: 3px 3px 0 0;
     }
@@ -265,8 +265,8 @@
     @media (max-width: 380px) {
       .nav-btn span { font-size: 9px; }
       .nav-btn .nav-icon-wrap { padding: 4px; }
-      .report-vertical-track { height: 124px; }
-      .op-vertical-track { height: 112px; }
+      .report-vertical-track { height: 96px; }
+      .op-vertical-track { height: 88px; }
       .report-vertical-bar { max-width: 11px; }
       .op-vertical-bar { max-width: 4.5px; }
     }
@@ -341,36 +341,36 @@
     </section>
 
     <!-- TAB 2: TAMAMLANAN İŞ EMİRLERİ -->
-    <section id="tab-tamamlanan" class="hidden space-y-4">
-      <div class="flex items-start justify-between gap-3">
+    <section id="tab-tamamlanan" class="hidden space-y-2.5">
+      <div class="flex items-start justify-between gap-2">
         <div>
-          <h2 data-i18n="completed_title" class="text-2xl font-extrabold text-slate-900 app-section-title">Tamamlanan İş Emirleri</h2>
-          <p data-i18n="completed_subtitle" class="text-sm text-slate-500 mt-1">Kapatılan üretim emirleri ve gerçekleşen miktarlar.</p>
+          <h2 data-i18n="completed_title" class="text-xl font-extrabold text-slate-900 app-section-title">Tamamlanan İş Emirleri</h2>
+          <p data-i18n="completed_subtitle" class="text-xs text-slate-500 mt-0.5">Kapatılan üretim emirleri ve gerçekleşen miktarlar.</p>
         </div>
-        <span id="completedCount" class="shrink-0 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/80 px-3 py-1.5 text-xs font-bold">0 emir</span>
+        <span id="completedCount" class="shrink-0 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/80 px-2.5 py-1 text-[11px] font-bold">0 emir</span>
       </div>
 
       <!-- Bitenler Üst Özet Kutucukları (Toplam Sipariş / Toplam Üretim / Fark) -->
-      <div class="grid grid-cols-3 gap-2.5">
-        <div class="pro-card rounded-2xl p-3 text-center">
-          <div data-i18n="completed_total_order" class="text-[10px] sm:text-xs font-bold text-slate-500">Toplam Sipariş</div>
-          <div id="completedSumOrderKg" class="text-xs sm:text-sm font-extrabold text-slate-900 mt-1 tabular-nums">0 KG</div>
+      <div class="grid grid-cols-3 gap-2">
+        <div class="pro-card rounded-xl p-2 text-center">
+          <div data-i18n="completed_total_order" class="text-[10px] font-bold text-slate-500 leading-none">Toplam Sipariş</div>
+          <div id="completedSumOrderKg" class="text-xs font-extrabold text-slate-900 mt-1 tabular-nums">0 KG</div>
         </div>
-        <div class="pro-card rounded-2xl p-3 text-center">
-          <div data-i18n="completed_total_prod" class="text-[10px] sm:text-xs font-bold text-slate-500">Toplam Üretim</div>
-          <div id="completedSumProdKg" class="text-xs sm:text-sm font-extrabold text-[#146C53] mt-1 tabular-nums">0 KG</div>
+        <div class="pro-card rounded-xl p-2 text-center">
+          <div data-i18n="completed_total_prod" class="text-[10px] font-bold text-slate-500 leading-none">Toplam Üretim</div>
+          <div id="completedSumProdKg" class="text-xs font-extrabold text-[#146C53] mt-1 tabular-nums">0 KG</div>
         </div>
-        <div class="pro-card rounded-2xl p-3 text-center">
-          <div data-i18n="completed_total_diff" class="text-[10px] sm:text-xs font-bold text-slate-500">Fark</div>
-          <div id="completedSumDiffKg" class="text-xs sm:text-sm font-extrabold text-amber-600 mt-1 tabular-nums">0 KG</div>
+        <div class="pro-card rounded-xl p-2 text-center">
+          <div data-i18n="completed_total_diff" class="text-[10px] font-bold text-slate-500 leading-none">Fark</div>
+          <div id="completedSumDiffKg" class="text-xs font-extrabold text-amber-600 mt-1 tabular-nums">0 KG</div>
         </div>
       </div>
 
-      <div class="pro-card rounded-2xl p-3.5">
-        <label for="completedSearch" data-i18n="completed_search_label" class="block text-xs font-semibold text-slate-600 mb-1.5">Tamamlanan emirlerde ara</label>
-        <input id="completedSearch" type="search" oninput="renderCompletedOrders()" data-i18n-placeholder="completed_search_ph" placeholder="Ürün, kod veya bobin ara..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm" />
+      <div class="pro-card rounded-xl p-2.5">
+        <label for="completedSearch" data-i18n="completed_search_label" class="block text-[10.5px] font-semibold text-slate-600 mb-1">Tamamlanan emirlerde ara</label>
+        <input id="completedSearch" type="search" oninput="renderCompletedOrders()" data-i18n-placeholder="completed_search_ph" placeholder="Ürün, kod veya bobin ara..." class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
       </div>
-      <div id="completedOrdersList" class="space-y-3"></div>
+      <div id="completedOrdersList" class="space-y-1.5"></div>
     </section>
 
     <!-- TAB 3: ÖZET -->
@@ -467,9 +467,9 @@
       </div>
 
       <!-- Alt İki Grafik Alanı -->
-      <div id="reportsBottomChartsZone" class="w-full min-w-0 bg-[#F4F8F6]/90 border border-[#C5D5CD] rounded-xl p-2 mt-1.5 space-y-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]">
+      <div id="reportsBottomChartsZone" class="w-full min-w-0 bg-[#F4F8F6]/90 border border-[#C5D5CD] rounded-xl p-1.5 mt-1 space-y-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]">
         <!-- Aylık Üretim Karşılaştırması (KG) - Diklemesine Sütunlar -->
-        <div class="bg-white/95 border border-slate-200/90 rounded-xl px-2 py-3 w-full min-w-0 overflow-hidden space-y-2 shadow-2xs">
+        <div class="bg-white/95 border border-slate-200/90 rounded-xl px-2 py-2 w-full min-w-0 overflow-hidden space-y-1.5 shadow-2xs">
           <div class="flex items-center justify-between gap-1.5 px-0.5 min-w-0">
             <h3 data-i18n="monthly_comp" class="text-[10.5px] font-extrabold text-slate-900 leading-none truncate">Aylık Üretim Karşılaştırması (KG)</h3>
           </div>
@@ -477,7 +477,7 @@
         </div>
 
         <!-- Operatörlerin Ay Ay Diklemesine Üretim Göstergesi -->
-        <div class="bg-white/95 border border-slate-200/90 rounded-xl px-2 py-3 w-full min-w-0 overflow-hidden space-y-2 shadow-2xs">
+        <div class="bg-white/95 border border-slate-200/90 rounded-xl px-2 py-2 w-full min-w-0 overflow-hidden space-y-1.5 shadow-2xs">
           <div class="flex items-center justify-between gap-1 px-0.5 min-w-0">
             <h3 data-i18n="monthly_operator_bars_title" class="text-[10.5px] font-extrabold text-slate-900 leading-none truncate">Aylık Operatör Üretim Göstergesi (KG)</h3>
             <div class="flex items-center gap-1 text-[7.5px] font-bold leading-none shrink-0">
@@ -682,67 +682,10 @@
         </button>
       </div>
 
-      <!-- Primary Save CTA -->
-      <button type="button" onclick="saveOrderEdits()" data-i18n="save_changes_btn" class="w-full bg-slate-950 hover:bg-slate-800 border border-slate-900 text-white font-extrabold text-xs py-2.5 rounded-xl shadow-[0_6px_16px_-6px_rgba(15,23,42,0.55)] active:scale-[0.99] transition">
-        Değişiklikleri Kaydet
+      <!-- Bottom Action Button: KAYDET ve ÇIK -->
+      <button type="button" onclick="saveOrderEdits()" data-i18n="save_changes_btn" class="w-full bg-slate-950 hover:bg-slate-800 border border-slate-900 text-white font-extrabold text-xs tracking-wide py-3 px-4 rounded-full shadow-[0_6px_16px_-6px_rgba(15,23,42,0.55)] active:scale-95 transition">
+        KAYDET ve ÇIK
       </button>
-    </div>
-  </div>
-
-  <!-- MODAL 2: NEW WORK ORDER -->
-  <div id="newOrderModal" class="fixed inset-0 z-50 hidden bg-slate-900/55 backdrop-blur-xs flex items-end sm:items-center justify-center">
-    <div class="bg-white w-full max-w-xl rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl bottom-sheet-enter space-y-4">
-      <div class="flex items-center justify-between">
-        <h3 data-i18n="new_order_modal_title" class="text-base font-extrabold text-slate-900">Yeni Üretim Emri</h3>
-        <button type="button" onclick="closeModal('newOrderModal')" class="p-2 rounded-full bg-slate-100 text-slate-500">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-      </div>
-
-      <div>
-        <label for="newArticle" data-i18n="article_label" class="block text-xs font-bold text-slate-700 mb-1">ARTICLE THERMOFM (Ürün Adı)</label>
-        <input id="newArticle" type="text" placeholder="BARQUETTE PLASTIQUE PET..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold" />
-      </div>
-
-      <div>
-        <label for="newArtive" data-i18n="artive_label" class="block text-xs font-bold text-slate-700 mb-1">ARTIVE (Bobin / Levha Kodu)</label>
-        <input id="newArtive" type="text" placeholder="BOBINE SF-PET 340 760 TRANSPARENT F2" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold" />
-      </div>
-
-      <div>
-        <label for="newTon" data-i18n="ton_label" class="block text-xs font-bold text-slate-700 mb-1">Hedef Tonaj (TON - KG)</label>
-        <input id="newTon" type="text" inputmode="decimal" placeholder="15000" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-extrabold" />
-      </div>
-
-      <label class="flex items-center gap-2 text-xs font-bold text-slate-700">
-        <input id="newPriority" type="checkbox" class="w-4 h-4 rounded accent-[#146C53]" />
-        <span data-i18n="priority_toggle">⭐ Öncelikli Emir</span>
-      </label>
-
-      <button type="button" onclick="createNewOrder()" data-i18n="create_order_btn" class="w-full bg-[#146C53] hover:bg-[#0F5C45] text-white font-extrabold text-sm py-3.5 rounded-2xl shadow-md">
-        Emri Oluştur
-      </button>
-    </div>
-  </div>
-
-  <!-- MODAL 3: EXPORT & RESET -->
-  <div id="exportModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-end sm:items-center justify-center">
-    <div class="bg-white w-full max-w-xl rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl bottom-sheet-enter space-y-4">
-      <div class="flex items-center justify-between">
-        <h3 class="text-base font-extrabold text-slate-900">Veri Dışa Aktarma</h3>
-        <button type="button" onclick="closeModal('exportModal')" class="p-2 rounded-full bg-slate-100 text-slate-500">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-      </div>
-      <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 text-xs text-slate-600 space-y-1.5 leading-relaxed">
-        <div class="font-extrabold text-slate-900">Çalışma Alanı Bilgisi:</div>
-        <p>• Üretim emirleri, operatör girdileri ve vardiya notları aktif oturum içinde anlık güncellenir.</p>
-        <p>• Tüm iş emirlerini Excel uyumlu CSV formatında indirebilir veya varsayılan listeye dönebilirsiniz.</p>
-      </div>
-      <div class="grid grid-cols-2 gap-2.5">
-        <button type="button" onclick="exportToCSV()" class="py-3 px-3 rounded-xl bg-[#146C53] text-white font-extrabold text-xs">CSV (Excel) İndir</button>
-        <button type="button" onclick="resetToDefaultData()" class="py-3 px-3 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs">Varsayılan Veriye Dön</button>
-      </div>
     </div>
   </div>
 
@@ -763,9 +706,8 @@
       </div>
 
       <div id="roleAssignmentsList" class="space-y-2"></div>
-
-      <button type="button" onclick="applySelectedRoleProfile()" class="w-full bg-[#146C53] hover:bg-[#0F5C45] text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-sm active:scale-95 transition">
-        Rolü Uygula
+      <button type="button" onclick="applySelectedRoleProfile()" class="w-full bg-slate-950 hover:bg-slate-800 border border-slate-900 text-white font-extrabold text-xs tracking-wide py-3 px-4 rounded-full shadow-[0_6px_16px_-6px_rgba(15,23,42,0.55)] active:scale-95 transition">
+        Seçimi Onayla
       </button>
     </div>
   </div>
@@ -868,7 +810,7 @@
         order_seq_short: 'SIRA #',
         op_inputs_title: 'Operatör Üretim Girdileri (KG)',
         priority_toggle: '⭐ Öncelikli Emir',
-        save_changes_btn: 'Değişiklikleri Kaydet',
+        save_changes_btn: 'KAYDET ve ÇIK',
         new_order_modal_title: 'Yeni Üretim Emri',
         order_seq_label: 'İş Emri Sıra No',
         article_label: 'ARTICLE THERMOFM (Ürün Adı)',
@@ -994,7 +936,7 @@
         order_seq_short: 'رقم #',
         op_inputs_title: 'مدخلات إنتاج المشغلين (كغ)',
         priority_toggle: '⭐ أمر ذو أولوية',
-        save_changes_btn: 'حفظ التغييرات',
+        save_changes_btn: 'حفظ وخروج',
         new_order_modal_title: 'أمر إنتاج جديد',
         order_seq_label: 'رقم تسلسل أمر العمل',
         article_label: 'اسم المنتج (ARTICLE THERMOFM)',
@@ -1128,7 +1070,7 @@
     let isEditingMetricsMode = false;
     let openStatusMenuId = null;
     let openCompletedMenuId = null;
-    let openCompletedFolders = {};
+    let expandedCompletedOrderId = null;
     let expandedIdleOrderId = null;
     let lastEndedShiftOrderId = null;
     let draggedOrderId = null;
@@ -3038,33 +2980,33 @@
             ondrop="handleOrderDrop(event, ${o.id})"
             ondragend="handleOrderDragEnd(event)"
             onclick="toggleIdleOrderDetailView(event, ${o.id})"
-            class="rounded-2xl px-3 py-1.5 ${cardHighlight} active:scale-[0.995] transition cursor-pointer space-y-1">
-            <div class="flex items-center justify-between gap-2">
-              <div class="flex items-center gap-1.5 min-w-0 flex-1">
-                <div onclick="event.stopPropagation()" class="inline-flex items-center justify-center shrink-0 ${seqBoxClass}" title="Sıra numarasını değiştirin">
+            class="rounded-xl px-2.5 py-1 ${cardHighlight} active:scale-[0.995] transition cursor-pointer space-y-1">
+            <div class="flex items-start justify-between gap-1.5">
+              <div class="flex items-start gap-1.5 min-w-0 flex-1">
+                <div onclick="event.stopPropagation()" class="inline-flex items-center justify-center shrink-0 mt-[1px] ${seqBoxClass}" title="Sıra numarasını değiştirin">
                   <input type="number" inputmode="numeric" min="1" value="${o.orderNo}"
                     onchange="updateOrderNumberInline(${o.id}, this.value)"
                     onkeydown="if(event.key==='Enter'){this.blur();}"
                     class="w-full bg-transparent text-slate-950 text-[8.5px] font-extrabold text-center leading-none rounded outline-none" />
                 </div>
-                <span class="w-1.5 h-1.5 rounded-full ${dotColorClass} shrink-0"></span>
-                <span class="text-[11px] font-semibold text-slate-800 truncate">${formatArtiveHighlight(o.artive)}</span>
+                <span class="w-1.5 h-1.5 rounded-full ${dotColorClass} shrink-0 mt-[4px]"></span>
+                <span class="text-[10.5px] leading-[1.2] font-semibold text-slate-800 break-words">${formatArtiveHighlight(o.artive)}</span>
               </div>
               ${showNonRunningDate ? `<span class="text-[9px] font-bold text-slate-500 tabular-nums shrink-0">${topDateStr}</span>` : ''}
             </div>
 
-            <div class="grid grid-cols-3 ${metricBoxClass} border rounded-xl py-1 px-1.5 text-center tabular-nums">
-              <div>
-                <div class="text-[7.5px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_order')}</div>
-                <div class="text-[10.5px] font-black text-slate-950 leading-tight mt-0.5">${fmt(o.ton)}</div>
+            <div class="grid grid-cols-3 ${metricBoxClass} border rounded-lg py-0.5 px-1 text-center tabular-nums">
+              <div class="flex items-center justify-center gap-1">
+                <span class="text-[7px] font-bold text-slate-400 leading-none tracking-tight uppercase">${t('metric_order')}:</span>
+                <span class="text-[9.5px] font-black text-slate-950 leading-none">${fmt(o.ton)}</span>
               </div>
-              <div class="border-x border-slate-400/35">
-                <div class="text-[7.5px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_prod')}</div>
-                <div class="text-[10.5px] font-black text-emerald-700 leading-tight mt-0.5">${fmt(prod)}</div>
+              <div class="border-x border-slate-400/35 flex items-center justify-center gap-1">
+                <span class="text-[7px] font-bold text-slate-400 leading-none tracking-tight uppercase">${t('metric_prod')}:</span>
+                <span class="text-[9.5px] font-black text-emerald-700 leading-none">${fmt(prod)}</span>
               </div>
-              <div>
-                <div class="text-[7.5px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_rem')}</div>
-                <div class="text-[10.5px] font-black text-rose-700 leading-tight mt-0.5">${fmt(rest)}</div>
+              <div class="flex items-center justify-center gap-1">
+                <span class="text-[7px] font-bold text-slate-400 leading-none tracking-tight uppercase">${t('metric_rem')}:</span>
+                <span class="text-[9.5px] font-black text-rose-700 leading-none">${fmt(rest)}</span>
               </div>
             </div>
           </div>`;
@@ -3154,6 +3096,13 @@
       renderCompletedOrders();
     }
 
+    function toggleCompletedOrderExpand(event, id) {
+      if (event) event.stopPropagation();
+      openCompletedMenuId = null;
+      expandedCompletedOrderId = expandedCompletedOrderId === id ? null : id;
+      renderCompletedOrders();
+    }
+
     function restartCompletedOrderAsRunning(event, id) {
       if (event) event.stopPropagation();
       if (!guardAction('START_STOP_ORDER')) {
@@ -3192,56 +3141,12 @@
       showToast(`#${orders[idx].orderNo} Bitenler'den çıkarıldı · Çalışıyor`);
     }
 
-    function getCompletedMonthFolderInfo(order) {
-      const rawDate = String(order.completedDate || order.createdDate || order.period || '').trim();
-      const match = rawDate.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
-      const trMonths = {
-        '01': 'OCAK', '02': 'ŞUBAT', '03': 'MART', '04': 'NİSAN',
-        '05': 'MAYIS', '06': 'HAZİRAN', '07': 'TEMMUZ', '08': 'AĞUSTOS',
-        '09': 'EYLÜL', '10': 'EKİM', '11': 'KASIM', '12': 'ARALIK'
-      };
-      const arMonths = {
-        '01': 'يناير', '02': 'فبراير', '03': 'مارس', '04': 'أبريل',
-        '05': 'مايو', '06': 'يونيو', '07': 'يوليو', '08': 'أغسطس',
-        '09': 'سبتمبر', '10': 'أكتوبر', '11': 'نوفمبر', '12': 'ديسمبر'
-      };
-
-      if (match) {
-        const mm = match[2];
-        const yyyy = match[3];
-        const monthLabel = currentLang === 'ar' ? (arMonths[mm] || mm) : (trMonths[mm] || mm);
-        return {
-          key: `${yyyy}-${mm}`,
-          title: `${monthLabel} ${yyyy}`,
-          sortKey: `${yyyy}${mm}`
-        };
-      }
-
-      if (rawDate.toLowerCase().includes('eylül')) {
-        return {
-          key: '2026-09',
-          title: currentLang === 'ar' ? 'سبتمبر 2026' : 'EYLÜL 2026',
-          sortKey: '202609'
-        };
-      }
-
-      return {
-        key: 'OTHER',
-        title: currentLang === 'ar' ? 'أخرى' : 'DİĞER',
-        sortKey: '000000'
-      };
-    }
-
-    function toggleCompletedFolder(folderKey) {
-      const currentState = openCompletedFolders[folderKey] === true;
-      openCompletedFolders[folderKey] = !currentState;
-      renderCompletedOrders();
-    }
-
     function renderCompletedOrders() {
       const q = (document.getElementById('completedSearch')?.value || '').trim().toLocaleLowerCase('tr-TR');
       const all = orders.filter(o => o.closed);
-      const list = all.filter(o => !q || [o.article, o.artive, o.code, o.period, o.completedDate].some(v => String(v || '').toLocaleLowerCase('tr-TR').includes(q))).sort((a, b) => b.id - a.id);
+      const list = all
+        .filter(o => !q || [o.article, o.artive, o.code, o.period, o.completedDate].some(v => String(v || '').toLocaleLowerCase('tr-TR').includes(q)))
+        .sort((a, b) => b.id - a.id);
 
       const countEl = document.getElementById('completedCount');
       const el = document.getElementById('completedOrdersList');
@@ -3274,58 +3179,31 @@
         return;
       }
 
-      const folderMap = new Map();
-      list.forEach(o => {
-        const info = getCompletedMonthFolderInfo(o);
-        if (!folderMap.has(info.key)) {
-          folderMap.set(info.key, { ...info, items: [] });
-        }
-        folderMap.get(info.key).items.push(o);
-      });
+      el.innerHTML = list.map(o => {
+        const prod = getProd(o);
+        const rest = getRest(o);
+        const doneDateStr = escapeHtml(
+          String(o.completedDate || o.createdDate || o.period || formatTodayDate()).trim()
+        );
+        const isExpanded = expandedCompletedOrderId === o.id;
+        const isMenuOpen = openCompletedMenuId === o.id;
 
-      const folders = Array.from(folderMap.values()).sort((a, b) => b.sortKey.localeCompare(a.sortKey));
+        return `
+          <div onclick="toggleCompletedOrderExpand(event, ${o.id})"
+            class="rounded-xl px-2.5 py-1 completed-card active:scale-[0.995] transition cursor-pointer space-y-1 ${isExpanded ? 'ring-2 ring-rose-500/45' : ''}">
+            <div class="flex items-start justify-between gap-1.5">
+              <div class="flex items-start gap-1 min-w-0 flex-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-rose-600 shrink-0 mt-[4px]"></span>
+                <span class="text-[10px] leading-[1.2] font-bold text-rose-950 break-words">${formatArtiveHighlight(o.artive)}</span>
+              </div>
+              <span class="inline-flex items-center shrink-0 px-1.5 py-[1px] rounded bg-rose-100/95 border border-rose-300/90 text-[8.5px] leading-tight font-extrabold text-rose-900 tabular-nums">${doneDateStr}</span>
+            </div>
 
-      const monthThemes = {
-        '01': { wrapper: 'border-sky-300', header: 'from-sky-50/90 via-white to-sky-50/40 hover:bg-sky-50/60', badge: 'bg-sky-100 text-sky-900', kgText: 'text-sky-700' },
-        '02': { wrapper: 'border-indigo-300', header: 'from-indigo-50/90 via-white to-indigo-50/40 hover:bg-indigo-50/60', badge: 'bg-indigo-100 text-indigo-900', kgText: 'text-indigo-700' },
-        '03': { wrapper: 'border-violet-300', header: 'from-violet-50/90 via-white to-violet-50/40 hover:bg-violet-50/60', badge: 'bg-violet-100 text-violet-900', kgText: 'text-violet-700' },
-        '04': { wrapper: 'border-fuchsia-300', header: 'from-fuchsia-50/90 via-white to-fuchsia-50/40 hover:bg-fuchsia-50/60', badge: 'bg-fuchsia-100 text-fuchsia-900', kgText: 'text-fuchsia-700' },
-        '05': { wrapper: 'border-pink-300', header: 'from-pink-50/90 via-white to-pink-50/40 hover:bg-pink-50/60', badge: 'bg-pink-100 text-pink-900', kgText: 'text-pink-700' },
-        '06': { wrapper: 'border-rose-300', header: 'from-rose-50/90 via-white to-rose-50/40 hover:bg-rose-50/60', badge: 'bg-rose-100 text-rose-900', kgText: 'text-rose-700' },
-        '07': { wrapper: 'border-orange-300', header: 'from-orange-50/90 via-white to-orange-50/40 hover:bg-orange-50/60', badge: 'bg-orange-100 text-orange-900', kgText: 'text-orange-700' },
-        '08': { wrapper: 'border-amber-300', header: 'from-amber-50/90 via-white to-amber-50/40 hover:bg-amber-50/60', badge: 'bg-amber-100 text-amber-900', kgText: 'text-amber-700' },
-        '09': { wrapper: 'border-lime-400', header: 'from-lime-50/90 via-white to-lime-50/40 hover:bg-lime-50/60', badge: 'bg-lime-100 text-lime-900', kgText: 'text-lime-800' },
-        '10': { wrapper: 'border-teal-300', header: 'from-teal-50/90 via-white to-teal-50/40 hover:bg-teal-50/60', badge: 'bg-teal-100 text-teal-900', kgText: 'text-teal-700' },
-        '11': { wrapper: 'border-cyan-300', header: 'from-cyan-50/90 via-white to-cyan-50/40 hover:bg-cyan-50/60', badge: 'bg-cyan-100 text-cyan-900', kgText: 'text-cyan-700' },
-        '12': { wrapper: 'border-purple-300', header: 'from-purple-50/90 via-white to-purple-50/40 hover:bg-purple-50/60', badge: 'bg-purple-100 text-purple-900', kgText: 'text-purple-700' }
-      };
-      const fallbackThemes = [
-        { wrapper: 'border-sky-300', header: 'from-sky-50/90 via-white to-sky-50/40 hover:bg-sky-50/60', badge: 'bg-sky-100 text-sky-900', kgText: 'text-sky-700' },
-        { wrapper: 'border-amber-300', header: 'from-amber-50/90 via-white to-amber-50/40 hover:bg-amber-50/60', badge: 'bg-amber-100 text-amber-900', kgText: 'text-amber-700' },
-        { wrapper: 'border-violet-300', header: 'from-violet-50/90 via-white to-violet-50/40 hover:bg-violet-50/60', badge: 'bg-violet-100 text-violet-900', kgText: 'text-violet-700' },
-        { wrapper: 'border-rose-300', header: 'from-rose-50/90 via-white to-rose-50/40 hover:bg-rose-50/60', badge: 'bg-rose-100 text-rose-900', kgText: 'text-rose-700' }
-      ];
-
-      el.innerHTML = folders.map((folder, folderIdx) => {
-        const isOpen = q ? true : (openCompletedFolders[folder.key] === true);
-        const totalFolderProd = folder.items.reduce((sum, item) => sum + getProd(item), 0);
-        const monthPartMatch = String(folder.key || '').match(/^\d{4}-(\d{2})$/);
-        const theme = (monthPartMatch && monthThemes[monthPartMatch[1]])
-          ? monthThemes[monthPartMatch[1]]
-          : fallbackThemes[folderIdx % fallbackThemes.length];
-
-        const cardsHtml = folder.items.map(o => {
-          const prod = getProd(o);
-          const rest = getRest(o);
-          const doneDateTimeStr = escapeHtml(formatCompletedDateTimeLabel(o));
-          const isMenuOpen = openCompletedMenuId === o.id;
-          const cardClass = 'completed-card';
-          return `
-          <div class="rounded-2xl p-3 ${cardClass} transition space-y-2">
-            <div class="flex items-center justify-between gap-2">
-                <span class="inline-flex items-center justify-center shrink-0 h-[22px] px-2.5 rounded-lg bg-rose-100/95 border border-rose-300 text-[10px] leading-none font-bold text-rose-900 tabular-nums text-center">${doneDateTimeStr}</span>
+            ${isExpanded ? `
+              <div class="flex items-center justify-between gap-2 pt-0.5">
+                <p class="text-[9.5px] leading-snug font-medium text-rose-900/80 min-w-0 flex-1">${escapeHtml(o.article)}</p>
                 <div onclick="event.stopPropagation()" class="relative inline-block shrink-0">
-                  <button type="button" onclick="toggleCompletedMenu(event, ${o.id})" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-rose-600 hover:bg-rose-700 text-white border border-rose-700 text-[10px] font-extrabold shadow-2xs active:scale-95 transition">
+                  <button type="button" onclick="toggleCompletedMenu(event, ${o.id})" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-600 hover:bg-rose-700 text-white border border-rose-700 text-[9px] font-extrabold shadow-2xs active:scale-95 transition">
                     <span>${t('completed_badge_upper')}</span>
                     <svg class="w-2.5 h-2.5 opacity-90" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
@@ -3341,48 +3219,22 @@
                   ` : ''}
                 </div>
               </div>
-              <div class="space-y-2">
-                <div>
-                  <p class="text-xs font-semibold text-rose-950/90 flex flex-wrap items-center gap-1">
-                    <span class="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0"></span>
-                    <span>${formatArtiveHighlight(o.artive)}</span>
-                  </p>
-                  <h3 class="text-[9px] leading-tight font-medium text-rose-900/75 mt-0.5">${escapeHtml(o.article)}</h3>
-                </div>
-                <div class="grid grid-cols-3 bg-rose-50/95 border border-rose-200/90 rounded-2xl py-2.5 px-2 text-center shadow-2xs">
-                  <div>
-                    <div class="text-[10px] font-bold text-rose-400 leading-none tracking-wide whitespace-nowrap">${t('metric_order')}</div>
-                    <div class="text-[11px] sm:text-sm font-extrabold text-slate-900 leading-tight mt-1 whitespace-nowrap tabular-nums">${fmt(o.ton)} KG</div>
-                  </div>
-                  <div class="border-x border-rose-200/90">
-                    <div class="text-[10px] font-bold text-rose-400 leading-none tracking-wide whitespace-nowrap">${t('metric_prod')}</div>
-                    <div class="text-[11px] sm:text-sm font-extrabold text-[#146C53] leading-tight mt-1 whitespace-nowrap tabular-nums">${fmt(prod)} KG</div>
-                  </div>
-                  <div>
-                    <div class="text-[10px] font-bold text-rose-400 leading-none tracking-wide whitespace-nowrap">${t('metric_rem')}</div>
-                    <div class="text-[11px] sm:text-sm font-extrabold ${rest < 0 ? 'text-rose-600' : 'text-amber-600'} leading-tight mt-1 whitespace-nowrap tabular-nums">${fmt(rest)} KG</div>
-                  </div>
-                </div>
-              </div>
-            </div>`;
-        }).join('');
+            ` : ''}
 
-        return `
-          <div class="rounded-2xl border-2 ${theme.wrapper} bg-white/95 overflow-hidden shadow-xs">
-            <button type="button" onclick="toggleCompletedFolder('${escapeHtml(folder.key)}')"
-              class="w-full px-3.5 py-3 bg-gradient-to-r ${theme.header} flex items-center justify-between gap-2 transition">
-              <div class="flex items-center gap-2 min-w-0">
-                <span class="px-2.5 py-1 rounded-xl text-xs font-extrabold ${theme.badge} shrink-0">${escapeHtml(folder.title)}</span>
-                <span class="text-xs font-bold text-slate-600 truncate">${t('emir_unit', folder.items.length)}</span>
+            <div class="grid grid-cols-3 bg-rose-50/90 border border-rose-200/90 rounded-lg py-0.5 px-1 text-center tabular-nums">
+              <div class="flex items-center justify-center gap-1">
+                <span class="text-[7px] font-bold text-rose-400 leading-none tracking-tight uppercase">${t('metric_order')}:</span>
+                <span class="text-[9.5px] font-black text-slate-900 leading-none">${fmt(o.ton)}</span>
               </div>
-              <div class="flex items-center gap-2 shrink-0">
-                <span class="text-xs font-extrabold ${theme.kgText} tabular-nums">${fmt(totalFolderProd)} KG</span>
-                <svg class="w-4 h-4 text-slate-500 transition-transform ${isOpen ? 'rotate-180' : ''}" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                </svg>
+              <div class="border-x border-rose-200/90 flex items-center justify-center gap-1">
+                <span class="text-[7px] font-bold text-rose-400 leading-none tracking-tight uppercase">${t('metric_prod')}:</span>
+                <span class="text-[9.5px] font-black text-[#146C53] leading-none">${fmt(prod)}</span>
               </div>
-            </button>
-            ${isOpen ? `<div class="p-3 space-y-2.5 border-t border-slate-200/80 bg-slate-50/50">${cardsHtml}</div>` : ''}
+              <div class="flex items-center justify-center gap-1">
+                <span class="text-[7px] font-bold text-rose-400 leading-none tracking-tight uppercase">${t('metric_rem')}:</span>
+                <span class="text-[9.5px] font-black ${rest < 0 ? 'text-rose-600' : 'text-amber-600'} leading-none">${fmt(rest)}</span>
+              </div>
+            </div>
           </div>`;
       }).join('');
     }
@@ -3473,14 +3325,14 @@
 
       if (prodChartEl) {
         prodChartEl.innerHTML = `
-          <div class="w-full bg-white/95 border border-slate-200/80 rounded-lg px-1 py-1.5 shadow-2xs">
+          <div class="w-full bg-white/95 border border-slate-200/80 rounded-lg px-1 py-1 shadow-2xs">
             <div class="grid grid-cols-12 gap-[1px] items-end">
               ${monthlyStats.map(m => {
                 const heightPct = m.total > 0
                   ? Math.max(12, Math.min(100, Math.round((m.total / maxMonthVal) * 100)))
                   : 4;
                 return `
-                  <div class="flex flex-col items-center space-y-1 min-w-0">
+                  <div class="flex flex-col items-center space-y-0.5 min-w-0">
                     <div class="report-vertical-track">
                       <div class="report-vertical-bar ${m.total > 0 ? 'bg-gradient-to-t from-[#0F5C45] to-[#16916E]' : 'bg-slate-200'}" style="height: ${heightPct}%;" title="${escapeHtml(m.label)} 2026: ${fmt(m.total)} KG"></div>
                     </div>
@@ -3500,7 +3352,7 @@
 
       if (monthlyOpBarsEl) {
         monthlyOpBarsEl.innerHTML = `
-          <div class="w-full bg-white/95 border border-slate-200/80 rounded-lg px-0.5 py-1.5 shadow-2xs">
+          <div class="w-full bg-white/95 border border-slate-200/80 rounded-lg px-0.5 py-1 shadow-2xs">
             <div class="grid grid-cols-12 gap-[1px] items-end">
               ${monthlyStats.map(m => {
                 const opBars = [
@@ -3511,7 +3363,7 @@
                 ];
 
                 return `
-                  <div class="flex flex-col items-center bg-slate-50/85 border border-slate-200/75 rounded px-[1px] py-1 space-y-1 min-w-0">
+                  <div class="flex flex-col items-center bg-slate-50/85 border border-slate-200/75 rounded px-[1px] py-0.5 space-y-0.5 min-w-0">
                       <div class="grid grid-cols-4 gap-[0.5px] w-full items-end">
                         ${opBars.map(op => {
                           const pct = op.val > 0
@@ -3560,14 +3412,14 @@
               </colgroup>
               <thead>
                 <tr class="bg-gradient-to-b from-[#F4F8F6] to-[#E8F0EC] border-b border-[#C6D5CD] text-[7.5px] font-extrabold tracking-tighter leading-none">
-                  <th class="py-[5px] px-0.5 text-center text-slate-800 border-r border-[#C6D5CD]">
+                  <th class="py-[3.5px] px-0.5 text-center text-slate-800 border-r border-[#C6D5CD]">
                     <span class="block truncate">${escapeHtml(t('col_month'))}</span>
                   </th>
-                  <th class="py-[5px] px-0.5 text-center text-[#0F5C45] bg-emerald-100/75 border-x border-[#B6C9C0]">
+                  <th class="py-[3.5px] px-0.5 text-center text-[#0F5C45] bg-emerald-100/75 border-x border-[#B6C9C0]">
                     <span class="block truncate">${escapeHtml(t('col_total_short'))}</span>
                   </th>
                   ${opHeaders.map((op, opIdx) => `
-                    <th class="py-[5px] px-0.5 text-center ${op.text} ${op.headerBg} ${opIdx < opHeaders.length - 1 ? 'border-r border-slate-200/90' : ''}" title="${op.label}">
+                    <th class="py-[3.5px] px-0.5 text-center ${op.text} ${op.headerBg} ${opIdx < opHeaders.length - 1 ? 'border-r border-slate-200/90' : ''}" title="${op.label}">
                       <span class="inline-flex items-center justify-center gap-0.5 max-w-full">
                         <span class="w-1 h-1 rounded-full ${op.dot} shrink-0"></span>
                         <span class="truncate">${op.shortLabel}</span>
@@ -3585,27 +3437,27 @@
 
                   return `
                     <tr class="${rowBg} transition-colors">
-                      <td class="py-[3.5px] px-0.5 text-center border-r border-[#D3DFD9] ${hasProd ? 'bg-[#F0F7F3]/70' : 'bg-slate-50/40'}">
+                      <td class="py-[2.5px] px-0.5 text-center border-r border-[#D3DFD9] ${hasProd ? 'bg-[#F0F7F3]/70' : 'bg-slate-50/40'}">
                         <div class="inline-flex items-center justify-center gap-0.5 max-w-full">
                           <span class="w-1 h-1 rounded-full shrink-0 ${hasProd ? 'bg-[#146C53]' : 'bg-slate-300'}"></span>
                           <span class="font-bold truncate ${hasProd ? 'text-slate-700' : 'text-slate-500'}">${escapeHtml(m.shortLabel)}</span>
                         </div>
                       </td>
-                      <td class="py-[3.5px] px-0.5 text-center border-x border-[#C8D8D0] ${hasProd ? 'bg-emerald-50/90' : 'bg-slate-50/35'}">
+                      <td class="py-[2.5px] px-0.5 text-center border-x border-[#C8D8D0] ${hasProd ? 'bg-emerald-50/90' : 'bg-slate-50/35'}">
                         ${hasProd
-                          ? `<span class="inline-flex items-center justify-center max-w-full px-1 py-[1px] rounded bg-emerald-100/95 border border-emerald-300 text-[#0F5C45] font-extrabold text-[7px] tracking-tighter leading-none truncate">${fmt(m.total)}</span>`
+                          ? `<span class="inline-flex items-center justify-center max-w-full px-1 py-[0.5px] rounded bg-emerald-100/95 border border-emerald-300 text-[#0F5C45] font-extrabold text-[7px] tracking-tighter leading-none truncate">${fmt(m.total)}</span>`
                           : `<span class="text-slate-400 font-semibold">—</span>`}
                       </td>
-                      <td class="py-[3.5px] px-0.5 text-center border-r border-slate-200/80 font-bold tracking-tighter ${m.isa > 0 ? 'text-blue-700' : 'text-slate-300 font-normal'}">
+                      <td class="py-[2.5px] px-0.5 text-center border-r border-slate-200/80 font-bold tracking-tighter ${m.isa > 0 ? 'text-blue-700' : 'text-slate-300 font-normal'}">
                         <span class="block truncate">${formatCellKg(m.isa)}</span>
                       </td>
-                      <td class="py-[3.5px] px-0.5 text-center border-r border-slate-200/80 font-bold tracking-tighter ${m.muhiddin > 0 ? 'text-[#146C53]' : 'text-slate-300 font-normal'}">
+                      <td class="py-[2.5px] px-0.5 text-center border-r border-slate-200/80 font-bold tracking-tighter ${m.muhiddin > 0 ? 'text-[#146C53]' : 'text-slate-300 font-normal'}">
                         <span class="block truncate">${formatCellKg(m.muhiddin)}</span>
                       </td>
-                      <td class="py-[3.5px] px-0.5 text-center border-r border-slate-200/80 font-bold tracking-tighter ${m.kaddur > 0 ? 'text-amber-700' : 'text-slate-300 font-normal'}">
+                      <td class="py-[2.5px] px-0.5 text-center border-r border-slate-200/80 font-bold tracking-tighter ${m.kaddur > 0 ? 'text-amber-700' : 'text-slate-300 font-normal'}">
                         <span class="block truncate">${formatCellKg(m.kaddur)}</span>
                       </td>
-                      <td class="py-[3.5px] px-0.5 text-center font-bold tracking-tighter ${m.muhammed > 0 ? 'text-purple-700' : 'text-slate-300 font-normal'}">
+                      <td class="py-[2.5px] px-0.5 text-center font-bold tracking-tighter ${m.muhammed > 0 ? 'text-purple-700' : 'text-slate-300 font-normal'}">
                         <span class="block truncate">${formatCellKg(m.muhammed)}</span>
                       </td>
                     </tr>`;
@@ -3613,22 +3465,22 @@
               </tbody>
               <tfoot>
                 <tr class="bg-gradient-to-r from-slate-900 via-[#0F2922] to-slate-900 text-white text-[7px] font-extrabold leading-none border-t border-[#146C53]">
-                  <td class="py-[5px] px-0.5 text-center border-r border-slate-700/80 text-slate-100">
+                  <td class="py-[3.5px] px-0.5 text-center border-r border-slate-700/80 text-slate-100">
                     <span class="block truncate tracking-tighter">${escapeHtml(t('yearly_grand_total_short'))}</span>
                   </td>
-                  <td class="py-[5px] px-0.5 text-center bg-[#0B4635]/95 text-emerald-300 border-x border-emerald-700/50 tracking-tighter">
+                  <td class="py-[3.5px] px-0.5 text-center bg-[#0B4635]/95 text-emerald-300 border-x border-emerald-700/50 tracking-tighter">
                     <span class="block truncate">${fmt(yearlyTotal)}</span>
                   </td>
-                  <td class="py-[5px] px-0.5 text-center border-r border-slate-800 text-blue-300 tracking-tighter">
+                  <td class="py-[3.5px] px-0.5 text-center border-r border-slate-800 text-blue-300 tracking-tighter">
                     <span class="block truncate">${fmt(totalIsa)}</span>
                   </td>
-                  <td class="py-[5px] px-0.5 text-center border-r border-slate-800 text-emerald-300 tracking-tighter">
+                  <td class="py-[3.5px] px-0.5 text-center border-r border-slate-800 text-emerald-300 tracking-tighter">
                     <span class="block truncate">${fmt(totalMuh)}</span>
                   </td>
-                  <td class="py-[5px] px-0.5 text-center border-r border-slate-800 text-amber-300 tracking-tighter">
+                  <td class="py-[3.5px] px-0.5 text-center border-r border-slate-800 text-amber-300 tracking-tighter">
                     <span class="block truncate">${fmt(totalKad)}</span>
                   </td>
-                  <td class="py-[5px] px-0.5 text-center text-purple-300 tracking-tighter">
+                  <td class="py-[3.5px] px-0.5 text-center text-purple-300 tracking-tighter">
                     <span class="block truncate">${fmt(totalMam)}</span>
                   </td>
                 </tr>
