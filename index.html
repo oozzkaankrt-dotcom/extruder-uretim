@@ -70,6 +70,28 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
+    /* Dokunulan iş emri kartının içinden/konumundan genişleyerek açılan pencere animasyonu */
+    .order-card-expand-enter {
+      transform-origin: var(--expand-origin-x, 50%) var(--expand-origin-y, 50%);
+      animation: expandFromOrderCard 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+      will-change: transform, opacity, border-radius;
+    }
+    @keyframes expandFromOrderCard {
+      0% {
+        opacity: 0.12;
+        border-radius: 18px;
+        transform: translate(var(--expand-offset-x, 0px), var(--expand-offset-y, 0px)) scale(var(--expand-scale-x, 0.88), var(--expand-scale-y, 0.22));
+      }
+      65% {
+        opacity: 0.96;
+      }
+      100% {
+        opacity: 1;
+        border-radius: 24px;
+        transform: translate(0px, 0px) scale(1, 1);
+      }
+    }
+
     select {
       appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23475569'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
@@ -662,12 +684,12 @@
   </nav>
 
   <!-- MODAL 1: EDIT PRODUCTION ORDER -->
-  <div id="editModal" onclick="if(event.target===this){closeModal('editModal');}" class="fixed inset-0 z-50 hidden bg-slate-900/55 backdrop-blur-xs flex items-end sm:items-center justify-center">
-    <div onclick="event.stopPropagation()" class="bg-white w-full max-w-xl rounded-t-3xl sm:rounded-3xl px-4 py-2.5 shadow-2xl bottom-sheet-enter max-h-[96vh] overflow-y-auto space-y-2.5">
+  <div id="editModal" onclick="if(event.target===this){closeModal('editModal');}" class="fixed inset-0 z-50 hidden bg-slate-900/55 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5">
+    <div id="editModalSheet" onclick="event.stopPropagation()" class="bg-white w-full max-w-xl rounded-3xl px-4 py-2.5 shadow-2xl bottom-sheet-enter max-h-[90vh] overflow-y-auto space-y-2.5 my-auto">
       <!-- Top Drag Handle & Close Button -->
       <div class="relative flex items-center justify-between min-h-[24px] px-0.5">
         <div class="w-6"></div>
-        <div class="w-10 h-1 bg-slate-200 rounded-full sm:hidden"></div>
+        <div class="w-10 h-1 bg-slate-200 rounded-full"></div>
         <button id="closeEditModalBtn" type="button" onclick="closeModal('editModal')" aria-label="Pencereyi Kapat"
           class="w-6 h-6 rounded-full bg-slate-100 hover:bg-rose-50 text-slate-500 hover:text-rose-600 flex items-center justify-center active:scale-95 transition">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
@@ -1687,13 +1709,79 @@
         target.lastActionDateTime = formatDateTimeNow();
         saveStateToStorage();
       }
-      openEditModal(id);
+      const cardEl = (event && event.currentTarget && event.currentTarget.closest('[data-order-card-id]'))
+        || document.querySelector(`[data-order-card-id="${id}"]`);
+      openEditModal(id, { sourceCardEl: cardEl, fromPendingOrder: true });
+    }
+
+    function applyOrderCardExpandAnimation(sourceCardEl) {
+      const sheetEl = document.getElementById('editModalSheet');
+      if (!sheetEl) return;
+
+      sheetEl.classList.remove('bottom-sheet-enter', 'order-card-expand-enter');
+      sheetEl.style.removeProperty('--expand-origin-x');
+      sheetEl.style.removeProperty('--expand-origin-y');
+      sheetEl.style.removeProperty('--expand-offset-x');
+      sheetEl.style.removeProperty('--expand-offset-y');
+      sheetEl.style.removeProperty('--expand-scale-x');
+      sheetEl.style.removeProperty('--expand-scale-y');
+
+      if (!sourceCardEl || typeof sourceCardEl.getBoundingClientRect !== 'function') {
+        void sheetEl.offsetWidth;
+        sheetEl.classList.add('bottom-sheet-enter');
+        return;
+      }
+
+      const cardRect = sourceCardEl.getBoundingClientRect();
+      if (cardRect.width <= 0 || cardRect.height <= 0) {
+        void sheetEl.offsetWidth;
+        sheetEl.classList.add('bottom-sheet-enter');
+        return;
+      }
+
+      // Modal görünür kılındıktan sonra hedef pencere boyutunu ölçerek iş emri kartından açılma vektörünü hesapla
+      requestAnimationFrame(() => {
+        const targetRect = sheetEl.getBoundingClientRect();
+        if (!targetRect || targetRect.width <= 0 || targetRect.height <= 0) {
+          sheetEl.classList.add('bottom-sheet-enter');
+          return;
+        }
+
+        const cardCenterX = cardRect.left + cardRect.width / 2;
+        const cardCenterY = cardRect.top + cardRect.height / 2;
+        const modalCenterX = targetRect.left + targetRect.width / 2;
+        const modalCenterY = targetRect.top + targetRect.height / 2;
+
+        const offsetX = cardCenterX - modalCenterX;
+        const offsetY = cardCenterY - modalCenterY;
+        const scaleX = Math.max(0.45, Math.min(0.98, cardRect.width / targetRect.width));
+        const scaleY = Math.max(0.14, Math.min(0.65, cardRect.height / targetRect.height));
+
+        const originXPercent = Math.max(5, Math.min(95, ((cardCenterX - targetRect.left) / targetRect.width) * 100));
+        const originYPercent = Math.max(5, Math.min(95, ((cardCenterY - targetRect.top) / targetRect.height) * 100));
+
+        sheetEl.style.setProperty('--expand-origin-x', `${originXPercent.toFixed(1)}%`);
+        sheetEl.style.setProperty('--expand-origin-y', `${originYPercent.toFixed(1)}%`);
+        sheetEl.style.setProperty('--expand-offset-x', `${offsetX.toFixed(1)}px`);
+        sheetEl.style.setProperty('--expand-offset-y', `${offsetY.toFixed(1)}px`);
+        sheetEl.style.setProperty('--expand-scale-x', scaleX.toFixed(3));
+        sheetEl.style.setProperty('--expand-scale-y', scaleY.toFixed(3));
+
+        void sheetEl.offsetWidth;
+        sheetEl.classList.add('order-card-expand-enter');
+      });
     }
 
     function toggleIdleOrderDetailView(event, id) {
       if (event) event.stopPropagation();
-      // Bekleyen iş emirlerinin kompakt kartlarına dokunulduğunda genişletme işlemi yapılmaz
-      return;
+      const target = orders.find(o => o.id === id);
+      if (target) {
+        target.lastActionDateTime = formatDateTimeNow();
+        saveStateToStorage();
+      }
+      const cardEl = (event && event.currentTarget && event.currentTarget.closest('[data-order-card-id]'))
+        || document.querySelector(`[data-order-card-id="${id}"]`);
+      openEditModal(id, { sourceCardEl: cardEl, fromPendingOrder: true });
     }
 
     function collapseExpandedOrderDetailView() {
@@ -1870,7 +1958,7 @@
       return wStatus === 'RUNNING' && Boolean(order.shiftActive) && sessionStatus === 'ACTIVE';
     }
 
-    function openEditModal(id) {
+    function openEditModal(id, opts = {}) {
       const order = orders.find(o => o.id === id);
       if (!order) return;
 
@@ -1990,6 +2078,16 @@
       updateModalShiftBanner();
 
       document.getElementById('editModal')?.classList.remove('hidden');
+      if (opts && opts.fromPendingOrder) {
+        applyOrderCardExpandAnimation(opts.sourceCardEl);
+      } else {
+        const sheetEl = document.getElementById('editModalSheet');
+        if (sheetEl) {
+          sheetEl.classList.remove('order-card-expand-enter', 'bottom-sheet-enter');
+          void sheetEl.offsetWidth;
+          sheetEl.classList.add('bottom-sheet-enter');
+        }
+      }
     }
 
     function syncModalOperatorRowsUI() {
@@ -3167,15 +3265,13 @@
             ondragleave="handleOrderDragLeave(event)"
             ondrop="handleOrderDrop(event, ${o.id})"
             ondragend="handleOrderDragEnd(event)"
-            class="rounded-2xl px-3 py-2 ${pendingCompactCardClass} transition space-y-1.5">
+            onclick="toggleIdleOrderDetailView(event, ${o.id})"
+            class="rounded-2xl px-3 py-2 ${pendingCompactCardClass} cursor-pointer active:scale-[0.99] transition space-y-1.5">
             <div class="flex items-center justify-between gap-2">
               <div class="flex items-center gap-2 min-w-0 flex-1">
                 <span class="w-2 h-2 rounded-full ${dotColorClass} shrink-0 shadow-2xs"></span>
                 <span class="text-[11.5px] leading-[1.25] font-extrabold pending-title-3d tracking-[-0.01em] truncate">${formatArtiveHighlight(o.artive)}</span>
               </div>
-              <span role="button" tabindex="0" onclick="openOperatorPageFromPendingOrder(event, ${o.id})"
-                onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openOperatorPageFromPendingOrder(event, ${o.id});}"
-                class="inline-flex items-center justify-center shrink-0 px-0.5 text-[8.5px] leading-none font-extrabold tracking-wide text-[#0F5C45] hover:text-emerald-600 cursor-pointer select-none active:opacity-75 transition">${t('status_select')}</span>
             </div>
 
             <p class="text-[9.5px] leading-[1.3] font-semibold pending-desc-3d line-clamp-1 ltr:pl-[16px] rtl:pr-[16px]">${escapeHtml(o.article)}</p>
