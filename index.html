@@ -70,6 +70,82 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
+    /* Sekme ve sayfa geçiş animasyonları: yönlü, akıcı ve RTL uyumlu */
+    @keyframes tabEnterFromRight {
+      0% {
+        opacity: 0;
+        transform: translate3d(18px, 6px, 0) scale(0.992);
+      }
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+    }
+
+    @keyframes tabEnterFromLeft {
+      0% {
+        opacity: 0;
+        transform: translate3d(-18px, 6px, 0) scale(0.992);
+      }
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+    }
+
+    @keyframes tabEnterFade {
+      0% {
+        opacity: 0;
+        transform: translate3d(0, 8px, 0) scale(0.994);
+      }
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+    }
+
+    .tab-page-enter-right {
+      animation: tabEnterFromRight 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+      will-change: transform, opacity;
+    }
+
+    .tab-page-enter-left {
+      animation: tabEnterFromLeft 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+      will-change: transform, opacity;
+    }
+
+    .tab-page-enter-fade {
+      animation: tabEnterFade 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
+      will-change: transform, opacity;
+    }
+
+    .nav-btn {
+      transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .nav-btn:active {
+      transform: scale(0.94);
+    }
+
+    .nav-icon-wrap {
+      transition: transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .nav-btn-active .nav-icon-wrap {
+      transform: translateY(-1px) scale(1.04);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .tab-page-enter-right,
+      .tab-page-enter-left,
+      .tab-page-enter-fade,
+      .bottom-sheet-enter,
+      .order-card-expand-enter {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
     /* Dokunulan iş emri kartının içinden/konumundan genişleyerek açılan pencere animasyonu */
     .order-card-expand-enter {
       transform-origin: var(--expand-origin-x, 50%) var(--expand-origin-y, 50%);
@@ -158,26 +234,34 @@
     }
     /* Bekleyen iş emirleri kompakt kart 3D yazı, rakam ve renk katmanları */
     #tab-emirler .pending-card-3d-idle {
-      background: linear-gradient(168deg, #FFFFFF 0%, #F4F8F6 56%, #DCE7E2 100%);
-      border: 1.5px solid #94A3B8;
-      border-bottom-width: 3.5px;
+      background: linear-gradient(168deg, #FFFFFF 0%, #F6FAF8 54%, #D9E6DF 100%);
+      border: 1.5px solid #88A095;
+      border-bottom-width: 4px;
       border-bottom-color: #475569;
-      box-shadow: 0 9px 18px -6px rgba(15, 23, 42, 0.18), 0 3px 6px -2px rgba(20, 108, 83, 0.12), inset 0 1.5px 0 rgba(255, 255, 255, 0.98), inset 0 -1.5px 0 rgba(148, 163, 184, 0.45);
+      box-shadow:
+        0 12px 22px -7px rgba(15, 23, 42, 0.24),
+        0 4px 8px -2px rgba(20, 108, 83, 0.16),
+        inset 0 1.5px 0 rgba(255, 255, 255, 1),
+        inset 0 -1.5px 0 rgba(120, 144, 134, 0.45);
     }
     #tab-emirler .pending-card-3d-active {
-      background: linear-gradient(168deg, #FFFDF7 0%, #FFF3DF 55%, #FDE2B8 100%);
-      border: 1.5px solid #D97706;
-      border-bottom-width: 3.5px;
+      background: linear-gradient(168deg, #FFFFFF 0%, #FFF7ED 54%, #FDE2C4 100%);
+      border: 1.5px solid #EA580C;
+      border-bottom-width: 4px;
       border-bottom-color: #B45309;
-      box-shadow: 0 9px 18px -6px rgba(180, 83, 9, 0.24), 0 3px 6px -2px rgba(15, 23, 42, 0.1), inset 0 1.5px 0 rgba(255, 255, 255, 0.96), inset 0 -1.5px 0 rgba(217, 119, 6, 0.35);
+      box-shadow:
+        0 12px 22px -7px rgba(194, 65, 12, 0.28),
+        0 4px 8px -2px rgba(15, 23, 42, 0.14),
+        inset 0 1.5px 0 rgba(255, 255, 255, 1),
+        inset 0 -1.5px 0 rgba(234, 88, 12, 0.35);
     }
     #tab-emirler .pending-title-3d {
-      color: #0B172A;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 1.5px 2px rgba(15, 23, 42, 0.14);
+      color: #061021;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 1), 0 2px 3px rgba(15, 23, 42, 0.24), 0 0 1px rgba(15, 23, 42, 0.35);
     }
     #tab-emirler .pending-desc-3d {
-      color: #334155;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
+      color: #1E293B;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.92), 0 1px 1.5px rgba(15, 23, 42, 0.14);
     }
     #tab-emirler .pending-date-3d {
       background: linear-gradient(180deg, #FFFFFF 0%, #E2E8F0 100%);
@@ -189,27 +273,50 @@
       box-shadow: 0 2px 4px -1px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.95);
     }
     #tab-emirler .pending-metrics-3d {
-      background: linear-gradient(180deg, #FFFFFF 0%, #E8EFEA 100%);
-      border: 1px solid #9FB2A9;
-      border-bottom-width: 2px;
-      border-bottom-color: #789086;
-      box-shadow: inset 0 1.5px 2.5px rgba(15, 23, 42, 0.08), inset 0 -1px 0 rgba(255, 255, 255, 0.9), 0 1px 2px rgba(15, 23, 42, 0.06);
+      background: linear-gradient(180deg, #FFFFFF 0%, #E2ECE7 100%);
+      border: 1.5px solid #88A095;
+      border-bottom-width: 2.5px;
+      border-bottom-color: #5C746A;
+      box-shadow: inset 0 1.5px 3px rgba(15, 23, 42, 0.1), inset 0 -1px 0 rgba(255, 255, 255, 0.95), 0 2px 4px -1px rgba(15, 23, 42, 0.12);
+    }
+    #tab-emirler .pending-label-3d {
+      color: #334155;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 1px 1px rgba(15, 23, 42, 0.14);
     }
     #tab-emirler .pending-num-order-3d {
-      color: #091322;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 1.5px 2px rgba(15, 23, 42, 0.16);
+      color: #050D1A;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 1), 0 2px 3px rgba(15, 23, 42, 0.25);
     }
     #tab-emirler .pending-num-prod-3d {
-      color: #065F46;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9), 0 1.5px 2px rgba(6, 95, 70, 0.2);
+      color: #044E38;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 2px 3px rgba(4, 78, 56, 0.28);
     }
     #tab-emirler .pending-num-rem-warn-3d {
-      color: #B45309;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9), 0 1.5px 2px rgba(180, 83, 9, 0.2);
+      color: #9A3412;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 2px 3px rgba(154, 52, 18, 0.26);
     }
     #tab-emirler .pending-num-rem-neg-3d {
-      color: #B91C1C;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9), 0 1.5px 2px rgba(185, 28, 28, 0.22);
+      color: #991B1B;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 2px 3px rgba(153, 27, 27, 0.28);
+    }
+    #tab-emirler .emirler-header-3d {
+      color: #061021;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 2px 4px rgba(15, 23, 42, 0.18);
+    }
+    #tab-emirler .emirler-sub-3d {
+      color: #334155;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
+    }
+    #tab-emirler .emirler-search-3d {
+      background: linear-gradient(180deg, #FFFFFF 0%, #EDF3F0 100%);
+      border: 1.5px solid #96ABA1;
+      border-bottom-width: 3px;
+      border-bottom-color: #6B8277;
+      box-shadow: 0 8px 16px -6px rgba(15, 23, 42, 0.18), inset 0 1px 0 rgba(255, 255, 255, 1);
+    }
+    #tab-emirler .emirler-meta-3d {
+      color: #1E293B;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
     }
     /* Emirler sekmesindeki sıra numarası rozetleri: ilgili iş emri kartının durumuna ve boyutuna uyumlu */
     #tab-emirler .seq-square-3d {
@@ -300,28 +407,28 @@
       border-color: #FDE047;
       box-shadow: none;
     }
-    .seq-square-3d-running {
-      background: #BBF7D0;
-      border-color: #4ADE80;
-      box-shadow: none;
-    }
-    .seq-square-3d-running-ended {
-      background: #FECACA;
-      border-color: #F87171;
-      box-shadow: none;
-    }
-    .seq-square-3d-paused {
-      background: #FEF9C3;
-      border-color: #FDE047;
-      box-shadow: none;
-    }
-    /* Bitenler sayfası kartları: kırmızı çerçeve, temiz gri iç yüzey */
+    /* Bitenler sayfası kartları: dikey olarak daraltılmış, kırmızı 3D çerçeve ve renk gölgeli */
     #tab-tamamlanan .completed-card {
-      background: linear-gradient(180deg, #F8FAFC 0%, #E2E8F0 100%);
+      background: linear-gradient(168deg, #FFFFFF 0%, #FFF7F7 56%, #FEECEC 100%);
       border: 1.5px solid #EF4444;
-      border-bottom-width: 3px;
-      border-bottom-color: #DC2626;
-      box-shadow: 0 6px 14px -6px rgba(15, 23, 42, 0.16), 0 2px 4px -1px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      border-bottom-width: 3.5px;
+      border-bottom-color: #B91C1C;
+      box-shadow: 0 8px 16px -6px rgba(220, 38, 38, 0.28), 0 3px 6px -2px rgba(185, 28, 28, 0.16), inset 0 1.5px 0 rgba(255, 255, 255, 0.98), inset 0 -1.5px 0 rgba(248, 113, 113, 0.35);
+    }
+    #tab-tamamlanan .completed-card-title-3d {
+      color: #0B172A;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 1.5px 2px rgba(15, 23, 42, 0.14);
+    }
+    #tab-tamamlanan .completed-card-desc-3d {
+      color: #334155;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
+    }
+    #tab-tamamlanan .completed-card-metrics-3d {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FFF1F2 100%);
+      border: 1px solid #FCA5A5;
+      border-bottom-width: 2px;
+      border-bottom-color: #F87171;
+      box-shadow: inset 0 1.5px 2.5px rgba(220, 38, 38, 0.08), inset 0 -1px 0 rgba(255, 255, 255, 0.9), 0 1px 2px rgba(185, 28, 28, 0.08);
     }
     .completed-card {
       background: linear-gradient(180deg, #FFF6F6 0%, #FDE8E8 100%);
@@ -448,11 +555,11 @@
     <section id="tab-emirler" class="space-y-3">
       <div class="flex items-start justify-between gap-2 pt-0.5">
         <div>
-          <h1 data-i18n="orders_title" class="text-2xl sm:text-[26px] leading-none font-extrabold text-slate-900 tracking-tight app-section-title">Üretim Emirleri</h1>
-          <p data-i18n="orders_subtitle" class="text-xs text-slate-500 mt-1">Üretim emirlerini bulun ve üretim girdilerini güncelleyin.</p>
+          <h1 data-i18n="orders_title" class="text-2xl sm:text-[26px] leading-none font-extrabold emirler-header-3d tracking-tight app-section-title">Üretim Emirleri</h1>
+          <p data-i18n="orders_subtitle" class="text-xs font-medium emirler-sub-3d mt-1">Üretim emirlerini bulun ve üretim girdilerini güncelleyin.</p>
         </div>
         <div class="flex items-center gap-1.5 shrink-0">
-          <button id="newOrderMainBtn" type="button" onclick="openNewOrderModal()" class="inline-flex items-center gap-1 bg-[#146C53] hover:bg-[#0F5C45] text-white font-extrabold text-xs px-3.5 py-2 rounded-2xl shadow-xs active:scale-95 transition">
+          <button id="newOrderMainBtn" type="button" onclick="openNewOrderModal()" class="inline-flex items-center gap-1 bg-gradient-to-b from-[#1A8466] to-[#146C53] hover:from-[#157258] hover:to-[#0F5C45] text-white font-extrabold text-xs px-3.5 py-2 rounded-2xl border border-[#0D4D3A] border-b-[3px] border-b-[#083629] shadow-[0_6px_14px_-4px_rgba(20,108,83,0.45),inset_0_1px_0_rgba(255,255,255,0.35)] active:scale-95 transition">
             <span>+</span>
             <span data-i18n="new_order_btn">Yeni emir</span>
           </button>
@@ -461,17 +568,17 @@
       </div>
 
       <!-- Search Card -->
-      <div class="pro-card rounded-2xl p-3">
+      <div class="emirler-search-3d rounded-2xl p-3">
         <div class="relative">
-          <svg class="w-4 h-4 text-slate-400 ltr:left-3 rtl:right-3 top-1/2 -translate-y-1/2 absolute pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 text-slate-500 ltr:left-3 rtl:right-3 top-1/2 -translate-y-1/2 absolute pointer-events-none" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103.5 10.5a7.5 7.5 0 0013.15 6.15z"/>
           </svg>
           <input id="searchInput" type="search" enterkeyhint="search" oninput="renderOrders()" onkeydown="if(event.key==='Enter'){this.blur();renderOrders();}" data-i18n-placeholder="search_order_ph" placeholder="ARTIVE veya ARTICLE THERMOFM"
-            class="w-full ltr:pl-9 ltr:pr-3.5 rtl:pr-9 rtl:pl-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#146C53]" />
+            class="w-full ltr:pl-9 ltr:pr-3.5 rtl:pr-9 rtl:pl-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 placeholder-slate-400 shadow-[inset_0_1.5px_2px_rgba(15,23,42,0.06)] focus:outline-none focus:border-[#146C53]" />
         </div>
       </div>
 
-      <div id="ordersList" class="space-y-3"></div>
+      <div id="ordersList" class="space-y-2"></div>
     </section>
 
     <!-- TAB 2: TAMAMLANAN İŞ EMİRLERİ -->
@@ -1263,6 +1370,8 @@
     let addedOrdersCount = 0;
     let addedOrderTimestamps = [];
     const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
+    const TAB_ORDER = ['emirler', 'tamamlanan', 'ozet', 'operasyon', 'raporlar', 'notlar'];
+    let lastActiveTabName = 'emirler';
     const t = (key, ...args) => {
       const val = (I18N[currentLang] && I18N[currentLang][key]) || I18N.tr[key] || key;
       return typeof val === 'function' ? val(...args) : val;
@@ -1499,19 +1608,12 @@
                   <div class="text-xs font-extrabold text-slate-900">${r.label}</div>
                   <div class="text-[11px] text-slate-500 mt-0.5">${r.desc}</div>
                 </div>
-                <span class="w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${active ? 'border-[#146C53]' : 'border-slate-300'}">
-                  ${active ? '<span class="w-2 h-2 rounded-full bg-[#146C53]"></span>' : ''}
-                </span>
               </div>
               <div onclick="event.stopPropagation()" class="pt-1.5 border-t border-slate-200/80 space-y-1.5">
-                <div class="flex items-center justify-between gap-1">
-                  <span class="text-[10px] font-bold text-slate-600">Eşleşen Gmail Adresleri (${emailList.length})</span>
-                  ${canAssignGmail ? `<button type="button" onclick="addRoleEmail('${r.key}')" class="text-[10px] font-extrabold text-[#146C53] bg-emerald-100/80 hover:bg-emerald-100 px-2 py-0.5 rounded-md">+ Gmail</button>` : `<span class="text-[10px] font-bold text-amber-700">Sadece ${escapeHtml(GMAIL_ADMIN_EMAIL)}</span>`}
-                </div>
-                <div class="flex flex-wrap gap-1">
+                <div class="flex flex-wrap items-center gap-1.5">
                   ${emailList.map((em, idx) => `
-                    <span class="inline-flex items-center gap-1 bg-white border border-slate-200 text-slate-700 text-[10px] font-semibold px-2 py-0.5 rounded-lg">
-                      <span class="truncate max-w-[190px]">${escapeHtml(em)}</span>
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white border border-slate-200 text-[10px] font-bold text-slate-700">
+                      <span>${escapeHtml(em)}</span>
                       ${canAssignGmail ? `<button type="button" onclick="removeRoleEmail('${r.key}', ${idx})" class="text-rose-500 hover:text-rose-700 font-extrabold leading-none" title="Kaldır">×</button>` : ''}
                     </span>
                   `).join('')}
@@ -3193,14 +3295,14 @@
       if (!container) return;
 
       const metaBarHtml = `
-        <div class="flex items-center justify-between gap-2 px-1 py-0.5">
-          <span id="orderCountLabel" class="text-xs font-semibold text-slate-500">${t('orders_listed', filtered.length)}</span>
-          <div class="relative inline-flex items-center gap-1 shrink-0 text-slate-700 hover:text-[#146C53] transition">
-            <svg class="w-3.5 h-3.5 text-slate-600 shrink-0 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+        <div class="flex items-center justify-between gap-2 px-1 py-0.5 emirler-meta-3d">
+          <span id="orderCountLabel" class="text-xs font-extrabold text-slate-700">${t('orders_listed', filtered.length)}</span>
+          <div class="relative inline-flex items-center gap-1 shrink-0 text-slate-800 hover:text-[#146C53] transition">
+            <svg class="w-3.5 h-3.5 text-slate-700 shrink-0 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
             </svg>
             <select aria-label="${t('sort_label')}" onchange="setOrderSortMode(this.value)"
-              class="appearance-none bg-transparent border-0 p-0 pr-0.5 text-[11px] font-bold text-slate-700 cursor-pointer focus:outline-none focus:ring-0" style="background-image: none;">
+              class="appearance-none bg-transparent border-0 p-0 pr-0.5 text-[11px] font-extrabold text-slate-800 cursor-pointer focus:outline-none focus:ring-0" style="background-image: none;">
               <option value="DEFAULT" ${currentOrderSortMode === 'DEFAULT' ? 'selected' : ''}>${t('sort_label')}</option>
               <option value="BY_STATUS" ${currentOrderSortMode === 'BY_STATUS' ? 'selected' : ''}>${t('sort_by_status')}</option>
               <option value="BY_COLOR" ${currentOrderSortMode === 'BY_COLOR' ? 'selected' : ''}>${t('sort_by_color')}</option>
@@ -3267,26 +3369,24 @@
             ondragend="handleOrderDragEnd(event)"
             onclick="toggleIdleOrderDetailView(event, ${o.id})"
             class="rounded-2xl px-3 py-2 ${pendingCompactCardClass} cursor-pointer active:scale-[0.99] transition space-y-1.5">
-            <div class="flex items-center justify-between gap-2">
-              <div class="flex items-center gap-2 min-w-0 flex-1">
-                <span class="w-2 h-2 rounded-full ${dotColorClass} shrink-0 shadow-2xs"></span>
-                <span class="text-[11.5px] leading-[1.25] font-extrabold pending-title-3d tracking-[-0.01em] truncate">${formatArtiveHighlight(o.artive)}</span>
-              </div>
+            <div class="flex items-center gap-1.5 w-full min-w-0">
+              <span class="w-1.5 h-1.5 rounded-full ${dotColorClass} shrink-0 shadow-2xs"></span>
+              <span class="text-[11.5px] leading-[1.25] font-extrabold pending-title-3d tracking-[-0.02em] whitespace-nowrap overflow-hidden text-ellipsis w-full min-w-0 block">${formatArtiveHighlight(o.artive)}</span>
             </div>
 
-            <p class="text-[9.5px] leading-[1.3] font-semibold pending-desc-3d line-clamp-1 ltr:pl-[16px] rtl:pr-[16px]">${escapeHtml(o.article)}</p>
+            <p class="text-[9.5px] leading-[1.3] font-semibold pending-desc-3d line-clamp-1 ltr:pl-[13px] rtl:pr-[13px]">${escapeHtml(o.article)}</p>
 
             <div class="grid grid-cols-3 pending-metrics-3d rounded-xl py-1 px-1.5 text-center tabular-nums">
               <div class="flex items-center justify-center gap-1 min-w-0">
-                <span class="text-[7.5px] font-extrabold text-slate-500 leading-none tracking-tight uppercase shrink-0">${t('metric_order')}:</span>
+                <span class="text-[7.5px] font-extrabold pending-label-3d leading-none tracking-tight uppercase shrink-0">${t('metric_order')}:</span>
                 <span class="text-[10.5px] font-black pending-num-order-3d leading-none truncate">${fmt(o.ton)}</span>
               </div>
-              <div class="border-x border-slate-300/90 flex items-center justify-center gap-1 min-w-0">
-                <span class="text-[7.5px] font-extrabold text-slate-500 leading-none tracking-tight uppercase shrink-0">${t('metric_prod')}:</span>
+              <div class="border-x border-slate-400/50 flex items-center justify-center gap-1 min-w-0">
+                <span class="text-[7.5px] font-extrabold pending-label-3d leading-none tracking-tight uppercase shrink-0">${t('metric_prod')}:</span>
                 <span class="text-[10.5px] font-black pending-num-prod-3d leading-none truncate">${fmt(prod)}</span>
               </div>
               <div class="flex items-center justify-center gap-1 min-w-0">
-                <span class="text-[7.5px] font-extrabold text-slate-500 leading-none tracking-tight uppercase shrink-0">${t('metric_rem')}:</span>
+                <span class="text-[7.5px] font-extrabold pending-label-3d leading-none tracking-tight uppercase shrink-0">${t('metric_rem')}:</span>
                 <span class="text-[10.5px] font-black ${remNum3dClass} leading-none truncate">${fmt(rest)}</span>
               </div>
             </div>
@@ -3325,18 +3425,18 @@
               <h3 class="text-[9.5px] leading-tight font-medium text-slate-500 mt-0.5">${escapeHtml(o.article)}</h3>
             </div>
 
-            <div class="grid grid-cols-3 ${metricBoxClass} border rounded-2xl py-2.5 px-2 text-center shadow-2xs">
+            <div class="grid grid-cols-3 ${metricBoxClass} border rounded-2xl py-2.5 px-2 text-center shadow-2xs tabular-nums">
               <div>
-                <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_order')}</div>
-                <div class="text-xs sm:text-sm font-black text-slate-950 leading-tight mt-1">${fmt(o.ton)}</div>
+                <div class="text-[10px] font-extrabold pending-label-3d leading-none tracking-wide">${t('metric_order')}</div>
+                <div class="text-xs sm:text-sm font-black pending-num-order-3d leading-tight mt-1">${fmt(o.ton)}</div>
               </div>
-              <div class="border-x border-slate-400/35">
-                <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_prod')}</div>
-                <div class="text-xs sm:text-sm font-black text-emerald-700 leading-tight mt-1">${fmt(prod)}</div>
+              <div class="border-x border-slate-400/45">
+                <div class="text-[10px] font-extrabold pending-label-3d leading-none tracking-wide">${t('metric_prod')}</div>
+                <div class="text-xs sm:text-sm font-black pending-num-prod-3d leading-tight mt-1">${fmt(prod)}</div>
               </div>
               <div>
-                <div class="text-[10px] font-bold text-slate-400 leading-none tracking-wide">${t('metric_rem')}</div>
-                <div class="text-xs sm:text-sm font-black text-rose-700 leading-tight mt-1">${fmt(rest)}</div>
+                <div class="text-[10px] font-extrabold pending-label-3d leading-none tracking-wide">${t('metric_rem')}</div>
+                <div class="text-xs sm:text-sm font-black ${rest < 0 ? 'pending-num-rem-neg-3d' : 'pending-num-rem-warn-3d'} leading-tight mt-1">${fmt(rest)}</div>
               </div>
             </div>
           </div>
@@ -3352,7 +3452,11 @@
         .map(renderOrderCard)
         .join('');
 
-      container.innerHTML = runningCardsHtml + metaBarHtml + endedOrderCardHtml + remainingCardsHtml;
+      const remainingGroupHtml = remainingCardsHtml
+        ? `<div class="space-y-2">${remainingCardsHtml}</div>`
+        : '';
+
+      container.innerHTML = runningCardsHtml + metaBarHtml + endedOrderCardHtml + remainingGroupHtml;
     }
 
     function parseKgInput(rawVal) {
@@ -3381,8 +3485,15 @@
     function toggleCompletedOrderExpand(event, id) {
       if (event) event.stopPropagation();
       openCompletedMenuId = null;
-      expandedCompletedOrderId = expandedCompletedOrderId === id ? null : id;
-      renderCompletedOrders();
+      expandedCompletedOrderId = null;
+      const target = orders.find(o => o.id === id);
+      if (target) {
+        target.lastActionDateTime = formatDateTimeNow();
+        saveStateToStorage();
+      }
+      const cardEl = (event && event.currentTarget && event.currentTarget.closest('[data-completed-card-id]'))
+        || document.querySelector(`[data-completed-card-id="${id}"]`);
+      openEditModal(id, { sourceCardEl: cardEl, fromPendingOrder: true });
     }
 
     function restartCompletedOrderAsRunning(event, id) {
@@ -3461,61 +3572,157 @@
         return;
       }
 
-      el.innerHTML = list.map(o => {
+      const monthNames = currentLang === 'ar'
+        ? ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
+        : ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+
+      const getCompletedGroupMeta = (order) => {
+        const candidates = [order?.completedDate, order?.createdDate, order?.period];
+        for (const raw of candidates) {
+          const str = String(raw || '').trim();
+          const dmy = str.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+          if (dmy) {
+            const mIdx = Math.max(0, Math.min(11, parseInt(dmy[2], 10) - 1));
+            const year = dmy[3];
+            return {
+              key: `${year}-${String(mIdx + 1).padStart(2, '0')}`,
+              sortKey: parseInt(`${year}${String(mIdx + 1).padStart(2, '0')}`, 10) || 0,
+              title: `${monthNames[mIdx]} ${year}`
+            };
+          }
+        }
+        return {
+          key: 'other-period',
+          sortKey: 0,
+          title: t('sep_before')
+        };
+      };
+
+      const renderSingleCompletedCard = (o) => {
         const prod = getProd(o);
         const rest = getRest(o);
-        const doneDateStr = escapeHtml(
-          String(o.completedDate || o.createdDate || o.period || formatTodayDate()).trim()
-        );
         const isExpanded = expandedCompletedOrderId === o.id;
         const isMenuOpen = openCompletedMenuId === o.id;
+        const statusTone = rest < 0
+          ? {
+              card: 'completed-card',
+              dot: 'bg-red-600',
+              rem: 'text-red-700',
+              pill: 'bg-red-100/90 text-red-800 border-red-300',
+              badge: 'bg-red-50 text-red-700 border-red-200'
+            }
+          : {
+              card: 'completed-card',
+              dot: 'bg-red-600',
+              rem: 'text-amber-700',
+              pill: 'bg-amber-50 text-amber-800 border-amber-200',
+              badge: 'bg-red-50 text-red-700 border-red-200'
+            };
 
         return `
-          <div onclick="toggleCompletedOrderExpand(event, ${o.id})"
-            class="rounded-xl px-2.5 py-1 completed-card active:scale-[0.995] transition cursor-pointer space-y-1 ${isExpanded ? 'ring-2 ring-red-500/40' : ''}">
+          <div data-completed-card-id="${o.id}" onclick="toggleCompletedOrderExpand(event, ${o.id})"
+            class="rounded-xl px-2.5 py-1.5 ${statusTone.card} active:scale-[0.995] transition cursor-pointer ${isExpanded ? 'space-y-1.5 ring-2 ring-red-500/35' : 'space-y-1'}">
             <div class="flex items-start justify-between gap-1.5">
-              <div class="flex items-start gap-1 min-w-0 flex-1">
-                <span class="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0 mt-[4px]"></span>
-                <span class="text-[10px] leading-[1.2] font-bold text-slate-900 break-words">${formatArtiveHighlight(o.artive)}</span>
+              <div class="min-w-0 flex-1">
+                <p class="text-[10.5px] leading-[1.2] font-bold text-slate-900 flex items-start gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full ${statusTone.dot} shrink-0 mt-1"></span>
+                  <span class="${isExpanded ? '' : 'truncate block'}">${formatArtiveHighlight(o.artive)}</span>
+                </p>
+                <h3 class="text-[9px] leading-[1.15] font-medium text-slate-500 mt-0.5 ltr:pl-3 rtl:pr-3 ${isExpanded ? '' : 'truncate'}">${escapeHtml(o.article)}</h3>
               </div>
-              <span class="inline-flex items-center shrink-0 px-1.5 py-[1px] rounded bg-slate-100 border border-red-300 text-[8.5px] leading-tight font-extrabold text-red-700 tabular-nums">${doneDateStr}</span>
+
+              <div onclick="event.stopPropagation()" class="relative shrink-0">
+                <button type="button" onclick="toggleCompletedMenu(event, ${o.id})" aria-label="İşlem Menüsü"
+                  class="inline-flex items-center justify-center w-5 h-5 rounded-md bg-white/95 hover:bg-white border border-red-200 text-slate-600 hover:text-red-700 shadow-2xs active:scale-95 transition">
+                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 6a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0 5.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0 5.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/>
+                  </svg>
+                </button>
+                ${isMenuOpen ? `
+                  <div class="absolute ltr:right-0 rtl:left-0 top-full mt-1 z-30 w-36 bg-white rounded-xl shadow-xl border border-slate-200 p-1">
+                    <button type="button" onclick="restartCompletedOrderAsRunning(event, ${o.id})"
+                      class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-emerald-700 hover:bg-emerald-50 transition ltr:text-left rtl:text-right">
+                      <span>${t('reopen_order_btn')}</span>
+                    </button>
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 completed-card-metrics-3d rounded-lg py-1 px-1.5 text-center tabular-nums">
+              <div class="flex items-center justify-center gap-1 min-w-0">
+                <span class="text-[7.5px] font-extrabold text-slate-500 leading-none uppercase shrink-0">${t('metric_order')}:</span>
+                <span class="text-[10px] font-black text-slate-900 leading-none truncate">${fmt(o.ton)}</span>
+              </div>
+              <div class="border-x border-red-200/90 flex items-center justify-center gap-1 min-w-0">
+                <span class="text-[7.5px] font-extrabold text-slate-500 leading-none uppercase shrink-0">${t('metric_prod')}:</span>
+                <span class="text-[10px] font-black text-[#146C53] leading-none truncate">${fmt(prod)}</span>
+              </div>
+              <div class="flex items-center justify-center gap-1 min-w-0">
+                <span class="text-[7.5px] font-extrabold text-slate-500 leading-none uppercase shrink-0">${t('metric_rem')}:</span>
+                <span class="text-[10px] font-black ${statusTone.rem} leading-none truncate">${fmt(rest)}</span>
+              </div>
             </div>
 
             ${isExpanded ? `
-              <div class="flex items-center justify-between gap-2 pt-0.5">
-                <p class="text-[9.5px] leading-snug font-medium text-slate-700 min-w-0 flex-1">${escapeHtml(o.article)}</p>
-                <div onclick="event.stopPropagation()" class="relative inline-block shrink-0">
-                  <button type="button" onclick="toggleCompletedMenu(event, ${o.id})" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-600 hover:bg-red-700 text-white border border-red-700 text-[9px] font-extrabold shadow-2xs active:scale-95 transition">
-                    <span>${t('completed_badge_upper')}</span>
-                    <svg class="w-2.5 h-2.5 opacity-90" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                  </button>
-                  ${isMenuOpen ? `
-                    <div class="absolute ltr:right-0 rtl:left-0 top-full mt-1 z-30 w-36 bg-white rounded-xl shadow-xl border border-red-200 p-1">
-                      <button type="button" onclick="restartCompletedOrderAsRunning(event, ${o.id})"
-                        class="w-full flex items-center gap-1.5 whitespace-nowrap px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 transition ltr:text-left rtl:text-right">
-                        <span>${t('reopen_order_btn')}</span>
-                      </button>
-                    </div>
-                  ` : ''}
+              <div class="pt-1 border-t border-red-200/80 space-y-1 text-[9.5px]">
+                <div class="flex items-center justify-between text-slate-600">
+                  <span>${t('created_date_label')}: <strong class="text-slate-800">${escapeHtml(o.createdDate || o.period || '-')}</strong></span>
+                  <span>${t('completed_date_label')}: <strong class="text-slate-800">${escapeHtml(formatCompletedDateTimeLabel(o))}</strong></span>
+                </div>
+                <div class="grid grid-cols-4 gap-1 text-center">
+                  <div class="bg-blue-50/70 rounded-lg py-1 px-1">
+                    <div class="text-[8.5px] font-bold text-blue-700">İSA</div>
+                    <div class="font-extrabold text-slate-800">${fmt(o.isa)}</div>
+                  </div>
+                  <div class="bg-emerald-50/70 rounded-lg py-1 px-1">
+                    <div class="text-[8.5px] font-bold text-[#146C53]">MUHİDDİN</div>
+                    <div class="font-extrabold text-slate-800">${fmt(o.muhiddin)}</div>
+                  </div>
+                  <div class="bg-amber-50/70 rounded-lg py-1 px-1">
+                    <div class="text-[8.5px] font-bold text-amber-700">KADDUR</div>
+                    <div class="font-extrabold text-slate-800">${fmt(o.kaddur)}</div>
+                  </div>
+                  <div class="bg-purple-50/70 rounded-lg py-1 px-1">
+                    <div class="text-[8.5px] font-bold text-purple-700">MUHAMMED</div>
+                    <div class="font-extrabold text-slate-800">${fmt(o.muhammed)}</div>
+                  </div>
                 </div>
               </div>
             ` : ''}
+          </div>`;
+      };
 
-            <div class="grid grid-cols-3 bg-slate-100/95 border border-slate-300/90 rounded-lg py-0.5 px-1 text-center tabular-nums">
-              <div class="flex items-center justify-center gap-1">
-                <span class="text-[7px] font-bold text-slate-500 leading-none tracking-tight uppercase">${t('metric_order')}:</span>
-                <span class="text-[9.5px] font-black text-slate-900 leading-none">${fmt(o.ton)}</span>
+      const groupedMap = new Map();
+      list.forEach(order => {
+        const meta = getCompletedGroupMeta(order);
+        if (!groupedMap.has(meta.key)) {
+          groupedMap.set(meta.key, {
+            key: meta.key,
+            sortKey: meta.sortKey,
+            title: meta.title,
+            items: []
+          });
+        }
+        groupedMap.get(meta.key).items.push(order);
+      });
+
+      const groups = Array.from(groupedMap.values()).sort((a, b) => b.sortKey - a.sortKey);
+
+      el.innerHTML = groups.map(group => {
+        const groupProdKg = group.items.reduce((acc, item) => acc + getProd(item), 0);
+        return `
+          <div class="space-y-1 pt-0.5">
+            <div class="flex items-center justify-between gap-2 px-2 py-0.5 rounded-lg bg-[#EBF2EE]/90 border border-[#C5D5CD]">
+              <div class="flex items-center gap-1.5 min-w-0">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#146C53] shrink-0"></span>
+                <span class="text-[10px] font-extrabold text-slate-900 tracking-tight truncate">${escapeHtml(group.title)}</span>
+                <span class="text-[8.5px] font-bold text-slate-500 tabular-nums shrink-0">(${t('emir_unit', group.items.length)})</span>
               </div>
-              <div class="border-x border-slate-300/90 flex items-center justify-center gap-1">
-                <span class="text-[7px] font-bold text-slate-500 leading-none tracking-tight uppercase">${t('metric_prod')}:</span>
-                <span class="text-[9.5px] font-black text-[#146C53] leading-none">${fmt(prod)}</span>
-              </div>
-              <div class="flex items-center justify-center gap-1">
-                <span class="text-[7px] font-bold text-slate-500 leading-none tracking-tight uppercase">${t('metric_rem')}:</span>
-                <span class="text-[9.5px] font-black ${rest < 0 ? 'text-red-600' : 'text-amber-600'} leading-none">${fmt(rest)}</span>
-              </div>
+              <span class="text-[9px] font-extrabold text-[#146C53] tabular-nums shrink-0">${fmt(groupProdKg)} KG</span>
+            </div>
+            <div class="space-y-1">
+              ${group.items.map(renderSingleCompletedCard).join('')}
             </div>
           </div>`;
       }).join('');
@@ -3852,18 +4059,40 @@
     function switchTab(tabName) {
       openStatusMenuId = null;
       openCompletedMenuId = null;
-      const validTabs = ['emirler', 'tamamlanan', 'ozet', 'operasyon', 'raporlar', 'notlar'];
+      const validTabs = TAB_ORDER;
       const targetTab = validTabs.includes(tabName) ? tabName : 'emirler';
+      const prevTab = lastActiveTabName;
+      const prevIdx = validTabs.indexOf(prevTab);
+      const nextIdx = validTabs.indexOf(targetTab);
+      const isRtl = document.documentElement.dir === 'rtl';
+
+      let enterAnimClass = 'tab-page-enter-fade';
+      if (prevTab !== targetTab && prevIdx !== -1 && nextIdx !== -1) {
+        const movingForward = nextIdx > prevIdx;
+        if (isRtl) {
+          enterAnimClass = movingForward ? 'tab-page-enter-left' : 'tab-page-enter-right';
+        } else {
+          enterAnimClass = movingForward ? 'tab-page-enter-right' : 'tab-page-enter-left';
+        }
+      }
 
       validTabs.forEach(tab => {
         const sec = document.getElementById(`tab-${tab}`);
-        if (sec) sec.classList.toggle('hidden', tab !== targetTab);
+        if (!sec) return;
+        sec.classList.remove('tab-page-enter-right', 'tab-page-enter-left', 'tab-page-enter-fade');
+        if (tab === targetTab) {
+          sec.classList.remove('hidden');
+          void sec.offsetWidth;
+          sec.classList.add(enterAnimClass);
+        } else {
+          sec.classList.add('hidden');
+        }
       });
 
       document.querySelectorAll('.nav-btn').forEach(btn => {
         const active = btn.dataset.nav === targetTab;
         btn.className = active
-          ? 'nav-btn relative flex flex-col items-center justify-center py-1 px-1.5 rounded-2xl bg-emerald-50/95 ring-1 ring-emerald-600/35 text-[#0F5C45] transition'
+          ? 'nav-btn nav-btn-active relative flex flex-col items-center justify-center py-1 px-1.5 rounded-2xl bg-emerald-50/95 ring-1 ring-emerald-600/35 text-[#0F5C45] transition'
           : 'nav-btn relative flex flex-col items-center justify-center py-1 px-1.5 rounded-2xl bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition';
         btn.querySelectorAll('.nav-active-bar').forEach(bar => bar.remove());
         const labelEl = btn.querySelector('span[data-i18n]');
@@ -3880,39 +4109,57 @@
         }
       });
 
-      window.scrollTo({ top: 0, behavior: 'instant' });
       const mainEl = document.getElementById('appMainContainer');
+      const bodyEl = document.body;
+      const isCompactSingleScreenTab = (targetTab === 'emirler' || targetTab === 'raporlar' || targetTab === 'tamamlanan');
       if (mainEl) {
-        if (targetTab === 'raporlar') {
-          mainEl.className = 'max-w-[420px] mx-auto px-2 pt-2 transition-all';
-        } else {
-          mainEl.className = 'max-w-3xl mx-auto px-2.5 pt-4 transition-all';
-        }
+        mainEl.classList.toggle('max-w-3xl', !isCompactSingleScreenTab);
+        mainEl.classList.toggle('max-w-[420px]', isCompactSingleScreenTab);
+        mainEl.classList.toggle('px-2', isCompactSingleScreenTab);
+        mainEl.classList.toggle('px-2.5', !isCompactSingleScreenTab);
+        mainEl.classList.toggle('pt-2', isCompactSingleScreenTab);
+        mainEl.classList.toggle('pt-4', !isCompactSingleScreenTab);
       }
-      renderOrders();
-      renderCompletedOrders();
+      if (bodyEl) {
+        bodyEl.classList.toggle('pb-12', isCompactSingleScreenTab);
+        bodyEl.classList.toggle('pb-16', !isCompactSingleScreenTab);
+      }
+
+      if (targetTab === 'emirler') renderOrders();
+      if (targetTab === 'tamamlanan') renderCompletedOrders();
       if (targetTab === 'ozet') renderSummary('ALL');
       if (targetTab === 'operasyon') renderOperationTab();
       if (targetTab === 'raporlar') renderReports();
       if (targetTab === 'notlar') renderNotes();
+      lastActiveTabName = targetTab;
+      saveStateToStorage();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function applyLanguage(lang) {
-      currentLang = lang === 'ar' ? 'ar' : 'tr';
+    function applyTranslations() {
       document.documentElement.lang = currentLang;
       document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
 
-      const toggleLabel = document.getElementById('langToggleLabel');
-      if (toggleLabel) toggleLabel.textContent = currentLang === 'ar' ? '🇹🇷' : '🇩🇿';
-
       document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (key) el.textContent = t(key);
+        const key = el.dataset.i18n;
+        const val = I18N[currentLang]?.[key];
+        if (typeof val === 'string') {
+          el.textContent = val;
+        }
       });
+
       document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-        const key = el.getAttribute('data-i18n-placeholder');
-        if (key) el.setAttribute('placeholder', t(key));
+        const key = el.dataset.i18nPlaceholder;
+        const val = I18N[currentLang]?.[key];
+        if (typeof val === 'string') {
+          el.placeholder = val;
+        }
       });
+
+      const langLabel = document.getElementById('langToggleLabel');
+      if (langLabel) {
+        langLabel.textContent = currentLang === 'tr' ? '🇩🇿' : '🇹🇷';
+      }
 
       renderOrders();
       renderCompletedOrders();
@@ -3923,129 +4170,202 @@
     }
 
     function toggleLanguage() {
-      applyLanguage(currentLang === 'tr' ? 'ar' : 'tr');
+      currentLang = currentLang === 'tr' ? 'ar' : 'tr';
+      applyTranslations();
+      saveStateToStorage();
+      showToast(currentLang === 'ar' ? 'تم التبديل إلى العربية' : 'Türkçe diline geçildi');
     }
 
-    const STORAGE_KEYS = {
-      orders: 'extruder_app_orders_v1',
-      notes: 'extruder_app_notes_v1',
-      addedOrderTimestamps: 'extruder_app_added_order_ts_v1',
-      roleKey: 'extruder_app_role_key_v1',
-      accountEmail: 'extruder_app_account_email_v1',
-      lang: 'extruder_app_lang_v1'
-    };
+    const STORAGE_KEY = 'EXTRUDER_APP_STATE_V1';
+    const STORAGE_HASH_KEY = 'EXTRUDER_APP_STATE_HASH_V1';
+    const memoryFallbackStore = new Map();
 
-    function isLocalStorageAvailable() {
-      try {
-        const testKey = '__extruder_ls_test__';
-        window.localStorage.setItem(testKey, '1');
-        window.localStorage.removeItem(testKey);
-        return true;
-      } catch (e) {
-        return false;
+    function computeStateChecksum(str) {
+      let h1 = 0x811c9dc5;
+      let h2 = 0x01000193;
+      for (let i = 0; i < str.length; i++) {
+        const ch = str.charCodeAt(i);
+        h1 ^= ch;
+        h1 = Math.imul(h1, 0x01000193);
+        h2 ^= (ch + i);
+        h2 = Math.imul(h2, 0x85ebca6b);
       }
+      return `${(h1 >>> 0).toString(16)}_${(h2 >>> 0).toString(16)}_${str.length}`;
+    }
+
+    function getActiveTabName() {
+      const tabs = ['emirler', 'tamamlanan', 'ozet', 'operasyon', 'raporlar', 'notlar'];
+      for (const tab of tabs) {
+        const el = document.getElementById(`tab-${tab}`);
+        if (el && !el.classList.contains('hidden')) return tab;
+      }
+      return 'emirler';
+    }
+
+    function writeStorageItem(key, value) {
+      try {
+        if (window.localStorage) {
+          window.localStorage.setItem(key, value);
+        }
+      } catch (e) {}
+      try {
+        if (window.sessionStorage) {
+          window.sessionStorage.setItem(key, value);
+        }
+      } catch (e) {}
+      memoryFallbackStore.set(key, value);
+    }
+
+    function readStorageItem(key) {
+      try {
+        if (window.localStorage) {
+          const v = window.localStorage.getItem(key);
+          if (v !== null && v !== undefined && v !== '') return v;
+        }
+      } catch (e) {}
+      try {
+        if (window.sessionStorage) {
+          const v = window.sessionStorage.getItem(key);
+          if (v !== null && v !== undefined && v !== '') return v;
+        }
+      } catch (e) {}
+      return memoryFallbackStore.get(key) || null;
+    }
+
+    function removeStorageItem(key) {
+      try {
+        if (window.localStorage) window.localStorage.removeItem(key);
+      } catch (e) {}
+      try {
+        if (window.sessionStorage) window.sessionStorage.removeItem(key);
+      } catch (e) {}
+      memoryFallbackStore.delete(key);
+    }
+
+    function clearStoredAppState() {
+      removeStorageItem(STORAGE_KEY);
+      removeStorageItem(STORAGE_HASH_KEY);
+    }
+
+    function buildSerializableState() {
+      pruneExpiredAddedOrders();
+      const roleEmailsMap = {};
+      ROLE_PROFILES.forEach(r => {
+        roleEmailsMap[r.key] = Array.isArray(r.emails) ? [...r.emails] : [];
+      });
+      return {
+        v: 1,
+        savedAt: Date.now(),
+        currentLang,
+        currentRoleKey,
+        currentAccountEmail,
+        activeTab: getActiveTabName(),
+        expandedIdleOrderId,
+        lastEndedShiftOrderId,
+        currentOrderSortMode,
+        addedOrdersCount,
+        addedOrderTimestamps: [...addedOrderTimestamps],
+        roleEmailsMap,
+        orders: orders.map(o => ({ ...ensureOrderDates(o) })),
+        notes: notes.map(n => ({ ...n }))
+      };
     }
 
     function saveStateToStorage() {
-      if (!isLocalStorageAvailable()) return;
       try {
-        pruneExpiredAddedOrders();
-        window.localStorage.setItem(STORAGE_KEYS.orders, JSON.stringify(orders));
-        window.localStorage.setItem(STORAGE_KEYS.notes, JSON.stringify(notes));
-        window.localStorage.setItem(STORAGE_KEYS.addedOrderTimestamps, JSON.stringify(addedOrderTimestamps));
-        window.localStorage.setItem(STORAGE_KEYS.roleKey, String(currentRoleKey || 'YONETIM'));
-        window.localStorage.setItem(STORAGE_KEYS.accountEmail, String(currentAccountEmail || GMAIL_ADMIN_EMAIL));
-        window.localStorage.setItem(STORAGE_KEYS.lang, String(currentLang || 'tr'));
+        const serialized = JSON.stringify(buildSerializableState());
+        const checksum = computeStateChecksum(serialized);
+        writeStorageItem(STORAGE_KEY, serialized);
+        writeStorageItem(STORAGE_HASH_KEY, checksum);
       } catch (e) {}
     }
 
     function loadStateFromStorage() {
-      if (!isLocalStorageAvailable()) return false;
       try {
-        const rawOrders = window.localStorage.getItem(STORAGE_KEYS.orders);
-        if (!rawOrders) return false;
-        const parsedOrders = JSON.parse(rawOrders);
-        if (!Array.isArray(parsedOrders) || parsedOrders.length === 0) return false;
+        const raw = readStorageItem(STORAGE_KEY);
+        if (!raw) return false;
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') return false;
 
-        orders = parsedOrders.map(ensureOrderDates);
-
-        const rawNotes = window.localStorage.getItem(STORAGE_KEYS.notes);
-        if (rawNotes) {
-          const parsedNotes = JSON.parse(rawNotes);
-          if (Array.isArray(parsedNotes)) {
-            notes = parsedNotes;
-          }
+        const savedHash = readStorageItem(STORAGE_HASH_KEY);
+        if (savedHash && computeStateChecksum(raw) !== savedHash) {
+          return false;
         }
 
-        const rawTs = window.localStorage.getItem(STORAGE_KEYS.addedOrderTimestamps);
-        if (rawTs) {
-          const parsedTs = JSON.parse(rawTs);
-          if (Array.isArray(parsedTs)) {
-            addedOrderTimestamps = parsedTs.map(Number).filter(n => Number.isFinite(n));
-            pruneExpiredAddedOrders();
-          }
+        if (Array.isArray(parsed.orders) && parsed.orders.length > 0) {
+          orders = parsed.orders.map(o => ensureOrderDates({ ...o }));
         }
-
-        const savedRole = window.localStorage.getItem(STORAGE_KEYS.roleKey);
-        if (savedRole && ROLE_PROFILES.some(r => r.key === savedRole)) {
-          currentRoleKey = savedRole;
-          draftRoleKey = savedRole;
+        if (Array.isArray(parsed.notes)) {
+          notes = parsed.notes.map(n => ({ ...n }));
         }
-
-        const savedEmail = window.localStorage.getItem(STORAGE_KEYS.accountEmail);
-        if (savedEmail !== null) {
-          currentAccountEmail = savedEmail;
+        if (parsed.currentLang === 'tr' || parsed.currentLang === 'ar') {
+          currentLang = parsed.currentLang;
         }
-
-        const savedLang = window.localStorage.getItem(STORAGE_KEYS.lang);
-        if (savedLang === 'tr' || savedLang === 'ar') {
-          currentLang = savedLang;
+        if (typeof parsed.currentRoleKey === 'string' && ROLE_PROFILES.some(r => r.key === parsed.currentRoleKey)) {
+          currentRoleKey = parsed.currentRoleKey;
+          draftRoleKey = parsed.currentRoleKey;
         }
-
-        return true;
+        if (typeof parsed.currentAccountEmail === 'string') {
+          currentAccountEmail = parsed.currentAccountEmail;
+        }
+        if (parsed.roleEmailsMap && typeof parsed.roleEmailsMap === 'object') {
+          ROLE_PROFILES.forEach(r => {
+            if (Array.isArray(parsed.roleEmailsMap[r.key])) {
+              r.emails = parsed.roleEmailsMap[r.key].map(em => String(em || '').trim().toLowerCase()).filter(Boolean);
+            }
+          });
+        }
+        if (typeof parsed.currentOrderSortMode === 'string') {
+          currentOrderSortMode = parsed.currentOrderSortMode;
+        }
+        expandedIdleOrderId = parsed.expandedIdleOrderId ?? null;
+        lastEndedShiftOrderId = parsed.lastEndedShiftOrderId ?? null;
+        if (Array.isArray(parsed.addedOrderTimestamps)) {
+          const cutoff = Date.now() - TWENTY_FOUR_HOURS_MS;
+          addedOrderTimestamps = parsed.addedOrderTimestamps
+            .map(ts => Number(ts) || 0)
+            .filter(ts => ts > cutoff);
+          addedOrdersCount = addedOrderTimestamps.length;
+        } else {
+          addedOrderTimestamps = [];
+          addedOrdersCount = 0;
+        }
+        return parsed.activeTab || 'emirler';
       } catch (e) {
         return false;
       }
     }
 
-    function clearStoredAppState() {
-      if (!isLocalStorageAvailable()) return;
-      try {
-        Object.values(STORAGE_KEYS).forEach(k => window.localStorage.removeItem(k));
-      } catch (e) {}
-    }
+    window.addEventListener('beforeunload', () => {
+      saveStateToStorage();
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        saveStateToStorage();
+      }
+    });
 
     function initApp() {
-      try {
-        const loaded = loadStateFromStorage();
-        if (!loaded) {
-          orders = JSON.parse(JSON.stringify(INITIAL_ORDERS)).map(ensureOrderDates);
-          notes = JSON.parse(JSON.stringify(INITIAL_NOTES));
-          addedOrderTimestamps = [];
-          addedOrdersCount = 0;
-          saveStateToStorage();
-        }
-        updateAddedOrdersBadge();
-        setInterval(updateAddedOrdersBadge, 60000);
-        normalizeOrderNumbers();
-        saveStateToStorage();
-        updateHeaderRoleUI();
-        applyLanguage(currentLang);
-      } catch (e) {
-        orders = JSON.parse(JSON.stringify(INITIAL_ORDERS));
-        notes = JSON.parse(JSON.stringify(INITIAL_NOTES));
-        renderOrders();
+      orders = JSON.parse(JSON.stringify(INITIAL_ORDERS)).map(ensureOrderDates);
+      notes = JSON.parse(JSON.stringify(INITIAL_NOTES));
+      const restoredTab = loadStateFromStorage();
+      normalizeOrderNumbers();
+      updateHeaderRoleUI();
+      updateAddedOrdersBadge();
+      applyTranslations();
+      renderOrders();
+      renderCompletedOrders();
+      renderNotes();
+      if (typeof restoredTab === 'string' && restoredTab !== 'emirler') {
+        switchTab(restoredTab);
+      } else {
+        switchTab('emirler');
       }
+      saveStateToStorage();
     }
 
-    window.addEventListener('pagehide', saveStateToStorage);
-    window.addEventListener('beforeunload', saveStateToStorage);
-
-    if (document.readyState === 'loading') {
-      window.addEventListener('DOMContentLoaded', initApp);
-    } else {
-      initApp();
-    }
+    initApp();
   </script>
 </body>
 </html>
