@@ -9,7 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script>
-    tailwind.config = {
+    window.tailwind = window.tailwind || {};
+    window.tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
@@ -27,7 +28,7 @@
           }
         }
       }
-    }
+    };
   </script>
   <style>
     body {
@@ -234,180 +235,107 @@
     }
     /* Bekleyen iş emirleri kompakt kart 3D yazı, rakam ve renk katmanları */
     #tab-emirler .pending-card-3d-idle {
-      background: linear-gradient(168deg, #FFFFFF 0%, #F6FAF8 54%, #D9E6DF 100%);
-      border: 1.5px solid #88A095;
-      border-bottom-width: 4px;
-      border-bottom-color: #475569;
-      box-shadow:
-        0 12px 22px -7px rgba(15, 23, 42, 0.24),
-        0 4px 8px -2px rgba(20, 108, 83, 0.16),
-        inset 0 1.5px 0 rgba(255, 255, 255, 1),
-        inset 0 -1.5px 0 rgba(120, 144, 134, 0.45);
+      background-color: #FFFFFF;
+      border: none;
+      transition: background-color 0.14s ease;
     }
     #tab-emirler .pending-card-3d-active {
-      background: linear-gradient(168deg, #FFFFFF 0%, #FFF7ED 54%, #FDE2C4 100%);
-      border: 1.5px solid #EA580C;
-      border-bottom-width: 4px;
-      border-bottom-color: #B45309;
-      box-shadow:
-        0 12px 22px -7px rgba(194, 65, 12, 0.28),
-        0 4px 8px -2px rgba(15, 23, 42, 0.14),
-        inset 0 1.5px 0 rgba(255, 255, 255, 1),
-        inset 0 -1.5px 0 rgba(234, 88, 12, 0.35);
+      background-color: #FDECE0;
+      border: none;
+      transition: background-color 0.14s ease;
     }
-    #tab-emirler .pending-title-3d {
-      color: #061021;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 1), 0 2px 3px rgba(15, 23, 42, 0.24), 0 0 1px rgba(15, 23, 42, 0.35);
+    #tab-emirler .pending-rows-stack {
+      background: #FFFFFF;
+      border: 1.5px solid #1E293B;
+      border-bottom-width: 3px;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px -4px rgba(15, 23, 42, 0.14);
     }
-    #tab-emirler .pending-desc-3d {
-      color: #1E293B;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.92), 0 1px 1.5px rgba(15, 23, 42, 0.14);
+    #tab-emirler .pending-row-divider + .pending-row-divider {
+      border-top: 1px solid #CBD5E1;
     }
-    #tab-emirler .pending-date-3d {
-      background: linear-gradient(180deg, #FFFFFF 0%, #E2E8F0 100%);
-      border: 1px solid #94A3B8;
-      border-bottom-width: 2px;
-      border-bottom-color: #64748B;
+    #tab-emirler .pending-coil-highlight {
+      display: block;
+      font-size: clamp(7.5px, 2.05vw, 9.5px);
+      line-height: 1.25;
+      font-weight: 800;
       color: #0F172A;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
-      box-shadow: 0 2px 4px -1px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      letter-spacing: -0.02em;
+      text-shadow: none;
+      white-space: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
     }
-    #tab-emirler .pending-metrics-3d {
-      background: linear-gradient(180deg, #FFFFFF 0%, #E2ECE7 100%);
-      border: 1.5px solid #88A095;
-      border-bottom-width: 2.5px;
-      border-bottom-color: #5C746A;
-      box-shadow: inset 0 1.5px 3px rgba(15, 23, 42, 0.1), inset 0 -1px 0 rgba(255, 255, 255, 0.95), 0 2px 4px -1px rgba(15, 23, 42, 0.12);
+    #tab-emirler .pending-coil-highlight::-webkit-scrollbar {
+      display: none;
     }
-    #tab-emirler .pending-label-3d {
-      color: #334155;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 1px 1px rgba(15, 23, 42, 0.14);
+    #tab-emirler .pending-article-sub {
+      display: block;
+      font-size: clamp(6.8px, 1.75vw, 8.5px);
+      line-height: 1.25;
+      font-weight: 500;
+      color: #475569;
+      letter-spacing: -0.015em;
+      white-space: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
     }
-    #tab-emirler .pending-num-order-3d {
-      color: #050D1A;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 1), 0 2px 3px rgba(15, 23, 42, 0.25);
-    }
-    #tab-emirler .pending-num-prod-3d {
-      color: #044E38;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 2px 3px rgba(4, 78, 56, 0.28);
-    }
-    #tab-emirler .pending-num-rem-warn-3d {
-      color: #9A3412;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 2px 3px rgba(154, 52, 18, 0.26);
-    }
-    #tab-emirler .pending-num-rem-neg-3d {
-      color: #991B1B;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 2px 3px rgba(153, 27, 27, 0.28);
+    #tab-emirler .pending-article-sub::-webkit-scrollbar {
+      display: none;
     }
     #tab-emirler .emirler-header-3d {
       color: #061021;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 2px 4px rgba(15, 23, 42, 0.18);
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 2px 3px rgba(15, 23, 42, 0.16);
+      letter-spacing: -0.03em;
     }
     #tab-emirler .emirler-sub-3d {
-      color: #334155;
+      color: #475569;
       text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
     }
     #tab-emirler .emirler-search-3d {
-      background: linear-gradient(180deg, #FFFFFF 0%, #EDF3F0 100%);
-      border: 1.5px solid #96ABA1;
-      border-bottom-width: 3px;
-      border-bottom-color: #6B8277;
-      box-shadow: 0 8px 16px -6px rgba(15, 23, 42, 0.18), inset 0 1px 0 rgba(255, 255, 255, 1);
+      background: linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%);
+      border: 1px solid #CBD5E1;
+      border-bottom-width: 2px;
+      border-bottom-color: #94A3B8;
+      box-shadow: 0 4px 10px -4px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.98);
     }
-    #tab-emirler .emirler-meta-3d {
-      color: #1E293B;
+    #tab-emirler .pending-label-3d {
+      color: #475569;
+      font-weight: 800;
       text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
     }
-    /* Emirler sekmesindeki sıra numarası rozetleri: ilgili iş emri kartının durumuna ve boyutuna uyumlu */
-    #tab-emirler .seq-square-3d {
-      min-width: 22px;
-      height: 15px;
-      padding: 0 3.5px;
-      border-radius: 4.5px;
-      background: #E2E8F0;
-      border: 1px solid #94A3B8;
+    #tab-emirler .pending-num-order-3d {
       color: #0F172A;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+      text-shadow: none;
     }
-    #tab-emirler .seq-square-3d-expanded {
-      min-width: 24px;
-      height: 18px;
-      padding: 0 5px;
-      border-radius: 6px;
+    #tab-emirler .pending-num-prod-3d {
+      color: #146C53;
+      font-weight: 800;
+      text-shadow: none;
     }
-    #tab-emirler .seq-square-3d-orange {
-      background: #FFEDD5;
-      border-color: #EA580C;
-      color: #7C2D12;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    #tab-emirler .pending-num-rem-warn-3d {
+      color: #C2590A;
+      font-weight: 800;
+      text-shadow: none;
     }
-    #tab-emirler .seq-square-3d-yellow {
-      background: #F1F5F9;
-      border-color: #94A3B8;
-      color: #1E293B;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    #tab-emirler .pending-num-rem-neg-3d {
+      color: #BE123C;
+      font-weight: 800;
+      text-shadow: none;
     }
-    #tab-emirler .seq-square-3d-running {
-      min-width: 24px;
-      height: 18px;
-      padding: 0 5px;
-      border-radius: 6px;
-      background: #A7F3D0;
-      border: 1px solid #059669;
-      color: #064E3B;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    #tab-tamamlanan .completed-coil-full {
+      display: block;
+      font-size: clamp(6.5px, 2vw, 9px);
+      line-height: 1.15;
+      font-weight: 900;
+      color: #061021;
+      letter-spacing: -0.025em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    #tab-emirler .seq-square-3d-running-ended {
-      min-width: 24px;
-      height: 18px;
-      padding: 0 5px;
-      border-radius: 6px;
-      background: #FECACA;
-      border: 1px solid #DC2626;
-      color: #7F1D1D;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
-    }
-    .order-card-3d-running {
-      background: linear-gradient(180deg, #ECFDF5 0%, #A7F3D0 100%);
-      border: 1.5px solid #059669;
-      border-bottom-width: 3px;
-      border-bottom-color: #047857;
-      box-shadow: 0 8px 18px -5px rgba(5, 150, 105, 0.28), 0 3px 6px -1px rgba(15, 23, 42, 0.09), inset 0 1px 0 rgba(255, 255, 255, 1);
-    }
-    .order-card-3d-running-alert {
-      background: linear-gradient(180deg, #FFF6F6 0%, #FDE8E8 100%);
-      border: 1.5px solid #EF4444;
-      border-bottom-width: 3px;
-      border-bottom-color: #DC2626;
-      box-shadow: 0 8px 18px -5px rgba(239, 68, 68, 0.24), 0 3px 6px -1px rgba(15, 23, 42, 0.09), inset 0 1px 0 rgba(255, 255, 255, 1);
-    }
-    .order-card-3d-paused {
-      background: linear-gradient(180deg, #FFFDF0 0%, #FEF6B8 100%);
-      border: 1.5px solid #FACC15;
-      border-bottom-width: 3px;
-      border-bottom-color: #EAB308;
-      box-shadow: 0 8px 18px -5px rgba(250, 204, 21, 0.2), 0 2px 5px -1px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.98);
-    }
-    .seq-square-3d {
-      width: 22px;
-      height: 15px;
-      padding: 0 2px;
-      border-radius: 4px;
-      background: #F1F5F9;
-      border: 1px solid #CBD5E1;
-      box-shadow: none;
-    }
-    .seq-square-3d-orange {
-      background: #FFEDD5;
-      border-color: #FDBA74;
-      box-shadow: none;
-    }
-    .seq-square-3d-yellow {
-      background: #FEF9C3;
-      border-color: #FDE047;
-      box-shadow: none;
-    }
-    /* Bitenler sayfası kartları: dikey olarak daraltılmış, kırmızı 3D çerçeve ve renk gölgeli */
     #tab-tamamlanan .completed-card {
       background: linear-gradient(168deg, #FFFFFF 0%, #FFF7F7 56%, #FEECEC 100%);
       border: 1.5px solid #EF4444;
@@ -553,32 +481,32 @@
 
     <!-- TAB 1: EMİRLER (ACTIVE WORK ORDERS) -->
     <section id="tab-emirler" class="space-y-3">
-      <div class="flex items-start justify-between gap-2 pt-0.5">
-        <div>
-          <h1 data-i18n="orders_title" class="text-2xl sm:text-[26px] leading-none font-extrabold emirler-header-3d tracking-tight app-section-title">Üretim Emirleri</h1>
-          <p data-i18n="orders_subtitle" class="text-xs font-medium emirler-sub-3d mt-1">Üretim emirlerini bulun ve üretim girdilerini güncelleyin.</p>
+      <div class="flex items-start justify-between gap-3 pt-1">
+        <div class="min-w-0">
+          <h1 data-i18n="orders_title" class="text-[22px] sm:text-2xl leading-tight font-extrabold emirler-header-3d app-section-title">Üretim Emirleri</h1>
+          <p data-i18n="orders_subtitle" class="text-xs font-medium emirler-sub-3d mt-0.5 truncate">Üretim emirlerini bulun ve üretim girdilerini güncelleyin.</p>
         </div>
         <div class="flex items-center gap-1.5 shrink-0">
-          <button id="newOrderMainBtn" type="button" onclick="openNewOrderModal()" class="inline-flex items-center gap-1 bg-gradient-to-b from-[#1A8466] to-[#146C53] hover:from-[#157258] hover:to-[#0F5C45] text-white font-extrabold text-xs px-3.5 py-2 rounded-2xl border border-[#0D4D3A] border-b-[3px] border-b-[#083629] shadow-[0_6px_14px_-4px_rgba(20,108,83,0.45),inset_0_1px_0_rgba(255,255,255,0.35)] active:scale-95 transition">
-            <span>+</span>
+          <button id="newOrderMainBtn" type="button" onclick="openNewOrderModal()" class="inline-flex items-center gap-1 bg-gradient-to-b from-[#187A5E] to-[#115E48] hover:from-[#146C53] hover:to-[#0D4E3B] border border-[#0D4E3B] border-b-[2.5px] border-b-[#08382A] text-white font-bold text-xs px-3 py-2 rounded-xl shadow-[0_6px_14px_-4px_rgba(20,108,83,0.45),inset_0_1px_0_rgba(255,255,255,0.3)] active:scale-95 transition">
+            <span class="text-sm leading-none">+</span>
             <span data-i18n="new_order_btn">Yeni emir</span>
           </button>
-          <span id="addedOrdersBadge" title="Eklenen yeni iş emri sayısı" class="hidden min-w-[22px] h-[22px] px-1.5 rounded-full bg-[#146C53] text-white text-[10px] font-extrabold items-center justify-center shadow-xs tabular-nums">0</span>
+          <span id="addedOrdersBadge" title="Eklenen yeni iş emri sayısı" class="hidden min-w-[22px] h-[22px] px-1.5 rounded-full bg-emerald-100 text-[#0F5C45] border border-emerald-400 text-[11px] font-black items-center justify-center tabular-nums shadow-2xs">0</span>
         </div>
       </div>
 
       <!-- Search Card -->
-      <div class="emirler-search-3d rounded-2xl p-3">
+      <div class="emirler-search-3d rounded-2xl p-2">
         <div class="relative">
-          <svg class="w-4 h-4 text-slate-500 ltr:left-3 rtl:right-3 top-1/2 -translate-y-1/2 absolute pointer-events-none" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 text-slate-400 ltr:left-3.5 rtl:right-3.5 top-1/2 -translate-y-1/2 absolute pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103.5 10.5a7.5 7.5 0 0013.15 6.15z"/>
           </svg>
           <input id="searchInput" type="search" enterkeyhint="search" oninput="renderOrders()" onkeydown="if(event.key==='Enter'){this.blur();renderOrders();}" data-i18n-placeholder="search_order_ph" placeholder="ARTIVE veya ARTICLE THERMOFM"
-            class="w-full ltr:pl-9 ltr:pr-3.5 rtl:pr-9 rtl:pl-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 placeholder-slate-400 shadow-[inset_0_1.5px_2px_rgba(15,23,42,0.06)] focus:outline-none focus:border-[#146C53]" />
+            class="w-full ltr:pl-10 ltr:pr-3.5 rtl:pr-10 rtl:pl-3.5 py-2 bg-white/95 border border-slate-200/90 rounded-xl text-xs font-semibold text-slate-900 placeholder-slate-400 shadow-inner focus:outline-none focus:border-[#146C53]" />
         </div>
       </div>
 
-      <div id="ordersList" class="space-y-2"></div>
+      <div id="ordersList" class="space-y-2.5"></div>
     </section>
 
     <!-- TAB 2: TAMAMLANAN İŞ EMİRLERİ -->
@@ -1398,8 +1326,7 @@
     }
 
     function formatArtiveHighlight(artiveText) {
-      const safe = escapeHtml(artiveText || '');
-      return safe.replace(/(\b\d{2,4}\s+\d{2,4}\b)/, '<span class="font-extrabold text-slate-900">$1</span>');
+      return escapeHtml(artiveText || '');
     }
 
     function showToast(msg) {
@@ -1599,15 +1526,18 @@
           </div>`;
 
         listEl.innerHTML = gmailHeaderBanner + ROLE_PROFILES.map(r => {
-          const active = r.key === draftRoleKey;
+          const isSelected = draftRoleKey === r.key;
           const emailList = Array.isArray(r.emails) ? r.emails : [];
           return `
-            <div onclick="selectDraftRole('${r.key}')" class="w-full p-3 rounded-2xl border text-left transition cursor-pointer space-y-2 ${active ? 'bg-emerald-50 border-[#146C53] ring-2 ring-[#146C53]/15' : 'bg-slate-50 border-slate-200 hover:bg-slate-100/70'}">
-              <div class="flex items-center justify-between gap-3">
+            <div onclick="selectDraftRole('${r.key}')" class="p-3 rounded-2xl border ${isSelected ? 'bg-emerald-50/80 border-[#146C53] ring-2 ring-emerald-500/20' : 'bg-slate-50/75 border-slate-200 hover:bg-white'} cursor-pointer transition space-y-2">
+              <div class="flex items-center justify-between gap-2">
                 <div class="min-w-0">
-                  <div class="text-xs font-extrabold text-slate-900">${r.label}</div>
-                  <div class="text-[11px] text-slate-500 mt-0.5">${r.desc}</div>
+                  <div class="text-xs font-extrabold text-slate-900">${escapeHtml(r.label)}</div>
+                  <div class="text-[10px] text-slate-500 truncate">${escapeHtml(r.desc)}</div>
                 </div>
+                <span class="w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ${isSelected ? 'border-[#146C53] bg-[#146C53] text-white' : 'border-slate-300 bg-white'} text-[9px] font-bold">
+                  ${isSelected ? '✓' : ''}
+                </span>
               </div>
               <div onclick="event.stopPropagation()" class="pt-1.5 border-t border-slate-200/80 space-y-1.5">
                 <div class="flex flex-wrap items-center gap-1.5">
@@ -1622,6 +1552,7 @@
                   <div class="flex gap-1.5">
                     <input id="gmailInput-${r.key}" type="email" placeholder="ornek@gmail.com" onkeydown="if(event.key==='Enter'){event.preventDefault();addRoleEmail('${r.key}');}"
                       class="flex-1 px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-[11px] font-medium text-slate-800" />
+                    <button type="button" onclick="addRoleEmail('${r.key}')" class="px-2.5 py-1 rounded-lg bg-[#146C53] text-white text-[10px] font-bold hover:bg-[#0F5C45] transition">Ekle</button>
                   </div>
                 ` : ''}
               </div>
@@ -3295,14 +3226,14 @@
       if (!container) return;
 
       const metaBarHtml = `
-        <div class="flex items-center justify-between gap-2 px-1 py-0.5 emirler-meta-3d">
-          <span id="orderCountLabel" class="text-xs font-extrabold text-slate-700">${t('orders_listed', filtered.length)}</span>
-          <div class="relative inline-flex items-center gap-1 shrink-0 text-slate-800 hover:text-[#146C53] transition">
-            <svg class="w-3.5 h-3.5 text-slate-700 shrink-0 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+        <div class="flex items-center justify-between gap-2 px-0.5 py-1">
+          <span id="orderCountLabel" class="text-xs font-extrabold emirler-header-3d">${t('orders_listed', filtered.length)}</span>
+          <div class="relative inline-flex items-center gap-1 shrink-0 text-slate-800">
+            <svg class="w-3.5 h-3.5 text-slate-700 shrink-0 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
             </svg>
             <select aria-label="${t('sort_label')}" onchange="setOrderSortMode(this.value)"
-              class="appearance-none bg-transparent border-0 p-0 pr-0.5 text-[11px] font-extrabold text-slate-800 cursor-pointer focus:outline-none focus:ring-0" style="background-image: none;">
+              class="appearance-none bg-transparent border-0 p-0 text-xs font-extrabold emirler-header-3d cursor-pointer focus:outline-none focus:ring-0" style="background-image: none;">
               <option value="DEFAULT" ${currentOrderSortMode === 'DEFAULT' ? 'selected' : ''}>${t('sort_label')}</option>
               <option value="BY_STATUS" ${currentOrderSortMode === 'BY_STATUS' ? 'selected' : ''}>${t('sort_by_status')}</option>
               <option value="BY_COLOR" ${currentOrderSortMode === 'BY_COLOR' ? 'selected' : ''}>${t('sort_by_color')}</option>
@@ -3321,6 +3252,9 @@
       const renderOrderCard = (o) => {
         const prod = getProd(o);
         const rest = getRest(o);
+        const orderCellText = (Number(o.ton) || 0) === 0 ? '-' : fmt(o.ton);
+        const prodCellText = prod === 0 ? '-' : fmt(prod);
+        const remCellText = prod === 0 && (Number(o.ton) || 0) === 0 ? '-' : fmt(rest);
         const wStatus = getWorkStatus(o);
         const isRunning = wStatus === 'RUNNING';
         const activeOpName = getActiveOperatorName(o);
@@ -3335,21 +3269,25 @@
           : (hasProduction ? 'order-card-3d-orange' : 'order-card-3d-yellow');
         const pendingCompactCardClass = hasProduction ? 'pending-card-3d-active' : 'pending-card-3d-idle';
         const seqBoxClass = isRunning
-          ? (isRunningShiftEnded ? 'seq-square-3d seq-square-3d-running-ended' : 'seq-square-3d seq-square-3d-running')
-          : (hasProduction ? 'seq-square-3d seq-square-3d-orange' : 'seq-square-3d seq-square-3d-yellow');
+          ? (isRunningShiftEnded
+              ? 'w-6 h-6 rounded-lg bg-gradient-to-b from-rose-200 to-rose-300 border border-rose-600 border-b-2 border-b-rose-800 text-rose-950 shadow-2xs'
+              : 'w-6 h-6 rounded-lg bg-gradient-to-b from-emerald-200 to-emerald-300 border border-emerald-600 border-b-2 border-b-emerald-800 text-emerald-950 shadow-2xs')
+          : (hasProduction
+              ? 'w-6 h-6 rounded-lg bg-gradient-to-b from-slate-200 to-slate-300 border border-slate-400 border-b-2 border-b-slate-600 text-slate-900 shadow-2xs'
+              : 'w-6 h-6 rounded-lg bg-gradient-to-b from-slate-200 to-slate-300 border border-slate-400 border-b-2 border-b-slate-600 text-slate-900 shadow-2xs');
         const dateBoxClass = isRunning
           ? (isRunningShiftEnded
-              ? 'bg-rose-100/95 border-rose-500/65 text-rose-950'
-              : 'bg-emerald-100/95 border-emerald-600/60 text-emerald-950')
-          : (hasProduction ? 'bg-slate-200/80 border-slate-500/45 text-slate-800' : 'bg-slate-100/95 border-slate-400/50 text-slate-800');
+              ? 'bg-white/95 border-rose-500/80 text-rose-950 shadow-2xs'
+              : 'bg-white/95 border-emerald-600/75 text-emerald-950 shadow-2xs')
+          : 'bg-white/95 border-slate-400/80 text-slate-900 shadow-2xs';
         const metricBoxClass = isRunning
           ? (isRunningShiftEnded
-              ? 'bg-rose-950/[0.05] border-rose-500/35'
-              : 'bg-emerald-950/[0.05] border-emerald-600/35')
-          : (hasProduction ? 'bg-white/75 border-slate-300/90' : 'bg-white/75 border-slate-300/90');
+              ? 'bg-white/90 border-rose-400/70'
+              : 'bg-white/90 border-emerald-500/65')
+          : 'bg-white/90 border-slate-300/90';
         const dotColorClass = isRunning
           ? (isRunningShiftEnded ? 'bg-rose-600' : 'bg-emerald-700')
-          : (hasProduction ? 'bg-orange-500' : 'bg-slate-500');
+          : (hasProduction ? 'bg-orange-500' : 'bg-slate-600');
         const rawLastAction = String(o.lastActionDateTime || '').trim();
         const lastActionDateMatch = rawLastAction.match(/^(\d{2}\.\d{2}\.\d{4})/);
         const topDateStr = escapeHtml(
@@ -3359,6 +3297,10 @@
 
         if (isCompactListItem && !isExpanded) {
           const remNum3dClass = rest < 0 ? 'pending-num-rem-neg-3d' : 'pending-num-rem-warn-3d';
+          const seqPillClass = hasProduction
+            ? 'bg-[#FADAC4] border-[#E0A782] text-[#7C3409]'
+            : 'bg-[#EEF2F7] border-[#CBD5E1] text-[#1E293B]';
+          const rowCellBorderClass = hasProduction ? 'border-[#E6C7B2]' : 'border-[#DCE2EB]';
           return `
           <div data-order-card-id="${o.id}"
             draggable="${canDragCard ? 'true' : 'false'}"
@@ -3368,26 +3310,30 @@
             ondrop="handleOrderDrop(event, ${o.id})"
             ondragend="handleOrderDragEnd(event)"
             onclick="toggleIdleOrderDetailView(event, ${o.id})"
-            class="rounded-2xl px-3 py-2 ${pendingCompactCardClass} cursor-pointer active:scale-[0.99] transition space-y-1.5">
-            <div class="flex items-center gap-1.5 w-full min-w-0">
-              <span class="w-1.5 h-1.5 rounded-full ${dotColorClass} shrink-0 shadow-2xs"></span>
-              <span class="text-[11.5px] leading-[1.25] font-extrabold pending-title-3d tracking-[-0.02em] whitespace-nowrap overflow-hidden text-ellipsis w-full min-w-0 block">${formatArtiveHighlight(o.artive)}</span>
-            </div>
-
-            <p class="text-[9.5px] leading-[1.3] font-semibold pending-desc-3d line-clamp-1 ltr:pl-[13px] rtl:pr-[13px]">${escapeHtml(o.article)}</p>
-
-            <div class="grid grid-cols-3 pending-metrics-3d rounded-xl py-1 px-1.5 text-center tabular-nums">
-              <div class="flex items-center justify-center gap-1 min-w-0">
-                <span class="text-[7.5px] font-extrabold pending-label-3d leading-none tracking-tight uppercase shrink-0">${t('metric_order')}:</span>
-                <span class="text-[10.5px] font-black pending-num-order-3d leading-none truncate">${fmt(o.ton)}</span>
+            class="pending-row-divider rounded-none p-0 ${pendingCompactCardClass} hover:brightness-[0.985] cursor-pointer transition">
+            <div class="flex items-stretch w-full min-w-0">
+              <div class="w-[30px] sm:w-[36px] shrink-0 flex items-center justify-center py-2 px-0.5 ltr:border-r rtl:border-l ${rowCellBorderClass}">
+                <span class="inline-flex items-center justify-center min-w-[22px] h-[19px] px-1 rounded-md border text-[8px] font-extrabold tabular-nums ${seqPillClass}">#${o.orderNo}</span>
               </div>
-              <div class="border-x border-slate-400/50 flex items-center justify-center gap-1 min-w-0">
-                <span class="text-[7.5px] font-extrabold pending-label-3d leading-none tracking-tight uppercase shrink-0">${t('metric_prod')}:</span>
-                <span class="text-[10.5px] font-black pending-num-prod-3d leading-none truncate">${fmt(prod)}</span>
+
+              <div class="flex items-center gap-1.5 flex-1 min-w-0 py-1.5 px-1.5">
+                <span class="w-1.5 h-1.5 rounded-full ${dotColorClass} shrink-0"></span>
+                <div class="min-w-0 flex-1">
+                  <span class="pending-coil-highlight">${formatArtiveHighlight(o.artive)}</span>
+                  <span class="pending-article-sub mt-0.5">${escapeHtml(o.article)}</span>
+                </div>
               </div>
-              <div class="flex items-center justify-center gap-1 min-w-0">
-                <span class="text-[7.5px] font-extrabold pending-label-3d leading-none tracking-tight uppercase shrink-0">${t('metric_rem')}:</span>
-                <span class="text-[10.5px] font-black ${remNum3dClass} leading-none truncate">${fmt(rest)}</span>
+
+              <div class="grid grid-cols-3 shrink-0 w-[108px] sm:w-[132px] tabular-nums">
+                <div class="py-1.5 px-0.5 flex items-center justify-center leading-none ltr:border-l rtl:border-r ${rowCellBorderClass} min-w-0">
+                  <span class="text-[7px] sm:text-[8.5px] tracking-tighter pending-num-order-3d whitespace-nowrap">${orderCellText}</span>
+                </div>
+                <div class="py-1.5 px-0.5 flex items-center justify-center leading-none ltr:border-l rtl:border-r ${rowCellBorderClass} min-w-0">
+                  <span class="text-[7px] sm:text-[8.5px] tracking-tighter pending-num-prod-3d whitespace-nowrap">${prodCellText}</span>
+                </div>
+                <div class="py-1.5 px-0.5 flex items-center justify-center leading-none ltr:border-l rtl:border-r ${rowCellBorderClass} min-w-0">
+                  <span class="text-[7px] sm:text-[8.5px] tracking-tighter ${remNum3dClass} whitespace-nowrap">${remCellText}</span>
+                </div>
               </div>
             </div>
           </div>`;
@@ -3402,41 +3348,41 @@
           ondrop="handleOrderDrop(event, ${o.id})"
           ondragend="handleOrderDragEnd(event)"
           onclick="${isExpanded ? `toggleIdleOrderDetailView(event, ${o.id})` : ''}"
-          class="rounded-2xl p-3 ${cardHighlight} ${isExpanded ? 'cursor-pointer ring-2 ring-slate-500/60' : ''} transition space-y-2">
+          class="rounded-2xl p-3 ${cardHighlight} ${isExpanded ? 'cursor-pointer ring-2 ring-slate-400/70' : ''} transition space-y-2">
           <div class="flex items-center justify-between gap-2">
             <div class="flex items-center gap-1.5 shrink-0">
-              <div onclick="event.stopPropagation()" class="inline-flex items-center justify-center shrink-0 ${seqBoxClass} seq-square-3d-expanded" title="Sıra numarasını değiştirin">
+              <div onclick="event.stopPropagation()" class="inline-flex items-center justify-center shrink-0 ${seqBoxClass}" title="Sıra numarasını değiştirin">
                 <input type="number" inputmode="numeric" min="1" value="${o.orderNo}"
                   onchange="updateOrderNumberInline(${o.id}, this.value)"
                   onkeydown="if(event.key==='Enter'){this.blur();}"
-                  class="w-full h-full bg-transparent text-inherit text-[9.5px] font-black text-center leading-none tabular-nums rounded outline-none" />
+                  class="w-full h-full bg-transparent text-inherit text-[10px] font-black text-center leading-none tabular-nums rounded outline-none" />
               </div>
             </div>
-            ${showExpandedCardDate ? `<span class="inline-flex items-center justify-center shrink-0 h-[18px] px-2 rounded-md border text-[8.5px] leading-none font-bold tabular-nums text-center ${dateBoxClass}">${topDateStr}</span>` : ''}
+            ${showExpandedCardDate ? `<span class="inline-flex items-center justify-center shrink-0 h-[22px] px-2.5 rounded-lg border text-[10px] leading-none font-extrabold tabular-nums text-center ${dateBoxClass}">${topDateStr}</span>` : ''}
             ${renderWorkStatusButton(o)}
           </div>
 
           <div class="space-y-2">
             <div>
-              <p class="text-xs font-semibold text-slate-800 flex flex-wrap items-center gap-1">
-                <span class="w-1.5 h-1.5 rounded-full ${dotColorClass}"></span>
+              <p class="text-xs font-extrabold text-slate-950 flex flex-wrap items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full ${dotColorClass} shrink-0"></span>
                 <span>${formatArtiveHighlight(o.artive)}</span>
               </p>
-              <h3 class="text-[9.5px] leading-tight font-medium text-slate-500 mt-0.5">${escapeHtml(o.article)}</h3>
+              <h3 class="text-[10.5px] leading-snug font-medium text-slate-700 mt-0.5">${escapeHtml(o.article)}</h3>
             </div>
 
-            <div class="grid grid-cols-3 ${metricBoxClass} border rounded-2xl py-2.5 px-2 text-center shadow-2xs tabular-nums">
+            <div class="grid grid-cols-3 ${metricBoxClass} border rounded-xl py-2 px-2 text-center shadow-2xs tabular-nums">
               <div>
-                <div class="text-[10px] font-extrabold pending-label-3d leading-none tracking-wide">${t('metric_order')}</div>
-                <div class="text-xs sm:text-sm font-black pending-num-order-3d leading-tight mt-1">${fmt(o.ton)}</div>
+                <div class="text-[9.5px] pending-label-3d leading-none tracking-wide">${t('metric_order')}</div>
+                <div class="text-xs sm:text-sm pending-num-order-3d leading-tight mt-0.5">${fmt(o.ton)}</div>
               </div>
-              <div class="border-x border-slate-400/45">
-                <div class="text-[10px] font-extrabold pending-label-3d leading-none tracking-wide">${t('metric_prod')}</div>
-                <div class="text-xs sm:text-sm font-black pending-num-prod-3d leading-tight mt-1">${fmt(prod)}</div>
+              <div class="border-x border-slate-300/90">
+                <div class="text-[9.5px] pending-label-3d leading-none tracking-wide">${t('metric_prod')}</div>
+                <div class="text-xs sm:text-sm pending-num-prod-3d leading-tight mt-0.5">${fmt(prod)}</div>
               </div>
               <div>
-                <div class="text-[10px] font-extrabold pending-label-3d leading-none tracking-wide">${t('metric_rem')}</div>
-                <div class="text-xs sm:text-sm font-black ${rest < 0 ? 'pending-num-rem-neg-3d' : 'pending-num-rem-warn-3d'} leading-tight mt-1">${fmt(rest)}</div>
+                <div class="text-[9.5px] pending-label-3d leading-none tracking-wide">${t('metric_rem')}</div>
+                <div class="text-xs sm:text-sm ${rest < 0 ? 'pending-num-rem-neg-3d' : 'pending-num-rem-warn-3d'} leading-tight mt-0.5">${fmt(rest)}</div>
               </div>
             </div>
           </div>
@@ -3452,8 +3398,21 @@
         .map(renderOrderCard)
         .join('');
 
+      const excelHeaderRowHtml = remainingCardsHtml
+        ? `
+          <div class="flex items-stretch bg-[#DDE4EE] border-b border-[#B8C4D4] text-[7.5px] font-extrabold uppercase tracking-tight text-slate-800 tabular-nums select-none">
+            <div class="w-[30px] sm:w-[36px] shrink-0 py-1.5 px-0.5 flex items-center justify-center ltr:border-r rtl:border-l border-[#C5CFDDF0]">#</div>
+            <div class="flex-1 min-w-0 py-1.5 px-1.5 flex items-center truncate">ARTIVE / ARTICLE</div>
+            <div class="grid grid-cols-3 shrink-0 w-[108px] sm:w-[132px] text-center">
+              <span class="py-1.5 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-[#C5CFDDF0] truncate">${escapeHtml(t('metric_order'))}</span>
+              <span class="py-1.5 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-[#C5CFDDF0] truncate">${escapeHtml(t('metric_prod'))}</span>
+              <span class="py-1.5 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-[#C5CFDDF0] truncate">${escapeHtml(t('metric_rem'))}</span>
+            </div>
+          </div>`
+        : '';
+
       const remainingGroupHtml = remainingCardsHtml
-        ? `<div class="space-y-2">${remainingCardsHtml}</div>`
+        ? `<div class="pending-rows-stack">${excelHeaderRowHtml}${remainingCardsHtml}</div>`
         : '';
 
       container.innerHTML = runningCardsHtml + metaBarHtml + endedOrderCardHtml + remainingGroupHtml;
@@ -3485,32 +3444,38 @@
     function toggleCompletedOrderExpand(event, id) {
       if (event) event.stopPropagation();
       openCompletedMenuId = null;
-      expandedCompletedOrderId = null;
-      const target = orders.find(o => o.id === id);
-      if (target) {
-        target.lastActionDateTime = formatDateTimeNow();
-        saveStateToStorage();
-      }
-      const cardEl = (event && event.currentTarget && event.currentTarget.closest('[data-completed-card-id]'))
-        || document.querySelector(`[data-completed-card-id="${id}"]`);
-      openEditModal(id, { sourceCardEl: cardEl, fromPendingOrder: true });
+      expandedCompletedOrderId = expandedCompletedOrderId === id ? null : id;
+      renderCompletedOrders();
     }
 
     function restartCompletedOrderAsRunning(event, id) {
       if (event) event.stopPropagation();
-      if (!guardAction('START_STOP_ORDER')) {
-        openCompletedMenuId = null;
-        renderCompletedOrders();
-        return;
-      }
       openCompletedMenuId = null;
-      const idx = orders.findIndex(x => x.id === id);
+      const idx = orders.findIndex(o => o.id === id);
       if (idx === -1) return;
 
       const defaultOp = getShiftPickerOperator(orders[idx]);
-      orders.forEach(item => {
-        if (item.id !== id && !item.closed && item.workStatus === 'RUNNING') {
-          item.workStatus = 'PAUSED';
+      if (!canStartShiftForOperator(defaultOp)) {
+        const gmailOp = getGmailMatchedOperator();
+        showToast(gmailOp
+          ? `Gmail eşleşmeniz (${gmailOp}) yalnızca kendi vardiyanızı başlatmanıza izin verir`
+          : 'Bu Gmail hesabı için operatör vardiya yetkisi bulunmuyor');
+        renderCompletedOrders();
+        return;
+      }
+
+      const activeRunningOrder = getCurrentlyRunningOrder(id);
+      if (activeRunningOrder) {
+        showToast(t('active_order_running_warning', activeRunningOrder.orderNo || activeRunningOrder.id));
+        renderCompletedOrders();
+        return;
+      }
+
+      orders.forEach((o, i) => {
+        if (i !== idx && !o.closed && getWorkStatus(o) === 'RUNNING') {
+          o.workStatus = 'PAUSED';
+          o.shiftActive = false;
+          o.activeOperator = null;
         }
       });
 
@@ -3603,69 +3568,69 @@
         const rest = getRest(o);
         const isExpanded = expandedCompletedOrderId === o.id;
         const isMenuOpen = openCompletedMenuId === o.id;
-        const statusTone = rest < 0
-          ? {
-              card: 'completed-card',
-              dot: 'bg-red-600',
-              rem: 'text-red-700',
-              pill: 'bg-red-100/90 text-red-800 border-red-300',
-              badge: 'bg-red-50 text-red-700 border-red-200'
-            }
-          : {
-              card: 'completed-card',
-              dot: 'bg-red-600',
-              rem: 'text-amber-700',
-              pill: 'bg-amber-50 text-amber-800 border-amber-200',
-              badge: 'bg-red-50 text-red-700 border-red-200'
-            };
+        const remToneClass = rest < 0 ? 'text-rose-700' : 'text-amber-700';
 
         return `
           <div data-completed-card-id="${o.id}" onclick="toggleCompletedOrderExpand(event, ${o.id})"
-            class="rounded-xl px-2.5 py-1.5 ${statusTone.card} active:scale-[0.995] transition cursor-pointer ${isExpanded ? 'space-y-1.5 ring-2 ring-red-500/35' : 'space-y-1'}">
-            <div class="flex items-start justify-between gap-1.5">
-              <div class="min-w-0 flex-1">
-                <p class="text-[10.5px] leading-[1.2] font-bold text-slate-900 flex items-start gap-1.5">
-                  <span class="w-1.5 h-1.5 rounded-full ${statusTone.dot} shrink-0 mt-1"></span>
-                  <span class="${isExpanded ? '' : 'truncate block'}">${formatArtiveHighlight(o.artive)}</span>
-                </p>
-                <h3 class="text-[9px] leading-[1.15] font-medium text-slate-500 mt-0.5 ltr:pl-3 rtl:pr-3 ${isExpanded ? '' : 'truncate'}">${escapeHtml(o.article)}</h3>
+            class="completed-excel-row px-1.5 py-1 bg-white hover:bg-rose-50/35 active:bg-rose-50/60 transition cursor-pointer ${isExpanded ? 'bg-rose-50/45 space-y-1.5' : ''}">
+            <div class="flex items-center justify-between gap-1 w-full min-w-0">
+              <div class="flex items-center gap-1 flex-1 min-w-0">
+                <span class="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0"></span>
+                <span class="completed-coil-full flex-1 min-w-0">${formatArtiveHighlight(o.artive)}</span>
               </div>
 
-              <div onclick="event.stopPropagation()" class="relative shrink-0">
-                <button type="button" onclick="toggleCompletedMenu(event, ${o.id})" aria-label="İşlem Menüsü"
-                  class="inline-flex items-center justify-center w-5 h-5 rounded-md bg-white/95 hover:bg-white border border-red-200 text-slate-600 hover:text-red-700 shadow-2xs active:scale-95 transition">
-                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 6a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0 5.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0 5.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/>
-                  </svg>
-                </button>
-                ${isMenuOpen ? `
-                  <div class="absolute ltr:right-0 rtl:left-0 top-full mt-1 z-30 w-36 bg-white rounded-xl shadow-xl border border-slate-200 p-1">
-                    <button type="button" onclick="restartCompletedOrderAsRunning(event, ${o.id})"
-                      class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-emerald-700 hover:bg-emerald-50 transition ltr:text-left rtl:text-right">
-                      <span>${t('reopen_order_btn')}</span>
-                    </button>
+              <div class="flex items-center gap-1 shrink-0">
+                <div class="grid grid-cols-3 w-[112px] sm:w-[132px] border border-slate-300 rounded overflow-hidden text-center tabular-nums bg-slate-50/75">
+                  <div class="py-0.5 px-0.5 flex flex-col items-center justify-center leading-none ltr:border-r rtl:border-l border-slate-300 min-w-0">
+                    <span class="text-[5.5px] font-extrabold text-slate-500 uppercase tracking-tight">${t('metric_order')}</span>
+                    <span class="text-[8px] font-black text-slate-900 mt-0.5 truncate w-full">${fmt(o.ton)}</span>
                   </div>
-                ` : ''}
+                  <div class="py-0.5 px-0.5 flex flex-col items-center justify-center leading-none ltr:border-r rtl:border-l border-slate-300 bg-emerald-50/45 min-w-0">
+                    <span class="text-[5.5px] font-extrabold text-slate-500 uppercase tracking-tight">${t('metric_prod')}</span>
+                    <span class="text-[8px] font-black text-[#146C53] mt-0.5 truncate w-full">${fmt(prod)}</span>
+                  </div>
+                  <div class="py-0.5 px-0.5 flex flex-col items-center justify-center leading-none bg-amber-50/45 min-w-0">
+                    <span class="text-[5.5px] font-extrabold text-slate-500 uppercase tracking-tight">${t('metric_rem')}</span>
+                    <span class="text-[8px] font-black ${remToneClass} mt-0.5 truncate w-full">${fmt(rest)}</span>
+                  </div>
+                </div>
+
+                <div onclick="event.stopPropagation()" class="relative shrink-0">
+                  <button type="button" onclick="toggleCompletedMenu(event, ${o.id})" aria-label="İşlem Menüsü"
+                    class="inline-flex items-center justify-center w-4 h-4 rounded bg-slate-100 hover:bg-red-50 border border-slate-300 text-slate-600 hover:text-red-700 active:scale-95 transition">
+                    <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M10 6a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0 5.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0 5.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/>
+                    </svg>
+                  </button>
+                  ${isMenuOpen ? `
+                    <div class="absolute ltr:right-0 rtl:left-0 top-full mt-1 z-30 w-36 bg-white rounded-xl shadow-xl border border-slate-200 p-1">
+                      <button type="button" onclick="restartCompletedOrderAsRunning(event, ${o.id})"
+                        class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-emerald-700 hover:bg-emerald-50 transition ltr:text-left rtl:text-right">
+                        <span>${t('reopen_order_btn')}</span>
+                      </button>
+                    </div>
+                  ` : ''}
+                </div>
               </div>
             </div>
 
-            <div class="grid grid-cols-3 completed-card-metrics-3d rounded-lg py-1 px-1.5 text-center tabular-nums">
-              <div class="flex items-center justify-center gap-1 min-w-0">
-                <span class="text-[7.5px] font-extrabold text-slate-500 leading-none uppercase shrink-0">${t('metric_order')}:</span>
-                <span class="text-[10px] font-black text-slate-900 leading-none truncate">${fmt(o.ton)}</span>
+            <div class="grid grid-cols-3 border border-slate-300 rounded overflow-hidden text-center tabular-nums bg-slate-50/70">
+              <div class="py-0.5 px-1 flex flex-col items-center justify-center leading-none ltr:border-r rtl:border-l border-slate-300 min-w-0">
+                <span class="text-[6px] font-extrabold text-slate-500 uppercase tracking-tight">${t('metric_order')}</span>
+                <span class="text-[8.5px] font-black text-slate-900 mt-0.5 truncate w-full">${fmt(o.ton)}</span>
               </div>
-              <div class="border-x border-red-200/90 flex items-center justify-center gap-1 min-w-0">
-                <span class="text-[7.5px] font-extrabold text-slate-500 leading-none uppercase shrink-0">${t('metric_prod')}:</span>
-                <span class="text-[10px] font-black text-[#146C53] leading-none truncate">${fmt(prod)}</span>
+              <div class="py-0.5 px-1 flex flex-col items-center justify-center leading-none ltr:border-r rtl:border-l border-slate-300 bg-emerald-50/45 min-w-0">
+                <span class="text-[6px] font-extrabold text-slate-500 uppercase tracking-tight">${t('metric_prod')}</span>
+                <span class="text-[8.5px] font-black text-[#146C53] mt-0.5 truncate w-full">${fmt(prod)}</span>
               </div>
-              <div class="flex items-center justify-center gap-1 min-w-0">
-                <span class="text-[7.5px] font-extrabold text-slate-500 leading-none uppercase shrink-0">${t('metric_rem')}:</span>
-                <span class="text-[10px] font-black ${statusTone.rem} leading-none truncate">${fmt(rest)}</span>
+              <div class="py-0.5 px-1 flex flex-col items-center justify-center leading-none bg-amber-50/45 min-w-0">
+                <span class="text-[6px] font-extrabold text-slate-500 uppercase tracking-tight">${t('metric_rem')}</span>
+                <span class="text-[8.5px] font-black ${remToneClass} mt-0.5 truncate w-full">${fmt(rest)}</span>
               </div>
             </div>
 
             ${isExpanded ? `
-              <div class="pt-1 border-t border-red-200/80 space-y-1 text-[9.5px]">
+              <div class="pt-1 border-t border-slate-200 space-y-1 text-[9.5px]">
                 <div class="flex items-center justify-between text-slate-600">
                   <span>${t('created_date_label')}: <strong class="text-slate-800">${escapeHtml(o.createdDate || o.period || '-')}</strong></span>
                   <span>${t('completed_date_label')}: <strong class="text-slate-800">${escapeHtml(formatCompletedDateTimeLabel(o))}</strong></span>
@@ -3721,7 +3686,7 @@
               </div>
               <span class="text-[9px] font-extrabold text-[#146C53] tabular-nums shrink-0">${fmt(groupProdKg)} KG</span>
             </div>
-            <div class="space-y-1">
+            <div class="completed-excel-sheet">
               ${group.items.map(renderSingleCompletedCard).join('')}
             </div>
           </div>`;
@@ -3881,97 +3846,65 @@
 
         const opHeaders = [
           { label: 'İSA', shortLabel: 'İSA', dot: 'bg-blue-600', text: 'text-blue-700', headerBg: 'bg-blue-50/55', totalText: 'text-blue-300' },
-          { label: 'MUHİDDİN', shortLabel: 'MUH.', dot: 'bg-[#146C53]', text: 'text-[#146C53]', headerBg: 'bg-emerald-50/45', totalText: 'text-emerald-300' },
+          { label: 'MUHİDDİN', shortLabel: 'MUH.', dot: 'bg-[#146C53]', text: 'text-[#146C53]', headerBg: 'bg-emerald-50/55', totalText: 'text-emerald-300' },
           { label: 'KADDUR', shortLabel: 'KAD.', dot: 'bg-amber-500', text: 'text-amber-700', headerBg: 'bg-amber-50/55', totalText: 'text-amber-300' },
           { label: 'MUHAMMED', shortLabel: 'MUH.M', dot: 'bg-purple-600', text: 'text-purple-700', headerBg: 'bg-purple-50/55', totalText: 'text-purple-300' }
         ];
 
-        const formatCellKg = (val) => (val > 0 ? fmt(val) : '—');
+        const formatCompactKg = (val) => {
+          const num = Number(val) || 0;
+          if (num <= 0) return '0';
+          return fmt(num);
+        };
 
         unifiedTableEl.innerHTML = `
-          <div class="w-full max-w-full bg-white border border-[#BFD0C8] rounded-lg overflow-hidden shadow-[0_3px_10px_-6px_rgba(15,23,42,0.14)]">
-            <table class="w-full max-w-full table-fixed border-collapse tabular-nums text-center">
-              <colgroup>
-                <col class="w-[14%]" />
-                <col class="w-[17.2%]" />
-                <col class="w-[17.2%]" />
-                <col class="w-[17.2%]" />
-                <col class="w-[17.2%]" />
-                <col class="w-[17.2%]" />
-              </colgroup>
+          <div class="w-full min-w-0 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-2xs">
+            <table class="w-full table-fixed border-collapse text-[8px] leading-[1.15] tabular-nums">
               <thead>
-                <tr class="bg-gradient-to-b from-[#F4F8F6] to-[#E8F0EC] border-b border-[#C6D5CD] text-[7.5px] font-extrabold tracking-tighter leading-none">
-                  <th class="py-[3.5px] px-0.5 text-center text-slate-800 border-r border-[#C6D5CD]">
-                    <span class="block truncate">${escapeHtml(t('col_month'))}</span>
+                <tr class="bg-slate-100/95 border-b border-slate-200">
+                  <th class="w-[15%] py-1 px-0.5 text-center font-extrabold text-slate-700 ltr:border-r rtl:border-l border-slate-200">
+                    <span class="truncate block">${escapeHtml(t('col_month'))}</span>
                   </th>
-                  <th class="py-[3.5px] px-0.5 text-center text-[#0F5C45] bg-emerald-100/75 border-x border-[#B6C9C0]">
-                    <span class="block truncate">${escapeHtml(t('col_total_short'))}</span>
+                  <th class="w-[17%] py-1 px-0.5 text-center font-extrabold text-slate-900 bg-emerald-50/60 ltr:border-r rtl:border-l border-slate-200">
+                    <span class="truncate block">${escapeHtml(t('col_total_short'))}</span>
                   </th>
-                  ${opHeaders.map((op, opIdx) => `
-                    <th class="py-[3.5px] px-0.5 text-center ${op.text} ${op.headerBg} ${opIdx < opHeaders.length - 1 ? 'border-r border-slate-200/90' : ''}" title="${op.label}">
-                      <span class="inline-flex items-center justify-center gap-0.5 max-w-full">
+                  ${opHeaders.map((op, i) => `
+                    <th class="w-[17%] py-1 px-0.5 text-center font-extrabold ${op.text} ${op.headerBg} ${i < opHeaders.length - 1 ? 'ltr:border-r rtl:border-l border-slate-200/80' : ''}">
+                      <span class="inline-flex items-center justify-center gap-0.5 max-w-full" title="${escapeHtml(op.label)}">
                         <span class="w-1 h-1 rounded-full ${op.dot} shrink-0"></span>
-                        <span class="truncate">${op.shortLabel}</span>
+                        <span class="truncate">${escapeHtml(op.shortLabel)}</span>
                       </span>
                     </th>
                   `).join('')}
                 </tr>
               </thead>
-              <tbody class="text-[7.5px] leading-none divide-y divide-slate-200/70">
-                ${monthlyStats.map((m, idx) => {
+              <tbody class="divide-y divide-slate-100">
+                ${monthlyStats.map(m => {
                   const hasProd = m.total > 0;
-                  const rowBg = hasProd
-                    ? 'bg-emerald-50/45 hover:bg-emerald-50/80'
-                    : (idx % 2 === 1 ? 'bg-slate-50/55 hover:bg-slate-100/60' : 'bg-white hover:bg-slate-50/80');
-
+                  const cells = [
+                    { val: m.isa, cls: m.isa > 0 ? 'text-slate-900 font-bold' : 'text-slate-300 font-medium' },
+                    { val: m.muhiddin, cls: m.muhiddin > 0 ? 'text-slate-900 font-bold' : 'text-slate-300 font-medium' },
+                    { val: m.kaddur, cls: m.kaddur > 0 ? 'text-slate-900 font-bold' : 'text-slate-300 font-medium' },
+                    { val: m.muhammed, cls: m.muhammed > 0 ? 'text-slate-900 font-bold' : 'text-slate-300 font-medium' }
+                  ];
                   return `
-                    <tr class="${rowBg} transition-colors">
-                      <td class="py-[2.5px] px-0.5 text-center border-r border-[#D3DFD9] ${hasProd ? 'bg-[#F0F7F3]/70' : 'bg-slate-50/40'}">
-                        <div class="inline-flex items-center justify-center gap-0.5 max-w-full">
-                          <span class="w-1 h-1 rounded-full shrink-0 ${hasProd ? 'bg-[#146C53]' : 'bg-slate-300'}"></span>
-                          <span class="font-bold truncate ${hasProd ? 'text-slate-700' : 'text-slate-500'}">${escapeHtml(m.shortLabel)}</span>
-                        </div>
-                      </td>
-                      <td class="py-[2.5px] px-0.5 text-center border-x border-[#C8D8D0] ${hasProd ? 'bg-emerald-50/90' : 'bg-slate-50/35'}">
-                        ${hasProd
-                          ? `<span class="inline-flex items-center justify-center max-w-full px-1 py-[0.5px] rounded bg-emerald-100/95 border border-emerald-300 text-[#0F5C45] font-extrabold text-[7px] tracking-tighter leading-none truncate">${fmt(m.total)}</span>`
-                          : `<span class="text-slate-400 font-semibold">—</span>`}
-                      </td>
-                      <td class="py-[2.5px] px-0.5 text-center border-r border-slate-200/80 font-bold tracking-tighter ${m.isa > 0 ? 'text-blue-700' : 'text-slate-300 font-normal'}">
-                        <span class="block truncate">${formatCellKg(m.isa)}</span>
-                      </td>
-                      <td class="py-[2.5px] px-0.5 text-center border-r border-slate-200/80 font-bold tracking-tighter ${m.muhiddin > 0 ? 'text-[#146C53]' : 'text-slate-300 font-normal'}">
-                        <span class="block truncate">${formatCellKg(m.muhiddin)}</span>
-                      </td>
-                      <td class="py-[2.5px] px-0.5 text-center border-r border-slate-200/80 font-bold tracking-tighter ${m.kaddur > 0 ? 'text-amber-700' : 'text-slate-300 font-normal'}">
-                        <span class="block truncate">${formatCellKg(m.kaddur)}</span>
-                      </td>
-                      <td class="py-[2.5px] px-0.5 text-center font-bold tracking-tighter ${m.muhammed > 0 ? 'text-purple-700' : 'text-slate-300 font-normal'}">
-                        <span class="block truncate">${formatCellKg(m.muhammed)}</span>
-                      </td>
+                    <tr class="${hasProd ? 'bg-white hover:bg-emerald-50/35' : 'bg-slate-50/45 hover:bg-slate-50'} transition-colors">
+                      <td class="py-1 px-0.5 text-center font-bold text-slate-800 ltr:border-r rtl:border-l border-slate-100 whitespace-nowrap">${escapeHtml(m.shortLabel)}</td>
+                      <td class="py-1 px-0.5 text-center font-extrabold ${hasProd ? 'text-[#0F5C45] bg-emerald-50/30' : 'text-slate-400 font-semibold'} ltr:border-r rtl:border-l border-slate-100 whitespace-nowrap">${formatCompactKg(m.total)}</td>
+                      ${cells.map((c, idx) => `
+                        <td class="py-1 px-0.5 text-center ${c.cls} ${idx < cells.length - 1 ? 'ltr:border-r rtl:border-l border-slate-100' : ''} whitespace-nowrap">${formatCompactKg(c.val)}</td>
+                      `).join('')}
                     </tr>`;
                 }).join('')}
               </tbody>
               <tfoot>
-                <tr class="bg-gradient-to-r from-slate-900 via-[#0F2922] to-slate-900 text-white text-[7px] font-extrabold leading-none border-t border-[#146C53]">
-                  <td class="py-[3.5px] px-0.5 text-center border-r border-slate-700/80 text-slate-100">
-                    <span class="block truncate tracking-tighter">${escapeHtml(t('yearly_grand_total_short'))}</span>
-                  </td>
-                  <td class="py-[3.5px] px-0.5 text-center bg-[#0B4635]/95 text-emerald-300 border-x border-emerald-700/50 tracking-tighter">
-                    <span class="block truncate">${fmt(yearlyTotal)}</span>
-                  </td>
-                  <td class="py-[3.5px] px-0.5 text-center border-r border-slate-800 text-blue-300 tracking-tighter">
-                    <span class="block truncate">${fmt(totalIsa)}</span>
-                  </td>
-                  <td class="py-[3.5px] px-0.5 text-center border-r border-slate-800 text-emerald-300 tracking-tighter">
-                    <span class="block truncate">${fmt(totalMuh)}</span>
-                  </td>
-                  <td class="py-[3.5px] px-0.5 text-center border-r border-slate-800 text-amber-300 tracking-tighter">
-                    <span class="block truncate">${fmt(totalKad)}</span>
-                  </td>
-                  <td class="py-[3.5px] px-0.5 text-center text-purple-300 tracking-tighter">
-                    <span class="block truncate">${fmt(totalMam)}</span>
-                  </td>
+                <tr class="bg-slate-900 text-white font-extrabold border-t-2 border-slate-900">
+                  <td class="py-1 px-0.5 text-center text-[7px] uppercase tracking-tighter ltr:border-r rtl:border-l border-slate-700 whitespace-nowrap">${escapeHtml(t('yearly_grand_total_short'))}</td>
+                  <td class="py-1 px-0.5 text-center text-emerald-300 ltr:border-r rtl:border-l border-slate-700 whitespace-nowrap">${formatCompactKg(yearlyTotal)}</td>
+                  <td class="py-1 px-0.5 text-center ${opHeaders[0].totalText} ltr:border-r rtl:border-l border-slate-700 whitespace-nowrap">${formatCompactKg(totalIsa)}</td>
+                  <td class="py-1 px-0.5 text-center ${opHeaders[1].totalText} ltr:border-r rtl:border-l border-slate-700 whitespace-nowrap">${formatCompactKg(totalMuh)}</td>
+                  <td class="py-1 px-0.5 text-center ${opHeaders[2].totalText} ltr:border-r rtl:border-l border-slate-700 whitespace-nowrap">${formatCompactKg(totalKad)}</td>
+                  <td class="py-1 px-0.5 text-center ${opHeaders[3].totalText} whitespace-nowrap">${formatCompactKg(totalMam)}</td>
                 </tr>
               </tfoot>
             </table>
@@ -3979,334 +3912,205 @@
       }
     }
 
-    function renderNotes() {
-      const container = document.getElementById('notesList');
-      const badgeEl = document.getElementById('notesCountBadge');
-      if (badgeEl) badgeEl.textContent = t('notes_unit', notes.length);
-      if (!container) return;
-
-      if (notes.length === 0) {
-        container.innerHTML = `
-          <div class="pro-card p-6 rounded-2xl text-center text-xs font-medium text-slate-400">
-            ${currentLang === 'ar' ? 'لا توجد ملاحظات وردية بعد.' : 'Henüz vardiya notu bulunmuyor.'}
-          </div>`;
-        return;
-      }
-
-      container.innerHTML = notes.map(n => `
-        <div class="pro-card p-4 rounded-2xl space-y-1.5">
-          <div class="flex items-center justify-between gap-2">
-            <div class="flex items-center gap-2">
-              <span class="text-xs font-extrabold text-[#146C53]">${escapeHtml(n.author)}</span>
-              <span class="text-[11px] text-slate-400">${escapeHtml(n.time)}</span>
-            </div>
-            <button type="button" onclick="deleteNote(${n.id})" class="text-[11px] font-bold text-rose-600 hover:text-rose-700 px-2 py-0.5 rounded-lg hover:bg-rose-50 transition">
-              ${t('delete_note_btn')}
-            </button>
-          </div>
-          <p class="text-xs text-slate-700 leading-relaxed">${escapeHtml(n.text)}</p>
-        </div>
-      `).join('');
-    }
-
     function addNote() {
       if (!guardAction('ADD_NOTE')) return;
       const input = document.getElementById('noteInput');
-      const prof = getActiveRoleProfile();
-      const authorLabel = currentAccountEmail ? `${prof.label} (${currentAccountEmail})` : prof.label;
       const text = (input?.value || '').trim();
       if (!text) return;
+
+      const prof = getActiveRoleProfile();
+      const authorLabel = currentAccountEmail ? `${prof.label} (${currentAccountEmail})` : prof.label;
+
+      const now = new Date();
+      const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} · ${formatTodayDate()}`;
+
       notes.unshift({
         id: Date.now(),
-        author: authorLabel,
-        time: currentLang === 'ar' ? 'الآن' : 'Az önce',
-        text
+        operator: authorLabel,
+        text,
+        time: timeStr
       });
+
       if (input) input.value = '';
       renderNotes();
       saveStateToStorage();
-      showToast(currentLang === 'ar' ? 'تمت إضافة ملاحظة الوردية' : 'Vardiya notu eklendi');
+      showToast('Vardiya notu eklendi');
     }
 
-    function deleteNote(noteId) {
+    function deleteNote(id) {
       if (!guardAction('DELETE_NOTE')) return;
-      notes = notes.filter(n => n.id !== noteId);
+      notes = notes.filter(n => n.id !== id);
       renderNotes();
       saveStateToStorage();
-      showToast(currentLang === 'ar' ? 'تم حذف الملاحظة' : 'Vardiya notu silindi');
+      showToast('Not silindi');
     }
 
-    function openExportModal() {
-      document.getElementById('exportModal')?.classList.remove('hidden');
-    }
+    function renderNotes() {
+      const listEl = document.getElementById('notesList');
+      const badgeEl = document.getElementById('notesCountBadge');
+      const perms = getUserPermissions();
+      if (badgeEl) badgeEl.textContent = t('notes_unit', notes.length);
+      if (!listEl) return;
 
-    function resetToDefaultData() {
-      if (!guardAction('RESET_DATA')) return;
-      orders = JSON.parse(JSON.stringify(INITIAL_ORDERS)).map(ensureOrderDates);
-      notes = JSON.parse(JSON.stringify(INITIAL_NOTES));
-      addedOrderTimestamps = [];
-      addedOrdersCount = 0;
-      updateAddedOrdersBadge();
-      normalizeOrderNumbers();
-      renderOrders();
-      renderCompletedOrders();
-      clearStoredAppState();
-      saveStateToStorage();
-      closeModal('exportModal');
-      showToast('Varsayılan verilere dönüldü');
-    }
-
-    function switchTab(tabName) {
-      openStatusMenuId = null;
-      openCompletedMenuId = null;
-      const validTabs = TAB_ORDER;
-      const targetTab = validTabs.includes(tabName) ? tabName : 'emirler';
-      const prevTab = lastActiveTabName;
-      const prevIdx = validTabs.indexOf(prevTab);
-      const nextIdx = validTabs.indexOf(targetTab);
-      const isRtl = document.documentElement.dir === 'rtl';
-
-      let enterAnimClass = 'tab-page-enter-fade';
-      if (prevTab !== targetTab && prevIdx !== -1 && nextIdx !== -1) {
-        const movingForward = nextIdx > prevIdx;
-        if (isRtl) {
-          enterAnimClass = movingForward ? 'tab-page-enter-left' : 'tab-page-enter-right';
-        } else {
-          enterAnimClass = movingForward ? 'tab-page-enter-right' : 'tab-page-enter-left';
-        }
+      if (!notes.length) {
+        listEl.innerHTML = `<div class="pro-card rounded-2xl p-8 text-center text-xs text-slate-400">Henüz vardiya notu eklenmedi.</div>`;
+        return;
       }
 
-      validTabs.forEach(tab => {
-        const sec = document.getElementById(`tab-${tab}`);
-        if (!sec) return;
-        sec.classList.remove('tab-page-enter-right', 'tab-page-enter-left', 'tab-page-enter-fade');
-        if (tab === targetTab) {
-          sec.classList.remove('hidden');
-          void sec.offsetWidth;
-          sec.classList.add(enterAnimClass);
-        } else {
-          sec.classList.add('hidden');
-        }
-      });
-
-      document.querySelectorAll('.nav-btn').forEach(btn => {
-        const active = btn.dataset.nav === targetTab;
-        btn.className = active
-          ? 'nav-btn nav-btn-active relative flex flex-col items-center justify-center py-1 px-1.5 rounded-2xl bg-emerald-50/95 ring-1 ring-emerald-600/35 text-[#0F5C45] transition'
-          : 'nav-btn relative flex flex-col items-center justify-center py-1 px-1.5 rounded-2xl bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition';
-        btn.querySelectorAll('.nav-active-bar').forEach(bar => bar.remove());
-        const labelEl = btn.querySelector('span[data-i18n]');
-        if (labelEl) {
-          labelEl.className = active
-            ? 'text-[10px] font-extrabold leading-none mt-1 tracking-tight text-[#0F5C45]'
-            : 'text-[10px] font-medium leading-none mt-1 tracking-tight';
-        }
-        const iconWrap = btn.querySelector('.nav-icon-wrap');
-        if (iconWrap) {
-          iconWrap.className = active
-            ? 'nav-icon-wrap w-8 h-6 rounded-xl bg-[#146C53] text-white flex items-center justify-center shadow-xs ring-2 ring-emerald-200/90'
-            : 'nav-icon-wrap w-8 h-6 rounded-xl bg-transparent text-slate-500 flex items-center justify-center';
-        }
-      });
-
-      const mainEl = document.getElementById('appMainContainer');
-      const bodyEl = document.body;
-      const isCompactSingleScreenTab = (targetTab === 'emirler' || targetTab === 'raporlar' || targetTab === 'tamamlanan');
-      if (mainEl) {
-        mainEl.classList.toggle('max-w-3xl', !isCompactSingleScreenTab);
-        mainEl.classList.toggle('max-w-[420px]', isCompactSingleScreenTab);
-        mainEl.classList.toggle('px-2', isCompactSingleScreenTab);
-        mainEl.classList.toggle('px-2.5', !isCompactSingleScreenTab);
-        mainEl.classList.toggle('pt-2', isCompactSingleScreenTab);
-        mainEl.classList.toggle('pt-4', !isCompactSingleScreenTab);
-      }
-      if (bodyEl) {
-        bodyEl.classList.toggle('pb-12', isCompactSingleScreenTab);
-        bodyEl.classList.toggle('pb-16', !isCompactSingleScreenTab);
-      }
-
-      if (targetTab === 'emirler') renderOrders();
-      if (targetTab === 'tamamlanan') renderCompletedOrders();
-      if (targetTab === 'ozet') renderSummary('ALL');
-      if (targetTab === 'operasyon') renderOperationTab();
-      if (targetTab === 'raporlar') renderReports();
-      if (targetTab === 'notlar') renderNotes();
-      lastActiveTabName = targetTab;
-      saveStateToStorage();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      listEl.innerHTML = notes.map(n => `
+        <div class="pro-card rounded-2xl p-3.5 space-y-1.5">
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-xs font-extrabold text-[#146C53] truncate">${escapeHtml(n.operator)}</span>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="text-[10px] text-slate-400 tabular-nums">${escapeHtml(n.time)}</span>
+              ${perms.canDeleteNote ? `<button type="button" onclick="deleteNote(${n.id})" class="text-[10px] font-bold text-rose-600 hover:underline">${t('delete_note_btn')}</button>` : ''}
+            </div>
+          </div>
+          <p class="text-xs text-slate-700 leading-relaxed">${escapeHtml(n.text)}</p>
+        </div>`).join('');
     }
 
-    function applyTranslations() {
+    function applyLanguage() {
       document.documentElement.lang = currentLang;
       document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+      const langLabel = document.getElementById('langToggleLabel');
+      if (langLabel) {
+        langLabel.textContent = currentLang === 'ar' ? '🇹🇷' : '🇩🇿';
+      }
 
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.dataset.i18n;
-        const val = I18N[currentLang]?.[key];
-        if (typeof val === 'string') {
-          el.textContent = val;
-        }
+        const val = t(key);
+        if (typeof val === 'string') el.textContent = val;
       });
 
       document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
         const key = el.dataset.i18nPlaceholder;
-        const val = I18N[currentLang]?.[key];
-        if (typeof val === 'string') {
-          el.placeholder = val;
-        }
+        const val = t(key);
+        if (typeof val === 'string') el.placeholder = val;
       });
+    }
 
-      const langLabel = document.getElementById('langToggleLabel');
-      if (langLabel) {
-        langLabel.textContent = currentLang === 'tr' ? '🇩🇿' : '🇹🇷';
-      }
-
+    function toggleLanguage() {
+      currentLang = currentLang === 'tr' ? 'ar' : 'tr';
+      applyLanguage();
+      updateHeaderRoleUI();
       renderOrders();
       renderCompletedOrders();
       if (!document.getElementById('tab-ozet')?.classList.contains('hidden')) renderSummary('ALL');
       if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) renderOperationTab();
       if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) renderReports();
       if (!document.getElementById('tab-notlar')?.classList.contains('hidden')) renderNotes();
-    }
-
-    function toggleLanguage() {
-      currentLang = currentLang === 'tr' ? 'ar' : 'tr';
-      applyTranslations();
       saveStateToStorage();
-      showToast(currentLang === 'ar' ? 'تم التبديل إلى العربية' : 'Türkçe diline geçildi');
     }
 
-    const STORAGE_KEY = 'EXTRUDER_APP_STATE_V1';
-    const STORAGE_HASH_KEY = 'EXTRUDER_APP_STATE_HASH_V1';
-    const memoryFallbackStore = new Map();
+    function switchTab(tabName) {
+      const prevTab = lastActiveTabName;
+      const prevIdx = TAB_ORDER.indexOf(prevTab);
+      const nextIdx = TAB_ORDER.indexOf(tabName);
 
-    function computeStateChecksum(str) {
-      let h1 = 0x811c9dc5;
-      let h2 = 0x01000193;
-      for (let i = 0; i < str.length; i++) {
-        const ch = str.charCodeAt(i);
-        h1 ^= ch;
-        h1 = Math.imul(h1, 0x01000193);
-        h2 ^= (ch + i);
-        h2 = Math.imul(h2, 0x85ebca6b);
+      let enterAnimClass = 'tab-page-enter-fade';
+      if (prevTab !== tabName && prevIdx !== -1 && nextIdx !== -1) {
+        const isRtl = document.documentElement.dir === 'rtl';
+        const movingForward = nextIdx > prevIdx;
+        enterAnimClass = movingForward
+          ? (isRtl ? 'tab-page-enter-left' : 'tab-page-enter-right')
+          : (isRtl ? 'tab-page-enter-right' : 'tab-page-enter-left');
       }
-      return `${(h1 >>> 0).toString(16)}_${(h2 >>> 0).toString(16)}_${str.length}`;
-    }
 
-    function getActiveTabName() {
-      const tabs = ['emirler', 'tamamlanan', 'ozet', 'operasyon', 'raporlar', 'notlar'];
-      for (const tab of tabs) {
-        const el = document.getElementById(`tab-${tab}`);
-        if (el && !el.classList.contains('hidden')) return tab;
-      }
-      return 'emirler';
-    }
-
-    function writeStorageItem(key, value) {
-      try {
-        if (window.localStorage) {
-          window.localStorage.setItem(key, value);
-        }
-      } catch (e) {}
-      try {
-        if (window.sessionStorage) {
-          window.sessionStorage.setItem(key, value);
-        }
-      } catch (e) {}
-      memoryFallbackStore.set(key, value);
-    }
-
-    function readStorageItem(key) {
-      try {
-        if (window.localStorage) {
-          const v = window.localStorage.getItem(key);
-          if (v !== null && v !== undefined && v !== '') return v;
-        }
-      } catch (e) {}
-      try {
-        if (window.sessionStorage) {
-          const v = window.sessionStorage.getItem(key);
-          if (v !== null && v !== undefined && v !== '') return v;
-        }
-      } catch (e) {}
-      return memoryFallbackStore.get(key) || null;
-    }
-
-    function removeStorageItem(key) {
-      try {
-        if (window.localStorage) window.localStorage.removeItem(key);
-      } catch (e) {}
-      try {
-        if (window.sessionStorage) window.sessionStorage.removeItem(key);
-      } catch (e) {}
-      memoryFallbackStore.delete(key);
-    }
-
-    function clearStoredAppState() {
-      removeStorageItem(STORAGE_KEY);
-      removeStorageItem(STORAGE_HASH_KEY);
-    }
-
-    function buildSerializableState() {
-      pruneExpiredAddedOrders();
-      const roleEmailsMap = {};
-      ROLE_PROFILES.forEach(r => {
-        roleEmailsMap[r.key] = Array.isArray(r.emails) ? [...r.emails] : [];
+      document.querySelectorAll('main > section').forEach(sec => {
+        sec.classList.add('hidden');
+        sec.classList.remove('tab-page-enter-right', 'tab-page-enter-left', 'tab-page-enter-fade');
       });
-      return {
-        v: 1,
-        savedAt: Date.now(),
-        currentLang,
-        currentRoleKey,
-        currentAccountEmail,
-        activeTab: getActiveTabName(),
-        expandedIdleOrderId,
-        lastEndedShiftOrderId,
-        currentOrderSortMode,
-        addedOrdersCount,
-        addedOrderTimestamps: [...addedOrderTimestamps],
-        roleEmailsMap,
-        orders: orders.map(o => ({ ...ensureOrderDates(o) })),
-        notes: notes.map(n => ({ ...n }))
-      };
+      const activeSec = document.getElementById(`tab-${tabName}`);
+      if (activeSec) {
+        activeSec.classList.remove('hidden');
+        void activeSec.offsetWidth;
+        activeSec.classList.add(enterAnimClass);
+      }
+
+      lastActiveTabName = tabName;
+
+      const mainEl = document.getElementById('appMainContainer');
+      if (mainEl) {
+        if (tabName === 'raporlar') {
+          mainEl.className = 'w-full max-w-[440px] mx-auto px-2 pt-3 transition-all overflow-x-clip';
+        } else if (tabName === 'emirler') {
+          mainEl.className = 'max-w-3xl mx-auto px-2.5 pt-4 transition-all';
+        } else {
+          mainEl.className = 'max-w-3xl mx-auto px-3 sm:px-4 pt-4 transition-all';
+        }
+      }
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        const isSelected = btn.dataset.nav === tabName;
+        const iconWrap = btn.querySelector('.nav-icon-wrap');
+        const labelEl = btn.querySelector('span[data-i18n]');
+        if (isSelected) {
+          btn.className = 'nav-btn nav-btn-active relative flex flex-col items-center justify-center py-1 px-1.5 rounded-2xl bg-emerald-50/95 ring-1 ring-emerald-600/35 text-[#0F5C45] transition';
+          if (iconWrap) {
+            iconWrap.className = 'nav-icon-wrap w-8 h-6 rounded-xl bg-[#146C53] text-white flex items-center justify-center shadow-xs ring-2 ring-emerald-200/90';
+          }
+          if (labelEl) {
+            labelEl.className = 'text-[10px] font-extrabold leading-none mt-1 tracking-tight text-[#0F5C45]';
+          }
+        } else {
+          btn.className = 'nav-btn relative flex flex-col items-center justify-center py-1 px-1.5 rounded-2xl bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition';
+          if (iconWrap) {
+            iconWrap.className = 'nav-icon-wrap w-8 h-6 rounded-xl bg-transparent text-slate-500 flex items-center justify-center';
+          }
+          if (labelEl) {
+            labelEl.className = 'text-[10px] font-medium leading-none mt-1 tracking-tight';
+          }
+        }
+      });
+
+      if (tabName === 'emirler') renderOrders();
+      if (tabName === 'tamamlanan') renderCompletedOrders();
+      if (tabName === 'ozet') renderSummary('ALL');
+      if (tabName === 'operasyon') renderOperationTab();
+      if (tabName === 'raporlar') renderReports();
+      if (tabName === 'notlar') renderNotes();
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    const STORAGE_KEY = 'extruder_app_state_v1';
 
     function saveStateToStorage() {
       try {
-        const serialized = JSON.stringify(buildSerializableState());
-        const checksum = computeStateChecksum(serialized);
-        writeStorageItem(STORAGE_KEY, serialized);
-        writeStorageItem(STORAGE_HASH_KEY, checksum);
+        const roleEmailsMap = {};
+        ROLE_PROFILES.forEach(r => {
+          roleEmailsMap[r.key] = Array.isArray(r.emails) ? [...r.emails] : [];
+        });
+        const payload = {
+          currentLang,
+          currentRoleKey,
+          currentAccountEmail,
+          roleEmailsMap,
+          orders,
+          notes,
+          addedOrderTimestamps
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
       } catch (e) {}
     }
 
     function loadStateFromStorage() {
       try {
-        const raw = readStorageItem(STORAGE_KEY);
+        const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return false;
         const parsed = JSON.parse(raw);
         if (!parsed || typeof parsed !== 'object') return false;
 
-        const savedHash = readStorageItem(STORAGE_HASH_KEY);
-        if (savedHash && computeStateChecksum(raw) !== savedHash) {
-          return false;
-        }
-
-        if (Array.isArray(parsed.orders) && parsed.orders.length > 0) {
-          orders = parsed.orders.map(o => ensureOrderDates({ ...o }));
-        }
-        if (Array.isArray(parsed.notes)) {
-          notes = parsed.notes.map(n => ({ ...n }));
-        }
         if (parsed.currentLang === 'tr' || parsed.currentLang === 'ar') {
           currentLang = parsed.currentLang;
         }
-        if (typeof parsed.currentRoleKey === 'string' && ROLE_PROFILES.some(r => r.key === parsed.currentRoleKey)) {
+        if (parsed.currentRoleKey && ROLE_PROFILES.some(r => r.key === parsed.currentRoleKey)) {
           currentRoleKey = parsed.currentRoleKey;
-          draftRoleKey = parsed.currentRoleKey;
         }
         if (typeof parsed.currentAccountEmail === 'string') {
-          currentAccountEmail = parsed.currentAccountEmail;
+          currentAccountEmail = parsed.currentAccountEmail.trim().toLowerCase();
         }
         if (parsed.roleEmailsMap && typeof parsed.roleEmailsMap === 'object') {
           ROLE_PROFILES.forEach(r => {
@@ -4315,57 +4119,60 @@
             }
           });
         }
-        if (typeof parsed.currentOrderSortMode === 'string') {
-          currentOrderSortMode = parsed.currentOrderSortMode;
+        if (Array.isArray(parsed.orders) && parsed.orders.length > 0) {
+          orders = parsed.orders.map(o => ensureOrderDates({ ...o }));
         }
-        expandedIdleOrderId = parsed.expandedIdleOrderId ?? null;
-        lastEndedShiftOrderId = parsed.lastEndedShiftOrderId ?? null;
+        if (Array.isArray(parsed.notes)) {
+          notes = parsed.notes.map(n => ({ ...n }));
+        }
         if (Array.isArray(parsed.addedOrderTimestamps)) {
-          const cutoff = Date.now() - TWENTY_FOUR_HOURS_MS;
           addedOrderTimestamps = parsed.addedOrderTimestamps
             .map(ts => Number(ts) || 0)
-            .filter(ts => ts > cutoff);
-          addedOrdersCount = addedOrderTimestamps.length;
-        } else {
-          addedOrderTimestamps = [];
-          addedOrdersCount = 0;
+            .filter(ts => ts > 0);
         }
-        return parsed.activeTab || 'emirler';
+        return true;
       } catch (e) {
         return false;
       }
     }
 
-    window.addEventListener('beforeunload', () => {
-      saveStateToStorage();
-    });
+    function init() {
+      orders = INITIAL_ORDERS.map(o => ensureOrderDates({ ...o }));
+      notes = INITIAL_NOTES.map(n => ({ ...n }));
+      loadStateFromStorage();
 
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') {
-        saveStateToStorage();
+      const hasRunning = orders.some(o => !o.closed && !o.cancelled && getWorkStatus(o) === 'RUNNING');
+      if (!hasRunning) {
+        const firstActive = orders
+          .filter(o => !o.closed && !o.cancelled)
+          .sort((a, b) => (a.orderNo || 999) - (b.orderNo || 999))[0];
+        if (firstActive) {
+          firstActive.workStatus = 'RUNNING';
+          firstActive.shiftActive = true;
+          firstActive.activeOperator = 'İSA';
+          firstActive.orderStartTime = firstActive.orderStartTime || '08:00';
+          firstActive.shiftSession = {
+            operator: 'İSA',
+            status: 'ACTIVE',
+            startedAt: firstActive.orderStartTime || '08:00',
+            endedAt: null
+          };
+        }
       }
-    });
 
-    function initApp() {
-      orders = JSON.parse(JSON.stringify(INITIAL_ORDERS)).map(ensureOrderDates);
-      notes = JSON.parse(JSON.stringify(INITIAL_NOTES));
-      const restoredTab = loadStateFromStorage();
       normalizeOrderNumbers();
+      applyLanguage();
       updateHeaderRoleUI();
-      updateAddedOrdersBadge();
-      applyTranslations();
       renderOrders();
       renderCompletedOrders();
+      renderSummary('ALL');
+      renderOperationTab();
+      renderReports();
       renderNotes();
-      if (typeof restoredTab === 'string' && restoredTab !== 'emirler') {
-        switchTab(restoredTab);
-      } else {
-        switchTab('emirler');
-      }
       saveStateToStorage();
     }
 
-    initApp();
+    init();
   </script>
 </body>
 </html>
