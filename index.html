@@ -354,25 +354,40 @@
       box-shadow: 0 2px 4px -1px rgba(15, 23, 42, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1);
     }
     #tab-emirler .pending-col-order-3d {
-      background: linear-gradient(180deg, rgba(241, 245, 249, 0.75) 0%, rgba(226, 232, 240, 0.85) 100%);
-      box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.85), inset -1px 0 0 rgba(148, 163, 184, 0.28);
+      background: transparent;
+      box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.85), inset -1px 0 0 rgba(148, 163, 184, 0.25);
     }
     #tab-emirler .pending-col-prod-3d {
-      background: linear-gradient(180deg, rgba(236, 253, 245, 0.85) 0%, rgba(209, 250, 229, 0.9) 100%);
-      box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.9), inset -1px 0 0 rgba(16, 185, 129, 0.25);
+      background: transparent;
+      box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.85), inset -1px 0 0 rgba(148, 163, 184, 0.25);
     }
     #tab-emirler .pending-col-rem-3d {
-      background: linear-gradient(180deg, rgba(255, 251, 235, 0.85) 0%, rgba(254, 243, 199, 0.92) 100%);
-      box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.9), inset -1px 0 0 rgba(245, 158, 11, 0.25);
+      background: transparent;
+      box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.85), inset -1px 0 0 rgba(148, 163, 184, 0.25);
     }
     #tab-emirler .pending-coil-highlight {
       display: block;
-      font-size: clamp(8.5px, 2.25vw, 11.5px);
-      line-height: 1.24;
-      font-weight: 900;
-      color: #061021;
+      font-size: clamp(9.5px, 2.5vw, 12.5px);
+      line-height: 1.38;
+      font-weight: 800;
+      color: #0F172A;
       letter-spacing: -0.025em;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.96), 0 1.5px 2px rgba(15, 23, 42, 0.14);
+      text-shadow: none;
+      white-space: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    #tab-emirler .pending-coil-highlight::-webkit-scrollbar {
+      display: none;
+    }
+    #tab-emirler .pending-article-sub {
+      display: block;
+      font-size: clamp(8.5px, 2.05vw, 10.5px);
+      line-height: 1.35;
+      font-weight: 500;
+      color: #475569;
+      letter-spacing: -0.02em;
+      margin-top: 2px;
       white-space: nowrap;
       overflow-x: auto;
       scrollbar-width: none;
@@ -395,92 +410,14 @@
     #tab-emirler .pending-article-sub::-webkit-scrollbar {
       display: none;
     }
-    #tab-emirler .emirler-header-3d {
-      color: #061021;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.98), 0 2px 4px rgba(15, 23, 42, 0.22);
-      letter-spacing: -0.03em;
-    }
-    #tab-emirler .emirler-sub-3d {
-      color: #334155;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
-    }
-    #tab-emirler .emirler-search-3d {
-      background: linear-gradient(180deg, #FFFFFF 0%, #E6EEF4 100%);
-      border: 1.5px solid #94A3B8;
-      border-bottom-width: 3.5px;
-      border-bottom-color: #475569;
-      box-shadow: 0 8px 16px -6px rgba(15, 23, 42, 0.2), inset 0 1.5px 0 rgba(255, 255, 255, 1);
-    }
-    #tab-emirler .pending-label-3d {
-      color: #334155;
-      font-weight: 900;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95);
-    }
-    #tab-emirler .pending-num-order-3d {
-      color: #061021;
-      font-weight: 900;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 1px 2px rgba(15, 23, 42, 0.14);
-    }
-    #tab-emirler .pending-num-prod-3d {
-      color: #065F46;
-      font-weight: 900;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 1px 2px rgba(6, 95, 70, 0.18);
-    }
-    #tab-emirler .pending-num-rem-warn-3d {
-      color: #B45309;
-      font-weight: 900;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 1px 2px rgba(180, 83, 9, 0.18);
-    }
-    #tab-emirler .pending-num-rem-neg-3d {
-      color: #BE123C;
-      font-weight: 900;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 1px 2px rgba(190, 18, 60, 0.18);
-    }
-    #tab-emirler .pending-rows-stack .pending-zebra-row:nth-of-type(even) {
-      background-color: #EEF2F6;
-    }
-    #tab-emirler .pending-rows-stack .pending-zebra-row:hover {
-      filter: brightness(0.985);
-    }
-    #tab-emirler .pending-rows-stack {
-      background: #FFFFFF;
-      border: 1.5px solid #1E293B;
-      border-bottom-width: 3px;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px -4px rgba(15, 23, 42, 0.14);
-    }
-    #tab-emirler .pending-row-divider + .pending-row-divider {
-      border-top: 1px solid #CBD5E1;
-    }
-    #tab-emirler .pending-coil-highlight {
-      display: block;
-      font-size: clamp(8.5px, 2.25vw, 11.5px);
-      line-height: 1.24;
-      font-weight: 800;
-      color: #0F172A;
-      letter-spacing: -0.025em;
-      text-shadow: none;
-      white-space: nowrap;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    #tab-emirler .pending-coil-highlight::-webkit-scrollbar {
-      display: none;
-    }
-    #tab-emirler .pending-article-sub {
-      display: block;
-      font-size: clamp(7.5px, 1.85vw, 9.5px);
-      line-height: 1.22;
-      font-weight: 500;
-      color: #475569;
-      letter-spacing: -0.02em;
-      white-space: nowrap;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    #tab-emirler .pending-article-sub::-webkit-scrollbar {
-      display: none;
+    #tab-emirler .coil-dim-highlight {
+      font-weight: 950;
+      color: #020617;
+      background: transparent;
+      border-bottom: none;
+      border-radius: 0;
+      padding: 0;
+      box-shadow: none;
     }
     #tab-emirler .emirler-header-3d {
       color: #061021;
@@ -1526,7 +1463,11 @@
     }
 
     function formatArtiveHighlight(artiveText) {
-      return escapeHtml(artiveText || '');
+      const safeText = escapeHtml(artiveText || '');
+      return safeText.replace(
+        /\b(\d{2,4}\s+\d{2,4})\b/g,
+        '<span class="coil-dim-highlight">$1</span>'
+      );
     }
 
     function showToast(msg) {
@@ -3432,20 +3373,20 @@
             ondrop="handleOrderDrop(event, ${o.id})"
             ondragend="handleOrderDragEnd(event)"
             onclick="toggleIdleOrderDetailView(event, ${o.id})"
-            class="pending-row-divider pending-zebra-row rounded-none p-0 cursor-pointer transition">
+            class="pending-row-divider pending-zebra-row rounded-none p-0 cursor-pointer transition min-h-[46px] sm:min-h-[50px] flex items-stretch">
             <div class="flex items-stretch w-full min-w-0">
-              <div onclick="event.stopPropagation()" class="w-[24px] sm:w-[28px] shrink-0 py-1.5 px-0 flex items-center justify-center ltr:border-r rtl:border-l border-[#B8C7D9] bg-slate-200/45">
-                <div class="inline-flex items-center justify-center w-[15px] h-[15px] rounded pending-seq-3d">
+              <div onclick="event.stopPropagation()" class="w-[19px] sm:w-[23px] shrink-0 py-2 px-0 flex items-center justify-center ltr:border-r rtl:border-l border-[#B8C7D9] bg-slate-200/45">
+                <div class="inline-flex items-center justify-center w-[12px] h-[12px] rounded-[3px] pending-seq-3d">
                   <input type="number" inputmode="numeric" min="1" value="${o.orderNo}"
                     onchange="updateOrderNumberInline(${o.id}, this.value)"
                     onkeydown="if(event.key==='Enter'){this.blur();}"
-                    class="w-full h-full bg-transparent text-inherit text-[7.5px] font-black text-center leading-none tabular-nums rounded outline-none" />
+                    class="w-full h-full bg-transparent text-inherit text-[6.5px] font-black text-center leading-none tabular-nums rounded-[3px] outline-none" />
                 </div>
               </div>
 
-              <div class="flex-1 min-w-0 py-1.5 px-1.5 flex items-center">
+              <div class="flex-1 min-w-0 py-2 px-1.5 flex items-center">
                 <div class="flex items-center gap-1.5 min-w-0 w-full">
-                  <span class="w-2 h-2 rounded-full ${dotColorClass} shrink-0 shadow-xs ring-1 ring-white"></span>
+                  <span class="w-1.5 h-1.5 rounded-full ${dotColorClass} shrink-0 shadow-2xs ring-1 ring-white/80"></span>
                   <div class="min-w-0 flex-1">
                     <span class="pending-coil-highlight" title="${escapeHtml(o.artive || '')}">${formatArtiveHighlight(o.artive)}</span>
                     <span class="pending-article-sub" title="${escapeHtml(o.article || '')}">${escapeHtml(o.article || '')}</span>
@@ -3454,14 +3395,14 @@
               </div>
 
               <div class="grid grid-cols-3 shrink-0 w-[114px] sm:w-[144px] tabular-nums">
-                <div class="py-1.5 px-0.5 flex items-center justify-center leading-none ltr:border-l rtl:border-r ${rowCellBorderClass} pending-col-order-3d min-w-0">
-                  <span class="text-[8.5px] sm:text-[10.5px] tracking-tight pending-num-order-3d whitespace-nowrap">${orderCellText}</span>
+                <div class="py-2 px-0.5 flex items-center justify-center leading-none ltr:border-l rtl:border-r ${rowCellBorderClass} pending-col-order-3d min-w-0">
+                  <span class="text-[9.5px] sm:text-[11.5px] tracking-tight pending-num-order-3d whitespace-nowrap">${orderCellText}</span>
                 </div>
-                <div class="py-1.5 px-0.5 flex items-center justify-center leading-none ltr:border-l rtl:border-r ${rowCellBorderClass} pending-col-prod-3d min-w-0">
-                  <span class="text-[8.5px] sm:text-[10.5px] tracking-tight pending-num-prod-3d whitespace-nowrap">${prodCellText}</span>
+                <div class="py-2 px-0.5 flex items-center justify-center leading-none ltr:border-l rtl:border-r ${rowCellBorderClass} pending-col-prod-3d min-w-0">
+                  <span class="text-[9.5px] sm:text-[11.5px] tracking-tight pending-num-prod-3d whitespace-nowrap">${prodCellText}</span>
                 </div>
-                <div class="py-1.5 px-0.5 flex items-center justify-center leading-none ltr:border-l rtl:border-r ${rowCellBorderClass} pending-col-rem-3d min-w-0">
-                  <span class="text-[8.5px] sm:text-[10.5px] tracking-tight ${remNum3dClass} whitespace-nowrap">${remCellText}</span>
+                <div class="py-2 px-0.5 flex items-center justify-center leading-none ltr:border-l rtl:border-r ${rowCellBorderClass} pending-col-rem-3d min-w-0">
+                  <span class="text-[9.5px] sm:text-[11.5px] tracking-tight ${remNum3dClass} whitespace-nowrap">${remCellText}</span>
                 </div>
               </div>
             </div>
@@ -3533,19 +3474,19 @@
 
       const excelHeaderRowHtml = remainingCardsHtml
         ? `
-          <div class="flex items-stretch pending-excel-header-3d text-[8.5px] font-black uppercase tracking-tight tabular-nums select-none">
-            <div class="w-[24px] sm:w-[28px] shrink-0 py-1.5 px-0 flex items-center justify-center ltr:border-r rtl:border-l border-slate-600/80">#</div>
+          <div class="flex items-stretch pending-excel-header-3d text-[9px] font-black uppercase tracking-tight tabular-nums select-none">
+            <div class="w-[19px] sm:w-[23px] shrink-0 py-1.5 px-0 flex items-center justify-center ltr:border-r rtl:border-l border-slate-600/80 text-[8px]">#</div>
             <div class="flex-1 min-w-0 py-1.5 px-1.5 flex items-center truncate">ARTIVE / ARTICLE</div>
             <div class="grid grid-cols-3 shrink-0 w-[114px] sm:w-[144px] text-center">
-              <span class="py-1.5 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-slate-600/80 bg-slate-800/50 truncate">${escapeHtml(t('metric_order'))}</span>
-              <span class="py-1.5 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-slate-600/80 bg-emerald-950/65 text-emerald-200 truncate">${escapeHtml(t('metric_prod'))}</span>
-              <span class="py-1.5 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-slate-600/80 bg-amber-950/65 text-amber-200 truncate">${escapeHtml(t('metric_rem'))}</span>
+              <span class="py-1.5 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-slate-600/80 truncate">${escapeHtml(t('metric_order'))}</span>
+              <span class="py-1.5 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-slate-600/80 truncate">${escapeHtml(t('metric_prod'))}</span>
+              <span class="py-1.5 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-slate-600/80 truncate">${escapeHtml(t('metric_rem'))}</span>
             </div>
           </div>`
         : '';
 
       const remainingGroupHtml = remainingCardsHtml
-        ? `<div class="pending-rows-stack">${excelHeaderRowHtml}${remainingCardsHtml}</div>`
+        ? `<div class="pending-rows-stack min-h-[calc(100vh-235px)] flex flex-col justify-between">${excelHeaderRowHtml}<div class="flex-1 flex flex-col justify-between">${remainingCardsHtml}</div></div>`
         : '';
 
       container.innerHTML = runningCardsHtml + metaBarHtml + endedOrderCardHtml + remainingGroupHtml;
