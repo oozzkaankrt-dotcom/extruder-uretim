@@ -71,69 +71,157 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
-    /* Sekme ve sayfa geçiş animasyonları: yönlü, akıcı ve RTL uyumlu */
+    /* Rafine UI/UX sayfa ve sekme geçiş animasyonları (60fps GPU-composited) */
+    :root {
+      --ux-ease-out: cubic-bezier(0.2, 0.85, 0.28, 1);
+      --ux-ease-spring: cubic-bezier(0.25, 1.15, 0.45, 1);
+      --ux-page-duration: 320ms;
+      --ux-shift-distance: 22px;
+    }
+
     @keyframes tabEnterFromRight {
       0% {
         opacity: 0;
-        transform: translate3d(18px, 6px, 0) scale(0.992);
+        transform: translate3d(var(--ux-shift-distance), 10px, 0) scale(0.988);
+        filter: blur(2px);
+      }
+      55% {
+        opacity: 0.92;
       }
       100% {
         opacity: 1;
         transform: translate3d(0, 0, 0) scale(1);
+        filter: blur(0);
       }
     }
 
     @keyframes tabEnterFromLeft {
       0% {
         opacity: 0;
-        transform: translate3d(-18px, 6px, 0) scale(0.992);
+        transform: translate3d(calc(var(--ux-shift-distance) * -1), 10px, 0) scale(0.988);
+        filter: blur(2px);
+      }
+      55% {
+        opacity: 0.92;
       }
       100% {
         opacity: 1;
         transform: translate3d(0, 0, 0) scale(1);
+        filter: blur(0);
       }
     }
 
     @keyframes tabEnterFade {
       0% {
         opacity: 0;
-        transform: translate3d(0, 8px, 0) scale(0.994);
+        transform: translate3d(0, 12px, 0) scale(0.99);
+        filter: blur(1.5px);
       }
       100% {
         opacity: 1;
         transform: translate3d(0, 0, 0) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes tabContentStagger {
+      0% {
+        opacity: 0;
+        transform: translate3d(0, 8px, 0);
+      }
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
       }
     }
 
     .tab-page-enter-right {
-      animation: tabEnterFromRight 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
-      will-change: transform, opacity;
+      animation: tabEnterFromRight var(--ux-page-duration) var(--ux-ease-out) both;
+      will-change: transform, opacity, filter;
     }
 
     .tab-page-enter-left {
-      animation: tabEnterFromLeft 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
-      will-change: transform, opacity;
+      animation: tabEnterFromLeft var(--ux-page-duration) var(--ux-ease-out) both;
+      will-change: transform, opacity, filter;
     }
 
     .tab-page-enter-fade {
-      animation: tabEnterFade 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
-      will-change: transform, opacity;
+      animation: tabEnterFade 280ms var(--ux-ease-out) both;
+      will-change: transform, opacity, filter;
+    }
+
+    .tab-page-enter-right > *,
+    .tab-page-enter-left > *,
+    .tab-page-enter-fade > * {
+      animation: tabContentStagger 360ms var(--ux-ease-out) both;
+    }
+
+    .tab-page-enter-right > *:nth-child(2),
+    .tab-page-enter-left > *:nth-child(2),
+    .tab-page-enter-fade > *:nth-child(2) {
+      animation-delay: 45ms;
+    }
+
+    .tab-page-enter-right > *:nth-child(3),
+    .tab-page-enter-left > *:nth-child(3),
+    .tab-page-enter-fade > *:nth-child(3) {
+      animation-delay: 85ms;
     }
 
     .nav-btn {
-      transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 220ms var(--ux-ease-out), background-color 220ms ease, color 220ms ease, box-shadow 240ms ease, border-color 220ms ease;
     }
 
     .nav-btn:active {
-      transform: scale(0.94);
+      transform: scale(0.95);
     }
 
     .nav-icon-wrap {
-      transition: transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 300ms var(--ux-ease-spring), background-color 220ms ease, border-color 220ms ease, box-shadow 240ms ease, color 200ms ease;
     }
 
     .nav-btn-active .nav-icon-wrap {
-      transform: translateY(-1px) scale(1.04);
+      transform: translateY(-2px) scale(1.05);
+    }
+
+    /* Alt navigasyon ikon ve etiket çerçeve stilleri */
+    #bottomNavBar .nav-icon-wrap {
+      border: 1.5px solid #CBD5E1;
+      background-color: #F8FAFC;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    #bottomNavBar .nav-btn:hover .nav-icon-wrap {
+      border-color: #94A3B8;
+      background-color: #F1F5F9;
+    }
+
+    #bottomNavBar .nav-btn-active .nav-icon-wrap {
+      border: 1.5px solid #0B4635;
+      background-color: #146C53;
+      box-shadow: 0 2px 6px -1px rgba(20, 108, 83, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    }
+
+    #bottomNavBar .nav-label-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 7px;
+      border-radius: 9999px;
+      border: 1px solid #DCE4E0;
+      background-color: #F8FAFC;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #bottomNavBar .nav-btn:hover .nav-label-chip {
+      border-color: #CBD5E1;
+      background-color: #F1F5F9;
+    }
+
+    #bottomNavBar .nav-btn-active .nav-label-chip {
+      border: 1px solid #0F5C45;
+      background-color: #ECFDF5;
+      box-shadow: 0 1px 3px rgba(20, 108, 83, 0.14);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -204,6 +292,19 @@
       border-bottom-width: 3px;
       border-bottom-color: #B45309;
       box-shadow: 0 8px 18px -5px rgba(180, 83, 9, 0.22), 0 2px 5px -1px rgba(15, 23, 42, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.98);
+    }
+    #tab-emirler .order-card-3d-empty-amber {
+      background: linear-gradient(155deg, #FFFDF5 0%, #FEF3C7 38%, #FDE68A 76%, #FCD34D 100%);
+      border: 1.5px solid #D97706;
+      border-top-color: #FDE68A;
+      border-bottom-width: 4.5px;
+      border-bottom-color: #B45309;
+      box-shadow:
+        0 14px 26px -8px rgba(180, 83, 9, 0.28),
+        0 5px 11px -3px rgba(146, 64, 14, 0.16),
+        0 2px 0 0 #B45309,
+        inset 0 2px 1px rgba(255, 255, 255, 0.96),
+        inset 0 -2px 5px rgba(217, 119, 6, 0.18);
     }
     #tab-emirler .order-card-3d-running {
       background: linear-gradient(155deg, #F4FFF9 0%, #D1FAE5 35%, #86EFAC 72%, #34D399 100%);
@@ -322,36 +423,34 @@
       filter: brightness(0.97);
     }
     #tab-emirler .pending-rows-stack {
-      background: linear-gradient(180deg, #F8FAFC 0%, #E2E8F0 100%);
-      border: 1.5px solid #334155;
-      border-top-color: #94A3B8;
+      background: linear-gradient(180deg, #F4FBF7 0%, #E2F2E9 100%);
+      border: 1.5px solid #146C53;
+      border-top-color: #34D399;
       border-bottom-width: 4.5px;
-      border-bottom-color: #0F172A;
+      border-bottom-color: #064E3B;
       border-radius: 16px;
       overflow: hidden;
       box-shadow:
-        0 14px 24px -8px rgba(15, 23, 42, 0.28),
-        0 4px 10px -2px rgba(15, 23, 42, 0.14),
+        0 14px 24px -8px rgba(6, 78, 59, 0.24),
+        0 4px 10px -2px rgba(20, 108, 83, 0.14),
         inset 0 1.5px 0 rgba(255, 255, 255, 0.95);
     }
     #tab-emirler .pending-excel-header-3d {
-      background: linear-gradient(180deg, #334155 0%, #1E293B 55%, #0F172A 100%);
-      border-bottom: 2px solid #020617;
-      color: #F8FAFC;
-      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.65);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+      background: linear-gradient(180deg, #167A5E 0%, #146C53 55%, #0D4E3B 100%);
+      border-bottom: 2px solid #064E3B;
+      color: #ECFDF5;
+      text-shadow: 0 1px 1px rgba(6, 78, 59, 0.65);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
     }
     #tab-emirler .pending-row-divider + .pending-row-divider {
-      border-top: 1px solid #B8C7D9;
+      border-top: 1px solid #B7DEC9;
     }
     #tab-emirler .pending-seq-3d {
-      background: linear-gradient(160deg, #FFFFFF 0%, #E2E8F0 65%, #CBD5E1 100%);
-      border: 1px solid #64748B;
-      border-bottom-width: 2px;
-      border-bottom-color: #334155;
+      background: transparent;
+      border: none;
+      box-shadow: none;
       color: #0F172A;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95);
-      box-shadow: 0 2px 4px -1px rgba(15, 23, 42, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1);
+      text-shadow: none;
     }
     #tab-emirler .pending-col-order-3d {
       background: transparent;
@@ -367,8 +466,8 @@
     }
     #tab-emirler .pending-coil-highlight {
       display: block;
-      font-size: clamp(9.5px, 2.5vw, 12.5px);
-      line-height: 1.38;
+      font-size: clamp(8.5px, 2.25vw, 11px);
+      line-height: 1.32;
       font-weight: 800;
       color: #0F172A;
       letter-spacing: -0.025em;
@@ -382,30 +481,17 @@
     }
     #tab-emirler .pending-article-sub {
       display: block;
-      font-size: clamp(8.5px, 2.05vw, 10.5px);
-      line-height: 1.35;
-      font-weight: 500;
-      color: #475569;
-      letter-spacing: -0.02em;
-      margin-top: 2px;
-      white-space: nowrap;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    #tab-emirler .pending-coil-highlight::-webkit-scrollbar {
-      display: none;
-    }
-    #tab-emirler .pending-article-sub {
-      display: block;
-      font-size: clamp(7.5px, 1.85vw, 9.5px);
-      line-height: 1.22;
+      width: 100%;
+      max-width: 100%;
+      font-size: clamp(7px, 1.65vw, 8.5px);
+      line-height: 1.18;
       font-weight: 600;
       color: #334155;
       letter-spacing: -0.02em;
       text-shadow: 0 1px 0 rgba(255, 255, 255, 0.88);
       white-space: nowrap;
-      overflow-x: auto;
-      scrollbar-width: none;
+      overflow: hidden;
+      text-overflow: clip;
     }
     #tab-emirler .pending-article-sub::-webkit-scrollbar {
       display: none;
@@ -413,16 +499,23 @@
     #tab-emirler .coil-dim-highlight {
       display: inline-block;
       font-weight: 950;
-      font-size: 1.12em;
-      line-height: 1.55;
-      padding-top: 2px;
-      padding-bottom: 2px;
+      font-size: 1.06em;
+      line-height: 1.45;
+      padding-top: 1px;
+      padding-bottom: 1px;
       vertical-align: baseline;
       color: #020617;
       background: transparent;
       border-bottom: none;
       border-radius: 0;
       box-shadow: none;
+    }
+    #tab-emirler .emirler-card-text-clip {
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
     #tab-emirler .emirler-header-3d {
       color: #061021;
@@ -446,35 +539,99 @@
       text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
     }
     #tab-emirler .pending-num-order-3d {
+      display: inline-block;
       color: #0F172A;
       font-weight: 800;
       text-shadow: none;
+      transform: scaleX(0.95) scaleY(1.03);
+      transform-origin: center center;
     }
     #tab-emirler .pending-num-prod-3d {
+      display: inline-block;
       color: #146C53;
       font-weight: 800;
       text-shadow: none;
+      transform: scaleX(0.95) scaleY(1.04);
+      transform-origin: center center;
     }
     #tab-emirler .pending-num-rem-warn-3d {
+      display: inline-block;
       color: #C2590A;
       font-weight: 800;
       text-shadow: none;
+      transform: scaleX(0.95) scaleY(1.04);
+      transform-origin: center center;
     }
     #tab-emirler .pending-num-rem-neg-3d {
+      display: inline-block;
       color: #BE123C;
       font-weight: 800;
       text-shadow: none;
+      transform: scaleX(0.95) scaleY(1.04);
+      transform-origin: center center;
     }
     #tab-tamamlanan .completed-coil-full {
       display: block;
-      font-size: clamp(6.5px, 2vw, 9px);
-      line-height: 1.15;
-      font-weight: 900;
-      color: #061021;
+      font-size: clamp(8px, 2.15vw, 10.5px);
+      line-height: 1.25;
+      font-weight: 800;
+      color: #0F172A;
       letter-spacing: -0.025em;
       white-space: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    #tab-tamamlanan .completed-coil-full::-webkit-scrollbar {
+      display: none;
+    }
+    #tab-tamamlanan .completed-article-sub {
+      display: block;
+      font-size: clamp(6.8px, 1.65vw, 8.5px);
+      line-height: 1.15;
+      font-weight: 600;
+      color: #475569;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    #tab-tamamlanan .completed-article-sub::-webkit-scrollbar {
+      display: none;
+    }
+    #tab-tamamlanan .completed-excel-sheet {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+      border: 1.5px solid #334155;
+      border-top-color: #64748B;
+      border-bottom-width: 4px;
+      border-bottom-color: #0F172A;
+      border-radius: 14px;
       overflow: hidden;
-      text-overflow: ellipsis;
+      box-shadow:
+        0 12px 22px -8px rgba(15, 23, 42, 0.22),
+        0 4px 8px -2px rgba(15, 23, 42, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    }
+    #tab-tamamlanan .completed-excel-header {
+      background: linear-gradient(180deg, #DC2626 0%, #B91C1C 55%, #991B1B 100%);
+      border-bottom: 2px solid #7F1D1D;
+      color: #FFF5F5;
+      text-shadow: 0 1px 1px rgba(127, 29, 29, 0.55);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    }
+    #tab-tamamlanan .completed-excel-row:nth-of-type(odd) {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+    }
+    #tab-tamamlanan .completed-excel-row:nth-of-type(even) {
+      background: linear-gradient(180deg, #F1F5F9 0%, #E9EFF6 100%);
+    }
+    #tab-tamamlanan .completed-excel-row:hover {
+      background: linear-gradient(180deg, #ECFDF5 0%, #D1FAE5 100%);
+    }
+    #tab-tamamlanan .completed-excel-footer {
+      background: linear-gradient(180deg, #FEE2E2 0%, #FECACA 100%);
+      border-top: 1.5px solid #F87171;
+      color: #7F1D1D;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
     }
     #tab-tamamlanan .completed-card {
       background: linear-gradient(168deg, #FFFFFF 0%, #FFF7F7 56%, #FEECEC 100%);
@@ -767,10 +924,10 @@
       </div>
 
       <!-- 1. Sıra: Her Ay Ayrı Ayrı Toplam KG ve 4 Operatörün Aylık KG Dağılımı (Tek Tablo) -->
-      <div class="pro-card rounded-xl p-1.5 w-full min-w-0 overflow-hidden space-y-1">
+      <div class="pro-card rounded-xl p-1 w-full min-w-0 overflow-hidden space-y-1 shadow-[0_6px_14px_-6px_rgba(15,23,42,0.16)]">
         <div class="flex items-center justify-between gap-1 px-0.5 pt-0.5 min-w-0">
-          <h3 data-i18n="monthly_unified_table_title" class="text-[10px] font-extrabold text-slate-900 leading-none truncate">Aylık Üretim & Operatör KG Tablosu</h3>
-          <span data-i18n="monthly_unified_table_badge" class="text-[7.5px] font-bold text-[#146C53] bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-full shrink-0 whitespace-nowrap leading-none">12 Ay · Tek Tablo</span>
+          <h3 data-i18n="monthly_unified_table_title" class="text-[9.5px] font-extrabold text-slate-900 leading-none truncate">Aylık Üretim & Operatör KG Tablosu</h3>
+          <span data-i18n="monthly_unified_table_badge" class="text-[7px] font-bold text-[#0F5C45] bg-emerald-50/95 border border-emerald-300/80 px-1.5 py-0.5 rounded-full shrink-0 whitespace-nowrap leading-none shadow-2xs">12 Ay · Tek Tablo</span>
         </div>
         <div id="monthlyUnifiedKgTable" class="w-full min-w-0"></div>
       </div>
@@ -835,25 +992,25 @@
         <span class="nav-icon-wrap w-8 h-6 rounded-xl bg-[#146C53] text-white flex items-center justify-center shadow-xs ring-2 ring-emerald-200/90">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
         </span>
-        <span data-i18n="nav_orders" class="text-[10px] font-extrabold leading-none mt-1 tracking-tight text-[#0F5C45]">Emirler</span>
+        <span data-i18n="nav_orders" class="nav-label-chip text-[10px] font-extrabold leading-none mt-1 tracking-tight text-[#0F5C45]">Emirler</span>
       </button>
       <button type="button" data-nav="tamamlanan" onclick="switchTab('tamamlanan')" class="nav-btn relative flex flex-col items-center justify-center py-1 px-1.5 rounded-2xl bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition">
         <span class="nav-icon-wrap w-8 h-6 rounded-xl bg-transparent text-slate-500 flex items-center justify-center">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
         </span>
-        <span data-i18n="nav_done" class="text-[10px] font-medium leading-none mt-1 tracking-tight">Bitenler</span>
+        <span data-i18n="nav_done" class="nav-label-chip text-[10px] font-medium leading-none mt-1 tracking-tight">Bitenler</span>
       </button>
       <button type="button" data-nav="raporlar" onclick="switchTab('raporlar')" class="nav-btn relative flex flex-col items-center justify-center py-1 px-1.5 rounded-2xl bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition">
         <span class="nav-icon-wrap w-8 h-6 rounded-xl bg-transparent text-slate-500 flex items-center justify-center">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
         </span>
-        <span data-i18n="nav_reports" class="text-[10px] font-medium leading-none mt-1 tracking-tight">Raporlar</span>
+        <span data-i18n="nav_reports" class="nav-label-chip text-[10px] font-medium leading-none mt-1 tracking-tight">Raporlar</span>
       </button>
       <button type="button" data-nav="notlar" onclick="switchTab('notlar')" class="nav-btn relative flex flex-col items-center justify-center py-1 px-1.5 rounded-2xl bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition">
         <span class="nav-icon-wrap w-8 h-6 rounded-xl bg-transparent text-slate-500 flex items-center justify-center">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/></svg>
         </span>
-        <span data-i18n="nav_notes" class="text-[10px] font-medium leading-none mt-1 tracking-tight">Notlar</span>
+        <span data-i18n="nav_notes" class="nav-label-chip text-[10px] font-medium leading-none mt-1 tracking-tight">Notlar</span>
       </button>
     </div>
   </nav>
@@ -876,27 +1033,33 @@
       <!-- Elevated Order Summary Card (Sleek Grey & Compact) -->
       <div id="editModalSummaryCard" class="rounded-2xl px-3 py-2 bg-gradient-to-b from-slate-100 to-slate-200/85 border border-slate-300 border-b-[2.5px] border-b-slate-400 shadow-xs transition space-y-1.5">
         <div class="flex items-center justify-between gap-2">
-          <!-- Sequence Badge (#1) -->
-          <div id="editModalSeqBadgeWrap" class="inline-flex items-center justify-center shrink-0 seq-square-3d seq-square-3d-expanded">
-            <input id="editOrderNoInput" type="number" inputmode="numeric" min="1" class="w-full h-full bg-transparent text-inherit text-[10px] font-extrabold text-center leading-none tabular-nums rounded outline-none" />
-          </div>
+          <!-- Left Last Action Date & Time -->
+          <div id="editModalLastActionBadge" class="inline-flex items-center justify-center shrink-0 h-[20px] px-2.5 rounded-lg bg-white/95 border border-slate-300/90 text-[10px] leading-none font-bold text-slate-800 tabular-nums shadow-2xs">27.11.2026 · 08:00</div>
 
           <!-- Center Date Pill -->
-          <span id="editModalPeriod" class="inline-flex items-center justify-center shrink-0 h-[20px] px-2.5 rounded-lg bg-white/95 border border-slate-300/90 text-[10px] leading-none font-bold text-slate-800 tabular-nums shadow-2xs">23.11.2026</span>
+          <span id="editModalPeriod" class="hidden">23.11.2026</span>
 
           <!-- Right Action Dropdown (GİRİŞ / Seç) -->
-          <div id="editModalActionMenuWrap" class="relative inline-block shrink-0">
+          <div id="editModalActionMenuWrap" class="relative shrink-0">
             <button id="editModalSelectMenuBtn" type="button" onclick="toggleEditModalSelectMenu(event)"
-              class="inline-flex items-center gap-1 h-[20px] px-2.5 rounded-lg bg-white/95 hover:bg-white border border-slate-300/90 text-[10px] leading-none font-extrabold text-slate-800 shadow-2xs active:scale-95 transition">
-              <span>GİRİŞ</span>
-              <svg class="w-2.5 h-2.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+              class="inline-flex items-center justify-center gap-0.5 h-[20px] px-2 rounded-lg bg-slate-800 hover:bg-slate-900 text-white text-[9.5px] leading-none font-extrabold tracking-wide active:scale-95 transition">
+              <span class="leading-none">GİRİŞ</span>
+              <svg class="w-2.5 h-2.5 opacity-85 shrink-0" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+              </svg>
             </button>
             <div id="editModalSelectDropdown" class="hidden absolute ltr:right-0 rtl:left-0 top-full mt-1 z-30 w-36 bg-white rounded-xl shadow-xl border border-slate-200 p-1 space-y-0.5">
-              <button id="editOrderMetricsBtn" type="button" onclick="handleEditModalSelectAction('EDIT')" class="w-full px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-slate-700 hover:bg-slate-100 ltr:text-left rtl:text-right transition">
-                Miktarları Düzenle
+              <button id="editOrderMetricsBtn" type="button" onclick="handleEditModalSelectAction('EDIT')" class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100 ltr:text-left rtl:text-right transition">
+                <span class="w-2 h-2 rounded-full bg-amber-500 shrink-0"></span>
+                <span>DÜZENLE</span>
               </button>
-              <button id="deleteOrderModalBtn" type="button" onclick="handleEditModalSelectAction('DELETE')" class="w-full px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-rose-600 hover:bg-rose-50 ltr:text-left rtl:text-right transition">
-                İş Emrini Sil
+              <button id="deleteOrderModalBtn" type="button" onclick="handleEditModalSelectAction('DELETE')" class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 ltr:text-left rtl:text-right transition">
+                <span class="w-2 h-2 rounded-full bg-red-600 shrink-0"></span>
+                <span>SİL</span>
+              </button>
+              <button id="restartOrderModalBtn" type="button" onclick="handleEditModalSelectAction('RESTART')" class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 ltr:text-left rtl:text-right transition">
+                <span class="w-2 h-2 rounded-full bg-emerald-600 shrink-0"></span>
+                <span>YENİDEN BAŞLAT</span>
               </button>
             </div>
           </div>
@@ -1097,6 +1260,7 @@
         tap_card_hint: 'Giriş yapmak için karta dokunun',
         orders_listed: (n) => `${n} emir listeleniyor`,
         no_orders_found: 'Arama kriterlerine uygun emir bulunamadı.',
+        no_running_order_box: 'Çalışan Bir iş Emri Yok',
         status_select: 'GİRİŞ',
         status_running: '● Çalışıyor',
         status_paused: '⏸ Durdu',
@@ -1224,6 +1388,7 @@
         tap_card_hint: 'اضغط على البطاقة لإدخال الإنتاج',
         orders_listed: (n) => `عرض ${n} أمر إنتاج`,
         no_orders_found: 'لا توجد أوامر تطابق معايير البحث.',
+        no_running_order_box: 'Çalışan Bir iş Emri Yok',
         status_select: 'دخول',
         status_running: '● قيد التشغيل',
         status_paused: '⏸ متوقف',
@@ -1337,7 +1502,7 @@
     const ROLE_PROFILES = [
       {
         key: 'YONETIM',
-        label: 'Yönetim',
+        label: 'YÖNETİM',
         kind: 'MANAGEMENT',
         operatorCode: null,
         desc: 'Sınırsız yetki · Emir ekle/sil/sırala · KG & Vardiya',
@@ -1345,7 +1510,7 @@
       },
       {
         key: 'TEKNISYEN',
-        label: 'Teknisyen',
+        label: 'TEKNİSYEN',
         kind: 'TECHNICIAN',
         operatorCode: null,
         desc: 'Emir başlat/bitir · Tüm KG girişleri · Vardiya notu',
@@ -1353,7 +1518,7 @@
       },
       {
         key: 'ISA',
-        label: 'İsa',
+        label: 'İSA',
         kind: 'OPERATOR',
         operatorCode: 'İSA',
         desc: 'Başlat/Bitir · İsa KG girişi · Vardiya notu',
@@ -1361,7 +1526,7 @@
       },
       {
         key: 'MUHIDDIN',
-        label: 'Muhiddin',
+        label: 'MUHİDDİN',
         kind: 'OPERATOR',
         operatorCode: 'MUHİDDİN',
         desc: 'Başlat/Bitir · Muhiddin KG girişi · Vardiya notu',
@@ -1369,7 +1534,7 @@
       },
       {
         key: 'KADDUR',
-        label: 'Kaddur',
+        label: 'KADDUR',
         kind: 'OPERATOR',
         operatorCode: 'KADDUR',
         desc: 'Başlat/Bitir · Kaddur KG girişi · Vardiya notu',
@@ -1377,7 +1542,7 @@
       },
       {
         key: 'MUHAMMED',
-        label: 'Muhammed',
+        label: 'MUHAMMED',
         kind: 'OPERATOR',
         operatorCode: 'MUHAMMED',
         desc: 'Başlat/Bitir · Muhammed KG girişi · Vardiya notu',
@@ -1385,7 +1550,7 @@
       },
       {
         key: 'IZLEYICI',
-        label: 'İzleyici',
+        label: 'İZLEYİCİ',
         kind: 'VIEWER',
         operatorCode: null,
         desc: 'Sadece görüntüleme yetkisi',
@@ -1544,6 +1709,16 @@
     }
 
     function getActiveRoleProfile() {
+      const normalizedCurrent = String(currentAccountEmail || '').trim().toLowerCase();
+      if (normalizedCurrent) {
+        const gmailMatchedProfile = ROLE_PROFILES.find(r =>
+          Array.isArray(r.emails) &&
+          r.emails.some(em => String(em || '').trim().toLowerCase() === normalizedCurrent)
+        );
+        if (gmailMatchedProfile) {
+          return gmailMatchedProfile;
+        }
+      }
       return ROLE_PROFILES.find(r => r.key === currentRoleKey) || ROLE_PROFILES[0];
     }
 
@@ -1566,6 +1741,16 @@
       );
 
       return prof.kind === 'MANAGEMENT' && isCurrentMgmtGmail;
+    }
+
+    function canEditOrDeleteOrderByGmail() {
+      const normalizedCurrent = String(currentAccountEmail || '').trim().toLowerCase();
+      if (!normalizedCurrent) return false;
+      const allowedProfiles = ROLE_PROFILES.filter(r => r.kind === 'MANAGEMENT' || r.kind === 'TECHNICIAN');
+      return allowedProfiles.some(r =>
+        Array.isArray(r.emails) &&
+        r.emails.some(em => String(em || '').trim().toLowerCase() === normalizedCurrent)
+      );
     }
 
     function canDragReorderOrders() {
@@ -1633,18 +1818,19 @@
 
     function updateHeaderRoleUI() {
       const prof = getActiveRoleProfile();
+      const displayName = String(prof.label || 'YÖNETİM').toLocaleUpperCase('tr-TR');
       const badge = document.getElementById('headerUserBadge');
       const todayDateText = document.getElementById('headerTodayDateText');
       const newOrderBtn = document.getElementById('newOrderMainBtn');
       const noteOwnerEl = document.getElementById('noteOwnerDisplay');
-      if (badge) badge.textContent = prof.label;
+      if (badge) badge.textContent = displayName;
       if (todayDateText) todayDateText.textContent = formatTodayDate();
       if (newOrderBtn) {
         newOrderBtn.classList.toggle('opacity-50', prof.kind !== 'MANAGEMENT');
       }
       if (noteOwnerEl) {
         const mailText = currentAccountEmail ? ` (${currentAccountEmail})` : '';
-        noteOwnerEl.textContent = `${prof.label}${mailText}`;
+        noteOwnerEl.textContent = `${displayName}${mailText}`;
       }
     }
 
@@ -1711,9 +1897,22 @@
     function updateCurrentAccountEmail(nextEmail) {
       const cleaned = String(nextEmail || '').trim().toLowerCase();
       currentAccountEmail = cleaned;
+      const matchedProfile = ROLE_PROFILES.find(r =>
+        cleaned &&
+        Array.isArray(r.emails) &&
+        r.emails.some(em => String(em || '').trim().toLowerCase() === cleaned)
+      );
+      if (matchedProfile) {
+        currentRoleKey = matchedProfile.key;
+        draftRoleKey = matchedProfile.key;
+      }
+      updateHeaderRoleUI();
+      saveStateToStorage();
       openAccountModal();
       if (canManageGmailAssignments()) {
         showToast(`Gmail atama yetkisi aktif: ${GMAIL_ADMIN_EMAIL}`);
+      } else if (matchedProfile) {
+        showToast(`Aktif atama: ${matchedProfile.label}`);
       } else {
         showToast(`Gmail atamaları yalnızca ${GMAIL_ADMIN_EMAIL} içindir`);
       }
@@ -1767,6 +1966,12 @@
         const currentEmail = String(currentAccountEmail || '').trim().toLowerCase();
         const isCurrentMatched = Array.isArray(selectedProf.emails) && selectedProf.emails.some(em => String(em || '').trim().toLowerCase() === currentEmail);
         if (!isCurrentMatched && Array.isArray(selectedProf.emails) && selectedProf.emails.length > 0) {
+          currentAccountEmail = String(selectedProf.emails[0]).trim().toLowerCase();
+        }
+      } else if (selectedProf && Array.isArray(selectedProf.emails) && selectedProf.emails.length > 0) {
+        const currentEmail = String(currentAccountEmail || '').trim().toLowerCase();
+        const isCurrentMatched = selectedProf.emails.some(em => String(em || '').trim().toLowerCase() === currentEmail);
+        if (!isCurrentMatched) {
           currentAccountEmail = String(selectedProf.emails[0]).trim().toLowerCase();
         }
       }
@@ -2038,11 +2243,6 @@
 
     function toggleEditModalSelectMenu(event) {
       if (event) event.stopPropagation();
-      if (!hasManagementGmailIdentity()) {
-        closeEditModalSelectMenu();
-        showToast('Bu alanda yalnızca Yönetim Gmail kimliği işlem yapabilir');
-        return;
-      }
       const dropdown = document.getElementById('editModalSelectDropdown');
       if (dropdown) {
         dropdown.classList.toggle('hidden');
@@ -2051,8 +2251,16 @@
 
     function handleEditModalSelectAction(actionType) {
       closeEditModalSelectMenu();
-      if (!hasManagementGmailIdentity()) {
-        showToast('Bu alanda yalnızca Yönetim Gmail kimliği işlem yapabilir');
+      if (actionType === 'RESTART') {
+        const targetId = editingOrderId;
+        if (targetId !== null) {
+          closeModal('editModal');
+          restartCompletedOrderAsRunning(null, targetId);
+        }
+        return;
+      }
+      if (!canEditOrDeleteOrderByGmail()) {
+        showToast('DÜZENLE ve SİL işlemleri yalnızca Yönetim veya Teknisyen yetkili Gmail hesabına açıktır');
         return;
       }
       if (actionType === 'EDIT') {
@@ -2063,8 +2271,8 @@
     }
 
     function toggleOrderMetricsEditor() {
-      if (!hasManagementGmailIdentity()) {
-        showToast('Bu alanda yalnızca Yönetim Gmail kimliği işlem yapabilir');
+      if (!canEditOrDeleteOrderByGmail()) {
+        showToast('DÜZENLE işlemi yalnızca Yönetim veya Teknisyen yetkili Gmail hesabına açıktır');
         return;
       }
       isEditingMetricsMode = !isEditingMetricsMode;
@@ -2178,22 +2386,33 @@
         seqInput.disabled = !perms.canReorderOrders || getWorkStatus(order) === 'RUNNING';
       }
 
-      const canMgmtGmailAct = hasManagementGmailIdentity();
+      const canEditOrDeleteByGmail = canEditOrDeleteOrderByGmail();
       const selectMenuBtn = document.getElementById('editModalSelectMenuBtn');
       const editMetricsBtn = document.getElementById('editOrderMetricsBtn');
       const deleteOrderBtn = document.getElementById('deleteOrderModalBtn');
+      const restartOrderBtn = document.getElementById('restartOrderModalBtn');
       closeEditModalSelectMenu();
       if (selectMenuBtn) {
-        selectMenuBtn.classList.toggle('opacity-50', !canMgmtGmailAct);
+        selectMenuBtn.classList.remove('opacity-50');
       }
-      if (editMetricsBtn) editMetricsBtn.disabled = !canMgmtGmailAct;
-      if (deleteOrderBtn) deleteOrderBtn.disabled = !canMgmtGmailAct;
+      if (editMetricsBtn) {
+        editMetricsBtn.disabled = !canEditOrDeleteByGmail;
+        editMetricsBtn.classList.toggle('opacity-50', !canEditOrDeleteByGmail);
+      }
+      if (deleteOrderBtn) {
+        deleteOrderBtn.disabled = !canEditOrDeleteByGmail;
+        deleteOrderBtn.classList.toggle('opacity-50', !canEditOrDeleteByGmail);
+      }
+      if (restartOrderBtn) {
+        restartOrderBtn.disabled = false;
+        restartOrderBtn.classList.remove('opacity-50');
+      }
 
       const periodEl = document.getElementById('editModalPeriod');
+      const lastActionBadgeEl = document.getElementById('editModalLastActionBadge');
       const artiveEl = document.getElementById('editModalArtive');
       const articleEl = document.getElementById('editModalArticle');
       const summaryCardEl = document.getElementById('editModalSummaryCard');
-      const seqBadgeWrapEl = document.getElementById('editModalSeqBadgeWrap');
       const statusDotEl = document.getElementById('editModalStatusDot');
 
       const wStatus = getWorkStatus(order);
@@ -2209,19 +2428,8 @@
             ? 'bg-gradient-to-b from-orange-50/90 to-orange-100/80 border border-orange-500 border-b-[2.5px] border-b-orange-700'
             : 'bg-gradient-to-b from-slate-100 to-slate-200/85 border border-slate-300 border-b-[2.5px] border-b-slate-400');
 
-      const modalBadgeTone = isRunning
-        ? (isRunningShiftEnded
-            ? 'bg-rose-200/90 border-rose-600 text-rose-950'
-            : 'bg-emerald-200/90 border-emerald-600 text-emerald-950')
-        : (hasProduction
-            ? 'bg-orange-200/90 border-orange-600 text-orange-950'
-            : 'bg-slate-200/95 border-slate-400 text-slate-900');
-
       if (summaryCardEl) {
         summaryCardEl.className = `rounded-2xl px-3 py-2 ${modalCardTone} shadow-xs transition space-y-1.5`;
-      }
-      if (seqBadgeWrapEl) {
-        seqBadgeWrapEl.className = `inline-flex items-center justify-center shrink-0 seq-square-3d seq-square-3d-expanded border ${modalBadgeTone}`;
       }
       if (statusDotEl) {
         const dotStyle = isRunning
@@ -2230,10 +2438,20 @@
         statusDotEl.className = `w-2 h-2 rounded-full ${dotStyle} shrink-0`;
       }
 
+      const rawLast = String(order.lastActionDateTime || '').trim();
+      const dateTimeMatch = rawLast.match(/^(\d{2}\.\d{2}\.\d{4})(?:\s+(\d{1,2}:\d{2}))?/);
+      const actionDateStr = (dateTimeMatch && dateTimeMatch[1]) || order.completedDate || order.createdDate || formatTodayDate();
+      const actionTimeStr = (dateTimeMatch && dateTimeMatch[2])
+        || order.orderEndTime
+        || order.orderStartTime
+        || (order.shiftSession && (order.shiftSession.endedAt || order.shiftSession.startedAt))
+        || formatClockTime();
+
+      if (lastActionBadgeEl) {
+        lastActionBadgeEl.textContent = `${actionDateStr} · ${actionTimeStr}`;
+      }
       if (periodEl) {
-        const rawLast = String(order.lastActionDateTime || '').trim();
-        const dateOnlyMatch = rawLast.match(/^(\d{2}\.\d{2}\.\d{4})/);
-        periodEl.textContent = (dateOnlyMatch && dateOnlyMatch[1]) || order.createdDate || formatTodayDate();
+        periodEl.textContent = actionDateStr;
       }
       if (artiveEl) {
         artiveEl.innerHTML = formatArtiveHighlight(order.artive || order.article || '');
@@ -2577,6 +2795,7 @@
 
       order.closed = false;
       order.completedDate = null;
+      order.restartedFromCompleted = false;
       order.workStatus = 'RUNNING';
       order.shiftActive = true;
       order.activeOperator = op;
@@ -2609,19 +2828,42 @@
       if (!guardAction('START_STOP_ORDER')) return;
       const order = orders.find(o => o.id === editingOrderId);
       if (!order) return;
-      const op = (pendingModalShift && pendingModalShift.operator) || getActiveOperatorName(order) || getShiftPickerOperator(order);
+
+      const singleKgInput = document.getElementById('activeOperatorKgInput');
+      const selectEl = document.getElementById('operatorSelectDropdown');
+      const selectedOp = (pendingModalShift && OPERATORS.includes(pendingModalShift.operator))
+        ? pendingModalShift.operator
+        : (selectEl && OPERATORS.includes(selectEl.value) ? selectEl.value : getActiveOperatorName(order));
+
+      if (singleKgInput && selectedOp) {
+        const targetCfg = OPERATOR_INPUT_CONFIG.find(c => c.name === selectedOp);
+        if (targetCfg) {
+          const cleanedExpr = sanitizeKgExpression(singleKgInput.value).replace(/\++$/, '');
+          const parsedKg = parseKgInput(cleanedExpr);
+          draftOperatorKgValues[targetCfg.field] = parsedKg;
+          draftOperatorKgExpressions[targetCfg.field] = cleanedExpr || (parsedKg > 0 ? String(parsedKg) : '');
+          singleKgInput.value = formatKgExpressionForDisplay(draftOperatorKgExpressions[targetCfg.field], parsedKg);
+          const statValEl = document.getElementById(targetCfg.statValId);
+          if (statValEl) statValEl.textContent = fmt(parsedKg);
+        }
+        updateModalCalculatedTotals();
+      }
+
+      const op = selectedOp || getShiftPickerOperator(order);
       const nowClock = formatClockTime();
       const startedAt = (pendingModalShift && pendingModalShift.startedAt) || (order.shiftSession && order.shiftSession.startedAt) || null;
 
+      order.closed = false;
+      order.completedDate = null;
       order.workStatus = 'RUNNING';
-      order.shiftActive = true;
+      order.shiftActive = false;
       order.activeOperator = null;
       order.orderEndTime = nowClock;
       order.lastActionDateTime = formatDateTimeNow();
       expandedIdleOrderId = null;
       lastEndedShiftOrderId = order.id;
       order.shiftSession = {
-        operator: null,
+        operator: op || null,
         status: 'ENDED',
         startedAt,
         endedAt: nowClock
@@ -2634,7 +2876,6 @@
         endedAt: nowClock
       };
 
-      const selectEl = document.getElementById('operatorSelectDropdown');
       if (selectEl) {
         selectEl.value = '';
       }
@@ -2642,7 +2883,6 @@
       updateModalShiftBanner();
       syncModalOperatorRowsUI();
       normalizeOrderNumbers();
-      renderOrders();
       saveStateToStorage();
       showToast(t('shift_ended_toast', op, nowClock));
     }
@@ -2655,14 +2895,14 @@
       }
 
       const perms = getUserPermissions();
-      if (isEditingMetricsMode && hasManagementGmailIdentity()) {
+      if (isEditingMetricsMode && canEditOrDeleteOrderByGmail()) {
         const manualTon = parseFloat(document.getElementById('manualTonInput')?.value);
         if (Number.isFinite(manualTon) && manualTon > 0) {
           order.ton = Math.round(manualTon * 1000) / 1000;
         }
       }
 
-      if (perms.canEditKg && isOrderStartedForKgInput(order)) {
+      if (perms.canEditKg) {
         if (!order.operatorKgExpressions || typeof order.operatorKgExpressions !== 'object') {
           order.operatorKgExpressions = {};
         }
@@ -2696,8 +2936,8 @@
     }
 
     function deleteEditingOrder() {
-      if (!hasManagementGmailIdentity()) {
-        showToast('Bu alanda yalnızca Yönetim Gmail kimliği işlem yapabilir');
+      if (!canEditOrDeleteOrderByGmail()) {
+        showToast('SİL işlemi yalnızca Yönetim veya Teknisyen yetkili Gmail hesabına açıktır');
         return;
       }
       if (editingOrderId === null) return;
@@ -2833,6 +3073,7 @@
         });
         target.closed = false;
         target.completedDate = null;
+        target.restartedFromCompleted = false;
         target.workStatus = 'RUNNING';
         target.shiftActive = true;
         target.activeOperator = defaultOp;
@@ -2865,6 +3106,7 @@
       } else if (nextStatus === 'FINISHED') {
         target.closed = true;
         target.completedDate = formatTodayDate();
+        target.restartedFromCompleted = false;
         target.workStatus = 'FINISHED';
         target.shiftActive = false;
         target.activeOperator = null;
@@ -3024,25 +3266,44 @@
     function normalizeOrderNumbers(movedId = null, desiredNo = null) {
       const active = orders.filter(o => !o.closed && !o.cancelled).sort((a, b) => (a.orderNo || 999) - (b.orderNo || 999) || a.id - b.id);
       const runningOrder = active.find(o => getWorkStatus(o) === 'RUNNING');
-      const pausedOrders = active.filter(o => getWorkStatus(o) === 'PAUSED' && (!runningOrder || o.id !== runningOrder.id));
+      const restartedFirstOrder = active.find(o => Boolean(o.restartedFromCompleted));
+      const pausedOrders = active.filter(o =>
+        getWorkStatus(o) === 'PAUSED' &&
+        (!runningOrder || o.id !== runningOrder.id) &&
+        (!restartedFirstOrder || o.id !== restartedFirstOrder.id)
+      );
 
       if (movedId !== null && desiredNo !== null) {
         const idx = active.findIndex(o => o.id === movedId);
         if (idx !== -1) {
           const [moved] = active.splice(idx, 1);
-          const pool = active.filter(o => (!runningOrder || o.id !== runningOrder.id) && getWorkStatus(o) !== 'PAUSED');
+          const pool = active.filter(o =>
+            (!runningOrder || o.id !== runningOrder.id) &&
+            (!restartedFirstOrder || o.id !== restartedFirstOrder.id) &&
+            getWorkStatus(o) !== 'PAUSED'
+          );
           const targetIdx = Math.max(0, Math.min(pool.length, Math.floor(Number(desiredNo) || 1) - 1));
           pool.splice(targetIdx, 0, moved);
           const ordered = [...pausedOrders, ...pool];
-          if (runningOrder) {
+          if (restartedFirstOrder && restartedFirstOrder.id !== moved.id) {
+            ordered.unshift(restartedFirstOrder);
+          }
+          if (runningOrder && runningOrder.id !== moved.id) {
             ordered.unshift(runningOrder);
           }
           active.splice(0, active.length, ...ordered);
         }
       } else {
-        const restPool = active.filter(o => (!runningOrder || o.id !== runningOrder.id) && getWorkStatus(o) !== 'PAUSED');
+        const restPool = active.filter(o =>
+          (!runningOrder || o.id !== runningOrder.id) &&
+          (!restartedFirstOrder || o.id !== restartedFirstOrder.id) &&
+          getWorkStatus(o) !== 'PAUSED'
+        );
         const ordered = [...pausedOrders, ...restPool];
-        if (runningOrder) {
+        if (restartedFirstOrder) {
+          ordered.unshift(restartedFirstOrder);
+        }
+        if (runningOrder && (!restartedFirstOrder || runningOrder.id !== restartedFirstOrder.id)) {
           ordered.unshift(runningOrder);
         }
         active.splice(0, active.length, ...ordered);
@@ -3050,7 +3311,9 @@
 
       let seq = 1;
       active.forEach((o) => {
-        if (getWorkStatus(o) === 'RUNNING') {
+        if (restartedFirstOrder && o.id === restartedFirstOrder.id) {
+          o.orderNo = 1;
+        } else if (getWorkStatus(o) === 'RUNNING') {
           o.orderNo = 0;
         } else {
           o.orderNo = seq++;
@@ -3256,10 +3519,6 @@
         return true;
       });
 
-      const endedOrderObj = lastEndedShiftOrderId !== null
-        ? filtered.find(o => o.id === lastEndedShiftOrderId && getWorkStatus(o) === 'PAUSED')
-        : null;
-
       if (sort === 'BY_STATUS' || sort === 'COLOR_STATUS') {
         const rank = (item) => {
           const st = getWorkStatus(item);
@@ -3287,13 +3546,10 @@
       }
 
       const runningList = filtered.filter(o => getWorkStatus(o) === 'RUNNING');
-      const pausedList = filtered.filter(o => getWorkStatus(o) === 'PAUSED');
-      const otherList = filtered.filter(o => getWorkStatus(o) !== 'RUNNING' && getWorkStatus(o) !== 'PAUSED');
-      const isEmirlerTabActive = !document.getElementById('tab-emirler')?.classList.contains('hidden');
-      const isDefaultOrderSequence = sort === 'ORDER_NO' || sort === 'DEFAULT';
-      filtered = (isEmirlerTabActive && isDefaultOrderSequence)
-        ? [...runningList, ...pausedList, ...otherList]
-        : [...runningList, ...pausedList, ...otherList];
+      const restartedFirstList = filtered.filter(o => getWorkStatus(o) !== 'RUNNING' && Boolean(o.restartedFromCompleted));
+      const pausedList = filtered.filter(o => getWorkStatus(o) === 'PAUSED' && !o.restartedFromCompleted);
+      const otherList = filtered.filter(o => getWorkStatus(o) !== 'RUNNING' && getWorkStatus(o) !== 'PAUSED' && !o.restartedFromCompleted);
+      filtered = [...runningList, ...restartedFirstList, ...pausedList, ...otherList];
 
       const container = document.getElementById('ordersList');
       if (!container) return;
@@ -3332,6 +3588,7 @@
         const isRunning = wStatus === 'RUNNING';
         const activeOpName = getActiveOperatorName(o);
         const isRunningShiftEnded = isRunning && (!activeOpName || (o.shiftSession && o.shiftSession.status === 'ENDED'));
+        const isRestartedFromCompleted = Boolean(o.restartedFromCompleted);
         const hasProduction = !isRunning && prod > 0;
         const isCompactListItem = !isRunning;
         const isExpanded = isCompactListItem && expandedIdleOrderId === o.id;
@@ -3340,7 +3597,6 @@
         const cardHighlight = isRunning
           ? (isRunningShiftEnded ? 'order-card-3d-running-ended' : 'order-card-3d-running')
           : (hasProduction ? 'order-card-3d-orange' : 'order-card-3d-yellow');
-        const pendingCompactCardClass = hasProduction ? 'pending-card-3d-active' : 'pending-card-3d-idle';
         const seqBoxClass = isRunning
           ? (isRunningShiftEnded
               ? 'w-5 h-5 rounded-md bg-gradient-to-b from-rose-200 to-rose-300 border border-rose-600 border-b-2 border-b-rose-800 text-rose-950 shadow-2xs'
@@ -3356,9 +3612,11 @@
               ? 'running-3d-metric-box-ended'
               : 'running-3d-metric-box')
           : 'bg-white/90 border-slate-300/90';
-        const dotColorClass = isRunning
-          ? (isRunningShiftEnded ? 'bg-rose-600' : 'bg-emerald-700')
-          : (hasProduction ? 'bg-orange-500' : 'bg-slate-600');
+        const dotColorClass = isRestartedFromCompleted
+          ? 'bg-rose-600'
+          : (isRunning
+              ? (isRunningShiftEnded ? 'bg-rose-600' : 'bg-emerald-700')
+              : (hasProduction ? 'bg-orange-500' : 'bg-slate-600'));
         const rawLastAction = String(o.lastActionDateTime || '').trim();
         const lastActionDateMatch = rawLastAction.match(/^(\d{2}\.\d{2}\.\d{4})/);
         const topDateStr = escapeHtml(
@@ -3368,7 +3626,7 @@
 
         if (isCompactListItem && !isExpanded) {
           const remNum3dClass = rest < 0 ? 'pending-num-rem-neg-3d' : 'pending-num-rem-warn-3d';
-          const rowCellBorderClass = 'border-[#B8C7D9]';
+          const rowCellBorderClass = 'border-[#B7DEC9]';
           return `
           <div data-order-card-id="${o.id}"
             draggable="${canDragCard ? 'true' : 'false'}"
@@ -3378,21 +3636,21 @@
             ondrop="handleOrderDrop(event, ${o.id})"
             ondragend="handleOrderDragEnd(event)"
             onclick="toggleIdleOrderDetailView(event, ${o.id})"
-            class="pending-row-divider pending-zebra-row rounded-none p-0 cursor-pointer transition min-h-[46px] sm:min-h-[50px] flex items-stretch">
+            class="pending-row-divider pending-zebra-row rounded-none p-0 cursor-pointer transition min-h-[38px] sm:min-h-[42px] flex items-stretch">
             <div class="flex items-stretch w-full min-w-0">
-              <div onclick="event.stopPropagation()" class="w-[19px] sm:w-[23px] shrink-0 py-2 px-0 flex items-center justify-center ltr:border-r rtl:border-l border-[#B8C7D9] bg-slate-200/45">
-                <div class="inline-flex items-center justify-center w-[12px] h-[12px] rounded-[3px] pending-seq-3d">
+              <div onclick="event.stopPropagation()" class="w-[19px] sm:w-[23px] shrink-0 py-1 px-0 flex items-center justify-center ltr:border-r rtl:border-l border-[#B7DEC9] bg-emerald-50/75">
+                <div class="inline-flex items-center justify-center w-full h-full pending-seq-3d">
                   <input type="number" inputmode="numeric" min="1" value="${o.orderNo}"
                     onchange="updateOrderNumberInline(${o.id}, this.value)"
                     onkeydown="if(event.key==='Enter'){this.blur();}"
-                    class="w-full h-full bg-transparent text-inherit text-[6.5px] font-black text-center leading-none tabular-nums rounded-[3px] outline-none" />
+                    class="w-full h-full bg-transparent text-inherit text-[7.5px] sm:text-[8.5px] font-black text-center leading-none tabular-nums outline-none" />
                 </div>
               </div>
 
-              <div class="flex-1 min-w-0 py-2 px-1.5 flex items-center">
+              <div class="flex-1 min-w-0 py-1 px-1.5 flex items-center">
                 <div class="flex items-center gap-1.5 min-w-0 w-full">
                   <span class="w-1.5 h-1.5 rounded-full ${dotColorClass} shrink-0 shadow-2xs ring-1 ring-white/80"></span>
-                  <div class="min-w-0 flex-1">
+                  <div class="min-w-0 flex-1 overflow-hidden">
                     <span class="pending-coil-highlight" title="${escapeHtml(o.artive || '')}">${formatArtiveHighlight(o.artive)}</span>
                     <span class="pending-article-sub" title="${escapeHtml(o.article || '')}">${escapeHtml(o.article || '')}</span>
                   </div>
@@ -3400,14 +3658,14 @@
               </div>
 
               <div class="grid grid-cols-3 shrink-0 w-[114px] sm:w-[144px] tabular-nums">
-                <div class="py-2 px-0.5 flex items-center justify-center leading-none ltr:border-l rtl:border-r ${rowCellBorderClass} pending-col-order-3d min-w-0">
-                  <span class="text-[9.5px] sm:text-[11.5px] tracking-tight pending-num-order-3d whitespace-nowrap">${orderCellText}</span>
+                <div class="py-1 px-0.5 flex items-center justify-center leading-none ltr:border-l rtl:border-r ${rowCellBorderClass} pending-col-order-3d min-w-0">
+                  <span class="text-[8.5px] sm:text-[10px] tracking-tight pending-num-order-3d whitespace-nowrap">${orderCellText}</span>
                 </div>
-                <div class="py-2 px-0.5 flex items-center justify-center leading-none ltr:border-l rtl:border-r ${rowCellBorderClass} pending-col-prod-3d min-w-0">
-                  <span class="text-[9.5px] sm:text-[11.5px] tracking-tight pending-num-prod-3d whitespace-nowrap">${prodCellText}</span>
+                <div class="py-1 px-0.5 flex items-center justify-center leading-none ltr:border-l rtl:border-r ${rowCellBorderClass} pending-col-prod-3d min-w-0">
+                  <span class="text-[8.5px] sm:text-[10px] tracking-tight pending-num-prod-3d whitespace-nowrap">${prodCellText}</span>
                 </div>
-                <div class="py-2 px-0.5 flex items-center justify-center leading-none ltr:border-l rtl:border-r ${rowCellBorderClass} pending-col-rem-3d min-w-0">
-                  <span class="text-[9.5px] sm:text-[11.5px] tracking-tight ${remNum3dClass} whitespace-nowrap">${remCellText}</span>
+                <div class="py-1 px-0.5 flex items-center justify-center leading-none ltr:border-l rtl:border-r ${rowCellBorderClass} pending-col-rem-3d min-w-0">
+                  <span class="text-[8.5px] sm:text-[10px] tracking-tight ${remNum3dClass} whitespace-nowrap">${remCellText}</span>
                 </div>
               </div>
             </div>
@@ -3443,11 +3701,11 @@
 
           <div class="space-y-2">
             <div>
-              <p class="text-xs font-extrabold ${isRunning ? 'running-3d-text' : ''} text-slate-950 flex flex-wrap items-center gap-1.5">
+              <p class="text-xs font-extrabold ${isRunning ? 'running-3d-text' : ''} text-slate-950 flex flex-wrap items-center gap-1.5 min-w-0 emirler-card-text-clip">
                 <span class="w-2 h-2 rounded-full ${dotColorClass} shrink-0 shadow-xs"></span>
-                <span>${formatArtiveHighlight(o.artive)}</span>
+                <span class="min-w-0 emirler-card-text-clip">${formatArtiveHighlight(o.artive)}</span>
               </p>
-              <h3 class="text-[10.5px] leading-snug font-semibold ${isRunning ? 'running-3d-text text-slate-800' : 'text-slate-700'} mt-0.5">${escapeHtml(o.article)}</h3>
+              <h3 class="text-[10.5px] leading-snug font-semibold ${isRunning ? 'running-3d-text text-slate-800' : 'text-slate-700'} mt-0.5 min-w-0 emirler-card-text-clip">${escapeHtml(o.article)}</h3>
             </div>
 
             <div class="grid grid-cols-3 ${metricBoxClass} border rounded-xl py-2 px-2 text-center tabular-nums">
@@ -3470,31 +3728,67 @@
         </div>`;
       };
 
-      const runningCardsHtml = filtered.filter(o => getWorkStatus(o) === 'RUNNING').map(renderOrderCard).join('');
-      const endedOrderCardHtml = (isEmirlerTabActive && endedOrderObj) ? renderOrderCard(endedOrderObj) : '';
-      const remainingCardsHtml = filtered
-        .filter(o => getWorkStatus(o) !== 'RUNNING' && (!endedOrderCardHtml || o.id !== endedOrderObj.id))
+      const runningOrdersFiltered = filtered.filter(o => getWorkStatus(o) === 'RUNNING');
+      const runningCardsHtml = runningOrdersFiltered.length > 0
+        ? runningOrdersFiltered.map(renderOrderCard).join('')
+        : `
+          <div id="noRunningOrderBox" class="rounded-2xl p-3 order-card-3d-empty-amber min-h-[168px] flex flex-col justify-between space-y-2">
+            <div class="flex items-center justify-between gap-2 opacity-40 pointer-events-none">
+              <span class="w-5 h-5 rounded-md bg-amber-200/80 border border-amber-500/50"></span>
+              <span class="h-[22px] w-20 rounded-lg bg-white/70 border border-amber-400/50"></span>
+              <span class="h-[18px] w-12 rounded-md bg-amber-200/80 border border-amber-500/50"></span>
+            </div>
+            <div class="flex-1 flex flex-col items-center justify-center py-4 text-center">
+              <span class="text-xs font-extrabold text-amber-950">${escapeHtml(t('no_running_order_box'))}</span>
+            </div>
+          </div>`;
+
+      const remainingList = filtered.filter(o => getWorkStatus(o) !== 'RUNNING').sort((a, b) => {
+        const aFirst = a.restartedFromCompleted ? 0 : 1;
+        const bFirst = b.restartedFromCompleted ? 0 : 1;
+        if (aFirst !== bFirst) return aFirst - bFirst;
+        return (a.orderNo || 999) - (b.orderNo || 999) || a.id - b.id;
+      });
+      const remainingCardsHtml = remainingList
         .map(renderOrderCard)
         .join('');
 
+      const remTotalOrderKg = remainingList.reduce((acc, item) => acc + (Number(item.ton) || 0), 0);
+      const remTotalProdKg = remainingList.reduce((acc, item) => acc + getProd(item), 0);
+      const remTotalDiffKg = remTotalOrderKg - remTotalProdKg;
+      const remFooterDiffClass = remTotalDiffKg < 0 ? 'text-rose-700' : 'text-[#0F5C45]';
+
       const excelHeaderRowHtml = remainingCardsHtml
         ? `
-          <div class="flex items-stretch pending-excel-header-3d text-[9px] font-black uppercase tracking-tight tabular-nums select-none">
-            <div class="w-[19px] sm:w-[23px] shrink-0 py-1.5 px-0 flex items-center justify-center ltr:border-r rtl:border-l border-slate-600/80 text-[8px]">#</div>
-            <div class="flex-1 min-w-0 py-1.5 px-1.5 flex items-center truncate">ARTIVE / ARTICLE</div>
+          <div class="flex items-stretch pending-excel-header-3d text-[8px] font-black uppercase tracking-tight tabular-nums select-none">
+            <div class="w-[19px] sm:w-[23px] shrink-0 py-1 px-0 flex items-center justify-center ltr:border-r rtl:border-l border-emerald-950/35 text-[7.5px]">#</div>
+            <div class="flex-1 min-w-0 py-1 px-1.5 flex items-center truncate">ARTIVE / ARTICLE</div>
             <div class="grid grid-cols-3 shrink-0 w-[114px] sm:w-[144px] text-center">
-              <span class="py-1.5 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-slate-600/80 truncate">${escapeHtml(t('metric_order'))}</span>
-              <span class="py-1.5 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-slate-600/80 truncate">${escapeHtml(t('metric_prod'))}</span>
-              <span class="py-1.5 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-slate-600/80 truncate">${escapeHtml(t('metric_rem'))}</span>
+              <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-emerald-950/35 truncate">${escapeHtml(t('metric_order'))}</span>
+              <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-emerald-950/35 truncate">${escapeHtml(t('metric_prod'))}</span>
+              <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-emerald-950/35 truncate">${escapeHtml(t('metric_rem'))}</span>
+            </div>
+          </div>`
+        : '';
+
+      const excelFooterRowHtml = remainingCardsHtml
+        ? `
+          <div class="flex items-stretch pending-excel-footer-3d text-[8px] sm:text-[9px] font-black tabular-nums select-none">
+            <div class="w-[19px] sm:w-[23px] shrink-0 py-1 px-0 flex items-center justify-center ltr:border-r rtl:border-l border-emerald-700/35 text-[8px] text-[#0F5C45]">Σ</div>
+            <div class="flex-1 min-w-0 py-1 px-1.5 flex items-center truncate text-[#064E3B] uppercase">${escapeHtml(t('yearly_grand_total_short'))}</div>
+            <div class="grid grid-cols-3 shrink-0 w-[114px] sm:w-[144px] text-center">
+              <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-emerald-700/35 text-[#064E3B] whitespace-nowrap">${fmt(remTotalOrderKg)}</span>
+              <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-emerald-700/35 text-[#0F5C45] whitespace-nowrap">${fmt(remTotalProdKg)}</span>
+              <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-emerald-700/35 ${remFooterDiffClass} whitespace-nowrap">${fmt(remTotalDiffKg)}</span>
             </div>
           </div>`
         : '';
 
       const remainingGroupHtml = remainingCardsHtml
-        ? `<div class="pending-rows-stack min-h-[calc(100vh-235px)] flex flex-col justify-between">${excelHeaderRowHtml}<div class="flex-1 flex flex-col justify-between">${remainingCardsHtml}</div></div>`
+        ? `<div class="pending-rows-stack my-1 flex flex-col justify-between">${excelHeaderRowHtml}<div class="flex-1 flex flex-col justify-between">${remainingCardsHtml}</div>${excelFooterRowHtml}</div>`
         : '';
 
-      container.innerHTML = runningCardsHtml + metaBarHtml + endedOrderCardHtml + remainingGroupHtml;
+      container.innerHTML = runningCardsHtml + metaBarHtml + remainingGroupHtml;
     }
 
     function parseKgInput(rawVal) {
@@ -3543,39 +3837,44 @@
         return;
       }
 
-      const activeRunningOrder = getCurrentlyRunningOrder(id);
-      if (activeRunningOrder) {
-        showToast(t('active_order_running_warning', activeRunningOrder.orderNo || activeRunningOrder.id));
-        renderCompletedOrders();
-        return;
-      }
-
       orders.forEach((o, i) => {
-        if (i !== idx && !o.closed && getWorkStatus(o) === 'RUNNING') {
-          o.workStatus = 'PAUSED';
-          o.shiftActive = false;
-          o.activeOperator = null;
+        if (i !== idx) {
+          o.restartedFromCompleted = false;
         }
       });
 
+      const nowClock = formatClockTime();
+
       orders[idx].closed = false;
       orders[idx].completedDate = null;
+      orders[idx].restartedFromCompleted = true;
       orders[idx].lastActionDateTime = formatDateTimeNow();
-      orders[idx].workStatus = 'RUNNING';
-      orders[idx].shiftActive = true;
-      orders[idx].activeOperator = defaultOp;
+      orders[idx].workStatus = 'IDLE';
+      orders[idx].shiftActive = false;
+      orders[idx].activeOperator = null;
       orders[idx].shiftSession = {
         operator: defaultOp,
-        status: 'ACTIVE',
-        startedAt: formatClockTime(),
+        status: 'IDLE',
+        startedAt: nowClock,
         endedAt: null
       };
 
-      normalizeOrderNumbers();
+      const [restartedOrder] = orders.splice(idx, 1);
+      orders.unshift(restartedOrder);
+
+      normalizeOrderNumbers(restartedOrder.id, 1);
+      const firstActiveOrder = orders.find(o => !o.closed && !o.cancelled && o.id === restartedOrder.id);
+      if (firstActiveOrder) {
+        firstActiveOrder.orderNo = 1;
+        firstActiveOrder.restartedFromCompleted = true;
+        firstActiveOrder.workStatus = 'IDLE';
+        firstActiveOrder.shiftActive = false;
+        firstActiveOrder.activeOperator = null;
+      }
       renderOrders();
       renderCompletedOrders();
       saveStateToStorage();
-      showToast(`#${orders[idx].orderNo} Bitenler'den çıkarıldı · Çalışıyor`);
+      showToast(`#${firstActiveOrder ? firstActiveOrder.orderNo : 1} iş emri bekleyen emirlerin 1. sırasına alındı`);
     }
 
     function renderCompletedOrders() {
@@ -3620,382 +3919,345 @@
         ? ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
         : ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
 
-      const getCompletedGroupMeta = (order) => {
-        const candidates = [order?.completedDate, order?.createdDate, order?.period];
-        for (const raw of candidates) {
-          const str = String(raw || '').trim();
-          const dmy = str.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
-          if (dmy) {
-            const mIdx = Math.max(0, Math.min(11, parseInt(dmy[2], 10) - 1));
-            const year = dmy[3];
-            return {
-              key: `${year}-${String(mIdx + 1).padStart(2, '0')}`,
-              sortKey: parseInt(`${year}${String(mIdx + 1).padStart(2, '0')}`, 10) || 0,
-              title: `${monthNames[mIdx]} ${year}`
-            };
-          }
+      const parseCompletedDateParts = (order) => {
+        const raw = String((order && (order.completedDate || order.createdDate || order.period)) || '').trim();
+        const dotMatch = raw.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})/);
+        if (dotMatch) {
+          const day = String(dotMatch[1]).padStart(2, '0');
+          const monthIdx = Math.max(0, Math.min(11, parseInt(dotMatch[2], 10) - 1));
+          const year = dotMatch[3];
+          return { day, monthName: monthNames[monthIdx], year };
         }
+        if (/eylül/i.test(raw)) {
+          return { day: '30', monthName: monthNames[8], year: '2026' };
+        }
+        const now = new Date();
         return {
-          key: 'other-period',
-          sortKey: 0,
-          title: t('sep_before')
+          day: String(now.getDate()).padStart(2, '0'),
+          monthName: monthNames[now.getMonth()],
+          year: String(now.getFullYear())
         };
       };
 
-      const renderSingleCompletedCard = (o) => {
+      const rowsHtml = list.map((o, idx) => {
         const prod = getProd(o);
-        const rest = getRest(o);
-        const isExpanded = expandedCompletedOrderId === o.id;
+        const diff = (Number(o.ton) || 0) - prod;
+        const diffClass = diff < 0 ? 'text-rose-600' : 'text-amber-700';
         const isMenuOpen = openCompletedMenuId === o.id;
-        const remToneClass = rest < 0 ? 'text-rose-700' : 'text-amber-700';
+        const isExpanded = expandedCompletedOrderId === o.id;
+        const dateParts = parseCompletedDateParts(o);
 
         return `
-          <div data-completed-card-id="${o.id}" onclick="toggleCompletedOrderExpand(event, ${o.id})"
-            class="completed-excel-row px-1.5 py-1 bg-white hover:bg-rose-50/35 active:bg-rose-50/60 transition cursor-pointer ${isExpanded ? 'bg-rose-50/45 space-y-1.5' : ''}">
-            <div class="flex items-center justify-between gap-1 w-full min-w-0">
-              <div class="flex items-center gap-1 flex-1 min-w-0">
-                <span class="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0"></span>
-                <span class="completed-coil-full flex-1 min-w-0">${formatArtiveHighlight(o.artive)}</span>
+          <div class="completed-excel-row">
+            <div onclick="toggleCompletedOrderExpand(event, ${o.id})"
+              class="flex items-stretch w-full min-w-0 cursor-pointer select-none transition">
+              <div class="w-[19px] sm:w-[23px] shrink-0 py-1 px-0 flex items-center justify-center ltr:border-r rtl:border-l border-slate-300/80 text-[7.5px] sm:text-[8.5px] font-black text-slate-600 tabular-nums bg-slate-100/70">
+                ${idx + 1}
               </div>
 
-              <div class="flex items-center gap-1 shrink-0">
-                <div class="grid grid-cols-3 w-[112px] sm:w-[132px] border border-slate-300 rounded overflow-hidden text-center tabular-nums bg-slate-50/75">
-                  <div class="py-0.5 px-0.5 flex flex-col items-center justify-center leading-none ltr:border-r rtl:border-l border-slate-300 min-w-0">
-                    <span class="text-[5.5px] font-extrabold text-slate-500 uppercase tracking-tight">${t('metric_order')}</span>
-                    <span class="text-[8px] font-black text-slate-900 mt-0.5 truncate w-full">${fmt(o.ton)}</span>
-                  </div>
-                  <div class="py-0.5 px-0.5 flex flex-col items-center justify-center leading-none ltr:border-r rtl:border-l border-slate-300 bg-emerald-50/45 min-w-0">
-                    <span class="text-[5.5px] font-extrabold text-slate-500 uppercase tracking-tight">${t('metric_prod')}</span>
-                    <span class="text-[8px] font-black text-[#146C53] mt-0.5 truncate w-full">${fmt(prod)}</span>
-                  </div>
-                  <div class="py-0.5 px-0.5 flex flex-col items-center justify-center leading-none bg-amber-50/45 min-w-0">
-                    <span class="text-[5.5px] font-extrabold text-slate-500 uppercase tracking-tight">${t('metric_rem')}</span>
-                    <span class="text-[8px] font-black ${remToneClass} mt-0.5 truncate w-full">${fmt(rest)}</span>
-                  </div>
+              <div class="flex-1 min-w-0 py-1 px-1.5 flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-rose-600 shrink-0"></span>
+                <div class="min-w-0 flex-1 overflow-hidden">
+                  <span class="completed-coil-full" title="${escapeHtml(o.artive || o.article || '')}">${escapeHtml(o.artive || o.article || '')}</span>
+                  <span class="completed-article-sub" title="${escapeHtml(o.article || '')}">${escapeHtml(o.article || '')}</span>
                 </div>
+              </div>
 
-                <div onclick="event.stopPropagation()" class="relative shrink-0">
-                  <button type="button" onclick="toggleCompletedMenu(event, ${o.id})" aria-label="İşlem Menüsü"
-                    class="inline-flex items-center justify-center w-4 h-4 rounded bg-slate-100 hover:bg-red-50 border border-slate-300 text-slate-600 hover:text-red-700 active:scale-95 transition">
-                    <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M10 6a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0 5.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0 5.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/>
-                    </svg>
-                  </button>
-                  ${isMenuOpen ? `
-                    <div class="absolute ltr:right-0 rtl:left-0 top-full mt-1 z-30 w-36 bg-white rounded-xl shadow-xl border border-slate-200 p-1">
-                      <button type="button" onclick="restartCompletedOrderAsRunning(event, ${o.id})"
-                        class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-emerald-700 hover:bg-emerald-50 transition ltr:text-left rtl:text-right">
-                        <span>${t('reopen_order_btn')}</span>
-                      </button>
-                    </div>
-                  ` : ''}
+              <div class="grid grid-cols-3 shrink-0 w-[114px] sm:w-[144px] tabular-nums text-center">
+                <div class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-slate-300/80 text-[8.5px] sm:text-[10px] font-extrabold text-slate-900 whitespace-nowrap">
+                  ${fmt(o.ton)}
+                </div>
+                <div class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-slate-300/80 text-[8.5px] sm:text-[10px] font-extrabold text-[#146C53] whitespace-nowrap">
+                  ${fmt(prod)}
+                </div>
+                <div class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-slate-300/80 text-[8.5px] sm:text-[10px] font-extrabold ${diffClass} whitespace-nowrap">
+                  ${fmt(diff)}
                 </div>
               </div>
             </div>
 
             ${isExpanded ? `
-              <div class="pt-1 border-t border-slate-200 space-y-1 text-[9.5px]">
-                <div class="text-slate-600 truncate">${escapeHtml(o.article || '')}</div>
-                <div class="flex items-center justify-between text-slate-600">
-                  <span>${t('created_date_label')}: <strong class="text-slate-800">${escapeHtml(o.createdDate || o.period || '-')}</strong></span>
-                  <span>${t('completed_date_label')}: <strong class="text-slate-800">${escapeHtml(formatCompletedDateTimeLabel(o))}</strong></span>
+              <div onclick="event.stopPropagation()" class="px-2.5 py-2 bg-rose-50/75 border-t border-rose-200/80 space-y-2">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <span class="inline-flex items-center gap-1 text-[10px] font-extrabold text-rose-800 bg-white border border-rose-200 px-2 py-0.5 rounded-md tabular-nums">
+                    <span>${escapeHtml(t('completed_date_label'))}:</span>
+                    <span>${escapeHtml(dateParts.day)} ${escapeHtml(dateParts.monthName)} ${escapeHtml(dateParts.year)}</span>
+                  </span>
+
+                  <div class="relative inline-flex items-center gap-1">
+                    <button type="button" onclick="toggleCompletedMenu(event, ${o.id})"
+                      class="inline-flex items-center gap-1 text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-white hover:bg-rose-100 text-rose-700 border border-rose-300 transition">
+                      <span>${escapeHtml(t('status_select'))}</span>
+                      <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                      </svg>
+                    </button>
+                    ${isMenuOpen ? `
+                      <div class="absolute ltr:right-0 rtl:left-0 top-full mt-1 z-30 w-36 bg-white rounded-xl shadow-xl border border-rose-200 p-1">
+                        <button type="button" onclick="restartCompletedOrderAsRunning(event, ${o.id})"
+                          class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold text-emerald-700 hover:bg-emerald-50 transition ltr:text-left rtl:text-right">
+                          <span>↻</span>
+                          <span>${escapeHtml(t('reopen_order_btn').replace(/^↻\s*/, ''))}</span>
+                        </button>
+                      </div>
+                    ` : ''}
+                  </div>
                 </div>
-                <div class="grid grid-cols-4 gap-1 text-center">
-                  <div class="bg-blue-50/70 rounded-lg py-1 px-1">
-                    <div class="text-[8.5px] font-bold text-blue-700">İSA</div>
-                    <div class="font-extrabold text-slate-800">${fmt(o.isa)}</div>
+
+                <div class="grid grid-cols-4 gap-1 text-[9.5px] tabular-nums">
+                  <div class="bg-white/95 border border-blue-200/80 rounded-lg px-1.5 py-1 text-center">
+                    <div class="text-[8px] font-bold text-blue-700 truncate">İSA</div>
+                    <div class="font-extrabold text-slate-900">${fmt(o.isa)}</div>
                   </div>
-                  <div class="bg-emerald-50/70 rounded-lg py-1 px-1">
-                    <div class="text-[8.5px] font-bold text-[#146C53]">MUHİDDİN</div>
-                    <div class="font-extrabold text-slate-800">${fmt(o.muhiddin)}</div>
+                  <div class="bg-white/95 border border-emerald-200/80 rounded-lg px-1.5 py-1 text-center">
+                    <div class="text-[8px] font-bold text-[#146C53] truncate">MUHİDDİN</div>
+                    <div class="font-extrabold text-slate-900">${fmt(o.muhiddin)}</div>
                   </div>
-                  <div class="bg-amber-50/70 rounded-lg py-1 px-1">
-                    <div class="text-[8.5px] font-bold text-amber-700">KADDUR</div>
-                    <div class="font-extrabold text-slate-800">${fmt(o.kaddur)}</div>
+                  <div class="bg-white/95 border border-amber-200/80 rounded-lg px-1.5 py-1 text-center">
+                    <div class="text-[8px] font-bold text-amber-700 truncate">KADDUR</div>
+                    <div class="font-extrabold text-slate-900">${fmt(o.kaddur)}</div>
                   </div>
-                  <div class="bg-purple-50/70 rounded-lg py-1 px-1">
-                    <div class="text-[8.5px] font-bold text-purple-700">MUHAMMED</div>
-                    <div class="font-extrabold text-slate-800">${fmt(o.muhammed)}</div>
+                  <div class="bg-white/95 border border-purple-200/80 rounded-lg px-1.5 py-1 text-center">
+                    <div class="text-[8px] font-bold text-purple-700 truncate">MUHAMMED</div>
+                    <div class="font-extrabold text-slate-900">${fmt(o.muhammed)}</div>
                   </div>
                 </div>
               </div>
             ` : ''}
           </div>`;
-      };
-
-      const groupedMap = new Map();
-      list.forEach(order => {
-        const meta = getCompletedGroupMeta(order);
-        if (!groupedMap.has(meta.key)) {
-          groupedMap.set(meta.key, {
-            key: meta.key,
-            sortKey: meta.sortKey,
-            title: meta.title,
-            items: []
-          });
-        }
-        groupedMap.get(meta.key).items.push(order);
-      });
-
-      const groups = Array.from(groupedMap.values()).sort((a, b) => b.sortKey - a.sortKey);
-
-      el.innerHTML = groups.map(group => {
-        const groupProdKg = group.items.reduce((acc, item) => acc + getProd(item), 0);
-        return `
-          <div class="space-y-1 pt-0.5">
-            <div class="flex items-center justify-between gap-2 px-2 py-0.5 rounded-lg bg-[#EBF2EE]/90 border border-[#C5D5CD]">
-              <div class="flex items-center gap-1.5 min-w-0">
-                <span class="w-1.5 h-1.5 rounded-full bg-[#146C53] shrink-0"></span>
-                <span class="text-[10px] font-extrabold text-slate-900 tracking-tight truncate">${escapeHtml(group.title)}</span>
-                <span class="text-[8.5px] font-bold text-slate-500 tabular-nums shrink-0">(${t('emir_unit', group.items.length)})</span>
-              </div>
-              <span class="text-[9px] font-extrabold text-[#146C53] tabular-nums shrink-0">${fmt(groupProdKg)} KG</span>
-            </div>
-            <div class="completed-excel-sheet rounded-lg overflow-hidden border border-slate-200 divide-y divide-slate-100">
-              ${group.items.map(renderSingleCompletedCard).join('')}
-            </div>
-          </div>`;
       }).join('');
-    }
 
-    function getCompletedOrderMonthIndex(order) {
-      const candidates = [order?.completedDate, order?.createdDate, order?.period];
-      for (const raw of candidates) {
-        const str = String(raw || '').trim();
-        if (!str) continue;
-        const dmy = str.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
-        if (dmy) {
-          const m = parseInt(dmy[2], 10);
-          if (m >= 1 && m <= 12) return m - 1;
-        }
-        const lower = str.toLowerCase();
-        if (lower.includes('oca')) return 0;
-        if (lower.includes('şub') || lower.includes('sub')) return 1;
-        if (lower.includes('mar')) return 2;
-        if (lower.includes('nis')) return 3;
-        if (lower.includes('may')) return 4;
-        if (lower.includes('haz')) return 5;
-        if (lower.includes('tem')) return 6;
-        if (lower.includes('ağu') || lower.includes('agu')) return 7;
-        if (lower.includes('eyl')) return 8;
-        if (lower.includes('eki')) return 9;
-        if (lower.includes('kas')) return 10;
-        if (lower.includes('ara')) return 11;
-      }
-      return null;
+      el.innerHTML = `
+        <div class="completed-excel-sheet">
+          <div class="flex items-stretch completed-excel-header text-[8px] font-black uppercase tracking-tight tabular-nums select-none">
+            <div class="w-[19px] sm:w-[23px] shrink-0 py-1 px-0 flex items-center justify-center ltr:border-r rtl:border-l border-rose-950/35 text-[7.5px]">#</div>
+            <div class="flex-1 min-w-0 py-1 px-1.5 flex items-center truncate">ARTIVE / ARTICLE</div>
+            <div class="grid grid-cols-3 shrink-0 w-[114px] sm:w-[144px] text-center">
+              <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-rose-950/35 truncate">${escapeHtml(t('metric_order'))}</span>
+              <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-rose-950/35 truncate">${escapeHtml(t('metric_prod'))}</span>
+              <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-rose-950/35 truncate">${escapeHtml(t('completed_total_diff'))}</span>
+            </div>
+          </div>
+          <div class="divide-y divide-slate-200/90">
+            ${rowsHtml}
+          </div>
+          <div class="flex items-stretch completed-excel-footer text-[8px] sm:text-[9px] font-black tabular-nums select-none">
+            <div class="w-[19px] sm:w-[23px] shrink-0 py-1 px-0 flex items-center justify-center ltr:border-r rtl:border-l border-rose-700/35 text-[8px]">Σ</div>
+            <div class="flex-1 min-w-0 py-1 px-1.5 flex items-center truncate uppercase">${escapeHtml(t('yearly_grand_total_short'))}</div>
+            <div class="grid grid-cols-3 shrink-0 w-[114px] sm:w-[144px] text-center">
+              <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-rose-700/35 text-slate-900 whitespace-nowrap">${fmt(sumOrderKg)}</span>
+              <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-rose-700/35 text-[#146C53] whitespace-nowrap">${fmt(sumProdKg)}</span>
+              <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-rose-700/35 ${sumDiffKg < 0 ? 'text-rose-700' : 'text-amber-800'} whitespace-nowrap">${fmt(sumDiffKg)}</span>
+            </div>
+          </div>
+        </div>`;
     }
 
     function renderReports() {
-      const monthNames = currentLang === 'ar'
-        ? ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
-        : ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+      const monthsTr = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
+      const monthsAr = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+      const months = currentLang === 'ar' ? monthsAr : monthsTr;
 
-      const shortMonthNames = currentLang === 'ar'
-        ? ['ينا', 'فبر', 'مار', 'أبر', 'ماي', 'يون', 'يول', 'أغس', 'سبت', 'أكت', 'نوف', 'ديس']
-        : ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
+      const baseOps = [
+        { name: 'İSA', roleKey: 'extruder_operator', color: 'bg-blue-600', values: [38400, 41200, 44600, 39800, 46500, 43900, 48200, 45100, 42800, 47600, 44900, 41500] },
+        { name: 'MUHİDDİN', roleKey: 'extruder_operator', color: 'bg-[#146C53]', values: [42100, 39600, 47800, 45200, 49300, 46700, 51400, 48900, 46100, 50200, 47500, 44800] },
+        { name: 'KADDUR', roleKey: 'extruder_operator', color: 'bg-amber-500', values: [35200, 36800, 40100, 38900, 42400, 40800, 44300, 41900, 39700, 43500, 41200, 38600] },
+        { name: 'MUHAMMED', roleKey: 'extruder_operator', color: 'bg-purple-600', values: [39800, 42500, 45900, 43100, 48200, 45600, 49700, 47300, 44500, 48900, 46200, 43400] }
+      ];
 
-      const monthlyStats = Array.from({ length: 12 }, (_, idx) => {
-        const mm = String(idx + 1).padStart(2, '0');
-        return {
-          monthIndex: idx,
-          label: monthNames[idx],
-          shortLabel: shortMonthNames[idx],
-          code: `01.${mm}`,
-          total: 0,
-          isa: 0,
-          muhiddin: 0,
-          kaddur: 0,
-          muhammed: 0
-        };
+      const extraNovProd = orders.reduce((s, o) => s + getProd(o), 0);
+      const extraNovIsa = orders.reduce((s, o) => s + (Number(o.isa) || 0), 0);
+      const extraNovMuh = orders.reduce((s, o) => s + (Number(o.muhiddin) || 0), 0);
+      const extraNovKad = orders.reduce((s, o) => s + (Number(o.kaddur) || 0), 0);
+      const extraNovMuhM = orders.reduce((s, o) => s + (Number(o.muhammed) || 0), 0);
+
+      const extraByMonth = Array(12).fill(0);
+      extraByMonth[10] = extraNovProd;
+
+      const monthlyTotals = months.map((_, idx) => {
+        const opSum = baseOps.reduce((sum, op) => sum + (op.values[idx] || 0), 0);
+        return opSum + (extraByMonth[idx] || 0);
       });
 
-      const completedOrders = orders.filter(o => !!(o && o.closed));
-      completedOrders.forEach(o => {
-        const mIdx = getCompletedOrderMonthIndex(o);
-        if (mIdx === null || !monthlyStats[mIdx]) return;
-        const isaVal = Number(o.isa) || 0;
-        const muhVal = Number(o.muhiddin) || 0;
-        const kadVal = Number(o.kaddur) || 0;
-        const mamVal = Number(o.muhammed) || 0;
-        const sumVal = isaVal + muhVal + kadVal + mamVal;
-        if (sumVal <= 0) return;
+      const yearlyTotal = monthlyTotals.reduce((a, b) => a + b, 0);
+      const monthlyAvg = Math.round(yearlyTotal / 12);
 
-        monthlyStats[mIdx].isa += isaVal;
-        monthlyStats[mIdx].muhiddin += muhVal;
-        monthlyStats[mIdx].kaddur += kadVal;
-        monthlyStats[mIdx].muhammed += mamVal;
-        monthlyStats[mIdx].total += sumVal;
-      });
+      const setText = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      };
 
-      const yearlyTotal = monthlyStats.reduce((acc, m) => acc + m.total, 0);
-      const activeMonths = monthlyStats.filter(m => m.total > 0);
-      const monthlyAvg = activeMonths.length > 0 ? Math.round(yearlyTotal / activeMonths.length) : 0;
+      setText('repYearly', `${fmt(yearlyTotal)} KG`);
+      setText('repAvg', `${fmt(monthlyAvg)} KG`);
 
-      const yearlyEl = document.getElementById('repYearly');
-      const avgEl = document.getElementById('repAvg');
-      const prodChartEl = document.getElementById('monthlyProdBarChart');
-      const monthlyOpBarsEl = document.getElementById('monthlyOperatorHorizontalChart');
-      const unifiedTableEl = document.getElementById('monthlyUnifiedKgTable');
-
-      if (yearlyEl) yearlyEl.textContent = `${fmt(yearlyTotal)} KG`;
-      if (avgEl) avgEl.textContent = `${fmt(monthlyAvg)} KG`;
-
-      const maxMonthVal = Math.max(1, ...monthlyStats.map(m => m.total));
-
-      if (prodChartEl) {
-        prodChartEl.innerHTML = `
-          <div class="w-full bg-white/95 border border-slate-200/80 rounded-lg px-1 py-1 shadow-2xs">
-            <div class="grid grid-cols-12 gap-[1px] items-end">
-              ${monthlyStats.map(m => {
-                const heightPct = m.total > 0
-                  ? Math.max(12, Math.min(100, Math.round((m.total / maxMonthVal) * 100)))
-                  : 4;
-                return `
-                  <div class="flex flex-col items-center space-y-0.5 min-w-0">
-                    <div class="report-vertical-track">
-                      <div class="report-vertical-bar ${m.total > 0 ? 'bg-gradient-to-t from-[#0F5C45] to-[#16916E]' : 'bg-slate-200'}" style="height: ${heightPct}%;" title="${escapeHtml(m.label)} 2026: ${fmt(m.total)} KG"></div>
-                    </div>
-                    <div class="text-center leading-none w-full">
-                      <div class="text-[7px] font-extrabold text-slate-900 whitespace-nowrap tracking-tighter">${escapeHtml(m.shortLabel)}</div>
-                    </div>
-                  </div>`;
-              }).join('')}
-            </div>
-          </div>`;
-      }
-
-      const maxOpGlobalVal = Math.max(
-        1,
-        ...monthlyStats.flatMap(m => [m.isa, m.muhiddin, m.kaddur, m.muhammed])
+      const opExtras = [extraNovIsa, extraNovMuh, extraNovKad, extraNovMuhM];
+      const opMonthlySeries = baseOps.map((op, opIdx) =>
+        op.values.map((v, mIdx) => (Number(v) || 0) + (mIdx === 10 ? (opExtras[opIdx] || 0) : 0))
       );
 
-      if (monthlyOpBarsEl) {
-        monthlyOpBarsEl.innerHTML = `
-          <div class="w-full bg-white/95 border border-slate-200/80 rounded-lg px-0.5 py-1 shadow-2xs">
-            <div class="grid grid-cols-12 gap-[1px] items-end">
-              ${monthlyStats.map(m => {
-                const opBars = [
-                  { name: 'İSA', val: m.isa, barClass: 'bg-gradient-to-t from-blue-700 to-blue-500' },
-                  { name: 'MUHİDDİN', val: m.muhiddin, barClass: 'bg-gradient-to-t from-[#0F5C45] to-emerald-500' },
-                  { name: 'KADDUR', val: m.kaddur, barClass: 'bg-gradient-to-t from-amber-600 to-amber-400' },
-                  { name: 'MUHAMMED', val: m.muhammed, barClass: 'bg-gradient-to-t from-purple-700 to-purple-500' }
-                ];
-
-                return `
-                  <div class="flex flex-col items-center bg-slate-50/85 border border-slate-200/75 rounded px-[1px] py-0.5 space-y-0.5 min-w-0">
-                      <div class="grid grid-cols-4 gap-[0.5px] w-full items-end">
-                        ${opBars.map(op => {
-                          const pct = op.val > 0
-                            ? Math.max(14, Math.min(100, Math.round((op.val / maxOpGlobalVal) * 100)))
-                            : 5;
-                          return `
-                            <div class="flex flex-col items-center justify-end min-w-0">
-                              <div class="op-vertical-track">
-                                <div class="op-vertical-bar ${op.val > 0 ? op.barClass : 'bg-slate-200'}" style="height: ${pct}%;" title="${escapeHtml(m.label)} · ${escapeHtml(op.name)}: ${fmt(op.val)} KG"></div>
-                              </div>
-                            </div>`;
-                        }).join('')}
-                      </div>
-                      <div class="text-[7px] font-extrabold text-slate-800 leading-none whitespace-nowrap tracking-tighter">${escapeHtml(m.shortLabel)}</div>
-                    </div>`;
-                }).join('')}
-              </div>
-            </div>`;
-      }
-
+      const unifiedTableEl = document.getElementById('monthlyUnifiedKgTable');
       if (unifiedTableEl) {
-        const totalIsa = monthlyStats.reduce((sum, m) => sum + m.isa, 0);
-        const totalMuh = monthlyStats.reduce((sum, m) => sum + m.muhiddin, 0);
-        const totalKad = monthlyStats.reduce((sum, m) => sum + m.kaddur, 0);
-        const totalMam = monthlyStats.reduce((sum, m) => sum + m.muhammed, 0);
-
-        const opHeaders = [
-          { label: 'İSA', shortLabel: 'İSA', dot: 'bg-blue-600', text: 'text-blue-700', headerBg: 'bg-blue-50/55', totalText: 'text-blue-300' },
-          { label: 'MUHİDDİN', shortLabel: 'MUH.', dot: 'bg-[#146C53]', text: 'text-[#146C53]', headerBg: 'bg-emerald-50/55', totalText: 'text-emerald-300' },
-          { label: 'KADDUR', shortLabel: 'KAD.', dot: 'bg-amber-500', text: 'text-amber-700', headerBg: 'bg-amber-50/55', totalText: 'text-amber-300' },
-          { label: 'MUHAMMED', shortLabel: 'MUH.M', dot: 'bg-purple-600', text: 'text-purple-700', headerBg: 'bg-purple-50/55', totalText: 'text-purple-300' }
-        ];
-
-        const formatCompactKg = (val) => {
-          const num = Number(val) || 0;
-          if (num <= 0) return '0';
-          return fmt(num);
+        const fmtCompactKg = (val) => {
+          const n = Number(val) || 0;
+          if (n >= 1000000) return `${(n / 1000000).toFixed(1).replace('.', ',')}M`;
+          if (n >= 1000) return `${Math.round(n / 1000)}K`;
+          return String(Math.round(n));
         };
 
+        const opColTotals = opMonthlySeries.map(series => series.reduce((a, b) => a + b, 0));
+
+        const bodyRowsHtml = months.map((mName, idx) => {
+          const monthTotal = monthlyTotals[idx] || 0;
+          const isaKg = opMonthlySeries[0][idx] || 0;
+          const muhKg = opMonthlySeries[1][idx] || 0;
+          const kadKg = opMonthlySeries[2][idx] || 0;
+          const muhMKg = opMonthlySeries[3][idx] || 0;
+          const isNov = idx === 10;
+
+          return `
+            <tr class="${isNov ? 'bg-emerald-50/85 font-extrabold' : 'odd:bg-white even:bg-slate-50/70'} hover:bg-emerald-50/50 transition-colors">
+              <td class="py-0.5 px-1 font-extrabold text-slate-900 whitespace-nowrap">${escapeHtml(mName)}</td>
+              <td class="py-0.5 px-0.5 text-right font-black text-[#146C53] tabular-nums whitespace-nowrap">${fmtCompactKg(monthTotal)}</td>
+              <td class="py-0.5 px-0.5 text-right font-bold text-blue-700 tabular-nums whitespace-nowrap">${fmtCompactKg(isaKg)}</td>
+              <td class="py-0.5 px-0.5 text-right font-bold text-[#146C53] tabular-nums whitespace-nowrap">${fmtCompactKg(muhKg)}</td>
+              <td class="py-0.5 px-0.5 text-right font-bold text-amber-700 tabular-nums whitespace-nowrap">${fmtCompactKg(kadKg)}</td>
+              <td class="py-0.5 px-0.5 text-right font-bold text-purple-700 tabular-nums whitespace-nowrap">${fmtCompactKg(muhMKg)}</td>
+            </tr>`;
+        }).join('');
+
         unifiedTableEl.innerHTML = `
-          <div class="w-full min-w-0 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-2xs">
-            <table class="w-full table-fixed border-collapse text-[8px] leading-[1.15] tabular-nums">
+          <div class="w-full overflow-hidden rounded-lg border border-slate-200/90 bg-white/95">
+            <table class="w-full table-fixed border-collapse text-[8px] leading-[1.15]">
               <thead>
-                <tr class="bg-slate-100/95 border-b border-slate-200">
-                  <th class="w-[15%] py-1 px-0.5 text-center font-extrabold text-slate-700 ltr:border-r rtl:border-l border-slate-200">
-                    <span class="truncate block">${escapeHtml(t('col_month'))}</span>
-                  </th>
-                  <th class="w-[17%] py-1 px-0.5 text-center font-extrabold text-slate-900 bg-emerald-50/60 ltr:border-r rtl:border-l border-slate-200">
-                    <span class="truncate block">${escapeHtml(t('col_total_short'))}</span>
-                  </th>
-                  ${opHeaders.map((op, i) => `
-                    <th class="w-[17%] py-1 px-0.5 text-center font-extrabold ${op.text} ${op.headerBg} ${i < opHeaders.length - 1 ? 'ltr:border-r rtl:border-l border-slate-200/80' : ''}">
-                      <span class="inline-flex items-center justify-center gap-0.5 max-w-full" title="${escapeHtml(op.label)}">
-                        <span class="w-1 h-1 rounded-full ${op.dot} shrink-0"></span>
-                        <span class="truncate">${escapeHtml(op.shortLabel)}</span>
-                      </span>
-                    </th>
-                  `).join('')}
+                <tr class="bg-slate-100/95 border-b border-slate-200 text-slate-600 font-extrabold uppercase tracking-tighter">
+                  <th class="w-[15%] py-1 px-1 text-left">${escapeHtml(t('col_month'))}</th>
+                  <th class="w-[17%] py-1 px-0.5 text-right text-[#0F5C45]">${escapeHtml(t('col_total_short'))}</th>
+                  <th class="w-[17%] py-1 px-0.5 text-right text-blue-700">İSA</th>
+                  <th class="w-[17%] py-1 px-0.5 text-right text-[#146C53]">MUH.</th>
+                  <th class="w-[17%] py-1 px-0.5 text-right text-amber-700">KAD.</th>
+                  <th class="w-[17%] py-1 px-0.5 text-right text-purple-700">MUH.M</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-100">
-                ${monthlyStats.map(m => {
-                  const hasProd = m.total > 0;
-                  const cells = [
-                    { val: m.isa, cls: m.isa > 0 ? 'text-slate-900 font-bold' : 'text-slate-300 font-medium' },
-                    { val: m.muhiddin, cls: m.muhiddin > 0 ? 'text-slate-900 font-bold' : 'text-slate-300 font-medium' },
-                    { val: m.kaddur, cls: m.kaddur > 0 ? 'text-slate-900 font-bold' : 'text-slate-300 font-medium' },
-                    { val: m.muhammed, cls: m.muhammed > 0 ? 'text-slate-900 font-bold' : 'text-slate-300 font-medium' }
-                  ];
-                  return `
-                    <tr class="${hasProd ? 'bg-white hover:bg-emerald-50/35' : 'bg-slate-50/45 hover:bg-slate-50'} transition-colors">
-                      <td class="py-1 px-0.5 text-center font-bold text-slate-800 ltr:border-r rtl:border-l border-slate-100 whitespace-nowrap">${escapeHtml(m.shortLabel)}</td>
-                      <td class="py-1 px-0.5 text-center font-extrabold ${hasProd ? 'text-[#0F5C45] bg-emerald-50/30' : 'text-slate-400 font-semibold'} ltr:border-r rtl:border-l border-slate-100 whitespace-nowrap">${formatCompactKg(m.total)}</td>
-                      ${cells.map((c, idx) => `
-                        <td class="py-1 px-0.5 text-center ${c.cls} ${idx < cells.length - 1 ? 'ltr:border-r rtl:border-l border-slate-100' : ''} whitespace-nowrap">${formatCompactKg(c.val)}</td>
-                      `).join('')}
-                    </tr>`;
-                }).join('')}
+                ${bodyRowsHtml}
               </tbody>
               <tfoot>
-                <tr class="bg-slate-900 text-white font-extrabold border-t-2 border-slate-900">
-                  <td class="py-1 px-0.5 text-center text-[7px] uppercase tracking-tighter ltr:border-r rtl:border-l border-slate-700 whitespace-nowrap">${escapeHtml(t('yearly_grand_total_short'))}</td>
-                  <td class="py-1 px-0.5 text-center text-emerald-300 ltr:border-r rtl:border-l border-slate-700 whitespace-nowrap">${formatCompactKg(yearlyTotal)}</td>
-                  <td class="py-1 px-0.5 text-center ${opHeaders[0].totalText} ltr:border-r rtl:border-l border-slate-700 whitespace-nowrap">${formatCompactKg(totalIsa)}</td>
-                  <td class="py-1 px-0.5 text-center ${opHeaders[1].totalText} ltr:border-r rtl:border-l border-slate-700 whitespace-nowrap">${formatCompactKg(totalMuh)}</td>
-                  <td class="py-1 px-0.5 text-center ${opHeaders[2].totalText} ltr:border-r rtl:border-l border-slate-700 whitespace-nowrap">${formatCompactKg(totalKad)}</td>
-                  <td class="py-1 px-0.5 text-center ${opHeaders[3].totalText} whitespace-nowrap">${formatCompactKg(totalMam)}</td>
+                <tr class="bg-emerald-100/75 border-t-2 border-[#146C53]/40 font-black text-slate-900">
+                  <td class="py-1 px-1 text-left text-[7.5px] uppercase whitespace-nowrap">${escapeHtml(t('yearly_grand_total_short'))}</td>
+                  <td class="py-1 px-0.5 text-right text-[#0F5C45] tabular-nums whitespace-nowrap">${fmtCompactKg(yearlyTotal)}</td>
+                  <td class="py-1 px-0.5 text-right text-blue-800 tabular-nums whitespace-nowrap">${fmtCompactKg(opColTotals[0])}</td>
+                  <td class="py-1 px-0.5 text-right text-[#0F5C45] tabular-nums whitespace-nowrap">${fmtCompactKg(opColTotals[1])}</td>
+                  <td class="py-1 px-0.5 text-right text-amber-800 tabular-nums whitespace-nowrap">${fmtCompactKg(opColTotals[2])}</td>
+                  <td class="py-1 px-0.5 text-right text-purple-800 tabular-nums whitespace-nowrap">${fmtCompactKg(opColTotals[3])}</td>
                 </tr>
               </tfoot>
             </table>
           </div>`;
       }
+
+      const barChartEl = document.getElementById('monthlyProdBarChart');
+      if (barChartEl) {
+        const maxMonthVal = Math.max(1, ...monthlyTotals);
+        barChartEl.innerHTML = `
+          <div class="grid grid-cols-12 gap-0.5 items-end w-full pt-1">
+            ${months.map((mName, idx) => {
+              const val = monthlyTotals[idx] || 0;
+              const pct = Math.max(6, Math.min(100, Math.round((val / maxMonthVal) * 100)));
+              const isPeak = val === maxMonthVal;
+              const barColor = isPeak
+                ? 'bg-gradient-to-t from-[#0F5C45] to-emerald-400'
+                : 'bg-gradient-to-t from-[#146C53] to-teal-400';
+              return `
+                <div class="flex flex-col items-center min-w-0">
+                  <span class="text-[6.5px] font-extrabold text-slate-700 tabular-nums leading-none mb-0.5 truncate w-full text-center">${Math.round(val / 1000)}k</span>
+                  <div class="report-vertical-track">
+                    <div class="report-vertical-bar ${barColor}" style="height: ${pct}%" title="${escapeHtml(mName)}: ${fmt(val)} KG"></div>
+                  </div>
+                  <span class="text-[7.5px] font-extrabold text-slate-700 leading-none mt-1 truncate w-full text-center">${escapeHtml(mName)}</span>
+                </div>`;
+            }).join('')}
+          </div>`;
+      }
+
+      const opHorizEl = document.getElementById('monthlyOperatorHorizontalChart');
+      if (opHorizEl) {
+        const opColors = [
+          'bg-gradient-to-t from-blue-700 to-blue-400',
+          'bg-gradient-to-t from-[#0F5C45] to-emerald-400',
+          'bg-gradient-to-t from-amber-600 to-amber-300',
+          'bg-gradient-to-t from-purple-700 to-purple-400'
+        ];
+        const opShortLabels = ['İSA', 'MUH.', 'KAD.', 'MUH.M'];
+        const maxSingleOpMonth = Math.max(1, ...opMonthlySeries.flat());
+
+        opHorizEl.innerHTML = `
+          <div class="grid grid-cols-12 gap-0.5 items-end w-full pt-1">
+            ${months.map((mName, mIdx) => {
+              const barsHtml = opMonthlySeries.map((series, opIdx) => {
+                const v = series[mIdx] || 0;
+                const hPct = Math.max(6, Math.min(100, Math.round((v / maxSingleOpMonth) * 100)));
+                return `
+                  <div class="flex-1 flex flex-col items-center h-full justify-end min-w-0">
+                    <div class="op-vertical-bar ${opColors[opIdx]}" style="height: ${hPct}%" title="${escapeHtml(mName)} · ${opShortLabels[opIdx]}: ${fmt(v)} KG"></div>
+                  </div>`;
+              }).join('');
+
+              return `
+                <div class="flex flex-col items-center min-w-0">
+                  <div class="op-vertical-track">
+                    <div class="w-full h-full flex items-end justify-center gap-[1px]">
+                      ${barsHtml}
+                    </div>
+                  </div>
+                  <span class="text-[7.5px] font-extrabold text-slate-700 leading-none mt-1 truncate w-full text-center">${escapeHtml(mName)}</span>
+                </div>`;
+            }).join('')}
+          </div>`;
+      }
+    }
+
+    function renderNotes() {
+      const badge = document.getElementById('notesCountBadge');
+      const listEl = document.getElementById('notesList');
+      const perms = getUserPermissions();
+      if (badge) badge.textContent = t('notes_unit', notes.length);
+      if (!listEl) return;
+
+      if (!notes.length) {
+        listEl.innerHTML = `<div class="pro-card rounded-2xl p-6 text-center text-xs text-slate-400">Henüz vardiya notu eklenmemiş.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = notes.map(n => `
+        <div class="pro-card rounded-2xl p-3.5 flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1 space-y-1">
+            <div class="flex items-center gap-2 text-[11px] font-bold text-[#146C53]">
+              <span>${escapeHtml(n.author || getActiveRoleProfile().label)}</span>
+              <span class="text-slate-400">•</span>
+              <span class="text-slate-400 font-medium">${escapeHtml(n.time || '')}</span>
+            </div>
+            <p class="text-xs text-slate-800 font-medium break-words">${escapeHtml(n.text)}</p>
+          </div>
+          ${perms.canDeleteNote ? `<button type="button" onclick="deleteNote(${n.id})" class="px-2.5 py-1 rounded-lg bg-rose-50 text-rose-600 text-[11px] font-bold hover:bg-rose-100 shrink-0">${t('delete_note_btn')}</button>` : ''}
+        </div>`).join('');
     }
 
     function addNote() {
       if (!guardAction('ADD_NOTE')) return;
       const input = document.getElementById('noteInput');
-      const text = (input?.value || '').trim();
+      const text = String(input?.value || '').trim();
       if (!text) return;
-
-      const prof = getActiveRoleProfile();
-      const authorLabel = currentAccountEmail ? `${prof.label} (${currentAccountEmail})` : prof.label;
 
       const now = new Date();
       const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} · ${formatTodayDate()}`;
-
+      const authorName = getActiveRoleProfile().label;
       notes.unshift({
         id: Date.now(),
-        operator: authorLabel,
-        text,
-        time: timeStr
+        author: authorName,
+        email: currentAccountEmail,
+        time: timeStr,
+        text
       });
-
       if (input) input.value = '';
       renderNotes();
       saveStateToStorage();
@@ -4010,49 +4272,22 @@
       showToast('Not silindi');
     }
 
-    function renderNotes() {
-      const listEl = document.getElementById('notesList');
-      const badgeEl = document.getElementById('notesCountBadge');
-      const perms = getUserPermissions();
-      if (badgeEl) badgeEl.textContent = t('notes_unit', notes.length);
-      if (!listEl) return;
-
-      if (!notes.length) {
-        listEl.innerHTML = `<div class="pro-card rounded-2xl p-8 text-center text-xs text-slate-400">Henüz vardiya notu eklenmedi.</div>`;
-        return;
-      }
-
-      listEl.innerHTML = notes.map(n => `
-        <div class="pro-card rounded-2xl p-3.5 space-y-1.5">
-          <div class="flex items-center justify-between gap-2">
-            <span class="text-xs font-extrabold text-[#146C53] truncate">${escapeHtml(n.operator)}</span>
-            <div class="flex items-center gap-2 shrink-0">
-              <span class="text-[10px] text-slate-400 tabular-nums">${escapeHtml(n.time)}</span>
-              ${perms.canDeleteNote ? `<button type="button" onclick="deleteNote(${n.id})" class="text-[10px] font-bold text-rose-600 hover:underline">${t('delete_note_btn')}</button>` : ''}
-            </div>
-          </div>
-          <p class="text-xs text-slate-800 leading-relaxed whitespace-pre-line">${escapeHtml(n.text)}</p>
-        </div>`).join('');
-    }
-
     function applyTranslations() {
-      const htmlEl = document.documentElement;
-      if (htmlEl) {
-        htmlEl.lang = currentLang;
-        htmlEl.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-      }
-      const langLbl = document.getElementById('langToggleLabel');
-      if (langLbl) {
-        langLbl.textContent = currentLang === 'ar' ? '🇹🇷' : '🇩🇿';
-      }
+      document.documentElement.lang = currentLang;
+      document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+      const langLabel = document.getElementById('langToggleLabel');
+      if (langLabel) langLabel.textContent = currentLang === 'ar' ? '🇹🇷' : '🇩🇿';
 
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (key) el.textContent = t(key);
+        const val = t(key);
+        if (typeof val === 'string') el.textContent = val;
       });
+
       document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
         const key = el.getAttribute('data-i18n-placeholder');
-        if (key) el.setAttribute('placeholder', t(key));
+        const val = t(key);
+        if (typeof val === 'string') el.placeholder = val;
       });
     }
 
@@ -4069,27 +4304,25 @@
     }
 
     function switchTab(tabName) {
-      const prevIdx = TAB_ORDER.indexOf(lastActiveTabName);
-      const nextIdx = TAB_ORDER.indexOf(tabName);
-      const isRtl = document.documentElement?.dir === 'rtl';
+      const tabs = ['emirler', 'tamamlanan', 'ozet', 'operasyon', 'raporlar', 'notlar'];
+      if (!tabs.includes(tabName)) tabName = 'emirler';
 
-      let enterAnimClass = 'tab-page-enter-fade';
-      if (prevIdx !== -1 && nextIdx !== -1 && prevIdx !== nextIdx) {
-        const movingForward = nextIdx > prevIdx;
-        if (isRtl) {
-          enterAnimClass = movingForward ? 'tab-page-enter-left' : 'tab-page-enter-right';
-        } else {
-          enterAnimClass = movingForward ? 'tab-page-enter-right' : 'tab-page-enter-left';
-        }
-      }
+      const prevIndex = TAB_ORDER.indexOf(lastActiveTabName);
+      const nextIndex = TAB_ORDER.indexOf(tabName);
+      const enterAnimClass = prevIndex === -1 || nextIndex === -1 || prevIndex === nextIndex
+        ? 'tab-page-enter-fade'
+        : (nextIndex > prevIndex ? 'tab-page-enter-right' : 'tab-page-enter-left');
 
-      document.querySelectorAll('main > section[id^="tab-"]').forEach(sec => {
-        const isTarget = sec.id === `tab-${tabName}`;
+      tabs.forEach(name => {
+        const sec = document.getElementById(`tab-${name}`);
+        if (!sec) return;
         sec.classList.remove('tab-page-enter-right', 'tab-page-enter-left', 'tab-page-enter-fade');
-        sec.classList.toggle('hidden', !isTarget);
-        if (isTarget) {
+        if (name === tabName) {
+          sec.classList.remove('hidden');
           void sec.offsetWidth;
           sec.classList.add(enterAnimClass);
+        } else {
+          sec.classList.add('hidden');
         }
       });
 
@@ -4097,20 +4330,28 @@
 
       document.querySelectorAll('#bottomNavBar .nav-btn').forEach(btn => {
         const isAct = btn.getAttribute('data-nav') === tabName;
-        btn.className = isAct
-          ? 'nav-btn nav-btn-active relative flex flex-col items-center justify-center py-1 px-1.5 rounded-2xl bg-emerald-50/95 ring-1 ring-emerald-600/35 text-[#0F5C45] transition'
-          : 'nav-btn relative flex flex-col items-center justify-center py-1 px-1.5 rounded-2xl bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition';
+        btn.classList.toggle('nav-btn-active', isAct);
+        btn.classList.toggle('bg-emerald-50/95', isAct);
+        btn.classList.toggle('ring-1', isAct);
+        btn.classList.toggle('ring-emerald-600/35', isAct);
+        btn.classList.toggle('text-[#0F5C45]', isAct);
+        btn.classList.toggle('bg-transparent', !isAct);
+        btn.classList.toggle('text-slate-500', !isAct);
         const iconWrap = btn.querySelector('.nav-icon-wrap');
         if (iconWrap) {
-          iconWrap.className = isAct
-            ? 'nav-icon-wrap w-8 h-6 rounded-xl bg-[#146C53] text-white flex items-center justify-center shadow-xs ring-2 ring-emerald-200/90'
-            : 'nav-icon-wrap w-8 h-6 rounded-xl bg-transparent text-slate-500 flex items-center justify-center';
+          iconWrap.classList.toggle('bg-[#146C53]', isAct);
+          iconWrap.classList.toggle('text-white', isAct);
+          iconWrap.classList.toggle('shadow-xs', isAct);
+          iconWrap.classList.toggle('ring-2', isAct);
+          iconWrap.classList.toggle('ring-emerald-200/90', isAct);
+          iconWrap.classList.toggle('bg-transparent', !isAct);
+          iconWrap.classList.toggle('text-slate-500', !isAct);
         }
-        const labelEl = btn.querySelector('span[data-i18n]');
+        const labelEl = btn.querySelector('[data-i18n]');
         if (labelEl) {
-          labelEl.className = isAct
-            ? 'text-[10px] font-extrabold leading-none mt-1 tracking-tight text-[#0F5C45]'
-            : 'text-[10px] font-medium leading-none mt-1 tracking-tight';
+          labelEl.classList.toggle('font-extrabold', isAct);
+          labelEl.classList.toggle('text-[#0F5C45]', isAct);
+          labelEl.classList.toggle('font-medium', !isAct);
         }
       });
 
@@ -4120,78 +4361,108 @@
       if (tabName === 'operasyon') renderOperationTab();
       if (tabName === 'raporlar') renderReports();
       if (tabName === 'notlar') renderNotes();
+
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
-    const STORAGE_KEY = 'extruder_production_state_v1';
+    const STORAGE_KEY = 'EXTRUDER_WORK_ORDERS_STATE_V1';
 
     function saveStateToStorage() {
       try {
         pruneExpiredAddedOrders();
-        const roleEmailsMap = {};
-        ROLE_PROFILES.forEach(r => {
-          roleEmailsMap[r.key] = Array.isArray(r.emails) ? [...r.emails] : [];
-        });
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({
-          orders,
-          notes,
+        const payload = {
+          currentLang,
           currentRoleKey,
           currentAccountEmail,
-          currentLang,
+          roleEmailAssignments: ROLE_PROFILES.map(r => ({ key: r.key, emails: Array.isArray(r.emails) ? r.emails : [] })),
           addedOrdersCount,
           addedOrderTimestamps,
-          roleEmailsMap
-        }));
+          orders,
+          notes
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
       } catch (e) {}
     }
 
     function loadStateFromStorage() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return false;
-        const parsed = JSON.parse(raw);
-        if (parsed && Array.isArray(parsed.orders) && parsed.orders.length > 0) {
-          orders = parsed.orders.map(o => ensureOrderDates(o));
-          notes = Array.isArray(parsed.notes) ? parsed.notes : [];
-          if (parsed.currentRoleKey) currentRoleKey = parsed.currentRoleKey;
-          if (typeof parsed.currentAccountEmail === 'string') currentAccountEmail = parsed.currentAccountEmail;
-          if (parsed.currentLang) currentLang = parsed.currentLang;
-          if (Array.isArray(parsed.addedOrderTimestamps)) {
-            addedOrderTimestamps = parsed.addedOrderTimestamps.filter(ts => Number.isFinite(Number(ts)));
-            pruneExpiredAddedOrders();
-          } else {
-            addedOrderTimestamps = [];
-            addedOrdersCount = 0;
-          }
-          if (parsed.roleEmailsMap && typeof parsed.roleEmailsMap === 'object') {
-            ROLE_PROFILES.forEach(r => {
-              if (Array.isArray(parsed.roleEmailsMap[r.key])) {
-                r.emails = [...parsed.roleEmailsMap[r.key]];
-              }
-            });
-          }
-          return true;
+        if (!raw) {
+          orders = INITIAL_ORDERS.map(o => ensureOrderDates({ ...o }));
+          notes = [...INITIAL_NOTES];
+          addedOrderTimestamps = [];
+          addedOrdersCount = 0;
+          return;
         }
-      } catch (e) {}
-      return false;
-    }
-
-    function initApp() {
-      const loaded = loadStateFromStorage();
-      if (!loaded) {
+        const parsed = JSON.parse(raw);
+        if (parsed.currentLang === 'tr' || parsed.currentLang === 'ar') {
+          currentLang = parsed.currentLang;
+        }
+        if (typeof parsed.currentAccountEmail === 'string') {
+          currentAccountEmail = parsed.currentAccountEmail.trim().toLowerCase();
+        }
+        if (Array.isArray(parsed.roleEmailAssignments)) {
+          parsed.roleEmailAssignments.forEach(item => {
+            const prof = ROLE_PROFILES.find(r => r.key === item.key);
+            if (prof && Array.isArray(item.emails)) {
+              prof.emails = item.emails.map(em => String(em || '').trim().toLowerCase()).filter(Boolean);
+            }
+          });
+        }
+        const adminProfile = ROLE_PROFILES.find(r => r.key === 'YONETIM');
+        if (adminProfile) {
+          if (!Array.isArray(adminProfile.emails)) adminProfile.emails = [];
+          if (!adminProfile.emails.some(em => String(em || '').toLowerCase() === GMAIL_ADMIN_EMAIL.toLowerCase())) {
+            adminProfile.emails.unshift(GMAIL_ADMIN_EMAIL.toLowerCase());
+          }
+        }
+        if (typeof parsed.currentRoleKey === 'string' && ROLE_PROFILES.some(r => r.key === parsed.currentRoleKey)) {
+          currentRoleKey = parsed.currentRoleKey;
+        }
+        if (Array.isArray(parsed.addedOrderTimestamps)) {
+          addedOrderTimestamps = parsed.addedOrderTimestamps.map(n => Number(n)).filter(n => Number.isFinite(n) && n > 0);
+        } else if (Number(parsed.addedOrdersCount) > 0) {
+          const fallbackCount = Math.min(50, Math.floor(Number(parsed.addedOrdersCount)));
+          addedOrderTimestamps = Array.from({ length: fallbackCount }, () => Date.now());
+        } else {
+          addedOrderTimestamps = [];
+        }
+        pruneExpiredAddedOrders();
+        if (Array.isArray(parsed.orders) && parsed.orders.length > 0) {
+          orders = parsed.orders.map(o => ensureOrderDates({ ...o }));
+        } else {
+          orders = INITIAL_ORDERS.map(o => ensureOrderDates({ ...o }));
+        }
+        if (Array.isArray(parsed.notes)) {
+          notes = parsed.notes;
+        } else {
+          notes = [...INITIAL_NOTES];
+        }
+      } catch (e) {
         orders = INITIAL_ORDERS.map(o => ensureOrderDates({ ...o }));
         notes = [...INITIAL_NOTES];
       }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        ['editModal', 'newOrderModal', 'accountModal'].forEach(id => closeModal(id));
+      }
+    });
+
+    function initApp() {
+      loadStateFromStorage();
       normalizeOrderNumbers();
       applyTranslations();
       updateHeaderRoleUI();
-      updateAddedOrdersBadge();
       renderOrders();
       renderCompletedOrders();
+      renderReports();
       renderNotes();
-      saveStateToStorage();
+      switchTab('emirler');
     }
 
-    window.addEventListener('DOMContentLoaded', initApp);
+    initApp();
   </script>
 </body>
 </html>
