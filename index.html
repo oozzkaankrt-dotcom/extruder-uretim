@@ -755,6 +755,11 @@
     </div>
 
     <div class="flex items-center gap-1.5 shrink-0">
+      <!-- Canlı Senkronizasyon Durum Rozeti -->
+      <span id="liveSyncBadge" title="Canlı Çok Kullanıcılı Senkronizasyon Durumu" class="inline-flex items-center gap-1 bg-white/85 border border-[#B5C9C0] px-2 py-1 rounded-full text-[9.5px] font-extrabold text-slate-600 shadow-2xs transition">
+        <span id="liveSyncDot" class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+        <span id="liveSyncText">Bağlanıyor</span>
+      </span>
       <!-- Rol / Hesap Rozeti -->
       <button id="headerRoleBtn" type="button" onclick="openAccountModal()" title="Rol & Hesap Seçimi" class="inline-flex items-center gap-1.5 bg-white/85 hover:bg-white border border-[#B5C9C0] px-2.5 py-1 rounded-full text-[10px] font-extrabold text-[#0F5C45] shadow-2xs active:scale-95 transition">
         <span class="w-1.5 h-1.5 rounded-full bg-[#146C53]"></span>
@@ -983,34 +988,83 @@
 
       <div id="notesList" class="space-y-2.5"></div>
     </section>
+
+    <!-- TAB 7: AYRI İŞLEM GEÇMİŞİ & ÇÖP KUTUSU ALANI -->
+    <section id="tab-gecmis-cop" class="hidden space-y-3 pb-2">
+      <div class="flex items-start justify-between gap-2 pt-1">
+        <div>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 app-section-title">Geçmiş &amp; Çöp Kutusu</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Tüm işlem kayıtlarını izleyin ve silinen iş emirlerini yönetin.</p>
+        </div>
+        <button type="button" onclick="switchTab('emirler')" class="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-xs font-extrabold text-slate-800 shadow-2xs active:scale-95 transition">
+          <span>← Emirler</span>
+        </button>
+      </div>
+
+      <!-- Alt Alan Seçicisi: İşlem Geçmişi / Çöp Kutusu -->
+      <div class="grid grid-cols-2 gap-2 p-1 rounded-2xl bg-white/80 border border-slate-200/90 shadow-2xs">
+        <button id="subTabHistoryBtn" type="button" onclick="setAuditTrashSubTab('HISTORY')" class="py-2 px-3 rounded-xl text-xs font-extrabold bg-[#146C53] text-white shadow-2xs transition flex items-center justify-center gap-1.5">
+          <span>🕒 İşlem Geçmişi</span>
+          <span id="subTabHistoryCount" class="px-1.5 py-0.5 rounded-full bg-white/20 text-[10px] tabular-nums">0</span>
+        </button>
+        <button id="subTabTrashBtn" type="button" onclick="setAuditTrashSubTab('TRASH')" class="py-2 px-3 rounded-xl text-xs font-extrabold bg-transparent text-slate-700 hover:bg-slate-100 transition flex items-center justify-center gap-1.5">
+          <span>🗑️ Çöp Kutusu</span>
+          <span id="subTabTrashCount" class="px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-700 text-[10px] tabular-nums">0</span>
+        </button>
+      </div>
+
+      <!-- İşlem Geçmişi Listesi -->
+      <div id="auditHistoryPanel" class="space-y-2">
+        <div class="flex items-center justify-between gap-2 px-0.5">
+          <span class="text-[11px] font-extrabold text-slate-600">Son Hareket Kayıtları</span>
+          <button type="button" onclick="clearAuditLogs()" class="text-[10.5px] font-bold text-rose-600 hover:underline">Geçmişi Temizle</button>
+        </div>
+        <div id="auditLogList" class="space-y-2"></div>
+      </div>
+
+      <!-- Çöp Kutusu / Silinenler Listesi -->
+      <div id="trashBinPanel" class="hidden space-y-2">
+        <div class="flex items-center justify-between gap-2 px-0.5">
+          <span class="text-[11px] font-extrabold text-slate-600">Silinen İş Emirleri</span>
+          <button type="button" onclick="emptyTrashBin()" class="text-[10.5px] font-bold text-rose-600 hover:underline">Çöp Kutusunu Boşalt</button>
+        </div>
+        <div id="trashOrdersList" class="space-y-2"></div>
+      </div>
+    </section>
   </main>
 
   <!-- BOTTOM NAVIGATION BAR -->
-  <nav id="bottomNavBar" class="fixed bottom-0 inset-x-0 z-40 bg-white/98 backdrop-blur-md border-t border-slate-200/90 px-2.5 pt-1 pb-1.5 shadow-[0_-6px_20px_-6px_rgba(15,23,42,0.08)]">
-    <div class="max-w-3xl mx-auto grid grid-cols-4 gap-1.5">
-      <button type="button" data-nav="emirler" onclick="switchTab('emirler')" class="nav-btn relative flex flex-col items-center justify-center py-1 px-1.5 rounded-2xl bg-emerald-50/95 ring-1 ring-emerald-600/35 text-[#0F5C45] transition">
-        <span class="nav-icon-wrap w-8 h-6 rounded-xl bg-[#146C53] text-white flex items-center justify-center shadow-xs ring-2 ring-emerald-200/90">
+  <nav id="bottomNavBar" class="fixed bottom-0 inset-x-0 z-40 bg-white/98 backdrop-blur-md border-t border-slate-200/90 px-2 py-1 pb-1.5 shadow-[0_-6px_20px_-6px_rgba(15,23,42,0.08)]">
+    <div class="max-w-3xl mx-auto grid grid-cols-5 gap-1">
+      <button type="button" data-nav="emirler" onclick="switchTab('emirler')" class="nav-btn relative flex flex-col items-center justify-center py-1 px-1 rounded-2xl bg-emerald-50/95 ring-1 ring-emerald-600/35 text-[#0F5C45] transition">
+        <span class="nav-icon-wrap w-7 h-6 rounded-xl bg-[#146C53] text-white flex items-center justify-center shadow-xs ring-2 ring-emerald-200/90">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
         </span>
-        <span data-i18n="nav_orders" class="nav-label-chip text-[10px] font-extrabold leading-none mt-1 tracking-tight text-[#0F5C45]">Emirler</span>
+        <span data-i18n="nav_orders" class="nav-label-chip text-[9.5px] font-extrabold leading-none mt-1 tracking-tight text-[#0F5C45]">Emirler</span>
       </button>
-      <button type="button" data-nav="tamamlanan" onclick="switchTab('tamamlanan')" class="nav-btn relative flex flex-col items-center justify-center py-1 px-1.5 rounded-2xl bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition">
-        <span class="nav-icon-wrap w-8 h-6 rounded-xl bg-transparent text-slate-500 flex items-center justify-center">
+      <button type="button" data-nav="tamamlanan" onclick="switchTab('tamamlanan')" class="nav-btn relative flex flex-col items-center justify-center py-1 px-1 rounded-2xl bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition">
+        <span class="nav-icon-wrap w-7 h-6 rounded-xl bg-transparent text-slate-500 flex items-center justify-center">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
         </span>
-        <span data-i18n="nav_done" class="nav-label-chip text-[10px] font-medium leading-none mt-1 tracking-tight">Bitenler</span>
+        <span data-i18n="nav_done" class="nav-label-chip text-[9.5px] font-medium leading-none mt-1 tracking-tight">Bitenler</span>
       </button>
-      <button type="button" data-nav="raporlar" onclick="switchTab('raporlar')" class="nav-btn relative flex flex-col items-center justify-center py-1 px-1.5 rounded-2xl bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition">
-        <span class="nav-icon-wrap w-8 h-6 rounded-xl bg-transparent text-slate-500 flex items-center justify-center">
+      <button type="button" data-nav="raporlar" onclick="switchTab('raporlar')" class="nav-btn relative flex flex-col items-center justify-center py-1 px-1 rounded-2xl bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition">
+        <span class="nav-icon-wrap w-7 h-6 rounded-xl bg-transparent text-slate-500 flex items-center justify-center">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
         </span>
-        <span data-i18n="nav_reports" class="nav-label-chip text-[10px] font-medium leading-none mt-1 tracking-tight">Raporlar</span>
+        <span data-i18n="nav_reports" class="nav-label-chip text-[9.5px] font-medium leading-none mt-1 tracking-tight">Raporlar</span>
       </button>
-      <button type="button" data-nav="notlar" onclick="switchTab('notlar')" class="nav-btn relative flex flex-col items-center justify-center py-1 px-1.5 rounded-2xl bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition">
-        <span class="nav-icon-wrap w-8 h-6 rounded-xl bg-transparent text-slate-500 flex items-center justify-center">
+      <button type="button" data-nav="gecmis-cop" onclick="switchTab('gecmis-cop')" class="nav-btn relative flex flex-col items-center justify-center py-1 px-1 rounded-2xl bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition">
+        <span class="nav-icon-wrap w-7 h-6 rounded-xl bg-transparent text-slate-500 flex items-center justify-center">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </span>
+        <span data-i18n="nav_history_trash" class="nav-label-chip text-[9.5px] font-medium leading-none mt-1 tracking-tight">Geçmiş</span>
+      </button>
+      <button type="button" data-nav="notlar" onclick="switchTab('notlar')" class="nav-btn relative flex flex-col items-center justify-center py-1 px-1 rounded-2xl bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition">
+        <span class="nav-icon-wrap w-7 h-6 rounded-xl bg-transparent text-slate-500 flex items-center justify-center">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/></svg>
         </span>
-        <span data-i18n="nav_notes" class="nav-label-chip text-[10px] font-medium leading-none mt-1 tracking-tight">Notlar</span>
+        <span data-i18n="nav_notes" class="nav-label-chip text-[9.5px] font-medium leading-none mt-1 tracking-tight">Notlar</span>
       </button>
     </div>
   </nav>
@@ -1053,13 +1107,17 @@
                 <span class="w-2 h-2 rounded-full bg-amber-500 shrink-0"></span>
                 <span>DÜZENLE</span>
               </button>
-              <button id="deleteOrderModalBtn" type="button" onclick="handleEditModalSelectAction('DELETE')" class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 ltr:text-left rtl:text-right transition">
-                <span class="w-2 h-2 rounded-full bg-red-600 shrink-0"></span>
+              <button id="deleteOrderModalBtn" type="button" onclick="handleEditModalSelectAction('DELETE')" class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 ltr:text-left rtl:text-right transition">
+                <span class="w-2 h-2 rounded-full bg-blue-600 shrink-0"></span>
                 <span>SİL</span>
               </button>
               <button id="restartOrderModalBtn" type="button" onclick="handleEditModalSelectAction('RESTART')" class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 ltr:text-left rtl:text-right transition">
                 <span class="w-2 h-2 rounded-full bg-emerald-600 shrink-0"></span>
                 <span>YENİDEN BAŞLAT</span>
+              </button>
+              <button id="finishOrderMenuBtn" type="button" onclick="handleEditModalSelectAction('FINISH')" class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 ltr:text-left rtl:text-right transition">
+                <span class="w-2 h-2 rounded-full bg-red-600 shrink-0"></span>
+                <span>BİTİR</span>
               </button>
             </div>
           </div>
@@ -1159,6 +1217,21 @@
         <button id="endShiftBtn" type="button" onclick="endOperatorShift()" data-i18n="end_shift_btn" class="py-2.5 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs tracking-wide shadow-2xs active:scale-95 transition">
           BİTİR
         </button>
+      </div>
+
+      <!-- Kalan KG <= 150 olduğunda açılan DEVAM ET / TAMAMEN BİTİR karar kutusu -->
+      <div id="lowRemainingFinishChoiceBox" class="hidden rounded-2xl bg-amber-50 border border-amber-300 p-2.5 space-y-2 shadow-xs">
+        <div id="lowRemainingFinishChoiceText" class="text-[11px] font-extrabold text-amber-950 text-center tabular-nums">
+          Kalan miktar 150 KG ve altında. İş emri nasıl sonlandırılsın?
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <button id="continueShiftBtn" type="button" onclick="confirmContinueOperatorShift()" class="py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-extrabold text-xs tracking-wide shadow-2xs active:scale-95 transition">
+            DEVAM ET
+          </button>
+          <button id="completeOrderCompletelyBtn" type="button" onclick="confirmCompleteOrderCompletely()" class="py-2 px-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs tracking-wide shadow-2xs active:scale-95 transition">
+            TAMAMEN BİTİR
+          </button>
+        </div>
       </div>
 
       <!-- Bottom Action Button: KAYDET ve ÇIK -->
@@ -1330,6 +1403,7 @@
         nav_summary: 'Özet',
         nav_operation: 'Operasyon',
         nav_reports: 'Raporlar',
+        nav_history_trash: 'Geçmiş',
         nav_notes: 'Notlar',
         order_seq_short: 'SIRA #',
         op_inputs_title: 'Operatör Üretim Girdileri (KG)',
@@ -1458,6 +1532,7 @@
         nav_summary: 'الملخص',
         nav_operation: 'العمليات',
         nav_reports: 'التقارير',
+        nav_history_trash: 'السجل',
         nav_notes: 'الملاحظات',
         order_seq_short: 'رقم #',
         op_inputs_title: 'مدخلات إنتاج المشغلين (كغ)',
@@ -1593,6 +1668,7 @@
     let notes = [];
     let editingOrderId = null;
     let pendingModalShift = null;
+    let pendingFinishDecisionOrderId = null;
     let isEditingMetricsMode = false;
     let openStatusMenuId = null;
     let openCompletedMenuId = null;
@@ -1604,8 +1680,14 @@
     let currentOrderSortMode = 'DEFAULT';
     let addedOrdersCount = 0;
     let addedOrderTimestamps = [];
+    let auditLogs = [];
+    let deletedOrdersTrash = [];
+    let activeAuditTrashSubTab = 'HISTORY';
+    let longPressDeleteLogId = null;
+    let longPressAuditTimer = null;
+    let longPressTriggeredFlag = false;
     const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
-    const TAB_ORDER = ['emirler', 'tamamlanan', 'ozet', 'operasyon', 'raporlar', 'notlar'];
+    const TAB_ORDER = ['emirler', 'tamamlanan', 'ozet', 'operasyon', 'raporlar', 'notlar', 'gecmis-cop'];
     let lastActiveTabName = 'emirler';
     const t = (key, ...args) => {
       const val = (I18N[currentLang] && I18N[currentLang][key]) || I18N.tr[key] || key;
@@ -1696,16 +1778,273 @@
     }
 
     function formatCompletedDateTimeLabel(order) {
-      const rawCompleted = String((order && order.completedDate) || '').trim();
-      const hasTimeInCompleted = /\d{1,2}:\d{2}/.test(rawCompleted);
-      if (hasTimeInCompleted) {
-        return rawCompleted;
+      if (!order || typeof order !== 'object') return formatDateTimeNow();
+      const rawLast = String(order.lastActionDateTime || '').trim();
+      const dateTimeMatch = rawLast.match(/^(\d{2}\.\d{2}\.\d{4})(?:\s+(\d{1,2}:\d{2}))?/);
+      const dateStr = (dateTimeMatch && dateTimeMatch[1])
+        || order.completedDate
+        || order.createdDate
+        || order.period
+        || formatTodayDate();
+      const timeStr = (dateTimeMatch && dateTimeMatch[2])
+        || order.orderEndTime
+        || (order.shiftSession && (order.shiftSession.endedAt || order.shiftSession.startedAt))
+        || '08:00';
+      return `${dateStr} · ${timeStr}`;
+    }
+
+    function extractCoilDimensionsFromOrder(orderRef) {
+      if (!orderRef || typeof orderRef !== 'object') return '';
+      const rawArtive = String(orderRef.artive || '').trim();
+      if (rawArtive) return rawArtive;
+      const rawArticle = String(orderRef.article || '').trim();
+      const match = rawArticle.match(/\b(\d{2,4}\s+\d{2,4})\b/);
+      return match ? match[1].trim() : rawArticle;
+    }
+
+    function buildOperatorKgSummary(orderRef, fallbackOp = '', fallbackKg = 0) {
+      const kgNum = Number(fallbackKg) || 0;
+      if (kgNum <= 0) return '';
+      return `Üretim: ${fmt(kgNum)} KG`;
+    }
+
+    function recordAuditLog(actionType, title, detail = '', orderRef = null, shiftKg = 0) {
+      try {
+        if (!hasManagementGmailIdentity()) {
+          return;
+        }
+        const prof = getActiveRoleProfile();
+        const actor = String(prof.label || 'YÖNETİM').toLocaleUpperCase('tr-TR');
+        const actorEmail = String(currentAccountEmail || '').trim().toLowerCase();
+        const orderNoStr = orderRef ? `#${orderRef.orderNo || orderRef.id}` : '';
+        const coilInfoStr = extractCoilDimensionsFromOrder(orderRef);
+        const orderLabel = [orderNoStr, coilInfoStr]
+          .filter(Boolean)
+          .join(' · ');
+
+        const isShiftStart = String(actionType || '') === 'SHIFT_START';
+        const opKgSummary = isShiftStart ? '' : buildOperatorKgSummary(orderRef, '', shiftKg);
+        const extraDetail = String(detail || '').trim();
+        const mergedDetail = [opKgSummary, extraDetail]
+          .filter((part, i, arr) => part && arr.indexOf(part) === i)
+          .join(' · ');
+
+        const nowStamp = formatDateTimeNow();
+        const isOperatorActor = prof.kind === 'OPERATOR' || OPERATORS.includes(actor);
+        const orderKey = orderRef ? String(orderRef.id || orderRef.orderNo || '') : '';
+        const dedupKey = `${String(actionType || 'INFO')}|${orderKey}|${String(title || '').trim()}|${mergedDetail}`;
+        const latestItem = auditLogs[0];
+        if (
+          latestItem &&
+          latestItem.dedupKey === dedupKey &&
+          String(latestItem.time || '').slice(0, 16) === nowStamp.slice(0, 16)
+        ) {
+          latestItem.time = nowStamp;
+          latestItem.isOperatorActor = isOperatorActor;
+          updateAuditTrashBadges();
+          return;
+        }
+
+        auditLogs.unshift({
+          id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+          dedupKey,
+          actionType: String(actionType || 'INFO'),
+          title: String(title || '').trim(),
+          detail: mergedDetail,
+          orderLabel: orderLabel.trim(),
+          actor,
+          actorEmail,
+          isOperatorActor,
+          time: nowStamp
+        });
+        if (auditLogs.length > 200) {
+          auditLogs = auditLogs.slice(0, 200);
+        }
+        updateAuditTrashBadges();
+      } catch (e) {}
+    }
+
+    function updateAuditTrashBadges() {
+      const hCount = auditLogs.length;
+      const tCount = deletedOrdersTrash.length;
+      const setTxt = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = String(val);
+      };
+      setTxt('auditLogCountBadge', hCount);
+      setTxt('trashBinCountBadge', tCount);
+      setTxt('subTabHistoryCount', hCount);
+      setTxt('subTabTrashCount', tCount);
+    }
+
+    function openAuditAndTrashView(subTab = 'HISTORY') {
+      activeAuditTrashSubTab = subTab === 'TRASH' ? 'TRASH' : 'HISTORY';
+      switchTab('gecmis-cop');
+      setAuditTrashSubTab(activeAuditTrashSubTab);
+    }
+
+    function setAuditTrashSubTab(subTab) {
+      activeAuditTrashSubTab = subTab === 'TRASH' ? 'TRASH' : 'HISTORY';
+      const histBtn = document.getElementById('subTabHistoryBtn');
+      const trashBtn = document.getElementById('subTabTrashBtn');
+      const histPanel = document.getElementById('auditHistoryPanel');
+      const trashPanel = document.getElementById('trashBinPanel');
+
+      if (histBtn && trashBtn) {
+        if (activeAuditTrashSubTab === 'HISTORY') {
+          histBtn.className = 'py-2 px-3 rounded-xl text-xs font-extrabold bg-[#146C53] text-white shadow-2xs transition flex items-center justify-center gap-1.5';
+          trashBtn.className = 'py-2 px-3 rounded-xl text-xs font-extrabold bg-transparent text-slate-700 hover:bg-slate-100 transition flex items-center justify-center gap-1.5';
+        } else {
+          trashBtn.className = 'py-2 px-3 rounded-xl text-xs font-extrabold bg-blue-600 text-white shadow-2xs transition flex items-center justify-center gap-1.5';
+          histBtn.className = 'py-2 px-3 rounded-xl text-xs font-extrabold bg-transparent text-slate-700 hover:bg-slate-100 transition flex items-center justify-center gap-1.5';
+        }
       }
-      const datePart = rawCompleted || String((order && order.createdDate) || '').trim() || formatTodayDate();
-      const rawLastAction = String((order && order.lastActionDateTime) || '').trim();
-      const timeMatch = rawLastAction.match(/(\d{1,2}:\d{2})/);
-      const timePart = timeMatch ? timeMatch[1] : '17:30';
-      return `${datePart} ${timePart}`;
+
+      if (histPanel) histPanel.classList.toggle('hidden', activeAuditTrashSubTab !== 'HISTORY');
+      if (trashPanel) trashPanel.classList.toggle('hidden', activeAuditTrashSubTab !== 'TRASH');
+
+      renderAuditAndTrashView();
+    }
+
+    function renderAuditAndTrashView() {
+      updateAuditTrashBadges();
+      const histEl = document.getElementById('auditLogList');
+      const trashEl = document.getElementById('trashOrdersList');
+
+      if (histEl) {
+        if (!auditLogs.length) {
+          longPressDeleteLogId = null;
+          histEl.innerHTML = `<div class="pro-card rounded-2xl p-6 text-center text-xs text-slate-400">Henüz kayıtlı işlem geçmişi bulunmuyor.</div>`;
+        } else {
+          const seenKeys = new Set();
+          const uniqueLogs = auditLogs.filter((item) => {
+            const key = item.dedupKey || `${item.actionType}|${item.title}|${item.orderLabel}|${item.detail}|${item.time}`;
+            if (seenKeys.has(key)) return false;
+            seenKeys.add(key);
+            return true;
+          });
+
+          if (longPressDeleteLogId && !uniqueLogs.some(u => String(u.id) === String(longPressDeleteLogId))) {
+            longPressDeleteLogId = null;
+          }
+
+          histEl.innerHTML = uniqueLogs.map(item => {
+            const safeLogId = escapeHtml(String(item.id));
+            const showDeleteOption = String(longPressDeleteLogId) === String(item.id);
+            return `
+            <div data-audit-log-id="${safeLogId}"
+              onpointerdown="startAuditLogLongPress(event, '${safeLogId}')"
+              onpointerup="cancelAuditLogLongPress()"
+              onpointercancel="cancelAuditLogLongPress()"
+              onpointerleave="cancelAuditLogLongPress()"
+              oncontextmenu="openAuditLogDeleteOnContextMenu(event, '${safeLogId}')"
+              class="${item.isOperatorActor
+              ? 'rounded-2xl p-3 space-y-1 bg-gradient-to-b from-blue-50/95 to-indigo-50/80 border border-blue-300 shadow-[0_4px_12px_-4px_rgba(37,99,235,0.22)]'
+              : 'pro-card rounded-2xl p-3 space-y-1'} ${showDeleteOption ? 'ring-2 ring-rose-500/70' : ''} select-none transition">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-1.5 min-w-0">
+                  <span class="px-2 py-0.5 rounded-full ${item.isOperatorActor
+                    ? 'bg-blue-600 text-white border border-blue-700'
+                    : 'bg-emerald-50 text-[#146C53] border border-emerald-200'} text-[9.5px] font-extrabold shrink-0">${escapeHtml(item.actor)}</span>
+                  <span class="text-xs font-extrabold ${item.isOperatorActor ? 'text-blue-950' : 'text-slate-900'} truncate">${escapeHtml(item.title)}</span>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                  <span class="text-[11px] font-black ${item.isOperatorActor ? 'text-blue-700' : 'text-[#146C53]'} tabular-nums">${escapeHtml(item.time)}</span>
+                  ${showDeleteOption ? `
+                    <button type="button"
+                      onpointerdown="event.stopPropagation()"
+                      onclick="event.stopPropagation(); deleteSingleAuditLog('${safeLogId}')"
+                      title="Bildirimi Sil" aria-label="Bildirimi Sil"
+                      class="px-2.5 py-0.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-extrabold shadow-2xs active:scale-95 transition">
+                      Sil
+                    </button>
+                  ` : ''}
+                </div>
+              </div>
+              ${item.orderLabel ? `<div class="text-[10.5px] font-bold ${item.isOperatorActor ? 'text-blue-900' : 'text-slate-800'} leading-snug">${escapeHtml(item.orderLabel)}</div>` : ''}
+              ${item.detail ? `<div class="text-[10.5px] font-bold ${item.isOperatorActor ? 'text-blue-800' : 'text-[#146C53]'} tabular-nums leading-snug">${escapeHtml(item.detail)}</div>` : ''}
+            </div>`;
+          }).join('');
+        }
+      }
+    }
+
+    function restoreOrderFromTrash(trashIndex) {
+      if (!guardAction('CREATE_ORDER')) return;
+      const item = deletedOrdersTrash[trashIndex];
+      if (!item || !item.order) return;
+      const restored = ensureOrderDates({
+        ...item.order,
+        cancelled: false,
+        workStatus: item.order.closed ? 'FINISHED' : 'IDLE',
+        shiftActive: false,
+        activeOperator: null,
+        lastActionDateTime: formatDateTimeNow()
+      });
+      deletedOrdersTrash.splice(trashIndex, 1);
+      orders.push(restored);
+      normalizeOrderNumbers();
+      renderOrders();
+      renderCompletedOrders();
+      renderAuditAndTrashView();
+      saveStateToStorage();
+      recordAuditLog('RESTORE_ORDER', 'İş emri çöp kutusundan geri alındı', `Sipariş: ${fmt(restored.ton)} KG`, restored);
+      showToast(`#${restored.orderNo || restored.id} iş emri geri alındı`);
+    }
+
+    function startAuditLogLongPress(event, logId) {
+      if (event && event.pointerType === 'mouse' && event.button !== 0) return;
+      cancelAuditLogLongPress();
+      longPressTriggeredFlag = false;
+      longPressAuditTimer = setTimeout(() => {
+        longPressTriggeredFlag = true;
+        longPressDeleteLogId = String(logId || '');
+        renderAuditAndTrashView();
+        showToast('Sil seçeneği açıldı');
+      }, 450);
+    }
+
+    function cancelAuditLogLongPress() {
+      if (longPressAuditTimer) {
+        clearTimeout(longPressAuditTimer);
+        longPressAuditTimer = null;
+      }
+    }
+
+    function openAuditLogDeleteOnContextMenu(event, logId) {
+      if (event) event.preventDefault();
+      cancelAuditLogLongPress();
+      longPressDeleteLogId = String(logId || '');
+      renderAuditAndTrashView();
+    }
+
+    function deleteSingleAuditLog(logId) {
+      if (!canEditOrDeleteOrderByGmail()) {
+        showToast('Bildirim silme yalnızca Yönetim veya Teknisyen yetkili Gmail hesabına açıktır');
+        return;
+      }
+      const targetId = String(logId || '');
+      if (!targetId) return;
+      const prevLen = auditLogs.length;
+      auditLogs = auditLogs.filter(entry => String(entry && entry.id) !== targetId);
+      if (String(longPressDeleteLogId) === targetId) {
+        longPressDeleteLogId = null;
+      }
+      if (auditLogs.length === prevLen) return;
+      renderAuditAndTrashView();
+      saveStateToStorage();
+      showToast('Bildirim silindi');
+    }
+
+    function emptyTrashBin() {
+      if (!canEditOrDeleteOrderByGmail()) {
+        showToast('Çöp kutusunu boşaltma yalnızca Yönetim veya Teknisyen yetkili Gmail hesabına açıktır');
+        return;
+      }
+      deletedOrdersTrash = [];
+      renderAuditAndTrashView();
+      saveStateToStorage();
+      showToast('Çöp kutusu boşaltıldı');
     }
 
     function getActiveRoleProfile() {
@@ -2090,6 +2429,7 @@
       openStatusMenuId = null;
       const target = orders.find(o => o.id === id);
       if (target) {
+        target.openedFromEmirler = true;
         target.lastActionDateTime = formatDateTimeNow();
         saveStateToStorage();
       }
@@ -2229,6 +2569,8 @@
       if (modalId === 'editModal') {
         editingOrderId = null;
         pendingModalShift = null;
+        pendingFinishDecisionOrderId = null;
+        hideLowRemainingFinishChoice();
         isEditingMetricsMode = false;
         draftOperatorKgValues = { isa: 0, muhiddin: 0, kaddur: 0, muhammed: 0 };
         draftOperatorKgExpressions = { isa: '', muhiddin: '', kaddur: '', muhammed: '' };
@@ -2256,6 +2598,43 @@
         if (targetId !== null) {
           closeModal('editModal');
           restartCompletedOrderAsRunning(null, targetId);
+        }
+        return;
+      }
+      if (actionType === 'FINISH') {
+        const targetId = editingOrderId;
+        if (targetId !== null && guardAction('START_STOP_ORDER')) {
+          const order = orders.find(o => o.id === targetId);
+          if (order) {
+            const nowClock = formatClockTime();
+            const startedAt = (pendingModalShift && pendingModalShift.startedAt) || (order.shiftSession && order.shiftSession.startedAt) || null;
+            const selectedOp = (pendingModalShift && OPERATORS.includes(pendingModalShift.operator))
+              ? pendingModalShift.operator
+              : getActiveOperatorName(order);
+            order.closed = true;
+            order.completedDate = formatTodayDate();
+            order.restartedFromCompleted = false;
+            order.workStatus = 'FINISHED';
+            order.shiftActive = false;
+            order.activeOperator = null;
+            order.orderEndTime = nowClock;
+            order.lastActionDateTime = formatDateTimeNow();
+            order.shiftSession = {
+              operator: selectedOp || null,
+              status: 'ENDED',
+              startedAt,
+              endedAt: nowClock
+            };
+            closeModal('editModal');
+            normalizeOrderNumbers();
+            renderOrders();
+            renderCompletedOrders();
+            if (!document.getElementById('tab-ozet')?.classList.contains('hidden')) renderSummary('ALL');
+            if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) renderOperationTab();
+            if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) renderReports();
+            saveStateToStorage();
+            showToast(`#${order.orderNo || order.id} iş emri bitirilerek Bitenler sayfasına eklendi`);
+          }
         }
         return;
       }
@@ -2317,12 +2696,14 @@
 
       const maxId = orders.reduce((m, o) => Math.max(m, Number(o.id) || 0), 0);
       const today = formatTodayDate();
+      const createdAtMs = Date.now();
       const newOrder = ensureOrderDates({
         id: maxId + 1,
         orderNo: orders.filter(o => !o.closed).length + 1,
         priority,
         period: today,
         createdDate: today,
+        createdAtMs,
         completedDate: null,
         lastActionDateTime: formatDateTimeNow(),
         activeOperator: null,
@@ -2340,7 +2721,7 @@
       });
 
       orders.push(newOrder);
-      addedOrderTimestamps.push(Date.now());
+      addedOrderTimestamps.push(createdAtMs);
       updateAddedOrdersBadge();
       normalizeOrderNumbers();
       closeModal('newOrderModal');
@@ -2349,8 +2730,8 @@
       if (!document.getElementById('tab-ozet')?.classList.contains('hidden')) renderSummary('ALL');
       if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) renderOperationTab();
       if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) renderReports();
+      recordAuditLog('CREATE_ORDER', 'Yeni iş emri eklendi', `Hedef: ${fmt(ton)} KG`, newOrder);
       saveStateToStorage();
-      notifyNewWorkOrderAdded(newOrder);
       showToast(`#${newOrder.orderNo} yeni iş emri oluşturuldu`);
     }
 
@@ -2369,6 +2750,8 @@
       const perms = getUserPermissions();
       editingOrderId = id;
       isEditingMetricsMode = false;
+      pendingFinishDecisionOrderId = null;
+      hideLowRemainingFinishChoice();
 
       const isOrderRunning = getWorkStatus(order) === 'RUNNING' && Boolean(order.shiftActive);
       const activeOp = isOrderRunning ? getActiveOperatorName(order) : null;
@@ -2391,6 +2774,7 @@
       const editMetricsBtn = document.getElementById('editOrderMetricsBtn');
       const deleteOrderBtn = document.getElementById('deleteOrderModalBtn');
       const restartOrderBtn = document.getElementById('restartOrderModalBtn');
+      const finishOrderBtn = document.getElementById('finishOrderMenuBtn');
       closeEditModalSelectMenu();
       if (selectMenuBtn) {
         selectMenuBtn.classList.remove('opacity-50');
@@ -2406,6 +2790,26 @@
       if (restartOrderBtn) {
         restartOrderBtn.disabled = false;
         restartOrderBtn.classList.remove('opacity-50');
+      }
+      if (finishOrderBtn) {
+        finishOrderBtn.disabled = false;
+        finishOrderBtn.classList.remove('opacity-50');
+      }
+      if (editMetricsBtn) {
+        editMetricsBtn.disabled = !canEditOrDeleteOrderByGmail;
+        editMetricsBtn.classList.toggle('opacity-50', !canEditOrDeleteOrderByGmail);
+      }
+      if (deleteOrderBtn) {
+        deleteOrderBtn.disabled = !canEditOrDeleteOrderByGmail;
+        deleteOrderBtn.classList.toggle('opacity-50', !canEditOrDeleteOrderByGmail);
+      }
+      if (restartOrderBtn) {
+        restartOrderBtn.disabled = false;
+        restartOrderBtn.classList.remove('opacity-50');
+      }
+      if (finishOrderBtn) {
+        finishOrderBtn.disabled = false;
+        finishOrderBtn.classList.remove('opacity-50');
       }
 
       const periodEl = document.getElementById('editModalPeriod');
@@ -2795,7 +3199,6 @@
 
       order.closed = false;
       order.completedDate = null;
-      order.restartedFromCompleted = false;
       order.workStatus = 'RUNNING';
       order.shiftActive = true;
       order.activeOperator = op;
@@ -2820,6 +3223,7 @@
       syncModalOperatorRowsUI();
       normalizeOrderNumbers();
       renderOrders();
+      recordAuditLog('SHIFT_START', `Üretim başladı (${op})`, `Başlangıç saati: ${nowClock}`, order, 0);
       saveStateToStorage();
       showToast(t('shift_started_toast', op, nowClock));
     }
@@ -2835,6 +3239,7 @@
         ? pendingModalShift.operator
         : (selectEl && OPERATORS.includes(selectEl.value) ? selectEl.value : getActiveOperatorName(order));
 
+      let draftTotalProd = 0;
       if (singleKgInput && selectedOp) {
         const targetCfg = OPERATOR_INPUT_CONFIG.find(c => c.name === selectedOp);
         if (targetCfg) {
@@ -2848,10 +3253,149 @@
         }
         updateModalCalculatedTotals();
       }
+      draftTotalProd = OPERATOR_INPUT_CONFIG.reduce((sum, cfg) => sum + (Number(draftOperatorKgValues[cfg.field]) || 0), 0);
+      const manualTonEl = document.getElementById('manualTonInput');
+      const baseTon = (isEditingMetricsMode && manualTonEl && manualTonEl.value !== '')
+        ? Math.max(0, parseFloat(manualTonEl.value) || 0)
+        : (Number(order.ton) || 0);
+      const remainingKg = baseTon - draftTotalProd;
 
+      if (remainingKg <= 150) {
+        pendingFinishDecisionOrderId = order.id;
+        showLowRemainingFinishChoice(remainingKg);
+        return;
+      }
+
+      performNormalOperatorShiftEnd(order, selectedOp, selectEl);
+    }
+
+    function showLowRemainingFinishChoice(remainingKg) {
+      const boxEl = document.getElementById('lowRemainingFinishChoiceBox');
+      const textEl = document.getElementById('lowRemainingFinishChoiceText');
+      if (textEl) {
+        textEl.textContent = `Kalan miktar ${fmt(remainingKg)} KG (≤ 150 KG). Nasıl devam edilsin?`;
+      }
+      if (boxEl) {
+        boxEl.classList.remove('hidden');
+      }
+    }
+
+    function hideLowRemainingFinishChoice() {
+      pendingFinishDecisionOrderId = null;
+      const boxEl = document.getElementById('lowRemainingFinishChoiceBox');
+      if (boxEl) {
+        boxEl.classList.add('hidden');
+      }
+    }
+
+    function confirmContinueOperatorShift() {
+      const targetId = pendingFinishDecisionOrderId ?? editingOrderId;
+      const order = orders.find(o => o.id === targetId);
+      hideLowRemainingFinishChoice();
+      if (!order) return;
+
+      const selectEl = document.getElementById('operatorSelectDropdown');
+      const selectedOp = (pendingModalShift && OPERATORS.includes(pendingModalShift.operator))
+        ? pendingModalShift.operator
+        : (selectEl && OPERATORS.includes(selectEl.value) ? selectEl.value : getActiveOperatorName(order));
+
+      performNormalOperatorShiftEnd(order, selectedOp, selectEl);
+    }
+
+    function confirmCompleteOrderCompletely() {
+      if (!guardAction('START_STOP_ORDER')) return;
+      const targetId = pendingFinishDecisionOrderId ?? editingOrderId;
+      const order = orders.find(o => o.id === targetId);
+      hideLowRemainingFinishChoice();
+      if (!order) return;
+
+      const perms = getUserPermissions();
+      const singleKgInput = document.getElementById('activeOperatorKgInput');
+      const selectEl = document.getElementById('operatorSelectDropdown');
+      const selectedOp = (pendingModalShift && OPERATORS.includes(pendingModalShift.operator))
+        ? pendingModalShift.operator
+        : (selectEl && OPERATORS.includes(selectEl.value) ? selectEl.value : getActiveOperatorName(order));
+
+      if (singleKgInput && selectedOp) {
+        const targetCfg = OPERATOR_INPUT_CONFIG.find(c => c.name === selectedOp);
+        if (targetCfg) {
+          const cleanedExpr = sanitizeKgExpression(singleKgInput.value).replace(/\++$/, '');
+          const parsedKg = parseKgInput(cleanedExpr);
+          draftOperatorKgValues[targetCfg.field] = parsedKg;
+          draftOperatorKgExpressions[targetCfg.field] = cleanedExpr || (parsedKg > 0 ? String(parsedKg) : '');
+        }
+      }
+
+      if (perms.canEditKg) {
+        if (!order.operatorKgExpressions || typeof order.operatorKgExpressions !== 'object') {
+          order.operatorKgExpressions = {};
+        }
+        OPERATOR_INPUT_CONFIG.forEach(cfg => {
+          const canEditThisOp = perms.isManagement || perms.isTechnician || (perms.mappedOperator === cfg.name);
+          if (!canEditThisOp) return;
+          const numericVal = Number(draftOperatorKgValues[cfg.field]) || 0;
+          const cleanedExpr = sanitizeKgExpression(draftOperatorKgExpressions[cfg.field] || '').replace(/\++$/, '');
+          order[cfg.field] = numericVal;
+          order.operatorKgExpressions[cfg.field] = cleanedExpr || (numericVal > 0 ? String(numericVal) : '');
+        });
+      }
+
+      const nowClock = formatClockTime();
+      const startedAt = (pendingModalShift && pendingModalShift.startedAt) || (order.shiftSession && order.shiftSession.startedAt) || null;
+
+      order.closed = true;
+      order.completedDate = formatTodayDate();
+      order.restartedFromCompleted = false;
+      order.workStatus = 'FINISHED';
+      order.shiftActive = false;
+      order.activeOperator = null;
+      order.orderEndTime = nowClock;
+      order.lastActionDateTime = formatDateTimeNow();
+      order.shiftSession = {
+        operator: selectedOp || null,
+        status: 'ENDED',
+        startedAt,
+        endedAt: nowClock
+      };
+
+      closeModal('editModal');
+      normalizeOrderNumbers();
+      renderOrders();
+      renderCompletedOrders();
+      if (!document.getElementById('tab-ozet')?.classList.contains('hidden')) renderSummary('ALL');
+      if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) renderOperationTab();
+      if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) renderReports();
+      recordAuditLog('COMPLETE_ORDER', 'Üretim bitti (Tamamen Kapatıldı)', `Bitiş saati: ${nowClock}`, order);
+      saveStateToStorage();
+      showToast(`#${order.orderNo || order.id} iş emri tamamen bitirilerek Bitenler sayfasına eklendi`);
+    }
+
+    function performNormalOperatorShiftEnd(order, selectedOp, selectEl) {
       const op = selectedOp || getShiftPickerOperator(order);
       const nowClock = formatClockTime();
       const startedAt = (pendingModalShift && pendingModalShift.startedAt) || (order.shiftSession && order.shiftSession.startedAt) || null;
+      const singleKgInput = document.getElementById('activeOperatorKgInput');
+      const enteredKgForOp = (() => {
+        const cfg = OPERATOR_INPUT_CONFIG.find(c => c.name === op);
+        if (!cfg) return 0;
+        const inputVal = singleKgInput ? parseKgInput(singleKgInput.value) : 0;
+        const draftVal = Number(draftOperatorKgValues[cfg.field]) || 0;
+        return Math.max(inputVal, draftVal);
+      })();
+      if (op && enteredKgForOp > 0) {
+        const targetCfg = OPERATOR_INPUT_CONFIG.find(c => c.name === op);
+        if (targetCfg) {
+          draftOperatorKgValues[targetCfg.field] = enteredKgForOp;
+          order[targetCfg.field] = enteredKgForOp;
+          if (!order.operatorKgExpressions || typeof order.operatorKgExpressions !== 'object') {
+            order.operatorKgExpressions = {};
+          }
+          const rawInputExpr = singleKgInput ? sanitizeKgExpression(singleKgInput.value).replace(/\++$/, '') : '';
+          const exprToStore = rawInputExpr || String(enteredKgForOp);
+          draftOperatorKgExpressions[targetCfg.field] = exprToStore;
+          order.operatorKgExpressions[targetCfg.field] = exprToStore;
+        }
+      }
 
       order.closed = false;
       order.completedDate = null;
@@ -2883,6 +3427,7 @@
       updateModalShiftBanner();
       syncModalOperatorRowsUI();
       normalizeOrderNumbers();
+      recordAuditLog('SHIFT_END', `Üretim bitti (${op} vardiyası)`, `Bitiş saati: ${nowClock}`, order, enteredKgForOp);
       saveStateToStorage();
       showToast(t('shift_ended_toast', op, nowClock));
     }
@@ -2924,6 +3469,7 @@
         }
       }
 
+      const savedTotalProd = getProd(order);
       order.lastActionDateTime = formatDateTimeNow();
       closeModal('editModal');
       renderOrders();
@@ -2941,13 +3487,27 @@
         return;
       }
       if (editingOrderId === null) return;
+      const targetOrder = orders.find(o => o.id === editingOrderId);
+      if (targetOrder) {
+        const prof = getActiveRoleProfile();
+        deletedOrdersTrash.unshift({
+          order: JSON.parse(JSON.stringify(targetOrder)),
+          deletedAt: formatDateTimeNow(),
+          deletedBy: `${String(prof.label || 'YÖNETİM').toLocaleUpperCase('tr-TR')}${currentAccountEmail ? ` (${currentAccountEmail})` : ''}`
+        });
+        if (deletedOrdersTrash.length > 100) {
+          deletedOrdersTrash = deletedOrdersTrash.slice(0, 100);
+        }
+        recordAuditLog('DELETE_ORDER', 'İş emri çöp kutusuna taşındı', '', targetOrder);
+      }
       orders = orders.filter(o => o.id !== editingOrderId);
       closeModal('editModal');
       normalizeOrderNumbers();
       renderOrders();
       renderCompletedOrders();
+      renderAuditAndTrashView();
       saveStateToStorage();
-      showToast('İş emri silindi');
+      showToast('İş emri çöp kutusuna taşındı');
     }
 
     function renderSummary(periodFilter = 'ALL') {
@@ -3073,7 +3633,6 @@
         });
         target.closed = false;
         target.completedDate = null;
-        target.restartedFromCompleted = false;
         target.workStatus = 'RUNNING';
         target.shiftActive = true;
         target.activeOperator = defaultOp;
@@ -3106,7 +3665,6 @@
       } else if (nextStatus === 'FINISHED') {
         target.closed = true;
         target.completedDate = formatTodayDate();
-        target.restartedFromCompleted = false;
         target.workStatus = 'FINISHED';
         target.shiftActive = false;
         target.activeOperator = null;
@@ -3146,6 +3704,18 @@
       if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) {
         renderReports();
       }
+      const statusLogTitleMap = {
+        RUNNING: 'Üretim başladı',
+        PAUSED: 'Üretim durduruldu',
+        FINISHED: 'Üretim tamamlandı',
+        RESET: 'İş emri sıfırlandı'
+      };
+      recordAuditLog(
+        `STATUS_${nextStatus}`,
+        statusLogTitleMap[nextStatus] || `Durum güncellendi (${nextStatus})`,
+        `Saat: ${formatClockTime()}`,
+        target
+      );
       saveStateToStorage();
       showToast(`#${target.orderNo || target.id} ${t('status_' + nextStatus.toLowerCase()) || nextStatus}`);
     }
@@ -3431,6 +4001,7 @@
       if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) {
         renderOperationTab();
       }
+      recordAuditLog('REORDER_ORDER', 'İş emri sırası değiştirildi', `Yeni sıra: #${movedItem.orderNo}`, movedItem);
       saveStateToStorage();
       showToast(`#${movedItem.orderNo} sırasına taşındı`);
     }
@@ -3446,6 +4017,14 @@
     }
 
     document.addEventListener('click', (e) => {
+      if (longPressTriggeredFlag) {
+        longPressTriggeredFlag = false;
+        return;
+      }
+      if (longPressDeleteLogId !== null && !e.target.closest('[data-audit-log-id]')) {
+        longPressDeleteLogId = null;
+        renderAuditAndTrashView();
+      }
       if (openStatusMenuId !== null && !e.target.closest('[onclick*="toggleWorkStatusMenu"]')) {
         openStatusMenuId = null;
         refreshActiveMenus();
@@ -3612,11 +4191,24 @@
               ? 'running-3d-metric-box-ended'
               : 'running-3d-metric-box')
           : 'bg-white/90 border-slate-300/90';
-        const dotColorClass = isRestartedFromCompleted
+        const isWithin12Hours = (() => {
+          const ts = Number(o.createdAtMs);
+          if (!Number.isFinite(ts) || ts <= 0) return false;
+          return (Date.now() - ts) <= (12 * 60 * 60 * 1000);
+        })();
+        const isFromEmirlerOrLowRemaining = Boolean(o.openedFromEmirler) || rest < 150;
+        const hasAnyProductionKg = prod > 0;
+        const dotColorClass = isFromEmirlerOrLowRemaining
           ? 'bg-rose-600'
-          : (isRunning
-              ? (isRunningShiftEnded ? 'bg-rose-600' : 'bg-emerald-700')
-              : (hasProduction ? 'bg-orange-500' : 'bg-slate-600'));
+          : (isWithin12Hours
+              ? 'bg-blue-600'
+              : (hasAnyProductionKg
+                  ? 'bg-amber-400'
+                  : (isRestartedFromCompleted
+                      ? 'bg-rose-600'
+                      : (isRunning
+                          ? (isRunningShiftEnded ? 'bg-rose-600' : 'bg-emerald-700')
+                          : 'bg-slate-600'))));
         const rawLastAction = String(o.lastActionDateTime || '').trim();
         const lastActionDateMatch = rawLastAction.match(/^(\d{2}\.\d{2}\.\d{4})/);
         const topDateStr = escapeHtml(
@@ -3817,8 +4409,15 @@
     function toggleCompletedOrderExpand(event, id) {
       if (event) event.stopPropagation();
       openCompletedMenuId = null;
-      expandedCompletedOrderId = expandedCompletedOrderId === id ? null : id;
-      renderCompletedOrders();
+      expandedCompletedOrderId = null;
+      const target = orders.find(o => o.id === id);
+      if (target) {
+        target.lastActionDateTime = formatDateTimeNow();
+        saveStateToStorage();
+      }
+      const cardEl = (event && event.currentTarget && event.currentTarget.closest('[data-completed-card-id]'))
+        || document.querySelector(`[data-completed-card-id="${id}"]`);
+      openEditModal(id, { sourceCardEl: cardEl, fromPendingOrder: true });
     }
 
     function restartCompletedOrderAsRunning(event, id) {
@@ -3874,6 +4473,7 @@
       renderOrders();
       renderCompletedOrders();
       saveStateToStorage();
+      recordAuditLog('RESTART_ORDER', 'İş emri yeniden başlatıldı', `Saat: ${nowClock}`, firstActiveOrder || orders[idx]);
       showToast(`#${firstActiveOrder ? firstActiveOrder.orderNo : 1} iş emri bekleyen emirlerin 1. sırasına alındı`);
     }
 
@@ -3919,297 +4519,408 @@
         ? ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
         : ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
 
-      const parseCompletedDateParts = (order) => {
-        const raw = String((order && (order.completedDate || order.createdDate || order.period)) || '').trim();
-        const dotMatch = raw.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})/);
-        if (dotMatch) {
-          const day = String(dotMatch[1]).padStart(2, '0');
-          const monthIdx = Math.max(0, Math.min(11, parseInt(dotMatch[2], 10) - 1));
-          const year = dotMatch[3];
-          return { day, monthName: monthNames[monthIdx], year };
+      const getMonthGroupMeta = (order) => {
+        const rawDate = String(order.completedDate || order.createdDate || order.period || '').trim();
+        const m = rawDate.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+        if (m) {
+          const monthIdx = Math.max(0, Math.min(11, parseInt(m[2], 10) - 1));
+          const yearStr = m[3];
+          return {
+            key: `${yearStr}-${m[2]}`,
+            label: `${monthNames[monthIdx]} ${yearStr}`,
+            sortKey: parseInt(`${yearStr}${m[2]}`, 10)
+          };
         }
-        if (/eylül/i.test(raw)) {
-          return { day: '30', monthName: monthNames[8], year: '2026' };
-        }
-        const now = new Date();
         return {
-          day: String(now.getDate()).padStart(2, '0'),
-          monthName: monthNames[now.getMonth()],
-          year: String(now.getFullYear())
+          key: 'diger',
+          label: currentLang === 'ar' ? 'أخرى' : 'Diğer Dönem',
+          sortKey: 0
         };
       };
 
-      const rowsHtml = list.map((o, idx) => {
+      const groupedMap = new Map();
+      list.forEach((o) => {
+        const meta = getMonthGroupMeta(o);
+        if (!groupedMap.has(meta.key)) {
+          groupedMap.set(meta.key, { ...meta, items: [] });
+        }
+        groupedMap.get(meta.key).items.push(o);
+      });
+
+      const groupedSections = Array.from(groupedMap.values()).sort((a, b) => b.sortKey - a.sortKey);
+
+      const renderCompletedCard = (o, rowIdx) => {
         const prod = getProd(o);
-        const diff = (Number(o.ton) || 0) - prod;
-        const diffClass = diff < 0 ? 'text-rose-600' : 'text-amber-700';
+        const rest = getRest(o);
+        const finishedDateTimeStr = formatCompletedDateTimeLabel(o);
         const isMenuOpen = openCompletedMenuId === o.id;
         const isExpanded = expandedCompletedOrderId === o.id;
-        const dateParts = parseCompletedDateParts(o);
+        const remNumClass = rest < 0 ? 'text-rose-700' : 'text-amber-700';
 
-        return `
-          <div class="completed-excel-row">
-            <div onclick="toggleCompletedOrderExpand(event, ${o.id})"
-              class="flex items-stretch w-full min-w-0 cursor-pointer select-none transition">
-              <div class="w-[19px] sm:w-[23px] shrink-0 py-1 px-0 flex items-center justify-center ltr:border-r rtl:border-l border-slate-300/80 text-[7.5px] sm:text-[8.5px] font-black text-slate-600 tabular-nums bg-slate-100/70">
-                ${idx + 1}
+        if (!isExpanded) {
+          return `
+            <div data-completed-card-id="${o.id}"
+              onclick="toggleCompletedOrderExpand(event, ${o.id})"
+              class="completed-excel-row border-b border-slate-200/90 last:border-b-0 cursor-pointer transition flex items-stretch min-h-[36px] sm:min-h-[40px]">
+              <div class="w-[22px] sm:w-[26px] shrink-0 py-1 px-0.5 flex items-center justify-center ltr:border-r rtl:border-l border-slate-200/90 bg-slate-100/70 text-[8.5px] sm:text-[9.5px] font-black text-slate-700 tabular-nums">
+                ${rowIdx + 1}
               </div>
 
               <div class="flex-1 min-w-0 py-1 px-1.5 flex items-center gap-1.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-rose-600 shrink-0"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-rose-600 shrink-0 ring-1 ring-white"></span>
                 <div class="min-w-0 flex-1 overflow-hidden">
-                  <span class="completed-coil-full" title="${escapeHtml(o.artive || o.article || '')}">${escapeHtml(o.artive || o.article || '')}</span>
-                  <span class="completed-article-sub" title="${escapeHtml(o.article || '')}">${escapeHtml(o.article || '')}</span>
+                  <span class="completed-coil-full" title="${escapeHtml(o.artive || '')}">${escapeHtml(o.artive || '-')}</span>
+                  <span class="completed-article-sub" title="${escapeHtml(o.article || '')}">${escapeHtml(o.article || '-')}</span>
                 </div>
               </div>
 
-              <div class="grid grid-cols-3 shrink-0 w-[114px] sm:w-[144px] tabular-nums text-center">
-                <div class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-slate-300/80 text-[8.5px] sm:text-[10px] font-extrabold text-slate-900 whitespace-nowrap">
+              <div class="grid grid-cols-3 shrink-0 w-[124px] sm:w-[154px] tabular-nums text-[8.5px] sm:text-[10px] font-extrabold">
+                <div class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-slate-200/90 text-slate-900 whitespace-nowrap">
                   ${fmt(o.ton)}
                 </div>
-                <div class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-slate-300/80 text-[8.5px] sm:text-[10px] font-extrabold text-[#146C53] whitespace-nowrap">
+                <div class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-slate-200/90 text-[#146C53] whitespace-nowrap">
                   ${fmt(prod)}
                 </div>
-                <div class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-slate-300/80 text-[8.5px] sm:text-[10px] font-extrabold ${diffClass} whitespace-nowrap">
-                  ${fmt(diff)}
+                <div class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-slate-200/90 ${remNumClass} whitespace-nowrap">
+                  ${fmt(rest)}
                 </div>
+              </div>
+            </div>`;
+        }
+
+        return `
+          <div data-completed-card-id="${o.id}"
+            onclick="toggleCompletedOrderExpand(event, ${o.id})"
+            class="completed-card rounded-none sm:rounded-xl p-2 sm:p-2.5 my-1 space-y-1.5 cursor-pointer ring-2 ring-rose-500/45 transition">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-1.5 shrink-0">
+                <span class="px-1.5 py-0.5 rounded-md bg-rose-600 text-white text-[9.5px] font-extrabold tracking-wide shadow-2xs">#${rowIdx + 1} · ${t('completed_badge_upper')}</span>
+                <span class="px-1.5 py-0.5 rounded-md bg-white/95 border border-rose-300/90 text-slate-800 text-[9.5px] font-bold tabular-nums shadow-2xs">${escapeHtml(finishedDateTimeStr)}</span>
+              </div>
+
+              <div onclick="event.stopPropagation()" class="relative inline-flex items-center shrink-0">
+                <button type="button" onclick="toggleCompletedMenu(event, ${o.id})"
+                  class="inline-flex items-center justify-center gap-0.5 h-[18px] px-1.5 rounded-md border text-[8.5px] leading-none font-extrabold bg-white hover:bg-rose-50 text-slate-800 border-rose-300 shadow-2xs active:scale-95 transition">
+                  <span class="leading-none">GİRİŞ</span>
+                  <svg class="w-2 h-2 opacity-85 shrink-0" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </button>
+                ${isMenuOpen ? `
+                  <div class="absolute ltr:right-0 rtl:left-0 top-full mt-1 z-30 w-36 bg-white rounded-xl shadow-xl border border-slate-200 p-1 space-y-0.5">
+                    <button type="button" onclick="restartCompletedOrderAsRunning(event, ${o.id})"
+                      class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-emerald-700 hover:bg-emerald-50 transition ltr:text-left rtl:text-right">
+                      <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                      <span>${t('menu_running')}</span>
+                    </button>
+                    <button type="button" onclick="openEditModal(${o.id}); openCompletedMenuId=null;"
+                      class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-slate-700 hover:bg-slate-100 transition ltr:text-left rtl:text-right">
+                      <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
+                      <span>Detay</span>
+                    </button>
+                  </div>
+                ` : ''}
               </div>
             </div>
 
-            ${isExpanded ? `
-              <div onclick="event.stopPropagation()" class="px-2.5 py-2 bg-rose-50/75 border-t border-rose-200/80 space-y-2">
-                <div class="flex items-center justify-between gap-2 flex-wrap">
-                  <span class="inline-flex items-center gap-1 text-[10px] font-extrabold text-rose-800 bg-white border border-rose-200 px-2 py-0.5 rounded-md tabular-nums">
-                    <span>${escapeHtml(t('completed_date_label'))}:</span>
-                    <span>${escapeHtml(dateParts.day)} ${escapeHtml(dateParts.monthName)} ${escapeHtml(dateParts.year)}</span>
-                  </span>
+            <div class="space-y-1">
+              <div>
+                <p class="text-[11px] sm:text-xs font-extrabold completed-card-title-3d flex flex-wrap items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-rose-600 shrink-0 shadow-xs"></span>
+                  <span>${escapeHtml(o.artive)}</span>
+                </p>
+                <h3 class="text-[10px] leading-tight font-semibold completed-card-desc-3d mt-0.5">${escapeHtml(o.article)}</h3>
+              </div>
 
-                  <div class="relative inline-flex items-center gap-1">
-                    <button type="button" onclick="toggleCompletedMenu(event, ${o.id})"
-                      class="inline-flex items-center gap-1 text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-white hover:bg-rose-100 text-rose-700 border border-rose-300 transition">
-                      <span>${escapeHtml(t('status_select'))}</span>
-                      <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                      </svg>
-                    </button>
-                    ${isMenuOpen ? `
-                      <div class="absolute ltr:right-0 rtl:left-0 top-full mt-1 z-30 w-36 bg-white rounded-xl shadow-xl border border-rose-200 p-1">
-                        <button type="button" onclick="restartCompletedOrderAsRunning(event, ${o.id})"
-                          class="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold text-emerald-700 hover:bg-emerald-50 transition ltr:text-left rtl:text-right">
-                          <span>↻</span>
-                          <span>${escapeHtml(t('reopen_order_btn').replace(/^↻\s*/, ''))}</span>
-                        </button>
-                      </div>
-                    ` : ''}
-                  </div>
+              <div class="grid grid-cols-3 completed-card-metrics-3d rounded-lg py-1.5 px-2 text-center tabular-nums">
+                <div>
+                  <div class="text-[9px] font-extrabold text-slate-500 leading-none tracking-wide">${t('metric_order')}</div>
+                  <div class="text-[11px] sm:text-xs font-black text-slate-950 leading-tight mt-0.5">${fmt(o.ton)}</div>
                 </div>
-
-                <div class="grid grid-cols-4 gap-1 text-[9.5px] tabular-nums">
-                  <div class="bg-white/95 border border-blue-200/80 rounded-lg px-1.5 py-1 text-center">
-                    <div class="text-[8px] font-bold text-blue-700 truncate">İSA</div>
-                    <div class="font-extrabold text-slate-900">${fmt(o.isa)}</div>
-                  </div>
-                  <div class="bg-white/95 border border-emerald-200/80 rounded-lg px-1.5 py-1 text-center">
-                    <div class="text-[8px] font-bold text-[#146C53] truncate">MUHİDDİN</div>
-                    <div class="font-extrabold text-slate-900">${fmt(o.muhiddin)}</div>
-                  </div>
-                  <div class="bg-white/95 border border-amber-200/80 rounded-lg px-1.5 py-1 text-center">
-                    <div class="text-[8px] font-bold text-amber-700 truncate">KADDUR</div>
-                    <div class="font-extrabold text-slate-900">${fmt(o.kaddur)}</div>
-                  </div>
-                  <div class="bg-white/95 border border-purple-200/80 rounded-lg px-1.5 py-1 text-center">
-                    <div class="text-[8px] font-bold text-purple-700 truncate">MUHAMMED</div>
-                    <div class="font-extrabold text-slate-900">${fmt(o.muhammed)}</div>
-                  </div>
+                <div class="border-x border-rose-300/80">
+                  <div class="text-[9px] font-extrabold text-slate-500 leading-none tracking-wide">${t('metric_prod')}</div>
+                  <div class="text-[11px] sm:text-xs font-black text-[#146C53] leading-tight mt-0.5">${fmt(prod)}</div>
+                </div>
+                <div>
+                  <div class="text-[9px] font-extrabold text-slate-500 leading-none tracking-wide">${t('metric_rem')}</div>
+                  <div class="text-[11px] sm:text-xs font-black ${rest < 0 ? 'text-rose-700' : 'text-amber-700'} leading-tight mt-0.5">${fmt(rest)}</div>
                 </div>
               </div>
-            ` : ''}
+
+              <div class="grid grid-cols-4 gap-1 pt-0.5 text-center tabular-nums">
+                <div class="rounded-md bg-blue-50/90 border border-blue-200 px-1 py-1">
+                  <div class="text-[8px] font-extrabold text-blue-700 leading-none">İSA</div>
+                  <div class="text-[10px] font-black text-slate-900 mt-0.5">${fmt(o.isa)}</div>
+                </div>
+                <div class="rounded-md bg-emerald-50/90 border border-emerald-200 px-1 py-1">
+                  <div class="text-[8px] font-extrabold text-[#146C53] leading-none">MUHİDDİN</div>
+                  <div class="text-[10px] font-black text-slate-900 mt-0.5">${fmt(o.muhiddin)}</div>
+                </div>
+                <div class="rounded-md bg-amber-50/90 border border-amber-200 px-1 py-1">
+                  <div class="text-[8px] font-extrabold text-amber-700 leading-none">KADDUR</div>
+                  <div class="text-[10px] font-black text-slate-900 mt-0.5">${fmt(o.kaddur)}</div>
+                </div>
+                <div class="rounded-md bg-purple-50/90 border border-purple-200 px-1 py-1">
+                  <div class="text-[8px] font-extrabold text-purple-700 leading-none">MUHAMMED</div>
+                  <div class="text-[10px] font-black text-slate-900 mt-0.5">${fmt(o.muhammed)}</div>
+                </div>
+              </div>
+            </div>
+          </div>`;
+      };
+
+      el.innerHTML = groupedSections.map((group) => {
+        const groupTotalOrderKg = group.items.reduce((acc, item) => acc + (Number(item.ton) || 0), 0);
+        const groupTotalProdKg = group.items.reduce((acc, item) => acc + getProd(item), 0);
+        const groupTotalDiffKg = groupTotalOrderKg - groupTotalProdKg;
+        const footerDiffClass = groupTotalDiffKg < 0 ? 'text-rose-800' : 'text-amber-800';
+        const cardsHtml = group.items.map((item, idx) => renderCompletedCard(item, idx)).join('');
+
+        return `
+          <div class="space-y-1.5 pt-1">
+            <div class="flex items-center justify-between gap-2 px-1">
+              <div class="inline-flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-rose-600 shadow-2xs"></span>
+                <span class="text-xs font-extrabold text-slate-800 tracking-tight">${escapeHtml(group.label)}</span>
+                <span class="px-1.5 py-0.5 rounded-full bg-slate-200/80 text-slate-700 text-[9.5px] font-extrabold tabular-nums">${t('emir_unit', group.items.length)}</span>
+              </div>
+              <span class="text-[10.5px] font-extrabold text-[#146C53] tabular-nums">${fmt(groupTotalProdKg)} KG</span>
+            </div>
+
+            <div class="completed-excel-sheet flex flex-col">
+              <div class="flex items-stretch completed-excel-header text-[8px] font-black uppercase tracking-tight tabular-nums select-none">
+                <div class="w-[22px] sm:w-[26px] shrink-0 py-1 px-0.5 flex items-center justify-center ltr:border-r rtl:border-l border-red-950/35">#</div>
+                <div class="flex-1 min-w-0 py-1 px-1.5 flex items-center truncate">ARTIVE / ARTICLE</div>
+                <div class="grid grid-cols-3 shrink-0 w-[124px] sm:w-[154px] text-center">
+                  <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-red-950/35 truncate">${escapeHtml(t('metric_order'))}</span>
+                  <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-red-950/35 truncate">${escapeHtml(t('metric_prod'))}</span>
+                  <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-red-950/35 truncate">${escapeHtml(t('metric_rem'))}</span>
+                </div>
+              </div>
+
+              <div class="divide-y divide-slate-200/90">
+                ${cardsHtml}
+              </div>
+
+              <div class="flex items-stretch completed-excel-footer text-[8.5px] sm:text-[9.5px] font-black tabular-nums select-none">
+                <div class="w-[22px] sm:w-[26px] shrink-0 py-1 px-0.5 flex items-center justify-center ltr:border-r rtl:border-l border-rose-300 text-[8.5px]">Σ</div>
+                <div class="flex-1 min-w-0 py-1 px-1.5 flex items-center truncate uppercase">${escapeHtml(group.label)} · ${escapeHtml(t('yearly_grand_total_short'))}</div>
+                <div class="grid grid-cols-3 shrink-0 w-[124px] sm:w-[154px] text-center">
+                  <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-rose-300 text-slate-900 whitespace-nowrap">${fmt(groupTotalOrderKg)}</span>
+                  <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-rose-300 text-[#146C53] whitespace-nowrap">${fmt(groupTotalProdKg)}</span>
+                  <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-rose-300 ${footerDiffClass} whitespace-nowrap">${fmt(groupTotalDiffKg)}</span>
+                </div>
+              </div>
+            </div>
           </div>`;
       }).join('');
+    }
 
-      el.innerHTML = `
-        <div class="completed-excel-sheet">
-          <div class="flex items-stretch completed-excel-header text-[8px] font-black uppercase tracking-tight tabular-nums select-none">
-            <div class="w-[19px] sm:w-[23px] shrink-0 py-1 px-0 flex items-center justify-center ltr:border-r rtl:border-l border-rose-950/35 text-[7.5px]">#</div>
-            <div class="flex-1 min-w-0 py-1 px-1.5 flex items-center truncate">ARTIVE / ARTICLE</div>
-            <div class="grid grid-cols-3 shrink-0 w-[114px] sm:w-[144px] text-center">
-              <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-rose-950/35 truncate">${escapeHtml(t('metric_order'))}</span>
-              <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-rose-950/35 truncate">${escapeHtml(t('metric_prod'))}</span>
-              <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-rose-950/35 truncate">${escapeHtml(t('completed_total_diff'))}</span>
-            </div>
-          </div>
-          <div class="divide-y divide-slate-200/90">
-            ${rowsHtml}
-          </div>
-          <div class="flex items-stretch completed-excel-footer text-[8px] sm:text-[9px] font-black tabular-nums select-none">
-            <div class="w-[19px] sm:w-[23px] shrink-0 py-1 px-0 flex items-center justify-center ltr:border-r rtl:border-l border-rose-700/35 text-[8px]">Σ</div>
-            <div class="flex-1 min-w-0 py-1 px-1.5 flex items-center truncate uppercase">${escapeHtml(t('yearly_grand_total_short'))}</div>
-            <div class="grid grid-cols-3 shrink-0 w-[114px] sm:w-[144px] text-center">
-              <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-rose-700/35 text-slate-900 whitespace-nowrap">${fmt(sumOrderKg)}</span>
-              <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-rose-700/35 text-[#146C53] whitespace-nowrap">${fmt(sumProdKg)}</span>
-              <span class="py-1 px-0.5 flex items-center justify-center ltr:border-l rtl:border-r border-rose-700/35 ${sumDiffKg < 0 ? 'text-rose-700' : 'text-amber-800'} whitespace-nowrap">${fmt(sumDiffKg)}</span>
-            </div>
-          </div>
-        </div>`;
+    function parseOrderMonthIndex(order) {
+      const candidates = [order.completedDate, order.createdDate, order.period];
+      for (const raw of candidates) {
+        const m = String(raw || '').trim().match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+        if (m) {
+          const idx = parseInt(m[2], 10) - 1;
+          if (idx >= 0 && idx <= 11) return idx;
+        }
+      }
+      if (String(order.period || '').includes('Eylül')) return 8;
+      return new Date().getMonth();
     }
 
     function renderReports() {
-      const monthsTr = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
-      const monthsAr = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
-      const months = currentLang === 'ar' ? monthsAr : monthsTr;
+      const monthNames = currentLang === 'ar'
+        ? ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
+        : ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+      const shortMonthNames = currentLang === 'ar'
+        ? ['ينا', 'فبر', 'مار', 'أبر', 'ماي', 'يون', 'يول', 'أغس', 'سبت', 'أكت', 'نوف', 'ديس']
+        : ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
 
-      const baseOps = [
-        { name: 'İSA', roleKey: 'extruder_operator', color: 'bg-blue-600', values: [38400, 41200, 44600, 39800, 46500, 43900, 48200, 45100, 42800, 47600, 44900, 41500] },
-        { name: 'MUHİDDİN', roleKey: 'extruder_operator', color: 'bg-[#146C53]', values: [42100, 39600, 47800, 45200, 49300, 46700, 51400, 48900, 46100, 50200, 47500, 44800] },
-        { name: 'KADDUR', roleKey: 'extruder_operator', color: 'bg-amber-500', values: [35200, 36800, 40100, 38900, 42400, 40800, 44300, 41900, 39700, 43500, 41200, 38600] },
-        { name: 'MUHAMMED', roleKey: 'extruder_operator', color: 'bg-purple-600', values: [39800, 42500, 45900, 43100, 48200, 45600, 49700, 47300, 44500, 48900, 46200, 43400] }
-      ];
+      const monthly = monthNames.map((name, idx) => ({
+        idx,
+        name,
+        shortName: shortMonthNames[idx] || name.slice(0, 3),
+        isa: 0,
+        muhiddin: 0,
+        kaddur: 0,
+        muhammed: 0,
+        kg: 0
+      }));
 
-      const extraNovProd = orders.reduce((s, o) => s + getProd(o), 0);
-      const extraNovIsa = orders.reduce((s, o) => s + (Number(o.isa) || 0), 0);
-      const extraNovMuh = orders.reduce((s, o) => s + (Number(o.muhiddin) || 0), 0);
-      const extraNovKad = orders.reduce((s, o) => s + (Number(o.kaddur) || 0), 0);
-      const extraNovMuhM = orders.reduce((s, o) => s + (Number(o.muhammed) || 0), 0);
-
-      const extraByMonth = Array(12).fill(0);
-      extraByMonth[10] = extraNovProd;
-
-      const monthlyTotals = months.map((_, idx) => {
-        const opSum = baseOps.reduce((sum, op) => sum + (op.values[idx] || 0), 0);
-        return opSum + (extraByMonth[idx] || 0);
+      orders.forEach(o => {
+        const mIdx = parseOrderMonthIndex(o);
+        const isa = Number(o.isa) || 0;
+        const muhiddin = Number(o.muhiddin) || 0;
+        const kaddur = Number(o.kaddur) || 0;
+        const muhammed = Number(o.muhammed) || 0;
+        monthly[mIdx].isa += isa;
+        monthly[mIdx].muhiddin += muhiddin;
+        monthly[mIdx].kaddur += kaddur;
+        monthly[mIdx].muhammed += muhammed;
+        monthly[mIdx].kg += (isa + muhiddin + kaddur + muhammed);
       });
 
-      const yearlyTotal = monthlyTotals.reduce((a, b) => a + b, 0);
-      const monthlyAvg = Math.round(yearlyTotal / 12);
+      const activeMonthsCount = monthly.filter(m => m.kg > 0).length || 1;
+      const totalYearlyKg = monthly.reduce((s, m) => s + m.kg, 0);
+      const totalYearlyIsa = monthly.reduce((s, m) => s + m.isa, 0);
+      const totalYearlyMuhiddin = monthly.reduce((s, m) => s + m.muhiddin, 0);
+      const totalYearlyKaddur = monthly.reduce((s, m) => s + m.kaddur, 0);
+      const totalYearlyMuhammed = monthly.reduce((s, m) => s + m.muhammed, 0);
+      const avgMonthlyKg = Math.round(totalYearlyKg / activeMonthsCount);
 
-      const setText = (id, val) => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = val;
+      const repYearly = document.getElementById('repYearly');
+      const repAvg = document.getElementById('repAvg');
+      if (repYearly) repYearly.textContent = `${fmt(totalYearlyKg)} KG`;
+      if (repAvg) repAvg.textContent = `${fmt(avgMonthlyKg)} KG`;
+
+      const formatCompactVerticalKg = (kg) => {
+        const val = Number(kg) || 0;
+        if (val <= 0) return '0';
+        if (val >= 1000) {
+          const kVal = val / 1000;
+          return `${kVal >= 10 ? Math.round(kVal) : kVal.toFixed(1).replace('.0', '')}K`;
+        }
+        return String(Math.round(val));
       };
-
-      setText('repYearly', `${fmt(yearlyTotal)} KG`);
-      setText('repAvg', `${fmt(monthlyAvg)} KG`);
-
-      const opExtras = [extraNovIsa, extraNovMuh, extraNovKad, extraNovMuhM];
-      const opMonthlySeries = baseOps.map((op, opIdx) =>
-        op.values.map((v, mIdx) => (Number(v) || 0) + (mIdx === 10 ? (opExtras[opIdx] || 0) : 0))
-      );
 
       const unifiedTableEl = document.getElementById('monthlyUnifiedKgTable');
       if (unifiedTableEl) {
-        const fmtCompactKg = (val) => {
-          const n = Number(val) || 0;
-          if (n >= 1000000) return `${(n / 1000000).toFixed(1).replace('.', ',')}M`;
-          if (n >= 1000) return `${Math.round(n / 1000)}K`;
-          return String(Math.round(n));
-        };
+        const opHeaderDefs = [
+          {
+            label: 'İSA',
+            dotClass: 'bg-blue-400',
+            thBgClass: 'bg-blue-950 text-blue-100',
+            cellBgActive: 'bg-blue-50/75 text-blue-800',
+            cellBgZero: 'bg-blue-50/35 text-blue-300',
+            footBgClass: 'bg-blue-100/95 text-blue-900'
+          },
+          {
+            label: 'MUHİDDİN',
+            dotClass: 'bg-emerald-400',
+            thBgClass: 'bg-emerald-950 text-emerald-100',
+            cellBgActive: 'bg-emerald-50/75 text-[#0F5C45]',
+            cellBgZero: 'bg-emerald-50/35 text-emerald-300',
+            footBgClass: 'bg-emerald-100/95 text-[#0B4635]'
+          },
+          {
+            label: 'KADDUR',
+            dotClass: 'bg-amber-400',
+            thBgClass: 'bg-amber-950 text-amber-100',
+            cellBgActive: 'bg-amber-50/75 text-amber-800',
+            cellBgZero: 'bg-amber-50/35 text-amber-300',
+            footBgClass: 'bg-amber-100/95 text-amber-900'
+          },
+          {
+            label: 'MUHAMMED',
+            dotClass: 'bg-purple-400',
+            thBgClass: 'bg-purple-950 text-purple-100',
+            cellBgActive: 'bg-purple-50/75 text-purple-800',
+            cellBgZero: 'bg-purple-50/35 text-purple-300',
+            footBgClass: 'bg-purple-100/95 text-purple-900'
+          }
+        ];
 
-        const opColTotals = opMonthlySeries.map(series => series.reduce((a, b) => a + b, 0));
-
-        const bodyRowsHtml = months.map((mName, idx) => {
-          const monthTotal = monthlyTotals[idx] || 0;
-          const isaKg = opMonthlySeries[0][idx] || 0;
-          const muhKg = opMonthlySeries[1][idx] || 0;
-          const kadKg = opMonthlySeries[2][idx] || 0;
-          const muhMKg = opMonthlySeries[3][idx] || 0;
-          const isNov = idx === 10;
-
+        const bodyRowsHtml = monthly.map((m, idx) => {
+          const isZero = m.kg <= 0;
+          const zebraClass = idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/85';
           return `
-            <tr class="${isNov ? 'bg-emerald-50/85 font-extrabold' : 'odd:bg-white even:bg-slate-50/70'} hover:bg-emerald-50/50 transition-colors">
-              <td class="py-0.5 px-1 font-extrabold text-slate-900 whitespace-nowrap">${escapeHtml(mName)}</td>
-              <td class="py-0.5 px-0.5 text-right font-black text-[#146C53] tabular-nums whitespace-nowrap">${fmtCompactKg(monthTotal)}</td>
-              <td class="py-0.5 px-0.5 text-right font-bold text-blue-700 tabular-nums whitespace-nowrap">${fmtCompactKg(isaKg)}</td>
-              <td class="py-0.5 px-0.5 text-right font-bold text-[#146C53] tabular-nums whitespace-nowrap">${fmtCompactKg(muhKg)}</td>
-              <td class="py-0.5 px-0.5 text-right font-bold text-amber-700 tabular-nums whitespace-nowrap">${fmtCompactKg(kadKg)}</td>
-              <td class="py-0.5 px-0.5 text-right font-bold text-purple-700 tabular-nums whitespace-nowrap">${fmtCompactKg(muhMKg)}</td>
+            <tr class="${zebraClass} hover:brightness-[0.98] transition border-b border-slate-200/80">
+              <td class="py-[3.5px] px-1 text-[8.5px] font-extrabold text-slate-900 whitespace-nowrap text-center border-r border-slate-200/80 leading-tight">${escapeHtml(m.name)}</td>
+              <td class="py-[3.5px] px-1 text-[8.5px] font-black tabular-nums text-center whitespace-nowrap border-r border-slate-300/90 leading-tight ${isZero ? 'bg-slate-100/60 text-slate-400' : 'bg-[#146C53]/12 text-[#0B4635]'}">${fmt(m.kg)}</td>
+              <td class="py-[3.5px] px-0.5 text-[8.5px] font-extrabold tabular-nums text-center whitespace-nowrap border-r border-blue-200/65 leading-tight ${m.isa > 0 ? opHeaderDefs[0].cellBgActive : opHeaderDefs[0].cellBgZero}">${fmt(m.isa)}</td>
+              <td class="py-[3.5px] px-0.5 text-[8.5px] font-extrabold tabular-nums text-center whitespace-nowrap border-r border-emerald-200/65 leading-tight ${m.muhiddin > 0 ? opHeaderDefs[1].cellBgActive : opHeaderDefs[1].cellBgZero}">${fmt(m.muhiddin)}</td>
+              <td class="py-[3.5px] px-0.5 text-[8.5px] font-extrabold tabular-nums text-center whitespace-nowrap border-r border-amber-200/65 leading-tight ${m.kaddur > 0 ? opHeaderDefs[2].cellBgActive : opHeaderDefs[2].cellBgZero}">${fmt(m.kaddur)}</td>
+              <td class="py-[3.5px] px-0.5 text-[8.5px] font-extrabold tabular-nums text-center whitespace-nowrap leading-tight ${m.muhammed > 0 ? opHeaderDefs[3].cellBgActive : opHeaderDefs[3].cellBgZero}">${fmt(m.muhammed)}</td>
             </tr>`;
         }).join('');
 
         unifiedTableEl.innerHTML = `
-          <div class="w-full overflow-hidden rounded-lg border border-slate-200/90 bg-white/95">
-            <table class="w-full table-fixed border-collapse text-[8px] leading-[1.15]">
+          <div class="w-full min-w-0 rounded-lg border border-slate-300 overflow-hidden bg-white shadow-2xs">
+            <table class="w-full table-fixed border-collapse">
               <thead>
-                <tr class="bg-slate-100/95 border-b border-slate-200 text-slate-600 font-extrabold uppercase tracking-tighter">
-                  <th class="w-[15%] py-1 px-1 text-left">${escapeHtml(t('col_month'))}</th>
-                  <th class="w-[17%] py-1 px-0.5 text-right text-[#0F5C45]">${escapeHtml(t('col_total_short'))}</th>
-                  <th class="w-[17%] py-1 px-0.5 text-right text-blue-700">İSA</th>
-                  <th class="w-[17%] py-1 px-0.5 text-right text-[#146C53]">MUH.</th>
-                  <th class="w-[17%] py-1 px-0.5 text-right text-amber-700">KAD.</th>
-                  <th class="w-[17%] py-1 px-0.5 text-right text-purple-700">MUH.M</th>
+                <tr class="bg-slate-900 text-white border-b border-slate-700">
+                  <th class="w-[15%] py-1.5 px-1 text-[7.5px] font-extrabold uppercase tracking-tight text-center border-r border-slate-700 whitespace-nowrap leading-none">${escapeHtml(t('col_month'))}</th>
+                  <th class="w-[19%] py-1.5 px-1 text-[7.5px] font-black uppercase tracking-tight text-center bg-[#146C53] text-white border-r border-slate-700 whitespace-nowrap leading-none">${escapeHtml(t('col_total_short'))}</th>
+                  ${opHeaderDefs.map((op, opIdx) => `
+                    <th class="w-[16.5%] py-1.5 px-0.5 text-[7px] font-extrabold uppercase tracking-tighter text-center ${op.thBgClass} ${opIdx < opHeaderDefs.length - 1 ? 'border-r border-slate-700/80' : ''} whitespace-nowrap leading-none">
+                      <span class="inline-flex items-center justify-center gap-0.5 max-w-full">
+                        <span class="w-1.5 h-1.5 rounded-full ${op.dotClass} shrink-0"></span>
+                        <span class="truncate">${escapeHtml(op.label)}</span>
+                      </span>
+                    </th>
+                  `).join('')}
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-100">
+              <tbody>
                 ${bodyRowsHtml}
               </tbody>
               <tfoot>
-                <tr class="bg-emerald-100/75 border-t-2 border-[#146C53]/40 font-black text-slate-900">
-                  <td class="py-1 px-1 text-left text-[7.5px] uppercase whitespace-nowrap">${escapeHtml(t('yearly_grand_total_short'))}</td>
-                  <td class="py-1 px-0.5 text-right text-[#0F5C45] tabular-nums whitespace-nowrap">${fmtCompactKg(yearlyTotal)}</td>
-                  <td class="py-1 px-0.5 text-right text-blue-800 tabular-nums whitespace-nowrap">${fmtCompactKg(opColTotals[0])}</td>
-                  <td class="py-1 px-0.5 text-right text-[#0F5C45] tabular-nums whitespace-nowrap">${fmtCompactKg(opColTotals[1])}</td>
-                  <td class="py-1 px-0.5 text-right text-amber-800 tabular-nums whitespace-nowrap">${fmtCompactKg(opColTotals[2])}</td>
-                  <td class="py-1 px-0.5 text-right text-purple-800 tabular-nums whitespace-nowrap">${fmtCompactKg(opColTotals[3])}</td>
+                <tr class="border-t-2 border-slate-800 text-slate-950">
+                  <td class="py-1.5 px-1 text-[7.5px] font-black uppercase tracking-tight text-center bg-slate-200/95 text-slate-900 border-r border-slate-300 whitespace-nowrap leading-none">${escapeHtml(t('yearly_grand_total_short'))}</td>
+                  <td class="py-1.5 px-1 text-[8.5px] font-black tabular-nums text-center bg-[#146C53] text-white border-r border-emerald-800 whitespace-nowrap leading-none">${fmt(totalYearlyKg)}</td>
+                  <td class="py-1.5 px-0.5 text-[8.5px] font-black tabular-nums text-center ${opHeaderDefs[0].footBgClass} border-r border-blue-300/80 whitespace-nowrap leading-none">${fmt(totalYearlyIsa)}</td>
+                  <td class="py-1.5 px-0.5 text-[8.5px] font-black tabular-nums text-center ${opHeaderDefs[1].footBgClass} border-r border-emerald-300/80 whitespace-nowrap leading-none">${fmt(totalYearlyMuhiddin)}</td>
+                  <td class="py-1.5 px-0.5 text-[8.5px] font-black tabular-nums text-center ${opHeaderDefs[2].footBgClass} border-r border-amber-300/80 whitespace-nowrap leading-none">${fmt(totalYearlyKaddur)}</td>
+                  <td class="py-1.5 px-0.5 text-[8.5px] font-black tabular-nums text-center ${opHeaderDefs[3].footBgClass} whitespace-nowrap leading-none">${fmt(totalYearlyMuhammed)}</td>
                 </tr>
               </tfoot>
             </table>
           </div>`;
       }
 
-      const barChartEl = document.getElementById('monthlyProdBarChart');
-      if (barChartEl) {
-        const maxMonthVal = Math.max(1, ...monthlyTotals);
-        barChartEl.innerHTML = `
-          <div class="grid grid-cols-12 gap-0.5 items-end w-full pt-1">
-            ${months.map((mName, idx) => {
-              const val = monthlyTotals[idx] || 0;
-              const pct = Math.max(6, Math.min(100, Math.round((val / maxMonthVal) * 100)));
-              const isPeak = val === maxMonthVal;
-              const barColor = isPeak
-                ? 'bg-gradient-to-t from-[#0F5C45] to-emerald-400'
-                : 'bg-gradient-to-t from-[#146C53] to-teal-400';
+      const barChart = document.getElementById('monthlyProdBarChart');
+      if (barChart) {
+        const maxKg = Math.max(1, ...monthly.map(m => m.kg));
+        barChart.innerHTML = `
+          <div class="grid grid-cols-12 gap-[2px] items-end w-full min-w-0 pt-1">
+            ${monthly.map(m => {
+              const heightPct = m.kg > 0 ? Math.max(6, Math.round((m.kg / maxKg) * 100)) : 2;
+              const barColorClass = m.kg > 0
+                ? 'bg-gradient-to-t from-[#0F5C45] via-[#146C53] to-emerald-400'
+                : 'bg-slate-200';
               return `
-                <div class="flex flex-col items-center min-w-0">
-                  <span class="text-[6.5px] font-extrabold text-slate-700 tabular-nums leading-none mb-0.5 truncate w-full text-center">${Math.round(val / 1000)}k</span>
+                <div class="flex flex-col items-center min-w-0 select-none" title="${escapeHtml(m.name)}: ${fmt(m.kg)} KG">
+                  <span class="text-[7px] font-extrabold tabular-nums leading-none mb-1 truncate max-w-full ${m.kg > 0 ? 'text-slate-800' : 'text-slate-300'}">${formatCompactVerticalKg(m.kg)}</span>
                   <div class="report-vertical-track">
-                    <div class="report-vertical-bar ${barColor}" style="height: ${pct}%" title="${escapeHtml(mName)}: ${fmt(val)} KG"></div>
+                    <div class="report-vertical-bar ${barColorClass}" style="height: ${heightPct}%"></div>
                   </div>
-                  <span class="text-[7.5px] font-extrabold text-slate-700 leading-none mt-1 truncate w-full text-center">${escapeHtml(mName)}</span>
+                  <span class="text-[7.5px] font-extrabold text-slate-700 mt-1 leading-none tracking-tighter truncate max-w-full">${escapeHtml(m.shortName)}</span>
                 </div>`;
             }).join('')}
           </div>`;
       }
 
-      const opHorizEl = document.getElementById('monthlyOperatorHorizontalChart');
-      if (opHorizEl) {
-        const opColors = [
-          'bg-gradient-to-t from-blue-700 to-blue-400',
-          'bg-gradient-to-t from-[#0F5C45] to-emerald-400',
-          'bg-gradient-to-t from-amber-600 to-amber-300',
-          'bg-gradient-to-t from-purple-700 to-purple-400'
+      const opChartEl = document.getElementById('monthlyOperatorHorizontalChart');
+      if (opChartEl) {
+        const maxSingleOpMonth = Math.max(
+          1,
+          ...monthly.flatMap(m => [m.isa, m.muhiddin, m.kaddur, m.muhammed])
+        );
+        const opBarDefs = [
+          { key: 'isa', name: 'İSA', barGrad: 'bg-gradient-to-t from-blue-700 to-blue-400' },
+          { key: 'muhiddin', name: 'MUHİDDİN', barGrad: 'bg-gradient-to-t from-[#0F5C45] to-emerald-400' },
+          { key: 'kaddur', name: 'KADDUR', barGrad: 'bg-gradient-to-t from-amber-600 to-amber-300' },
+          { key: 'muhammed', name: 'MUHAMMED', barGrad: 'bg-gradient-to-t from-purple-700 to-purple-400' }
         ];
-        const opShortLabels = ['İSA', 'MUH.', 'KAD.', 'MUH.M'];
-        const maxSingleOpMonth = Math.max(1, ...opMonthlySeries.flat());
 
-        opHorizEl.innerHTML = `
-          <div class="grid grid-cols-12 gap-0.5 items-end w-full pt-1">
-            ${months.map((mName, mIdx) => {
-              const barsHtml = opMonthlySeries.map((series, opIdx) => {
-                const v = series[mIdx] || 0;
-                const hPct = Math.max(6, Math.min(100, Math.round((v / maxSingleOpMonth) * 100)));
-                return `
-                  <div class="flex-1 flex flex-col items-center h-full justify-end min-w-0">
-                    <div class="op-vertical-bar ${opColors[opIdx]}" style="height: ${hPct}%" title="${escapeHtml(mName)} · ${opShortLabels[opIdx]}: ${fmt(v)} KG"></div>
-                  </div>`;
-              }).join('');
-
+        opChartEl.innerHTML = `
+          <div class="grid grid-cols-12 gap-[2px] items-end w-full min-w-0 pt-0.5">
+            ${monthly.map(m => {
+              const tipParts = opBarDefs.map(op => `${op.name}: ${fmt(m[op.key])} KG`).join(' | ');
               return `
-                <div class="flex flex-col items-center min-w-0">
+                <div class="flex flex-col items-center min-w-0 select-none" title="${escapeHtml(m.name)} — ${tipParts}">
                   <div class="op-vertical-track">
                     <div class="w-full h-full flex items-end justify-center gap-[1px]">
-                      ${barsHtml}
+                      ${opBarDefs.map(op => {
+                        const val = Number(m[op.key]) || 0;
+                        const hPct = val > 0 ? Math.max(6, Math.round((val / maxSingleOpMonth) * 100)) : 2;
+                        const barCls = val > 0 ? op.barGrad : 'bg-slate-200';
+                        return `<div class="op-vertical-bar ${barCls}" style="height: ${hPct}%"></div>`;
+                      }).join('')}
                     </div>
                   </div>
-                  <span class="text-[7.5px] font-extrabold text-slate-700 leading-none mt-1 truncate w-full text-center">${escapeHtml(mName)}</span>
+                  <span class="text-[7.5px] font-extrabold text-slate-700 mt-1 leading-none tracking-tighter truncate max-w-full">${escapeHtml(m.shortName)}</span>
                 </div>`;
             }).join('')}
           </div>`;
@@ -4217,78 +4928,124 @@
     }
 
     function renderNotes() {
-      const badge = document.getElementById('notesCountBadge');
+      const countEl = document.getElementById('notesCountBadge');
       const listEl = document.getElementById('notesList');
       const perms = getUserPermissions();
-      if (badge) badge.textContent = t('notes_unit', notes.length);
+      if (countEl) countEl.textContent = t('notes_unit', notes.length);
       if (!listEl) return;
 
       if (!notes.length) {
-        listEl.innerHTML = `<div class="pro-card rounded-2xl p-6 text-center text-xs text-slate-400">Henüz vardiya notu eklenmemiş.</div>`;
+        listEl.innerHTML = `<div class="pro-card rounded-2xl p-6 text-center text-xs text-slate-400">Henüz vardiya notu eklenmedi.</div>`;
         return;
       }
 
-      listEl.innerHTML = notes.map(n => `
-        <div class="pro-card rounded-2xl p-3.5 flex items-start justify-between gap-3">
-          <div class="min-w-0 flex-1 space-y-1">
-            <div class="flex items-center gap-2 text-[11px] font-bold text-[#146C53]">
-              <span>${escapeHtml(n.author || getActiveRoleProfile().label)}</span>
-              <span class="text-slate-400">•</span>
-              <span class="text-slate-400 font-medium">${escapeHtml(n.time || '')}</span>
+      listEl.innerHTML = notes.map((n, idx) => `
+        <div class="pro-card rounded-2xl p-3.5 space-y-1.5">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <span class="px-2 py-0.5 rounded-full bg-emerald-50 text-[#146C53] border border-emerald-200 text-[10px] font-extrabold shrink-0">${escapeHtml(n.author)}</span>
+              ${n.authorEmail ? `<span class="text-[10px] font-semibold text-slate-500 truncate">${escapeHtml(n.authorEmail)}</span>` : ''}
             </div>
-            <p class="text-xs text-slate-800 font-medium break-words">${escapeHtml(n.text)}</p>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="text-[10px] font-semibold text-slate-400 tabular-nums">${escapeHtml(n.time)}</span>
+              ${perms.canDeleteNote ? `<button type="button" onclick="deleteNote(${idx})" class="text-[10px] font-bold text-rose-600 hover:underline">${t('delete_note_btn')}</button>` : ''}
+            </div>
           </div>
-          ${perms.canDeleteNote ? `<button type="button" onclick="deleteNote(${n.id})" class="px-2.5 py-1 rounded-lg bg-rose-50 text-rose-600 text-[11px] font-bold hover:bg-rose-100 shrink-0">${t('delete_note_btn')}</button>` : ''}
+          <p class="text-xs font-medium text-slate-800 leading-relaxed">${escapeHtml(n.text)}</p>
         </div>`).join('');
     }
 
     function addNote() {
       if (!guardAction('ADD_NOTE')) return;
-      const input = document.getElementById('noteInput');
-      const text = String(input?.value || '').trim();
+      const inputEl = document.getElementById('noteInput');
+      const text = String(inputEl?.value || '').trim();
       if (!text) return;
 
-      const now = new Date();
-      const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} · ${formatTodayDate()}`;
-      const authorName = getActiveRoleProfile().label;
-      notes.unshift({
-        id: Date.now(),
-        author: authorName,
-        email: currentAccountEmail,
-        time: timeStr,
-        text
-      });
-      if (input) input.value = '';
+      const prof = getActiveRoleProfile();
+      const author = String(prof.label || 'YÖNETİM').toLocaleUpperCase('tr-TR');
+      const authorEmail = String(currentAccountEmail || '').trim().toLowerCase();
+      notes.unshift({ author, authorEmail, text, time: formatDateTimeNow() });
+      if (inputEl) inputEl.value = '';
       renderNotes();
+      recordAuditLog('ADD_NOTE', 'Vardiya notu eklendi', text);
       saveStateToStorage();
       showToast('Vardiya notu eklendi');
     }
 
-    function deleteNote(id) {
+    function deleteNote(idx) {
       if (!guardAction('DELETE_NOTE')) return;
-      notes = notes.filter(n => n.id !== id);
+      const removedNote = notes[idx];
+      notes.splice(idx, 1);
       renderNotes();
+      recordAuditLog('DELETE_NOTE', 'Vardiya notu silindi', removedNote ? removedNote.text : '');
       saveStateToStorage();
       showToast('Not silindi');
     }
 
-    function applyTranslations() {
-      document.documentElement.lang = currentLang;
-      document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-      const langLabel = document.getElementById('langToggleLabel');
-      if (langLabel) langLabel.textContent = currentLang === 'ar' ? '🇹🇷' : '🇩🇿';
+    function switchTab(tabName) {
+      const targetId = `tab-${tabName}`;
+      const prevIdx = TAB_ORDER.indexOf(lastActiveTabName);
+      const nextIdx = TAB_ORDER.indexOf(tabName);
+      let animClass = 'tab-page-enter-fade';
+      if (prevIdx !== -1 && nextIdx !== -1 && prevIdx !== nextIdx) {
+        const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
+        const movingForward = nextIdx > prevIdx;
+        if (isRtl) {
+          animClass = movingForward ? 'tab-page-enter-left' : 'tab-page-enter-right';
+        } else {
+          animClass = movingForward ? 'tab-page-enter-right' : 'tab-page-enter-left';
+        }
+      }
 
+      document.querySelectorAll('main > section[id^="tab-"]').forEach(sec => {
+        const isTarget = sec.id === targetId;
+        sec.classList.remove('tab-page-enter-right', 'tab-page-enter-left', 'tab-page-enter-fade');
+        sec.classList.toggle('hidden', !isTarget);
+        if (isTarget) {
+          void sec.offsetWidth;
+          sec.classList.add(animClass);
+        }
+      });
+
+      lastActiveTabName = tabName;
+
+      document.querySelectorAll('#bottomNavBar .nav-btn').forEach(btn => {
+        const isAct = btn.dataset.nav === tabName;
+        const iconWrap = btn.querySelector('.nav-icon-wrap');
+        const labelSpan = btn.querySelector('span[data-i18n]');
+        if (isAct) {
+          btn.className = 'nav-btn nav-btn-active relative flex flex-col items-center justify-center py-1 px-1 rounded-2xl bg-emerald-50/95 ring-1 ring-emerald-600/35 text-[#0F5C45] transition';
+          if (iconWrap) iconWrap.className = 'nav-icon-wrap w-7 h-6 rounded-xl bg-[#146C53] text-white flex items-center justify-center shadow-xs ring-2 ring-emerald-200/90';
+          if (labelSpan) labelSpan.className = 'nav-label-chip text-[9.5px] font-extrabold leading-none mt-1 tracking-tight text-[#0F5C45]';
+        } else {
+          btn.className = 'nav-btn relative flex flex-col items-center justify-center py-1 px-1 rounded-2xl bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition';
+          if (iconWrap) iconWrap.className = 'nav-icon-wrap w-7 h-6 rounded-xl bg-transparent text-slate-500 flex items-center justify-center';
+          if (labelSpan) labelSpan.className = 'nav-label-chip text-[9.5px] font-medium leading-none mt-1 tracking-tight';
+        }
+      });
+
+      if (tabName === 'emirler') renderOrders();
+      if (tabName === 'tamamlanan') renderCompletedOrders();
+      if (tabName === 'ozet') renderSummary('ALL');
+      if (tabName === 'operasyon') renderOperationTab();
+      if (tabName === 'raporlar') renderReports();
+      if (tabName === 'notlar') renderNotes();
+      if (tabName === 'gecmis-cop') renderAuditAndTrashView();
+    }
+
+    function applyTranslations() {
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        const val = t(key);
-        if (typeof val === 'string') el.textContent = val;
+        if (key) el.textContent = t(key);
       });
-
       document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
         const key = el.getAttribute('data-i18n-placeholder');
-        const val = t(key);
-        if (typeof val === 'string') el.placeholder = val;
+        if (key) el.setAttribute('placeholder', t(key));
       });
+      const langLabel = document.getElementById('langToggleLabel');
+      if (langLabel) langLabel.textContent = currentLang === 'tr' ? '🇩🇿' : '🇹🇷';
+      document.documentElement.setAttribute('lang', currentLang);
+      document.documentElement.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
     }
 
     function toggleLanguage() {
@@ -4303,166 +5060,263 @@
       saveStateToStorage();
     }
 
-    function switchTab(tabName) {
-      const tabs = ['emirler', 'tamamlanan', 'ozet', 'operasyon', 'raporlar', 'notlar'];
-      if (!tabs.includes(tabName)) tabName = 'emirler';
+    const STORAGE_KEY = 'extruder_app_state_v1';
+    let cloudSyncDb = null;
+    let cloudSyncAuth = null;
+    let cloudSyncUser = null;
+    let cloudAppId = 'default-app-id';
+    let isApplyingRemoteCloudSnapshot = false;
+    let cloudCollectionsUnsubscribers = [];
+    let pendingOrderSyncTimers = new Map();
+    let cloudInitializedOnce = false;
 
-      const prevIndex = TAB_ORDER.indexOf(lastActiveTabName);
-      const nextIndex = TAB_ORDER.indexOf(tabName);
-      const enterAnimClass = prevIndex === -1 || nextIndex === -1 || prevIndex === nextIndex
-        ? 'tab-page-enter-fade'
-        : (nextIndex > prevIndex ? 'tab-page-enter-right' : 'tab-page-enter-left');
+    function updateLiveSyncStatusUI(state, customLabel = '') {
+      const badgeEl = document.getElementById('liveSyncBadge');
+      const dotEl = document.getElementById('liveSyncDot');
+      const textEl = document.getElementById('liveSyncText');
+      if (!badgeEl || !dotEl || !textEl) return;
 
-      tabs.forEach(name => {
-        const sec = document.getElementById(`tab-${name}`);
-        if (!sec) return;
-        sec.classList.remove('tab-page-enter-right', 'tab-page-enter-left', 'tab-page-enter-fade');
-        if (name === tabName) {
-          sec.classList.remove('hidden');
-          void sec.offsetWidth;
-          sec.classList.add(enterAnimClass);
-        } else {
-          sec.classList.add('hidden');
-        }
-      });
-
-      lastActiveTabName = tabName;
-
-      document.querySelectorAll('#bottomNavBar .nav-btn').forEach(btn => {
-        const isAct = btn.getAttribute('data-nav') === tabName;
-        btn.classList.toggle('nav-btn-active', isAct);
-        btn.classList.toggle('bg-emerald-50/95', isAct);
-        btn.classList.toggle('ring-1', isAct);
-        btn.classList.toggle('ring-emerald-600/35', isAct);
-        btn.classList.toggle('text-[#0F5C45]', isAct);
-        btn.classList.toggle('bg-transparent', !isAct);
-        btn.classList.toggle('text-slate-500', !isAct);
-        const iconWrap = btn.querySelector('.nav-icon-wrap');
-        if (iconWrap) {
-          iconWrap.classList.toggle('bg-[#146C53]', isAct);
-          iconWrap.classList.toggle('text-white', isAct);
-          iconWrap.classList.toggle('shadow-xs', isAct);
-          iconWrap.classList.toggle('ring-2', isAct);
-          iconWrap.classList.toggle('ring-emerald-200/90', isAct);
-          iconWrap.classList.toggle('bg-transparent', !isAct);
-          iconWrap.classList.toggle('text-slate-500', !isAct);
-        }
-        const labelEl = btn.querySelector('[data-i18n]');
-        if (labelEl) {
-          labelEl.classList.toggle('font-extrabold', isAct);
-          labelEl.classList.toggle('text-[#0F5C45]', isAct);
-          labelEl.classList.toggle('font-medium', !isAct);
-        }
-      });
-
-      if (tabName === 'emirler') renderOrders();
-      if (tabName === 'tamamlanan') renderCompletedOrders();
-      if (tabName === 'ozet') renderSummary('ALL');
-      if (tabName === 'operasyon') renderOperationTab();
-      if (tabName === 'raporlar') renderReports();
-      if (tabName === 'notlar') renderNotes();
-
-      window.scrollTo({ top: 0, behavior: 'instant' });
+      if (state === 'LIVE') {
+        badgeEl.className = 'inline-flex items-center gap-1 bg-emerald-50/95 border border-emerald-400/80 px-2 py-1 rounded-full text-[9.5px] font-extrabold text-[#0F5C45] shadow-2xs transition';
+        dotEl.className = 'w-1.5 h-1.5 rounded-full bg-emerald-500';
+        textEl.textContent = customLabel || 'Canlı';
+      } else if (state === 'SYNCING') {
+        badgeEl.className = 'inline-flex items-center gap-1 bg-blue-50/95 border border-blue-300 px-2 py-1 rounded-full text-[9.5px] font-extrabold text-blue-700 shadow-2xs transition';
+        dotEl.className = 'w-1.5 h-1.5 rounded-full bg-blue-600 animate-ping';
+        textEl.textContent = customLabel || 'Eşitleniyor';
+      } else {
+        badgeEl.className = 'inline-flex items-center gap-1 bg-amber-50/95 border border-amber-300 px-2 py-1 rounded-full text-[9.5px] font-extrabold text-amber-800 shadow-2xs transition';
+        dotEl.className = 'w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse';
+        textEl.textContent = customLabel || 'Bağlanıyor';
+      }
     }
 
-    const STORAGE_KEY = 'EXTRUDER_WORK_ORDERS_STATE_V1';
+    function sanitizeForCloud(obj) {
+      return JSON.parse(JSON.stringify(obj, (k, v) => (v === undefined ? null : v)));
+    }
 
     function saveStateToStorage() {
-      try {
-        pruneExpiredAddedOrders();
-        const payload = {
-          currentLang,
-          currentRoleKey,
-          currentAccountEmail,
-          roleEmailAssignments: ROLE_PROFILES.map(r => ({ key: r.key, emails: Array.isArray(r.emails) ? r.emails : [] })),
-          addedOrdersCount,
-          addedOrderTimestamps,
-          orders,
-          notes
-        };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-      } catch (e) {}
+      pruneExpiredAddedOrders();
+      if (!isApplyingRemoteCloudSnapshot && cloudSyncDb && cloudSyncUser) {
+        pushAllStateToCloud();
+      }
     }
 
     function loadStateFromStorage() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) {
-          orders = INITIAL_ORDERS.map(o => ensureOrderDates({ ...o }));
-          notes = [...INITIAL_NOTES];
-          addedOrderTimestamps = [];
-          addedOrdersCount = 0;
-          return;
-        }
-        const parsed = JSON.parse(raw);
-        if (parsed.currentLang === 'tr' || parsed.currentLang === 'ar') {
-          currentLang = parsed.currentLang;
-        }
-        if (typeof parsed.currentAccountEmail === 'string') {
-          currentAccountEmail = parsed.currentAccountEmail.trim().toLowerCase();
-        }
-        if (Array.isArray(parsed.roleEmailAssignments)) {
-          parsed.roleEmailAssignments.forEach(item => {
-            const prof = ROLE_PROFILES.find(r => r.key === item.key);
-            if (prof && Array.isArray(item.emails)) {
-              prof.emails = item.emails.map(em => String(em || '').trim().toLowerCase()).filter(Boolean);
-            }
+      orders = INITIAL_ORDERS.map(o => ensureOrderDates({ ...o }));
+      notes = [...INITIAL_NOTES];
+      addedOrderTimestamps = [];
+      addedOrdersCount = 0;
+      auditLogs = [];
+      deletedOrdersTrash = [];
+      normalizeOrderNumbers();
+      updateAuditTrashBadges();
+    }
+
+    function refreshAllVisibleViewsFromCloud() {
+      updateHeaderRoleUI();
+      updateAddedOrdersBadge();
+      updateAuditTrashBadges();
+      renderOrders();
+      renderCompletedOrders();
+      if (!document.getElementById('tab-ozet')?.classList.contains('hidden')) renderSummary('ALL');
+      if (!document.getElementById('tab-operasyon')?.classList.contains('hidden')) renderOperationTab();
+      if (!document.getElementById('tab-raporlar')?.classList.contains('hidden')) renderReports();
+      if (!document.getElementById('tab-notlar')?.classList.contains('hidden')) renderNotes();
+      if (!document.getElementById('tab-gecmis-cop')?.classList.contains('hidden')) renderAuditAndTrashView();
+
+      if (editingOrderId !== null) {
+        const activeModalOrder = orders.find(o => o.id === editingOrderId);
+        if (activeModalOrder) {
+          const singleKgInput = document.getElementById('activeOperatorKgInput');
+          const isTypingKg = singleKgInput && document.activeElement === singleKgInput;
+          const selectedOp = pendingModalShift ? pendingModalShift.operator : null;
+          OPERATOR_INPUT_CONFIG.forEach(cfg => {
+            if (isTypingKg && selectedOp === cfg.name) return;
+            draftOperatorKgValues[cfg.field] = Number(activeModalOrder[cfg.field]) || 0;
+            draftOperatorKgExpressions[cfg.field] = getOrderOperatorExpression(activeModalOrder, cfg.field);
           });
+          syncModalOperatorRowsUI();
+          updateModalCalculatedTotals();
+          updateModalShiftBanner();
         }
-        const adminProfile = ROLE_PROFILES.find(r => r.key === 'YONETIM');
-        if (adminProfile) {
-          if (!Array.isArray(adminProfile.emails)) adminProfile.emails = [];
-          if (!adminProfile.emails.some(em => String(em || '').toLowerCase() === GMAIL_ADMIN_EMAIL.toLowerCase())) {
-            adminProfile.emails.unshift(GMAIL_ADMIN_EMAIL.toLowerCase());
-          }
-        }
-        if (typeof parsed.currentRoleKey === 'string' && ROLE_PROFILES.some(r => r.key === parsed.currentRoleKey)) {
-          currentRoleKey = parsed.currentRoleKey;
-        }
-        if (Array.isArray(parsed.addedOrderTimestamps)) {
-          addedOrderTimestamps = parsed.addedOrderTimestamps.map(n => Number(n)).filter(n => Number.isFinite(n) && n > 0);
-        } else if (Number(parsed.addedOrdersCount) > 0) {
-          const fallbackCount = Math.min(50, Math.floor(Number(parsed.addedOrdersCount)));
-          addedOrderTimestamps = Array.from({ length: fallbackCount }, () => Date.now());
-        } else {
-          addedOrderTimestamps = [];
-        }
-        pruneExpiredAddedOrders();
-        if (Array.isArray(parsed.orders) && parsed.orders.length > 0) {
-          orders = parsed.orders.map(o => ensureOrderDates({ ...o }));
-        } else {
-          orders = INITIAL_ORDERS.map(o => ensureOrderDates({ ...o }));
-        }
-        if (Array.isArray(parsed.notes)) {
-          notes = parsed.notes;
-        } else {
-          notes = [...INITIAL_NOTES];
-        }
-      } catch (e) {
-        orders = INITIAL_ORDERS.map(o => ensureOrderDates({ ...o }));
-        notes = [...INITIAL_NOTES];
       }
     }
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        ['editModal', 'newOrderModal', 'accountModal'].forEach(id => closeModal(id));
+    async function pushAllStateToCloud() {
+      if (!cloudSyncDb || !cloudSyncUser || !window.__fsMod) return;
+      const { doc, setDoc, deleteDoc, getDocs, collection } = window.__fsMod;
+      try {
+        updateLiveSyncStatusUI('SYNCING');
+        const roleEmailAssignments = {};
+        ROLE_PROFILES.forEach(r => {
+          roleEmailAssignments[r.key] = Array.isArray(r.emails) ? [...r.emails] : [];
+        });
+
+        const metaRef = doc(cloudSyncDb, 'artifacts', cloudAppId, 'public', 'data', 'extruder_meta', 'shared_config');
+        await setDoc(metaRef, sanitizeForCloud({
+          roleEmailAssignments,
+          addedOrderTimestamps,
+          updatedAt: Date.now()
+        }), { merge: true });
+
+        const ordersCol = collection(cloudSyncDb, 'artifacts', cloudAppId, 'public', 'data', 'extruder_orders');
+        const activeIds = new Set(orders.map(o => String(o.id)));
+
+        await Promise.all(orders.map(o => {
+          const orderDocRef = doc(cloudSyncDb, 'artifacts', cloudAppId, 'public', 'data', 'extruder_orders', String(o.id));
+          return setDoc(orderDocRef, sanitizeForCloud({
+            ...o,
+            _syncUpdatedAt: Date.now()
+          }));
+        }));
+
+        const existingOrdersSnap = await getDocs(ordersCol);
+        const deletePromises = [];
+        existingOrdersSnap.forEach(d => {
+          if (!activeIds.has(String(d.id))) {
+            deletePromises.push(deleteDoc(doc(cloudSyncDb, 'artifacts', cloudAppId, 'public', 'data', 'extruder_orders', String(d.id))));
+          }
+        });
+        if (deletePromises.length) await Promise.all(deletePromises);
+
+        const listsRef = doc(cloudSyncDb, 'artifacts', cloudAppId, 'public', 'data', 'extruder_meta', 'shared_lists');
+        await setDoc(listsRef, sanitizeForCloud({
+          notes: notes.slice(0, 150),
+          auditLogs: auditLogs.slice(0, 200),
+          deletedOrdersTrash: deletedOrdersTrash.slice(0, 100),
+          updatedAt: Date.now()
+        }));
+
+        updateLiveSyncStatusUI('LIVE');
+      } catch (err) {
+        updateLiveSyncStatusUI('LIVE');
       }
-    });
+    }
+
+    async function initRealtimeCloudSync() {
+      try {
+        if (typeof __firebase_config === 'undefined' || !__firebase_config) {
+          updateLiveSyncStatusUI('LIVE', 'Yerel Mod');
+          return;
+        }
+        const firebaseConfig = JSON.parse(__firebase_config);
+        cloudAppId = typeof __app_id !== 'undefined' && __app_id ? __app_id : 'default-app-id';
+
+        const [appMod, authMod, fsMod] = await Promise.all([
+          import('https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js'),
+          import('https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js'),
+          import('https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js')
+        ]);
+        window.__fsMod = fsMod;
+
+        const fbApp = appMod.initializeApp(firebaseConfig);
+        cloudSyncAuth = authMod.getAuth(fbApp);
+        cloudSyncDb = fsMod.getFirestore(fbApp);
+
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await authMod.signInWithCustomToken(cloudSyncAuth, __initial_auth_token);
+        } else {
+          await authMod.signInAnonymously(cloudSyncAuth);
+        }
+        cloudSyncUser = cloudSyncAuth.currentUser;
+        if (!cloudSyncUser) return;
+
+        const { collection, doc, onSnapshot, getDocs } = fsMod;
+        const ordersCol = collection(cloudSyncDb, 'artifacts', cloudAppId, 'public', 'data', 'extruder_orders');
+        const initialSnap = await getDocs(ordersCol);
+        if (initialSnap.empty && !cloudInitializedOnce) {
+          cloudInitializedOnce = true;
+          await pushAllStateToCloud();
+        }
+
+        const unsubOrders = onSnapshot(ordersCol, (snapshot) => {
+          if (snapshot.empty) return;
+          isApplyingRemoteCloudSnapshot = true;
+          try {
+            const remoteOrders = [];
+            snapshot.forEach((docSnap) => {
+              const data = docSnap.data();
+              if (data && typeof data === 'object') {
+                const { _syncUpdatedAt, ...cleanOrder } = data;
+                remoteOrders.push(ensureOrderDates(cleanOrder));
+              }
+            });
+            if (remoteOrders.length > 0) {
+              orders = remoteOrders;
+              normalizeOrderNumbers();
+              refreshAllVisibleViewsFromCloud();
+            }
+            updateLiveSyncStatusUI('LIVE');
+          } finally {
+            isApplyingRemoteCloudSnapshot = false;
+          }
+        }, () => {
+          updateLiveSyncStatusUI('LIVE');
+        });
+
+        const metaDocRef = doc(cloudSyncDb, 'artifacts', cloudAppId, 'public', 'data', 'extruder_meta', 'shared_config');
+        const unsubMeta = onSnapshot(metaDocRef, (docSnap) => {
+          if (!docSnap.exists()) return;
+          isApplyingRemoteCloudSnapshot = true;
+          try {
+            const data = docSnap.data() || {};
+            if (data.roleEmailAssignments && typeof data.roleEmailAssignments === 'object') {
+              ROLE_PROFILES.forEach(r => {
+                if (Array.isArray(data.roleEmailAssignments[r.key])) {
+                  r.emails = data.roleEmailAssignments[r.key]
+                    .map(em => String(em || '').trim().toLowerCase())
+                    .filter(Boolean);
+                }
+              });
+              const mgmt = ROLE_PROFILES.find(r => r.key === 'YONETIM');
+              if (mgmt && !mgmt.emails.includes(GMAIL_ADMIN_EMAIL.toLowerCase())) {
+                mgmt.emails.unshift(GMAIL_ADMIN_EMAIL.toLowerCase());
+              }
+            }
+            if (Array.isArray(data.addedOrderTimestamps)) {
+              addedOrderTimestamps = data.addedOrderTimestamps.map(Number).filter(Number.isFinite);
+              pruneExpiredAddedOrders();
+            }
+            refreshAllVisibleViewsFromCloud();
+          } finally {
+            isApplyingRemoteCloudSnapshot = false;
+          }
+        }, () => {});
+
+        const listsDocRef = doc(cloudSyncDb, 'artifacts', cloudAppId, 'public', 'data', 'extruder_meta', 'shared_lists');
+        const unsubLists = onSnapshot(listsDocRef, (docSnap) => {
+          if (!docSnap.exists()) return;
+          isApplyingRemoteCloudSnapshot = true;
+          try {
+            const data = docSnap.data() || {};
+            if (Array.isArray(data.notes)) notes = data.notes;
+            if (Array.isArray(data.auditLogs)) auditLogs = data.auditLogs;
+            if (Array.isArray(data.deletedOrdersTrash)) deletedOrdersTrash = data.deletedOrdersTrash;
+            refreshAllVisibleViewsFromCloud();
+          } finally {
+            isApplyingRemoteCloudSnapshot = false;
+          }
+        }, () => {});
+
+        cloudCollectionsUnsubscribers = [unsubOrders, unsubMeta, unsubLists];
+        updateLiveSyncStatusUI('LIVE');
+      } catch (e) {
+        updateLiveSyncStatusUI('LIVE', 'Çevrimdışı');
+      }
+    }
 
     function initApp() {
       loadStateFromStorage();
-      normalizeOrderNumbers();
       applyTranslations();
       updateHeaderRoleUI();
       renderOrders();
       renderCompletedOrders();
-      renderReports();
-      renderNotes();
       switchTab('emirler');
+      initRealtimeCloudSync();
     }
 
-    initApp();
+    window.addEventListener('DOMContentLoaded', initApp);
   </script>
 </body>
 </html>
